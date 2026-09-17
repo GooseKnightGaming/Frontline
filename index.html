@@ -43,6 +43,7 @@
   .bar > div { height: 100%; width: 100%; transition: width 0.15s; }
   .lbl { font-size: 11px; letter-spacing: 3px; color: #cfd6dc; text-shadow: 0 1px 2px #000; margin-top: 6px; }
   #st-fill { background: #d8d8d0; }
+  #stance { font-size: 12px; letter-spacing: 4px; color: #e8b423; text-shadow: 0 1px 3px #000; opacity: 0; transition: opacity 0.2s; }
   #br { position: absolute; left: 50%; top: 18%; width: 240px; transform: translateX(-50%); display: none; text-align: center; }
   #zone { position: absolute; left: 22px; top: 18px; font-size: 13px; letter-spacing: 4px; color: #e6eaee; text-shadow: 0 1px 3px #000; }
   #zone::before { content: 'GHOST TRAINING  //  '; color: var(--amber); }
@@ -78,6 +79,7 @@
   <div id="prompt"></div>
   <div id="br"><div class="lbl">BREATH</div><div class="bar"><div id="br-fill"></div></div></div>
   <div id="vitals">
+    <div id="stance">CROUCHED</div>
     <div class="lbl">STAMINA</div><div class="bar"><div id="st-fill"></div></div>
   </div>
   <div id="debug"></div>
@@ -99,7 +101,8 @@
       <b>Mouse / touchpad</b><span>look</span>
       <b>Space</b><span>jump &middot; vault &middot; climb &middot; swim up</span>
       <b>Shift</b><span>sprint &middot; swim faster</span>
-      <b>C</b><span>crouch &middot; dive</span>
+      <b>C</b><span>crouch &middot; press again for prone &middot; dive</span>
+      <b>Shift + A/D</b><span>sideways dash</span>
       <b>Alt or right-click</b><span>aim / focus</span>
       <b>V</b><span>first / third person</span>
       <b>Esc</b><span>pause &amp; settings</span>
@@ -134,7 +137,7 @@
       <div class="set"><span>Look sensitivity</span><input type="range" id="set-sens" min="0.2" max="3" step="0.05"><span id="set-sens-v"></span></div>
       <div class="set"><span>Field of view</span><input type="range" id="set-fov" min="60" max="100" step="1"><span id="set-fov-v"></span></div>
       <div class="set"><span>Invert look up/down</span><input type="checkbox" id="set-invert"><span></span></div>
-      <div class="set"><span>Crouch toggles (instead of hold)</span><input type="checkbox" id="set-crouch"><span></span></div>
+
       <div class="set"><span>Sprint-vaulting (sprint at something to go over it)</span><select id="set-autovault"><option value="off">Off</option><option value="waist">Waist height (1.3 m)</option><option value="high">High (2 m)</option></select><span></span></div>
       <div class="set"><span>Graphics quality</span><select id="set-quality"><option value="low">Low (no shadows)</option><option value="medium">Medium</option><option value="high">High</option></select><span></span></div>
       <div class="set"><span>Show frame rate &amp; position</span><input type="checkbox" id="set-fps"><span></span></div>
@@ -145,8 +148,11 @@
       <ul>
         <li><b>Vault</b> &mdash; press Space at a low wall or railing (up to 1.25&nbsp;m). Sprinting at anything waist-high takes you over or onto it without breaking stride &mdash; run up a stack of crates. Settings can raise this to 2&nbsp;m, or turn it off.</li>
         <li><b>Climb</b> &mdash; face a ledge up to about 2.35&nbsp;m and press Space. Jump first and hold forward to grab a little higher.</li>
-        <li><b>Crouch</b> &mdash; hold C to fit under low things. You can't stand up until there's room. You can jump from a crouch, and crouching mid-jump cuts the jump short.</li>
+        <li><b>Stances</b> &mdash; C goes from standing to crouched, again to prone, again back to standing. Holding C and letting go is just a crouch. You can't change into a taller stance without room for it.</li>
+        <li><b>Prone</b> &mdash; very slow, almost silent, fits through the crawl pipe. You can't sprint. Jumping stands you back up.</li>
         <li><b>Crouch-sprint</b> &mdash; Shift while crouched: quicker than creeping, much quieter than a full sprint.</li>
+        <li><b>Dash</b> &mdash; tap Shift while stepping left or right for a quick sideways burst. Costs stamina, with a moment before you can do it again.</li>
+        <li><b>Crouch-jump</b> &mdash; jump from a crouch, and press C in mid-air to cut a jump short.</li>
         <li><b>Ladders</b> &mdash; walk into one facing the wall (or back onto one from a platform). W climbs, S descends. Space steps off onto a platform beside you; C lets go.</li>
         <li><b>Falling</b> &mdash; about 3&nbsp;m is safe; 6&nbsp;m hurts; 12&nbsp;m nearly kills. Hold C as you land to soften it. Deep water catches you.</li>
         <li><b>Swimming</b> &mdash; you float at the surface. Hold C or look down and swim forward to dive; Space rises. Watch your breath. Swim to an edge and press Space to climb out.</li>
@@ -186,6 +192,6 @@
   document.getElementById('splat').style.setProperty('--splat', 'url(' + c.toDataURL() + ')');
 })();
 </script>
-<script src="game.js?v=M1.3"></script>
+<script src="game.js?v=M1.5"></script>
 </body>
 </html>
