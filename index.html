@@ -47,6 +47,11 @@
   #zone::before { content: 'GHOST TRAINING  //  '; color: var(--amber); }
   #debug { position: absolute; right: 12px; top: 12px; font: 12px monospace; background: rgba(0,0,0,0.5); padding: 4px 8px; display: none; }
   #uw { position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(20,80,110,0.25), rgba(5,30,45,0.7)); opacity: 0; transition: opacity 0.15s; }
+  #vitals { transition: opacity 0.6s; }
+  /* injury: dark red closing in from the edges, with painted splatter */
+  #blood { position: absolute; inset: 0; opacity: 0; --spread: 62%;
+    background: radial-gradient(ellipse at center, rgba(90,0,0,0) var(--spread), rgba(120,0,0,0.42) calc(var(--spread) + 20%), rgba(70,0,0,0.85) 100%); }
+  #splat { position: absolute; inset: 0; opacity: 0; background: var(--splat, none); background-size: 100% 100%; filter: blur(0.6px); }
   #hurt { position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(160,0,0,0) 45%, rgba(170,0,0,0.65)); opacity: 0; }
   #lock-note { position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); display: none; font-size: 13px; color: #d9c48a; }
 
@@ -72,11 +77,12 @@
   <div id="prompt"></div>
   <div id="br"><div class="lbl">BREATH</div><div class="bar"><div id="br-fill"></div></div></div>
   <div id="vitals">
-    <div class="lbl">HEALTH</div><div class="bar"><div id="hp-fill"></div></div>
     <div class="lbl">STAMINA</div><div class="bar"><div id="st-fill"></div></div>
   </div>
   <div id="debug"></div>
   <div id="uw"></div>
+  <div id="blood"></div>
+  <div id="splat"></div>
   <div id="hurt"></div>
   <div id="lock-note">Mouse capture was blocked: hold a mouse button and drag to look. P pauses.</div>
 </div>
@@ -96,6 +102,7 @@
       <b>Alt or right-click</b><span>aim / focus</span>
       <b>V</b><span>first / third person</span>
       <b>Esc</b><span>pause &amp; settings</span>
+      <b>Health</b><span>no bar &mdash; when you're hurt, the screen shows it. Keep out of trouble and it slowly clears.</span>
     </div>
     <div class="note" id="cb-note">Chromebook: hold Alt to aim. While Alt is held, any click fires &mdash; ChromeOS turns Alt&nbsp;+&nbsp;click into a right-click, and the game allows for that.</div>
     <button class="btn primary" id="btn-deploy">Click to deploy</button>
@@ -134,10 +141,10 @@
     <div class="tab" id="tab-howto">
       <h2>HOW TO MOVE</h2>
       <ul>
-        <li><b>Vault</b> &mdash; run at a low wall or railing (up to 1.25&nbsp;m) and press Space.</li>
+        <li><b>Vault</b> &mdash; press Space at a low wall or railing (up to 1.25&nbsp;m). Sprinting at anything waist-high takes you over or onto it without breaking stride &mdash; run up a stack of crates.</li>
         <li><b>Climb</b> &mdash; face a ledge up to about 2.35&nbsp;m and press Space. Jump first and hold forward to grab a little higher.</li>
         <li><b>Crouch</b> &mdash; hold C to fit under low things. You can't stand up until there's room.</li>
-        <li><b>Ladders</b> &mdash; walk into one facing the wall. Look down to climb down. Space lets go.</li>
+        <li><b>Ladders</b> &mdash; walk into one facing the wall (or back onto one from a platform). W climbs, S descends. Space steps off onto a platform beside you; C lets go.</li>
         <li><b>Falling</b> &mdash; about 3&nbsp;m is safe; 6&nbsp;m hurts; 12&nbsp;m nearly kills. Hold C as you land to soften it. Deep water catches you.</li>
         <li><b>Swimming</b> &mdash; you float at the surface. Hold C or look down and swim forward to dive; Space rises. Watch your breath. Swim to an edge and press Space to climb out.</li>
         <li><b>Sprint</b> &mdash; Shift, while stamina lasts. Run it dry and you'll need a moment.</li>
@@ -156,6 +163,26 @@
   </div>
 </div>
 <div id="ver"></div>
+<script>
+// painted blood splatter for the injury overlay (made once, kept as an image)
+(function () {
+  var c = document.createElement('canvas'); c.width = 640; c.height = 360;
+  var g = c.getContext('2d'); var seed = 7;
+  function r() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
+  // fine spatter, densest in the corners, thinning toward the middle
+  for (var i = 0; i < 900; i++) {
+    var x = r() * 640, y = r() * 360;
+    var dx = Math.min(x, 640 - x) / 320, dy = Math.min(y, 360 - y) / 180;
+    var edge = Math.min(dx, dy);
+    if (r() > Math.pow(1 - edge, 6)) continue;
+    var rad = 0.6 + Math.pow(r(), 4) * 7 * (1 - edge);
+    g.fillStyle = 'rgba(' + (80 + r() * 50 | 0) + ',0,0,' + (0.25 + r() * 0.45).toFixed(2) + ')';
+    g.beginPath(); g.ellipse(x, y, rad, rad * (0.6 + r() * 0.8), r() * 3, 0, Math.PI * 2); g.fill();
+    if (rad > 3 && r() < 0.3) { g.fillRect(x - 0.6, y, 1.2, 6 + r() * 20); }
+  }
+  document.getElementById('splat').style.setProperty('--splat', 'url(' + c.toDataURL() + ')');
+})();
+</script>
 <script src="game.js"></script>
 </body>
 </html>
