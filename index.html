@@ -47,6 +47,15 @@
   #br { position: absolute; left: 50%; top: 18%; width: 240px; transform: translateX(-50%); display: none; text-align: center; }
   #zone { position: absolute; left: 22px; top: 18px; font-size: 13px; letter-spacing: 4px; color: #e6eaee; text-shadow: 0 1px 3px #000; }
   #zone::before { content: 'GHOST TRAINING  //  '; color: var(--amber); }
+  #weapon { position: absolute; right: 22px; bottom: 22px; text-align: right; text-shadow: 0 1px 3px #000; }
+  #w-name { font-size: 12px; letter-spacing: 3px; color: var(--amber); }
+  #w-ammo { font-size: 26px; letter-spacing: 2px; color: #e6eaee; font-weight: 600; }
+  #score { position: absolute; right: 22px; top: 18px; font-size: 13px; letter-spacing: 3px; color: #cfd6dc; text-shadow: 0 1px 3px #000; }
+  #hitmark { position: absolute; left: 50%; top: 50%; width: 26px; height: 26px; margin: -13px 0 0 -13px; opacity: 0;
+    transition: opacity 0.12s; background:
+      linear-gradient(45deg, transparent 44%, #fff 44%, #fff 56%, transparent 56%),
+      linear-gradient(-45deg, transparent 44%, #fff 44%, #fff 56%, transparent 56%); }
+  #blind { position: absolute; inset: 0; background: #fff; opacity: 0; transition: opacity 0.25s; }
   #debug { position: absolute; right: 12px; top: 12px; font: 12px monospace; background: rgba(0,0,0,0.5); padding: 4px 8px; display: none; }
   #uw { position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(20,80,110,0.25), rgba(5,30,45,0.7)); opacity: 0; transition: opacity 0.15s; }
   #vitals { transition: opacity 0.6s; }
@@ -82,6 +91,13 @@
     <div id="stance">CROUCHED</div>
     <div class="lbl">STAMINA</div><div class="bar"><div id="st-fill"></div></div>
   </div>
+  <div id="weapon">
+    <div id="w-name"></div>
+    <div id="w-ammo"></div>
+  </div>
+  <div id="score"></div>
+  <div id="hitmark"></div>
+  <div id="blind"></div>
   <div id="debug"></div>
   <div id="uw"></div>
   <div id="blood"></div>
@@ -104,6 +120,9 @@
       <b>C</b><span>crouch &middot; press again for prone &middot; dive</span>
       <b>Shift + A/D</b><span>sideways dash</span>
       <b>Alt or right-click</b><span>aim / focus</span>
+      <b>1 - 5</b><span>knife &middot; sidearm &middot; rifle &middot; sniper &middot; grenades (5 again for flashbangs)</span>
+      <b>Click</b><span>fire &middot; swing &middot; throw</span>
+      <b>R</b><span>reload</span>
       <b>V</b><span>first / third person</span>
       <b>Esc</b><span>pause &amp; settings</span>
       <b>Health</b><span>no bar &mdash; when you're hurt, the screen shows it. Keep out of trouble and it slowly clears.</span>
@@ -157,6 +176,10 @@
         <li><b>Falling</b> &mdash; about 3&nbsp;m is safe; 6&nbsp;m hurts; 12&nbsp;m nearly kills. Hold C as you land to soften it. Deep water catches you.</li>
         <li><b>Swimming</b> &mdash; you float at the surface. Hold C or look down and swim forward to dive; Space rises. Watch your breath. Swim to an edge and press Space to climb out.</li>
         <li><b>Sprint</b> &mdash; Shift, while stamina lasts. Run it dry and you'll need a moment.</li>
+        <li><b>Weapons</b> &mdash; 1 to 5 to choose, click to use, R to reload. The rifle fires while you hold the button; everything else is one press at a time.</li>
+        <li><b>Aiming</b> &mdash; hold Alt (or right-click) for a much tighter group. Moving and firing fast both spread your shots; the sniper's scope magnifies.</li>
+        <li><b>Grenades</b> &mdash; press 5 for frags, 5 again for flashbangs. Mind the blast: it can reach you, though cover will save you. Looking away from a flashbang helps.</li>
+        <li><b>The range</b> &mdash; targets at 10, 20 and 35&nbsp;m, worth 10, 25 and 50. They drop when hit and pop back up.</li>
       </ul>
       <button class="btn btn-back">Back</button>
     </div>
@@ -192,6 +215,6 @@
   document.getElementById('splat').style.setProperty('--splat', 'url(' + c.toDataURL() + ')');
 })();
 </script>
-<script src="game.js?v=M1.5"></script>
+<script src="game.js?v=M2.0"></script>
 </body>
 </html>
