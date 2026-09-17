@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Frontline - Training Facility</title>
+<style>
+  :root { --amber: #e8b423; --ink: #0d1014; --panel: rgba(12,15,19,0.86); --line: #2b333d; --text: #d7dce2; --dim: #8a939c; }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #000; color: var(--text);
+    font-family: 'Roboto Condensed', 'Arial Narrow', Roboto, Arial, sans-serif; user-select: none; -webkit-user-select: none; }
+  #app { position: fixed; inset: 0; width: 100%; height: 100%; display: block; outline: none; }
+  .overlay { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; z-index: 20;
+    background: radial-gradient(ellipse at center, rgba(10,14,18,0.72), rgba(0,0,0,0.92)); }
+  .card { background: var(--panel); border: 1px solid var(--line); padding: 26px 30px; width: min(560px, 92vw); max-height: 88vh;
+    overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
+  .brand { font-size: 13px; letter-spacing: 6px; color: var(--dim); }
+  h1 { margin: 4px 0 2px; font-size: 44px; letter-spacing: 8px; color: #fff; font-weight: 700; }
+  h2 { margin: 0 0 14px; font-size: 15px; letter-spacing: 4px; color: var(--amber); font-weight: 600; }
+  p, li { color: var(--dim); font-size: 14px; line-height: 1.55; }
+  .btn { display: block; width: 100%; margin: 8px 0; padding: 12px; font: inherit; font-size: 15px; letter-spacing: 3px;
+    background: #1a2027; color: var(--text); border: 1px solid var(--line); cursor: pointer; text-transform: uppercase; }
+  .btn:hover { border-color: var(--amber); color: #fff; }
+  .btn.primary { background: #3a2e0c; border-color: var(--amber); color: #ffe39a; }
+  .keys { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; margin: 12px 0; font-size: 14px; }
+  .keys b { color: #fff; font-weight: 600; white-space: nowrap; }
+  .keys span { color: var(--dim); }
+  .note { display: none; margin-top: 10px; padding: 8px 10px; border-left: 3px solid var(--amber); background: rgba(232,180,35,0.08); color: #d9c48a; font-size: 13px; }
+  #ver { position: fixed; right: 8px; bottom: 6px; font-size: 11px; color: #5b646d; z-index: 30; }
+
+  /* HUD */
+  #hud { position: fixed; inset: 0; pointer-events: none; z-index: 10; }
+  #crosshair { position: absolute; left: 50%; top: 50%; width: 22px; height: 22px; margin: -11px 0 0 -11px; opacity: 0.85; transition: transform 0.12s; }
+  #crosshair::before, #crosshair::after { content: ''; position: absolute; background: rgba(255,255,255,0.9); box-shadow: 0 0 2px #000; }
+  #crosshair::before { left: 10px; top: 2px; width: 2px; height: 18px; }
+  #crosshair::after { top: 10px; left: 2px; height: 2px; width: 18px; }
+  #crosshair.aim { transform: scale(0.55); }
+  #prompt { position: absolute; left: 50%; top: calc(50% + 34px); transform: translateX(-50%); font-size: 15px; letter-spacing: 2px;
+    color: #fff; text-shadow: 0 1px 3px #000; background: rgba(0,0,0,0.35); padding: 3px 10px; }
+  #prompt:empty { display: none; }
+  #vitals { position: absolute; left: 22px; bottom: 22px; width: 250px; }
+  .bar { height: 9px; background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.18); margin-top: 6px; }
+  .bar > div { height: 100%; width: 100%; transition: width 0.15s; }
+  .lbl { font-size: 11px; letter-spacing: 3px; color: #cfd6dc; text-shadow: 0 1px 2px #000; margin-top: 6px; }
+  #st-fill { background: #d8d8d0; }
+  #br { position: absolute; left: 50%; top: 18%; width: 240px; transform: translateX(-50%); display: none; text-align: center; }
+  #zone { position: absolute; left: 22px; top: 18px; font-size: 13px; letter-spacing: 4px; color: #e6eaee; text-shadow: 0 1px 3px #000; }
+  #zone::before { content: 'GHOST TRAINING  //  '; color: var(--amber); }
+  #debug { position: absolute; right: 12px; top: 12px; font: 12px monospace; background: rgba(0,0,0,0.5); padding: 4px 8px; display: none; }
+  #uw { position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(20,80,110,0.25), rgba(5,30,45,0.7)); opacity: 0; transition: opacity 0.15s; }
+  #hurt { position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(160,0,0,0) 45%, rgba(170,0,0,0.65)); opacity: 0; }
+  #lock-note { position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); display: none; font-size: 13px; color: #d9c48a; }
+
+  /* menu */
+  .tab { display: none; }
+  .bind-row { display: grid; grid-template-columns: 1fr 110px 110px; gap: 6px; align-items: center; padding: 3px 0; border-bottom: 1px solid #1c232a; font-size: 14px; }
+  .key { font: inherit; font-size: 13px; background: #11161b; color: #fff; border: 1px solid var(--line); padding: 6px; cursor: pointer; }
+  .key:hover { border-color: var(--amber); }
+  .key.wait { color: var(--amber); border-color: var(--amber); }
+  .set { display: grid; grid-template-columns: 1fr 180px 44px; gap: 10px; align-items: center; margin: 10px 0; font-size: 14px; }
+  .set input[type=range] { width: 100%; }
+  select { font: inherit; background: #11161b; color: #fff; border: 1px solid var(--line); padding: 4px; }
+  #loading { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; letter-spacing: 6px; color: var(--dim); z-index: 40; background: #000; }
+</style>
+</head>
+<body>
+<canvas id="app" tabindex="0"></canvas>
+<div id="loading">LOADING TRAINING FACILITY</div>
+
+<div id="hud">
+  <div id="zone">Yard 7</div>
+  <div id="crosshair"></div>
+  <div id="prompt"></div>
+  <div id="br"><div class="lbl">BREATH</div><div class="bar"><div id="br-fill"></div></div></div>
+  <div id="vitals">
+    <div class="lbl">HEALTH</div><div class="bar"><div id="hp-fill"></div></div>
+    <div class="lbl">STAMINA</div><div class="bar"><div id="st-fill"></div></div>
+  </div>
+  <div id="debug"></div>
+  <div id="uw"></div>
+  <div id="hurt"></div>
+  <div id="lock-note">Mouse capture was blocked: hold a mouse button and drag to look. P pauses.</div>
+</div>
+
+<div id="start" class="overlay">
+  <div class="card">
+    <div class="brand">GHOST // OPERATIONS</div>
+    <h1>FRONTLINE</h1>
+    <h2>TRAINING FACILITY &mdash; YARD 7</h2>
+    <p>Milestone 1. Learn to move: vault, climb, crouch, drop, dive and swim. Nothing here shoots back yet.</p>
+    <div class="keys">
+      <b>W A S D</b><span>move (arrow keys work too)</span>
+      <b>Mouse / touchpad</b><span>look</span>
+      <b>Space</b><span>jump &middot; vault &middot; climb &middot; swim up</span>
+      <b>Shift</b><span>sprint &middot; swim faster</span>
+      <b>C</b><span>crouch &middot; dive</span>
+      <b>Alt or right-click</b><span>aim / focus</span>
+      <b>V</b><span>first / third person</span>
+      <b>Esc</b><span>pause &amp; settings</span>
+    </div>
+    <div class="note" id="cb-note">Chromebook: hold Alt to aim. While Alt is held, any click fires &mdash; ChromeOS turns Alt&nbsp;+&nbsp;click into a right-click, and the game allows for that.</div>
+    <button class="btn primary" id="btn-deploy">Click to deploy</button>
+  </div>
+</div>
+
+<div id="menu" class="overlay">
+  <div class="card">
+    <div class="tab" id="tab-main">
+      <div class="brand">GHOST // OPERATIONS</div>
+      <h2>PAUSED</h2>
+      <button class="btn primary" id="btn-resume">Resume</button>
+      <button class="btn" id="btn-howto">How to move</button>
+      <button class="btn" id="btn-controls">Controls</button>
+      <button class="btn" id="btn-settings">Settings</button>
+      <button class="btn" id="btn-respawn">Back to the start</button>
+    </div>
+    <div class="tab" id="tab-controls">
+      <h2>CONTROLS</h2>
+      <p>Click a key to change it, then press the new key. Esc cancels. Ctrl, Tab and the Search key belong to the browser and cannot be used.</p>
+      <div id="bind-list"></div>
+      <p>Mouse: left click fires. Right click, or holding the Aim key, aims &mdash; and while the Aim key is held, any click fires.</p>
+      <button class="btn" id="btn-bind-reset">Reset to defaults</button>
+      <button class="btn btn-back">Back</button>
+    </div>
+    <div class="tab" id="tab-settings">
+      <h2>SETTINGS</h2>
+      <div class="set"><span>Look sensitivity</span><input type="range" id="set-sens" min="0.2" max="3" step="0.05"><span id="set-sens-v"></span></div>
+      <div class="set"><span>Field of view</span><input type="range" id="set-fov" min="60" max="100" step="1"><span id="set-fov-v"></span></div>
+      <div class="set"><span>Invert look up/down</span><input type="checkbox" id="set-invert"><span></span></div>
+      <div class="set"><span>Crouch toggles (instead of hold)</span><input type="checkbox" id="set-crouch"><span></span></div>
+      <div class="set"><span>Graphics quality</span><select id="set-quality"><option value="low">Low (no shadows)</option><option value="medium">Medium</option><option value="high">High</option></select><span></span></div>
+      <div class="set"><span>Show frame rate &amp; position</span><input type="checkbox" id="set-fps"><span></span></div>
+      <button class="btn btn-back">Back</button>
+    </div>
+    <div class="tab" id="tab-howto">
+      <h2>HOW TO MOVE</h2>
+      <ul>
+        <li><b>Vault</b> &mdash; run at a low wall or railing (up to 1.25&nbsp;m) and press Space.</li>
+        <li><b>Climb</b> &mdash; face a ledge up to about 2.35&nbsp;m and press Space. Jump first and hold forward to grab a little higher.</li>
+        <li><b>Crouch</b> &mdash; hold C to fit under low things. You can't stand up until there's room.</li>
+        <li><b>Ladders</b> &mdash; walk into one facing the wall. Look down to climb down. Space lets go.</li>
+        <li><b>Falling</b> &mdash; about 3&nbsp;m is safe; 6&nbsp;m hurts; 12&nbsp;m nearly kills. Hold C as you land to soften it. Deep water catches you.</li>
+        <li><b>Swimming</b> &mdash; you float at the surface. Hold C or look down and swim forward to dive; Space rises. Watch your breath. Swim to an edge and press Space to climb out.</li>
+        <li><b>Sprint</b> &mdash; Shift, while stamina lasts. Run it dry and you'll need a moment.</li>
+      </ul>
+      <button class="btn btn-back">Back</button>
+    </div>
+  </div>
+</div>
+
+<div id="dead" class="overlay">
+  <div class="card" style="text-align:center">
+    <div class="brand">GHOST // OPERATIONS</div>
+    <h1 style="font-size:34px">OPERATIVE DOWN</h1>
+    <p id="dead-why"></p>
+    <button class="btn primary" id="btn-redeploy">Redeploy</button>
+  </div>
+</div>
+<div id="ver"></div>
+<script src="game.js"></script>
+</body>
+</html>
