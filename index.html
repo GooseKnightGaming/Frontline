@@ -95,7 +95,9 @@
   #t-logo { width: min(600px, 84%); display: block; margin: 0 auto 14px; }
   .tmenu { max-width: 320px; margin: 0 auto; }
   .kofi { background: #2b1b06; border-color: #a9772a; color: #f0c07a; }
-  .credit { margin-top: 12px; font-size: 11px; letter-spacing: 1px; color: #5b646d; }
+  #m-badge { width: min(300px, 70%); display: block; margin: 0 auto 10px; }
+  #t-gk { width: 148px; display: block; margin: 14px auto 0; opacity: 0.9; }
+  .credit { margin-top: 6px; font-size: 11px; letter-spacing: 1px; color: #5b646d; }
   .slot { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; align-items: center;
     border: 1px solid var(--line); background: #11161b; padding: 8px 10px; margin-bottom: 6px; text-align: left; }
   .slot .st { font-size: 14px; color: #fff; }
@@ -145,9 +147,10 @@
       <button class="btn" id="t-new">New game</button>
       <button class="btn" id="t-load">Saved games</button>
       <button class="btn" id="t-settings">Settings</button>
-      <button class="btn" id="t-howto">How to play</button>
+      <button class="btn" id="t-howto">Controls guide</button>
       <button class="btn kofi" id="t-kofi">&#9749; Buy me a cuppa</button>
     </div>
+    <img id="t-gk" src="assets/ui/gooseknight.png" alt="GooseKnight">
     <div class="credit">GooseKnight &middot; CC0 assets by Quaternius &amp; Kenney &middot; <span id="ver2"></span></div>
   </div>
 </div>
@@ -198,11 +201,11 @@
 <div id="menu" class="overlay">
   <div class="card">
     <div class="tab" id="tab-main">
-      <div class="brand">GHOST // OPERATIONS</div>
+      <img id="m-badge" src="assets/ui/frontline_badge.png" alt="Frontline">
       <h2>PAUSED</h2>
       <button class="btn primary" id="btn-resume">Resume</button>
-      <button class="btn" id="btn-howto">How to move</button>
-      <button class="btn" id="btn-controls">Controls</button>
+      <button class="btn" id="btn-howto">Controls guide (opens a page)</button>
+      <button class="btn" id="btn-controls">Key bindings</button>
       <button class="btn" id="btn-settings">Settings</button>
       <button class="btn" id="btn-respawn">Back to the start</button>
       <button class="btn" id="btn-save">Save game</button>
@@ -303,6 +306,6 @@
   document.getElementById('splat').style.setProperty('--splat', 'url(' + c.toDataURL() + ')');
 })();
 </script>
-<script src="game.js?v=M3.4"></script>
+<script src="game.js?v=M3.5"></script>
 </body>
 </html>
