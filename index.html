@@ -91,6 +91,21 @@
   .item.no { opacity: 0.35; cursor: not-allowed; }
   .item b { display: block; font-size: 13px; color: #fff; font-weight: 600; }
   .item span { font-size: 11px; color: var(--dim); }
+  .title-card { width: min(720px, 94vw); text-align: center; background: rgba(8,10,13,0.92); }
+  #t-logo { width: min(600px, 84%); display: block; margin: 0 auto 14px; }
+  .tmenu { max-width: 320px; margin: 0 auto; }
+  .kofi { background: #2b1b06; border-color: #a9772a; color: #f0c07a; }
+  .credit { margin-top: 12px; font-size: 11px; letter-spacing: 1px; color: #5b646d; }
+  .slot { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; align-items: center;
+    border: 1px solid var(--line); background: #11161b; padding: 8px 10px; margin-bottom: 6px; text-align: left; }
+  .slot .st { font-size: 14px; color: #fff; }
+  .slot .sm { font-size: 11px; color: var(--dim); grid-column: 1; }
+  .slot.on { border-color: var(--amber); }
+  .slot button { font: inherit; font-size: 12px; padding: 5px 9px; background: #1a2027; color: var(--text);
+    border: 1px solid var(--line); cursor: pointer; }
+  .slot button:hover { border-color: var(--amber); color: #fff; }
+  textarea { font: 12px monospace; background: #0d1116; color: #b9c2cb; border: 1px solid var(--line);
+    padding: 6px; resize: vertical; width: 100%; }
   #loading { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; letter-spacing: 6px; color: var(--dim); z-index: 40; background: #000; }
 </style>
 </head>
@@ -120,6 +135,37 @@
   <div id="splat"></div>
   <div id="hurt"></div>
   <div id="lock-note">Mouse capture was blocked: hold a mouse button and drag to look. P pauses.</div>
+</div>
+
+<div id="title" class="overlay">
+  <div class="card title-card">
+    <img id="t-logo" src="assets/ui/frontline_logo.png" alt="Frontline">
+    <div class="tmenu">
+      <button class="btn primary" id="t-continue">Continue</button>
+      <button class="btn" id="t-new">New game</button>
+      <button class="btn" id="t-load">Saved games</button>
+      <button class="btn" id="t-settings">Settings</button>
+      <button class="btn" id="t-howto">How to play</button>
+      <button class="btn kofi" id="t-kofi">&#9749; Buy me a cuppa</button>
+    </div>
+    <div class="credit">GooseKnight &middot; CC0 assets by Quaternius &amp; Kenney &middot; <span id="ver2"></span></div>
+  </div>
+</div>
+
+<div id="slots" class="overlay">
+  <div class="card">
+    <div class="brand">GHOST // RECORDS</div>
+    <h2 id="slots-title">SAVED GAMES</h2>
+    <div id="slot-list"></div>
+    <p>A save lives in this browser. To carry one to another device, copy its code below and paste it in there.</p>
+    <div class="set" style="grid-template-columns:1fr auto auto">
+      <textarea id="slot-code" rows="2" spellcheck="false" placeholder="Paste a Frontline code here..."></textarea>
+      <button class="btn" id="slot-copy" style="width:auto;margin:0">Copy code</button>
+      <button class="btn" id="slot-paste" style="width:auto;margin:0">Load code</button>
+    </div>
+    <p id="slot-msg"></p>
+    <button class="btn btn-title">Back</button>
+  </div>
 </div>
 
 <div id="start" class="overlay">
@@ -159,6 +205,8 @@
       <button class="btn" id="btn-controls">Controls</button>
       <button class="btn" id="btn-settings">Settings</button>
       <button class="btn" id="btn-respawn">Back to the start</button>
+      <button class="btn" id="btn-save">Save game</button>
+      <button class="btn" id="btn-title">Title screen</button>
     </div>
     <div class="tab" id="tab-controls">
       <h2>CONTROLS</h2>
@@ -255,6 +303,6 @@
   document.getElementById('splat').style.setProperty('--splat', 'url(' + c.toDataURL() + ')');
 })();
 </script>
-<script src="game.js?v=M3.3"></script>
+<script src="game.js?v=M3.4"></script>
 </body>
 </html>
