@@ -75,6 +75,22 @@
   .set { display: grid; grid-template-columns: 1fr 180px 44px; gap: 10px; align-items: center; margin: 10px 0; font-size: 14px; }
   .set input[type=range] { width: 100%; }
   select { font: inherit; background: #11161b; color: #fff; border: 1px solid var(--line); padding: 4px; }
+  .crate-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .lbl2 { font-size: 11px; letter-spacing: 3px; color: var(--amber); margin-bottom: 6px; }
+  .slot { display: grid; grid-template-columns: 74px 1fr; gap: 2px 8px; padding: 6px 8px; margin-bottom: 4px;
+    border: 1px solid var(--line); cursor: pointer; background: #11161b; }
+  .slot:hover { border-color: #55606c; }
+  .slot.on { border-color: var(--amber); background: #1d1a10; }
+  .slot .sn { font-size: 10px; letter-spacing: 2px; color: var(--dim); align-self: center; }
+  .slot .si { font-size: 14px; color: #fff; }
+  .slot .sd { grid-column: 2; font-size: 11px; color: var(--dim); }
+  #crate-items { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; max-height: 46vh; overflow-y: auto; }
+  .item { font: inherit; text-align: left; padding: 6px 8px; background: #11161b; color: var(--text);
+    border: 1px solid var(--line); cursor: pointer; display: block; }
+  .item:hover { border-color: var(--amber); }
+  .item.no { opacity: 0.35; cursor: not-allowed; }
+  .item b { display: block; font-size: 13px; color: #fff; font-weight: 600; }
+  .item span { font-size: 11px; color: var(--dim); }
   #loading { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; letter-spacing: 6px; color: var(--dim); z-index: 40; background: #000; }
 </style>
 </head>
@@ -120,7 +136,8 @@
       <b>C</b><span>crouch &middot; press again for prone &middot; dive</span>
       <b>Shift + A/D</b><span>sideways dash</span>
       <b>Alt or right-click</b><span>aim / focus</span>
-      <b>1 - 5</b><span>knife &middot; sidearm &middot; rifle &middot; sniper &middot; grenades (5 again for flashbangs)</span>
+      <b>1 - 4</b><span>primary &middot; backup &middot; utility &middot; utility (5 is your gear, which is worn)</span>
+      <b>E</b><span>open a weapon, ordnance or gear crate</span>
       <b>Click</b><span>fire &middot; swing &middot; throw</span>
       <b>R</b><span>reload</span>
       <b>V</b><span>first / third person</span>
@@ -176,7 +193,10 @@
         <li><b>Falling</b> &mdash; about 3&nbsp;m is safe; 6&nbsp;m hurts; 12&nbsp;m nearly kills. Hold C as you land to soften it. Deep water catches you.</li>
         <li><b>Swimming</b> &mdash; you float at the surface. Hold C or look down and swim forward to dive; Space rises. Watch your breath. Swim to an edge and press Space to climb out.</li>
         <li><b>Sprint</b> &mdash; Shift, while stamina lasts. Run it dry and you'll need a moment.</li>
-        <li><b>Weapons</b> &mdash; 1 to 5 to choose, click to use, R to reload. The rifle fires while you hold the button; everything else is one press at a time.</li>
+        <li><b>What you carry</b> &mdash; one primary, one backup, two utility slots and one piece of gear. Slots go by size, not by type: two sidearms, or two lots of C5, are perfectly legal.</li>
+        <li><b>Crates</b> &mdash; press E at a crate to swap anything, or to fit mods (optics, silencers, grips, magazines, and what's in your smoke). Whatever you swap out stays in the crate.</li>
+        <li><b>Running dry</b> &mdash; pulling the trigger on an empty weapon starts a reload by itself. It still takes time, so switching to your backup is often quicker.</li>
+        <li><b>Weapons</b> &mdash; 1 to 4 to choose, click to use, R to reload. The rifle fires while you hold the button; everything else is one press at a time.</li>
         <li><b>Peek over cover</b> &mdash; crouched behind a crate or low wall, hold Alt and you lift your head and weapon over it to shoot, without standing up. Let go and you drop back down. It won't work where there's something directly overhead.</li>
         <li><b>Aiming</b> &mdash; hold Alt (or right-click) for a much tighter group. Moving and firing fast both spread your shots; the sniper's scope magnifies.</li>
         <li><b>Grenades</b> &mdash; press 5 for frags, 5 again for flashbangs. Mind the blast: it can reach you, though cover will save you. Looking away from a flashbang helps.</li>
@@ -184,6 +204,25 @@
       </ul>
       <button class="btn btn-back">Back</button>
     </div>
+  </div>
+</div>
+
+<div id="crate" class="overlay">
+  <div class="card" style="width:min(860px,94vw)">
+    <div class="brand">GHOST // LOGISTICS</div>
+    <h2 id="crate-title">CRATE</h2>
+    <div class="crate-cols">
+      <div>
+        <div class="lbl2">WHAT YOU CARRY</div>
+        <div id="crate-mine"></div>
+      </div>
+      <div>
+        <div class="lbl2">IN THE CRATE</div>
+        <div id="crate-items"></div>
+      </div>
+    </div>
+    <p id="crate-note"></p>
+    <button class="btn primary" id="crate-close">Close</button>
   </div>
 </div>
 
@@ -216,6 +255,6 @@
   document.getElementById('splat').style.setProperty('--splat', 'url(' + c.toDataURL() + ')');
 })();
 </script>
-<script src="game.js?v=M2.3"></script>
+<script src="game.js?v=M3.1"></script>
 </body>
 </html>
