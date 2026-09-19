@@ -86,6 +86,10 @@
   .slot .sn { font-size: 10px; letter-spacing: 2px; color: var(--dim); align-self: center; }
   .slot .si { font-size: 14px; color: #fff; }
   .slot .sd { grid-column: 2; font-size: 11px; color: var(--dim); }
+  .fitted { display: flex; justify-content: space-between; align-items: center; margin: 0 0 4px 74px;
+    padding: 3px 8px; font-size: 11px; color: var(--dim); border: 1px dashed #2b333d; cursor: pointer; }
+  .fitted:hover { border-color: var(--amber); color: var(--text); }
+  .fitted b { color: var(--amber); font-weight: 600; }
   #crate-items { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; max-height: 46vh; overflow-y: auto; }
   .item { font: inherit; text-align: left; padding: 6px 8px; background: #11161b; color: var(--text);
     border: 1px solid var(--line); cursor: pointer; display: block; }
@@ -149,7 +153,7 @@
       <button class="btn primary" id="t-continue">Continue</button>
       <button class="btn primary" id="t-course">Training course</button>
       <button class="btn" id="t-weapons">Weapons training only</button>
-      <button class="btn" id="t-new">Straight to Yard 7</button>
+      <button class="btn" id="t-fresh">New game (straight to Yard 7)</button>
       <button class="btn" id="t-load">Saved games</button>
       <button class="btn" id="t-settings">Settings</button>
       <button class="btn" id="t-howto">Controls guide</button>
@@ -316,6 +320,6 @@
   document.getElementById('splat').style.setProperty('--splat', 'url(' + c.toDataURL() + ')');
 })();
 </script>
-<script src="game.js?v=M4.2"></script>
+<script src="game.js?v=M4.3"></script>
 </body>
 </html>
