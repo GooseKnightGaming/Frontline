@@ -56,6 +56,8 @@
       linear-gradient(45deg, transparent 44%, #fff 44%, #fff 56%, transparent 56%),
       linear-gradient(-45deg, transparent 44%, #fff 44%, #fff 56%, transparent 56%); }
   #blind { position: absolute; inset: 0; background: #fff; opacity: 0; transition: opacity 0.25s; }
+  #step { position: absolute; left: 22px; top: 40px; max-width: 420px; font-size: 15px; color: #fff;
+    text-shadow: 0 1px 4px #000; display: none; border-left: 3px solid var(--amber); padding: 2px 0 2px 10px; }
   #debug { position: absolute; right: 12px; top: 12px; font: 12px monospace; background: rgba(0,0,0,0.5); padding: 4px 8px; display: none; }
   #uw { position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(20,80,110,0.25), rgba(5,30,45,0.7)); opacity: 0; transition: opacity 0.15s; }
   #vitals { transition: opacity 0.6s; }
@@ -117,6 +119,7 @@
 
 <div id="hud">
   <div id="zone">Yard 7</div>
+  <div id="step"></div>
   <div id="crosshair"></div>
   <div id="prompt"></div>
   <div id="br"><div class="lbl">BREATH</div><div class="bar"><div id="br-fill"></div></div></div>
@@ -144,7 +147,9 @@
     <img id="t-logo" src="assets/ui/frontline_logo.png" alt="Frontline">
     <div class="tmenu">
       <button class="btn primary" id="t-continue">Continue</button>
-      <button class="btn" id="t-new">New game</button>
+      <button class="btn primary" id="t-course">Training course</button>
+      <button class="btn" id="t-weapons">Weapons training only</button>
+      <button class="btn" id="t-new">Straight to Yard 7</button>
       <button class="btn" id="t-load">Saved games</button>
       <button class="btn" id="t-settings">Settings</button>
       <button class="btn" id="t-howto">Controls guide</button>
@@ -208,6 +213,9 @@
       <button class="btn" id="btn-controls">Key bindings</button>
       <button class="btn" id="btn-settings">Settings</button>
       <button class="btn" id="btn-respawn">Back to the start</button>
+      <button class="btn" id="btn-skip-move" style="display:none">Skip movement training</button>
+      <button class="btn" id="btn-skip-weap" style="display:none">Skip weapons training</button>
+      <button class="btn" id="btn-skip-all" style="display:none">Skip the whole course</button>
       <button class="btn" id="btn-save">Save game</button>
       <button class="btn" id="btn-title">Title screen</button>
     </div>
@@ -308,6 +316,6 @@
   document.getElementById('splat').style.setProperty('--splat', 'url(' + c.toDataURL() + ')');
 })();
 </script>
-<script src="game.js?v=M3.7"></script>
+<script src="game.js?v=M4.1"></script>
 </body>
 </html>
