@@ -168,6 +168,7 @@
       <button class="btn kofi" id="t-kofi">&#9749; Buy me a cuppa</button>
     </div>
     <img id="t-gk" src="assets/ui/gooseknight.png" alt="GooseKnight">
+    <div class="credit">Music by Kevin MacLeod (incompetech.com) &middot; CC BY 4.0</div>
     <div class="credit">GooseKnight &middot; CC0 assets by Quaternius &amp; Kenney &middot; <span id="ver2"></span></div>
   </div>
 </div>
@@ -250,6 +251,8 @@
       <div class="set"><span>Graphics quality</span><select id="set-quality"><option value="low">Low (no shadows)</option><option value="medium">Medium</option><option value="high">High</option></select><span></span></div>
       <div class="set"><span>Show frame rate &amp; position</span><input type="checkbox" id="set-fps"><span></span></div>
       <div class="set"><span>Radar (M)</span><input type="checkbox" id="set-map"><span></span></div>
+      <div class="set"><span>Sound volume</span><input type="range" id="set-vol" min="0" max="1" step="0.05"><span id="set-vol-v"></span></div>
+      <div class="set"><span>Music volume</span><input type="range" id="set-music" min="0" max="1" step="0.05"><span id="set-music-v"></span></div>
       <button class="btn btn-back">Back</button>
     </div>
     <div class="tab" id="tab-howto">
@@ -330,6 +333,6 @@
   document.getElementById('splat').style.setProperty('--splat', 'url(' + c.toDataURL() + ')');
 })();
 </script>
-<script src="game.js?v=M5.3.0"></script>
+<script src="game.js?v=M5.4.1"></script>
 </body>
 </html>
