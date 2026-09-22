@@ -95,6 +95,11 @@
     padding: 3px 8px; font-size: 11px; color: var(--dim); border: 1px dashed #2b333d; cursor: pointer; }
   .fitted:hover { border-color: var(--amber); color: var(--text); }
   .fitted b { color: var(--amber); font-weight: 600; }
+  .qm-tabs { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 4px; }
+  .qm-tab { font: inherit; font-size: 11px; letter-spacing: 1px; padding: 5px 10px; cursor: pointer;
+    background: #141a20; color: var(--dim); border: 1px solid var(--line); }
+  .qm-tab:hover { color: var(--text); border-color: var(--amber); }
+  .qm-tab.on { background: #2a2413; color: var(--amber); border-color: var(--amber); }
   #crate-items { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; max-height: 46vh; overflow-y: auto; }
   .item { font: inherit; text-align: left; padding: 6px 8px; background: #11161b; color: var(--text);
     border: 1px solid var(--line); cursor: pointer; display: block; }
@@ -338,6 +343,6 @@
   document.getElementById('splat').style.setProperty('--splat', 'url(' + c.toDataURL() + ')');
 })();
 </script>
-<script src="game.js?v=M5.10.0"></script>
+<script src="game.js?v=M5.11.0"></script>
 </body>
 </html>
