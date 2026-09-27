@@ -62,6 +62,11 @@
   #hint { position: absolute; left: 22px; top: 70px; max-width: 360px; text-align: left;
     font-size: 13px; line-height: 1.45; color: #f0e6c8; background: rgba(8,11,14,0.62); border-left: 3px solid #e8b423;
     padding: 8px 12px; opacity: 0; transition: opacity 0.6s; pointer-events: none; }
+  #detect { position: absolute; left: 50%; top: 50%; width: 140px; height: 140px; transform: translate(-50%, -50%); pointer-events: none; }
+  /* what the guards say, like subtitles */
+  #bark { position: absolute; left: 50%; bottom: 64px; transform: translateX(-50%); font-size: 15px; color: #f2f2ec;
+    background: rgba(8,11,14,0.6); padding: 6px 14px; opacity: 0; transition: opacity 0.4s; pointer-events: none; white-space: nowrap; }
+  #bark span { color: #e05050; letter-spacing: 1px; margin-right: 6px; }
   .brief-card { max-width: 560px; text-align: left; }
   .brief-card p { line-height: 1.55; margin: 8px 0; }
   .brief-where { color: #e8b423; letter-spacing: 1px; }
@@ -152,6 +157,8 @@
   <div id="zone">Yard 7</div>
   <div id="step"></div>
   <div id="hint"></div>
+  <canvas id="detect" width="140" height="140"></canvas>
+  <div id="bark"></div>
   <div id="crosshair"></div>
   <div id="prompt"></div>
   <div id="br"><div class="lbl">BREATH</div><div class="bar"><div id="br-fill"></div></div></div>
@@ -186,7 +193,7 @@
     <p><b>Objective</b> &mdash; retrieve a file from a computer on their private network. It is kept in a reinforced room, and the room is heavily guarded.</p>
     <p><b>Getting in</b> &mdash; the front doors, the loading bay round the back, or the fire escape up the side. How you do it is up to you.</p>
     <p><b>Getting out</b> &mdash; back to the van, with the file.</p>
-    <p class="brief-note">This is a training mission: hints will appear as you go. The guards do not react to you yet &mdash; they will, in a coming update.</p>
+    <p class="brief-note">This is a training mission: hints will appear as you go. The guards will notice you &mdash; they see, they hear, and they come looking &mdash; but they do not shoot back yet.</p>
     <button class="btn primary" id="b-begin">Begin</button>
     <button class="btn" id="b-yard">Back to Yard 7</button>
   </div>
@@ -316,6 +323,7 @@
         <li><b>Climb</b> &mdash; face a ledge up to about 2.35&nbsp;m and press Space. Jump and hold forward to catch one a little higher.</li>
         <li><b>Parkour</b> &mdash; sprint at a wall and press Space. A thin wall you go over and drop down the far side; anything taller you run a step up and haul yourself onto, up to about 3.3&nbsp;m. Try the parkour lane beside the vault lane.</li>
         <li><b>Doors</b> &mdash; E opens and shuts an ordinary door. It swings away from you.</li>
+        <li><b>Being seen</b> &mdash; guards see what is in front of them and hear what is loud. An arc round your crosshair shows who is noticing you: amber while they wonder, red once they have seen you. Crouching, keeping still, staying out of sight and a silencer all help. A guard who hears something goes to look where you <i>were</i>.</li>
         <li><b>Stances</b> &mdash; C goes from standing to crouched, again to prone, again back to standing. Holding C and letting go is just a crouch. You can't change into a taller stance without room for it.</li>
         <li><b>Prone</b> &mdash; very slow, almost silent, fits through the crawl pipe. Shift gives a quick, tiring shuffle. Space stands you back up.</li>
         <li><b>Crouch-sprint</b> &mdash; Shift while crouched: quicker than creeping, much quieter than a full sprint.</li>
@@ -389,6 +397,6 @@
   document.getElementById('splat').style.setProperty('--splat', 'url(' + c.toDataURL() + ')');
 })();
 </script>
-<script src="game.js?v=M6.0.4"></script>
+<script src="game.js?v=M6.1.0"></script>
 </body>
 </html>
