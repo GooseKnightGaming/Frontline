@@ -47,6 +47,7 @@
   #br { position: absolute; left: 50%; top: 18%; width: 240px; transform: translateX(-50%); display: none; text-align: center; }
   #zone { position: absolute; left: 22px; top: 18px; font-size: 13px; letter-spacing: 4px; color: #e6eaee; text-shadow: 0 1px 3px #000; }
   #zone::before { content: 'GHOST TRAINING  //  '; color: var(--amber); }
+  body.mission #zone::before { content: 'LEVEL 0  //  '; }
   #weapon { position: absolute; right: 22px; bottom: 22px; text-align: right; text-shadow: 0 1px 3px #000; }
   #w-name { font-size: 12px; letter-spacing: 3px; color: var(--amber); }
   #w-ammo { font-size: 26px; letter-spacing: 2px; color: #e6eaee; font-weight: 600; }
@@ -57,6 +58,18 @@
       linear-gradient(-45deg, transparent 44%, #fff 44%, #fff 56%, transparent 56%); }
   #blind { position: absolute; inset: 0; background: #fff; opacity: 0; transition: opacity 0.25s; }
   #fade { position: absolute; inset: 0; background: #000; opacity: 0; display: none; }
+  #hint { position: absolute; left: 50%; bottom: 120px; transform: translateX(-50%); max-width: 640px; text-align: center;
+    font-size: 15px; line-height: 1.5; color: #f0e6c8; background: rgba(8,11,14,0.72); border-left: 3px solid #e8b423;
+    padding: 10px 16px; opacity: 0; transition: opacity 0.6s; pointer-events: none; }
+  .brief-card { max-width: 560px; text-align: left; }
+  .brief-card p { line-height: 1.55; margin: 8px 0; }
+  .brief-where { color: #e8b423; letter-spacing: 1px; }
+  .brief-note { opacity: 0.75; font-size: 13px; }
+  #mend-stats div { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .trophy { margin: 14px 0 4px; padding: 10px 12px; border: 1px solid #e8b423; background: rgba(232,180,35,0.08); }
+  .trophy span { display: block; font-size: 11px; letter-spacing: 3px; color: #e8b423; }
+  .trophy b { display: block; font-size: 18px; margin: 2px 0; }
+  .trophy i { font-size: 13px; opacity: 0.8; }
   #step { position: absolute; left: 22px; top: 40px; max-width: 420px; font-size: 15px; color: #fff;
     text-shadow: 0 1px 4px #000; display: none; border-left: 3px solid var(--amber); padding: 2px 0 2px 10px; }
   #map-wrap { position: absolute; right: 18px; top: 44px; display: none; }
@@ -137,6 +150,7 @@
 <div id="hud">
   <div id="zone">Yard 7</div>
   <div id="step"></div>
+  <div id="hint"></div>
   <div id="crosshair"></div>
   <div id="prompt"></div>
   <div id="br"><div class="lbl">BREATH</div><div class="bar"><div id="br-fill"></div></div></div>
@@ -164,6 +178,28 @@
   <div id="lock-note">Mouse capture was blocked: hold a mouse button and drag to look. P pauses.</div>
 </div>
 
+<div id="briefing" class="overlay">
+  <div class="card brief-card">
+    <h2>LEVEL 0 &middot; TRAINING MISSION</h2>
+    <p class="brief-where">Meridian House, an office block. Held by the reds.</p>
+    <p><b>Objective</b> &mdash; retrieve a file from a computer on their private network. It is kept in a reinforced room, and the room is heavily guarded.</p>
+    <p><b>Getting in</b> &mdash; the front doors, the loading bay round the back, or the fire escape up the side. How you do it is up to you.</p>
+    <p><b>Getting out</b> &mdash; back to the van, with the file.</p>
+    <p class="brief-note">This is a training mission: hints will appear as you go. The guards do not react to you yet &mdash; they will, in a coming update.</p>
+    <button class="btn primary" id="b-begin">Begin</button>
+    <button class="btn" id="b-yard">Back to Yard 7</button>
+  </div>
+</div>
+<div id="mend" class="overlay">
+  <div class="card brief-card">
+    <h2>MISSION COMPLETE</h2>
+    <p class="brief-where">Level 0 &middot; Training Mission</p>
+    <div id="mend-stats"></div>
+    <div id="mend-trophies"></div>
+    <button class="btn primary" id="mend-yard">Back to Yard 7</button>
+    <button class="btn" id="mend-again">Play again</button>
+  </div>
+</div>
 <div id="title" class="overlay">
   <div class="card title-card">
     <img id="t-logo" src="assets/ui/frontline_logo.png" alt="Frontline">
@@ -172,6 +208,7 @@
       <button class="btn primary" id="t-new">New game</button>
       <button class="btn" id="t-weapons">Weapons training only</button>
       <button class="btn" id="t-fresh">Skip to Yard 7</button>
+      <button class="btn" id="t-mission">Level 0: Training Mission</button>
       <button class="btn" id="t-load">Saved games</button>
       <button class="btn" id="t-settings">Settings</button>
       <button class="btn" id="t-howto">Controls guide</button>
@@ -240,8 +277,14 @@
       <button class="btn" id="btn-skip-move" style="display:none">Skip movement training</button>
       <button class="btn" id="btn-skip-weap" style="display:none">Skip weapons training</button>
       <button class="btn" id="btn-skip-all" style="display:none">Skip the whole course</button>
+      <button class="btn" id="btn-trophies">Trophies</button>
       <button class="btn" id="btn-save">Save game</button>
       <button class="btn" id="btn-title">Title screen</button>
+    </div>
+    <div class="tab" id="tab-trophies">
+      <h2>TROPHIES</h2>
+      <div id="trophy-list"></div>
+      <button class="btn btn-back">Back</button>
     </div>
     <div class="tab" id="tab-controls">
       <h2>CONTROLS</h2>
@@ -345,6 +388,6 @@
   document.getElementById('splat').style.setProperty('--splat', 'url(' + c.toDataURL() + ')');
 })();
 </script>
-<script src="game.js?v=M5.18.0"></script>
+<script src="game.js?v=M6.0.0"></script>
 </body>
 </html>
