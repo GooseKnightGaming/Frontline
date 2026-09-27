@@ -58,9 +58,10 @@
       linear-gradient(-45deg, transparent 44%, #fff 44%, #fff 56%, transparent 56%); }
   #blind { position: absolute; inset: 0; background: #fff; opacity: 0; transition: opacity 0.25s; }
   #fade { position: absolute; inset: 0; background: #000; opacity: 0; display: none; }
-  #hint { position: absolute; left: 50%; bottom: 120px; transform: translateX(-50%); max-width: 640px; text-align: center;
-    font-size: 15px; line-height: 1.5; color: #f0e6c8; background: rgba(8,11,14,0.72); border-left: 3px solid #e8b423;
-    padding: 10px 16px; opacity: 0; transition: opacity 0.6s; pointer-events: none; }
+  /* hints sit under the objective, top left: the middle of the screen is for playing */
+  #hint { position: absolute; left: 22px; top: 70px; max-width: 360px; text-align: left;
+    font-size: 13px; line-height: 1.45; color: #f0e6c8; background: rgba(8,11,14,0.62); border-left: 3px solid #e8b423;
+    padding: 8px 12px; opacity: 0; transition: opacity 0.6s; pointer-events: none; }
   .brief-card { max-width: 560px; text-align: left; }
   .brief-card p { line-height: 1.55; margin: 8px 0; }
   .brief-where { color: #e8b423; letter-spacing: 1px; }
@@ -388,6 +389,6 @@
   document.getElementById('splat').style.setProperty('--splat', 'url(' + c.toDataURL() + ')');
 })();
 </script>
-<script src="game.js?v=M6.0.0"></script>
+<script src="game.js?v=M6.0.1"></script>
 </body>
 </html>
