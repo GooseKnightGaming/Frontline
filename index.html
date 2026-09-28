@@ -69,6 +69,9 @@
   #bark span { color: #e05050; letter-spacing: 1px; margin-right: 6px; }
   #bark span.radio { color: #6cc4e8; }
   .brief-card { max-width: 560px; text-align: left; }
+  .credits-card { max-height: 86vh; overflow-y: auto; }
+  .credits-card h3 { margin: 14px 0 2px; font-size: 12px; letter-spacing: 3px; color: #e8b423; }
+  .credits-card p { margin: 3px 0; font-size: 13px; }
   .brief-card p { line-height: 1.55; margin: 8px 0; }
   .brief-where { color: #e8b423; letter-spacing: 1px; }
   .brief-note { opacity: 0.75; font-size: 13px; }
@@ -218,18 +221,38 @@
       <button class="btn" id="t-weapons">Weapons training only</button>
       <button class="btn" id="t-fresh">Skip to Yard 7</button>
       <button class="btn" id="t-mission">Level 0: Training Mission</button>
+      <button class="btn" id="t-credits">Credits</button>
       <button class="btn" id="t-load">Saved games</button>
       <button class="btn" id="t-settings">Settings</button>
       <button class="btn" id="t-howto">Controls guide</button>
       <button class="btn kofi" id="t-kofi">&#9749; Buy me a cuppa</button>
     </div>
     <img id="t-gk" src="assets/ui/gooseknight.png" alt="GooseKnight">
-    <div class="credit">Music by Kevin MacLeod (incompetech.com) &middot; CC BY 4.0</div>
-    <div class="credit">Voices: VoiceBosch, &ldquo;Radio Soldier&rdquo; (CC BY-SA 4.0) &middot; Kurt, &ldquo;Soldier Voice Acting&rdquo; (CC BY 3.0) &middot; via OpenGameArt.org</div>
-    <div class="credit">GooseKnight &middot; CC0 assets by Quaternius &amp; Kenney &middot; <span id="ver2"></span></div>
+    <div class="credit">GooseKnight &middot; music, voices, models and sounds by others: see Credits &middot; <span id="ver2"></span></div>
   </div>
 </div>
 
+<div id="credits" class="overlay">
+  <div class="card brief-card credits-card">
+    <h2>CREDITS</h2>
+    <p class="brief-where">Frontline &mdash; GooseKnight Gaming</p>
+    <h3>Music</h3>
+    <p>Kevin MacLeod (incompetech.com) &mdash; licensed under Creative Commons: By Attribution 4.0 (CC BY 4.0)</p>
+    <h3>Voices</h3>
+    <p>VoiceBosch &mdash; &ldquo;Radio Soldier / Video Game Announcer&rdquo;, CC BY-SA 4.0 (the radio: &ldquo;Control&rdquo;)</p>
+    <p>Kurt &mdash; &ldquo;Soldier Voice Acting&rdquo;, CC BY 3.0 (guards when hit)</p>
+    <p>Kenney &mdash; &ldquo;Voiceover Pack&rdquo;, CC0 (guards&rsquo; calls)</p>
+    <p class="brief-note">Voices from OpenGameArt.org and kenney.nl. Lines without a recording are spoken by your browser.</p>
+    <h3>Characters and models</h3>
+    <p>Quaternius &mdash; Universal Base Characters, Universal Animation Library 1 &amp; 2, Modular Character Outfits &ndash; Fantasy, weapons and vehicles, CC0</p>
+    <p>Kenney &mdash; Car Kit, CC0</p>
+    <h3>Sound effects</h3>
+    <p>Kenney &mdash; Impact Sounds, RPG Audio, CC0</p>
+    <p>OpenGameArt.org, CC0 &mdash; jasinski (&ldquo;Beach Ocean Waves&rdquo;), transitking (&ldquo;Water Waves&rdquo;), Blender Foundation (&ldquo;Water Splash&rdquo;, Yo Frankie)</p>
+    <p class="brief-note">Everything else &mdash; levels, textures, most sounds &mdash; is made in code for Frontline.</p>
+    <button class="btn primary" id="credits-back">Back</button>
+  </div>
+</div>
 <div id="slots" class="overlay">
   <div class="card">
     <div class="brand">GHOST // RECORDS</div>
@@ -399,6 +422,6 @@
   document.getElementById('splat').style.setProperty('--splat', 'url(' + c.toDataURL() + ')');
 })();
 </script>
-<script src="game.js?v=M6.3.2"></script>
+<script src="game.js?v=M6.3.3"></script>
 </body>
 </html>
