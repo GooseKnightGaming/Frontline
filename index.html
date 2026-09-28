@@ -67,6 +67,7 @@
   #bark { position: absolute; left: 50%; bottom: 64px; transform: translateX(-50%); font-size: 15px; color: #f2f2ec;
     background: rgba(8,11,14,0.6); padding: 6px 14px; opacity: 0; transition: opacity 0.4s; pointer-events: none; white-space: nowrap; }
   #bark span { color: #e05050; letter-spacing: 1px; margin-right: 6px; }
+  #bark span.radio { color: #6cc4e8; }
   .brief-card { max-width: 560px; text-align: left; }
   .brief-card p { line-height: 1.55; margin: 8px 0; }
   .brief-where { color: #e8b423; letter-spacing: 1px; }
@@ -224,6 +225,7 @@
     </div>
     <img id="t-gk" src="assets/ui/gooseknight.png" alt="GooseKnight">
     <div class="credit">Music by Kevin MacLeod (incompetech.com) &middot; CC BY 4.0</div>
+    <div class="credit">Voices: VoiceBosch, &ldquo;Radio Soldier&rdquo; (CC BY-SA 4.0) &middot; Kurt, &ldquo;Soldier Voice Acting&rdquo; (CC BY 3.0) &middot; via OpenGameArt.org</div>
     <div class="credit">GooseKnight &middot; CC0 assets by Quaternius &amp; Kenney &middot; <span id="ver2"></span></div>
   </div>
 </div>
@@ -397,6 +399,6 @@
   document.getElementById('splat').style.setProperty('--splat', 'url(' + c.toDataURL() + ')');
 })();
 </script>
-<script src="game.js?v=M6.3.0"></script>
+<script src="game.js?v=M6.3.2"></script>
 </body>
 </html>
