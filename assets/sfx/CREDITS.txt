@@ -1,0 +1,6 @@
+Frontline - recorded sound effects.
+
+watersplash2.mp3, swimstroke*.mp3 - OpenGameArt, CC0: jasinski ("Beach Ocean Waves"),
+  transitking ("Water Waves"), Blender Foundation ("Water Splash", Yo Frankie).
+footstep_*, impact*: Kenney, "Impact Sounds" (www.kenney.nl) - CC0
+knifeSlice*, drawKnife*, doorOpen_*: Kenney, "RPG Audio" (www.kenney.nl) - CC0
