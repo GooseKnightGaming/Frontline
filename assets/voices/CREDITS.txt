@@ -12,3 +12,6 @@ hit_1.mp3, hit_2.mp3, hit_3.mp3
   https://opengameart.org/content/soldier-voice-acting
   Licence: CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/)
   Changes: cut into three separate sounds at the pauses; converted to MP3.
+
+war_*.ogg
+  Kenney, "Voiceover Pack" (www.kenney.nl) - CC0 1.0 (no credit required; given anyway)
