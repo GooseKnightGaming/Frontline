@@ -75,6 +75,11 @@
   .brief-card p { line-height: 1.55; margin: 8px 0; }
   .brief-where { color: #e8b423; letter-spacing: 1px; }
   .brief-note { opacity: 0.75; font-size: 13px; }
+  #mend-result { font-size: 16px; letter-spacing: 2px; margin: 4px 0 10px; }
+  #mend-result .ok, #mend-objectives .ok { color: #7fd07f; }
+  #mend-result .no, #mend-objectives .no { color: #e05050; }
+  #mend-objectives div { padding: 3px 0; font-size: 14px; }
+  #mend-objectives b { display: inline-block; width: 18px; }
   #mend-stats div { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
   .trophy { margin: 14px 0 4px; padding: 10px 12px; border: 1px solid #e8b423; background: rgba(232,180,35,0.08); }
   .trophy span { display: block; font-size: 11px; letter-spacing: 3px; color: #e8b423; }
@@ -206,8 +211,10 @@
 </div>
 <div id="mend" class="overlay">
   <div class="card brief-card">
-    <h2>MISSION COMPLETE</h2>
+    <h2 id="mend-title">DEBRIEF</h2>
     <p class="brief-where">Level 0 &middot; Training Mission</p>
+    <p id="mend-result"></p>
+    <div id="mend-objectives"></div>
     <div id="mend-stats"></div>
     <div id="mend-trophies"></div>
     <button class="btn primary" id="mend-yard">Back to Yard 7</button>
@@ -351,6 +358,7 @@
         <li><b>Parkour</b> &mdash; sprint at a wall and press Space. A thin wall you go over and drop down the far side; anything taller you run a step up and haul yourself onto, up to about 3.3&nbsp;m. Try the parkour lane beside the vault lane.</li>
         <li><b>Doors</b> &mdash; E opens and shuts an ordinary door. It swings away from you.</li>
         <li><b>Being seen</b> &mdash; guards see what is in front of them and hear what is loud. An arc round your crosshair shows who is noticing you: amber while they wonder, red once they have seen you. Crouching, keeping still, staying out of sight and a silencer all help. A guard who hears something goes to look where you <i>were</i>.</li>
+        <li><b>Takedowns</b> &mdash; creep up behind a guard who has not seen you (crouched, he will not hear you) and press F when prompted: bare hands knock him out, a knife kills. A flashbanged guard can be taken down from any side.</li>
         <li><b>Flashbangs and smoke</b> &mdash; a flashbang blinds any guard with a clear line to it for a few seconds (longer the nearer, and if he was looking at it): he cannot see you or shoot, and hears little. Guards cannot see through smoke.</li>
         <li><b>Stances</b> &mdash; C goes from standing to crouched, again to prone, again back to standing. Holding C and letting go is just a crouch. You can't change into a taller stance without room for it.</li>
         <li><b>Prone</b> &mdash; very slow, almost silent, fits through the crawl pipe. Shift gives a quick, tiring shuffle. Space stands you back up.</li>
@@ -425,6 +433,6 @@
   document.getElementById('splat').style.setProperty('--splat', 'url(' + c.toDataURL() + ')');
 })();
 </script>
-<script src="game.js?v=M6.4.1"></script>
+<script src="game.js?v=M6.5.0"></script>
 </body>
 </html>
