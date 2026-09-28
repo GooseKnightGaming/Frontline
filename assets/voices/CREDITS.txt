@@ -1,0 +1,14 @@
+Frontline - recorded voices. All from OpenGameArt.org; credit must stay.
+
+radio_*.mp3
+  "Radio Soldier / Video Game Announcer" by VoiceBosch
+  https://opengameart.org/content/radio-soldier-video-game-announcer
+  Licence: CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/)
+  Changes: converted from WAV to MP3 (mono, 32 kHz); file names shortened.
+  These files remain under CC BY-SA 4.0.
+
+hit_1.mp3, hit_2.mp3, hit_3.mp3
+  "Soldier Voice Acting" (wounded.ogg) by Kurt
+  https://opengameart.org/content/soldier-voice-acting
+  Licence: CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/)
+  Changes: cut into three separate sounds at the pauses; converted to MP3.
