@@ -158,12 +158,18 @@
   textarea { font: 12px monospace; background: #0d1116; color: #b9c2cb; border: 1px solid var(--line);
     padding: 6px; resize: vertical; width: 100%; }
   #lowq { position: fixed; left: 50%; top: 14px; transform: translateX(-50%); display: none; gap: 10px; align-items: center; background: rgba(10,14,16,0.88); border: 1px solid #e8b423; color: #e6e6e6; padding: 8px 12px; font-size: 13px; z-index: 60; pointer-events: none; }
+  #cctv { position: fixed; inset: 0; display: none; pointer-events: none; z-index: 25; box-shadow: inset 0 0 160px rgba(0,0,0,0.85); }
+  #cctv .cctv-scan { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(0,0,0,0.18) 0 2px, transparent 2px 4px); mix-blend-mode: multiply; }
+  #cctv-label { position: absolute; left: 28px; top: 24px; color: #d8f5d0; font: 15px monospace; letter-spacing: 2px; text-shadow: 0 0 6px #000; }
+  #cctv-label::before { content: '\25CF REC  '; color: #e33; }
+  #cctv .cctv-help { position: absolute; left: 50%; bottom: 40px; transform: translateX(-50%); color: #d8f5d0; font: 13px monospace; background: rgba(0,0,0,0.5); padding: 4px 10px; }
   .set.pick { outline: 1px solid #e8b423; outline-offset: 3px; }
   #loading { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; letter-spacing: 6px; color: var(--dim); z-index: 40; background: #000; }
 </style>
 </head>
 <body>
 <canvas id="app" tabindex="0"></canvas>
+<div id="cctv"><div class="cctv-scan"></div><div id="cctv-label"></div><div class="cctv-help">E  next camera &nbsp;&middot;&nbsp; move to stop watching</div></div>
 <div id="lowq"><span>The frame rate is struggling. <b>Low</b> graphics quality may help: Esc, then Settings.</span></div>
 <div id="loading">LOADING TRAINING FACILITY</div>
 
@@ -438,6 +444,6 @@
   document.getElementById('splat').style.setProperty('--splat', 'url(' + c.toDataURL() + ')');
 })();
 </script>
-<script src="game.js?v=M6.9.0"></script>
+<script src="game.js?v=M6.9.1"></script>
 </body>
 </html>
