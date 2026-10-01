@@ -162,6 +162,8 @@
   #cctv .cctv-scan { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(0,0,0,0.18) 0 2px, transparent 2px 4px); mix-blend-mode: multiply; }
   #cctv-label { position: absolute; left: 28px; top: 24px; color: #d8f5d0; font: 15px monospace; letter-spacing: 2px; text-shadow: 0 0 6px #000; }
   #cctv-label::before { content: '\25CF REC  '; color: #e33; }
+  #cctv-time { position: absolute; left: 28px; bottom: 74px; color: #d8f5d0; font: 14px monospace; letter-spacing: 2px; text-shadow: 0 0 6px #000; opacity: 0.85; }
+  #cctv-tear { position: absolute; left: 0; right: 0; height: 7px; display: none; background: linear-gradient(90deg, rgba(220,255,220,0.05), rgba(220,255,220,0.4), rgba(220,255,220,0.1)); }
   #cctv .cctv-help { position: absolute; left: 50%; bottom: 40px; transform: translateX(-50%); color: #d8f5d0; font: 13px monospace; background: rgba(0,0,0,0.5); padding: 4px 10px; }
   .set.pick { outline: 1px solid #e8b423; outline-offset: 3px; }
   #loading { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; letter-spacing: 6px; color: var(--dim); z-index: 40; background: #000; }
@@ -169,7 +171,7 @@
 </head>
 <body>
 <canvas id="app" tabindex="0"></canvas>
-<div id="cctv"><div class="cctv-scan"></div><div id="cctv-label"></div><div class="cctv-help">E  next camera &nbsp;&middot;&nbsp; right mouse  zoom &nbsp;&middot;&nbsp; move to stop watching</div></div>
+<div id="cctv"><div class="cctv-scan"></div><div id="cctv-tear"></div><div id="cctv-label"></div><div id="cctv-time"></div><div class="cctv-help">E  next camera &nbsp;&middot;&nbsp; right mouse  zoom &nbsp;&middot;&nbsp; move to stop watching</div></div>
 <div id="lowq"><span>The frame rate is struggling. <b>Low</b> graphics quality may help: Esc, then Settings.</span></div>
 <div id="loading">LOADING TRAINING FACILITY</div>
 
@@ -444,6 +446,6 @@
   document.getElementById('splat').style.setProperty('--splat', 'url(' + c.toDataURL() + ')');
 })();
 </script>
-<script src="game.js?v=M6.9.13"></script>
+<script src="game.js?v=M6.9.14"></script>
 </body>
 </html>
