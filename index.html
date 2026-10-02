@@ -164,7 +164,9 @@
   #cctv-label::before { content: '\25CF REC  '; color: #e33; }
   #cctv-time { position: absolute; left: 28px; bottom: 74px; color: #d8f5d0; font: 14px monospace; letter-spacing: 2px; text-shadow: 0 0 6px #000; opacity: 0.85; }
   #cctv-tear { position: absolute; left: 0; right: 0; height: 7px; display: none; background: linear-gradient(90deg, rgba(220,255,220,0.05), rgba(220,255,220,0.4), rgba(220,255,220,0.1)); }
-  #cctv-ghost { position: absolute; display: none; color: rgba(225,255,225,0.17); font: bold 26px monospace; text-shadow: 1px 0 rgba(255,80,80,0.18), -1px 0 rgba(80,160,255,0.18); }
+  #cctv-ghost { position: absolute; display: none; width: 30px; height: 40px; -webkit-backdrop-filter: brightness(1.28) contrast(1.2) hue-rotate(20deg); backdrop-filter: brightness(1.28) contrast(1.2) hue-rotate(20deg); -webkit-mask-size: 100% 100%; mask-size: 100% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; transform: translateX(2px); }
+  #nv { position: fixed; inset: 0; display: none; pointer-events: none; z-index: 12; background: radial-gradient(ellipse at center, rgba(0,0,0,0) 55%, rgba(0,10,0,0.75) 100%), repeating-linear-gradient(0deg, rgba(0,0,0,0.12) 0px, rgba(0,0,0,0.12) 1px, transparent 1px, transparent 3px); animation: nvgrain 0.12s steps(3) infinite; }
+  @keyframes nvgrain { 0% { background-position: 0 0, 0 0; } 50% { background-position: 0 0, 0 1px; } 100% { background-position: 0 0, 0 2px; } }
   #cctv .cctv-help { position: absolute; left: 50%; bottom: 40px; transform: translateX(-50%); color: #d8f5d0; font: 13px monospace; background: rgba(0,0,0,0.5); padding: 4px 10px; }
   .set.pick { outline: 1px solid #e8b423; outline-offset: 3px; }
   #loading { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; letter-spacing: 6px; color: var(--dim); z-index: 40; background: #000; }
@@ -172,6 +174,7 @@
 </head>
 <body>
 <canvas id="app" tabindex="0"></canvas>
+<div id="nv"></div>
 <div id="cctv"><div class="cctv-scan"></div><div id="cctv-tear"></div><div id="cctv-ghost"></div><div id="cctv-label"></div><div id="cctv-time"></div><div class="cctv-help">E  next camera &nbsp;&middot;&nbsp; right mouse  zoom &nbsp;&middot;&nbsp; move to stop watching</div></div>
 <div id="lowq"><span>The frame rate is struggling. <b>Low</b> graphics quality may help: Esc, then Settings.</span></div>
 <div id="loading">LOADING TRAINING FACILITY</div>
@@ -447,6 +450,6 @@
   document.getElementById('splat').style.setProperty('--splat', 'url(' + c.toDataURL() + ')');
 })();
 </script>
-<script src="game.js?v=M6.9.18"></script>
+<script src="game.js?v=M6.9.19"></script>
 </body>
 </html>
