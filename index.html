@@ -328,6 +328,7 @@
       <img id="m-badge" src="assets/ui/frontline_badge.png" alt="Frontline">
       <h2>PAUSED</h2>
       <button class="btn primary" id="btn-resume">Resume</button>
+      <button class="btn" id="btn-gear">Your gear</button>
       <button class="btn" id="btn-howto">Controls guide (opens a page)</button>
       <button class="btn" id="btn-controls">Key bindings</button>
       <button class="btn" id="btn-settings">Settings</button>
@@ -338,6 +339,11 @@
       <button class="btn" id="btn-trophies">Trophies</button>
       <button class="btn" id="btn-save">Save game</button>
       <button class="btn" id="btn-title">Title screen</button>
+    </div>
+    <div class="tab" id="tab-gear">
+      <h2>YOUR GEAR</h2>
+      <div id="gear-list" style="text-align:left;font-size:14px;line-height:1.5"></div>
+      <button class="btn btn-back">Back</button>
     </div>
     <div class="tab" id="tab-trophies">
       <h2>TROPHIES</h2>
@@ -450,6 +456,6 @@
   document.getElementById('splat').style.setProperty('--splat', 'url(' + c.toDataURL() + ')');
 })();
 </script>
-<script src="game.js?v=M6.9.22"></script>
+<script src="game.js?v=M6.9.23"></script>
 </body>
 </html>
