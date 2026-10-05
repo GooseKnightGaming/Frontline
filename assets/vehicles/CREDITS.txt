@@ -1,0 +1,9 @@
+FRONTLINE - vehicle models
+
+police.glb, Textures/colormap.png
+  Kenney, "Car Kit" 3.1 (www.kenney.nl) - CC0 1.0 (no credit required; given anyway).
+  The police cars outside the Riverside Hotel (M6.12.0). Their flashing
+  light bars are the game's own, laid over the model.
+
+The Ghost APC, the trucks, utility vehicles and motorcycles are built in code
+(src/game/vehicle_models.js).
