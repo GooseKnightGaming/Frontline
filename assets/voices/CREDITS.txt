@@ -15,3 +15,11 @@ hit_1.mp3, hit_2.mp3, hit_3.mp3
 
 war_*.ogg
   Kenney, "Voiceover Pack" (www.kenney.nl) - CC0 1.0 (no credit required; given anyway)
+
+intercept_*.mp3  (M6.13.5 - the captain and his pilot, overheard on their radio)
+  Synthetic speech made with Piper (https://github.com/rhasspy/piper),
+  voice "en-us-libritts-high" (speakers 800 and 375), trained on the LibriTTS
+  corpus by Heiga Zen et al. (http://www.openslr.org/60/)
+  Licence: CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/)
+  Changes: filtered to sound like a radio (narrow band, drive, hiss,
+  squelch bursts; a rotor throb on the pilot); converted to MP3.
