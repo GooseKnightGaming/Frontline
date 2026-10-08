@@ -167,6 +167,7 @@
   #cctv-ghost { position: absolute; display: none; width: 30px; height: 40px; -webkit-backdrop-filter: brightness(1.45) contrast(1.25) hue-rotate(20deg); backdrop-filter: brightness(1.45) contrast(1.25) hue-rotate(20deg); -webkit-mask-size: 100% 100%; mask-size: 100% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; transform: translateX(2px); }
   #nv { position: fixed; inset: 0; display: none; pointer-events: none; z-index: 12; background: radial-gradient(ellipse at center, rgba(0,0,0,0) 55%, rgba(0,10,0,0.75) 100%), repeating-linear-gradient(0deg, rgba(0,0,0,0.12) 0px, rgba(0,0,0,0.12) 1px, transparent 1px, transparent 3px); animation: nvgrain 0.12s steps(3) infinite; }
   @keyframes nvgrain { 0% { background-position: 0 0, 0 0; } 50% { background-position: 0 0, 0 1px; } 100% { background-position: 0 0, 0 2px; } }
+  #cctv-hint { position: absolute; display: none; width: 76px; height: 76px; margin: -38px 0 0 -38px; border: 3px solid #e8b423; border-radius: 50%; box-shadow: 0 0 10px rgba(232,180,35,0.6); opacity: 0.85; }
   #cctv .cctv-help { position: absolute; left: 50%; bottom: 40px; transform: translateX(-50%); color: #d8f5d0; font: 13px monospace; background: rgba(0,0,0,0.5); padding: 4px 10px; }
   .set.pick { outline: 1px solid #e8b423; outline-offset: 3px; }
   #loading { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; letter-spacing: 6px; color: var(--dim); z-index: 40; background: #000; }
@@ -175,7 +176,7 @@
 <body>
 <canvas id="app" tabindex="0"></canvas>
 <div id="nv"></div>
-<div id="cctv"><div class="cctv-scan"></div><div id="cctv-tear"></div><div id="cctv-ghost"></div><div id="cctv-label"></div><div id="cctv-time"></div><div class="cctv-help">E  next camera &nbsp;&middot;&nbsp; right mouse  zoom &nbsp;&middot;&nbsp; move to stop watching</div></div>
+<div id="cctv"><div class="cctv-scan"></div><div id="cctv-tear"></div><div id="cctv-ghost"></div><div id="cctv-hint"></div><div id="cctv-label"></div><div id="cctv-time"></div><div class="cctv-help">E  next camera &nbsp;&middot;&nbsp; right mouse  zoom &nbsp;&middot;&nbsp; move to stop watching</div></div>
 <div id="lowq"><span>The frame rate is struggling. <b>Low</b> graphics quality may help: Esc, then Settings.</span></div>
 <div id="loading">LOADING TRAINING FACILITY</div>
 
@@ -368,6 +369,7 @@
       <div class="set"><span>Graphics quality</span><select id="set-quality"><option value="low">Low (no shadows)</option><option value="medium">Medium</option><option value="high">High</option></select><span></span></div>
       <div class="set"><span>View</span><select id="set-view"><option value="first">First person</option><option value="third">Third person</option></select><span></span></div>
       <div class="set"><span>Show frame rate &amp; position</span><input type="checkbox" id="set-fps"><span></span></div>
+      <div class="set"><span>Camera glitch hints (a ring where a camera's glitch shows)</span><input type="checkbox" id="set-glitch"><span></span></div>
       <div class="set"><span>Radar (M)</span><input type="checkbox" id="set-map"><span></span></div>
       <div class="set"><span>Sound volume</span><input type="range" id="set-vol" min="0" max="1" step="0.05"><span id="set-vol-v"></span></div>
       <div class="set"><span>Music volume</span><input type="range" id="set-music" min="0" max="1" step="0.05"><span id="set-music-v"></span></div>
@@ -456,6 +458,6 @@
   document.getElementById('splat').style.setProperty('--splat', 'url(' + c.toDataURL() + ')');
 })();
 </script>
-<script src="game.js?v=M6.12.3"></script>
+<script src="game.js?v=M6.13.0"></script>
 </body>
 </html>
