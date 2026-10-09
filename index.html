@@ -78,6 +78,7 @@
   #mend-result { font-size: 16px; letter-spacing: 2px; margin: 4px 0 10px; }
   #mend-result .ok, #mend-objectives .ok { color: #7fd07f; }
   #mend-result .no, #mend-objectives .no { color: #e05050; }
+  #mend-result .part { color: #e8b423; }
   #mend-objectives div { padding: 3px 0; font-size: 14px; }
   #mend-objectives b { display: inline-block; width: 18px; }
   #mend-stats div { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
@@ -248,7 +249,7 @@
 </div>
 <div id="title" class="overlay">
   <div class="card title-card">
-    <img id="t-logo" src="assets/ui/frontline_logo.png" alt="Frontline">
+    <img id="t-logo" onerror="if(!this.dataset.r){this.dataset.r=1;this.src=this.src.split('?')[0]+'?r='+Date.now()}" src="assets/ui/frontline_logo.png" alt="Frontline">
     <div class="tmenu">
       <button class="btn primary" id="t-continue">Continue</button>
       <button class="btn primary" id="t-new">New game</button>
@@ -262,7 +263,7 @@
       <button class="btn" id="t-howto">Controls guide</button>
       <button class="btn kofi" id="t-kofi">&#9749; Buy me a cuppa</button>
     </div>
-    <img id="t-gk" src="assets/ui/gooseknight.png" alt="GooseKnight">
+    <img id="t-gk" onerror="if(!this.dataset.r){this.dataset.r=1;this.src=this.src.split('?')[0]+'?r='+Date.now()}" src="assets/ui/gooseknight.png" alt="GooseKnight">
     <div class="credit">GooseKnight &middot; music, voices, models and sounds by others: see Credits &middot; <span id="ver2"></span></div>
   </div>
 </div>
@@ -335,7 +336,7 @@
 <div id="menu" class="overlay">
   <div class="card">
     <div class="tab" id="tab-main">
-      <img id="m-badge" src="assets/ui/frontline_badge.png" alt="Frontline">
+      <img id="m-badge" onerror="if(!this.dataset.r){this.dataset.r=1;this.src=this.src.split('?')[0]+'?r='+Date.now()}" src="assets/ui/frontline_badge.png" alt="Frontline">
       <h2>PAUSED</h2>
       <button class="btn primary" id="btn-resume">Resume</button>
       <button class="btn" id="btn-gear">Your gear</button>
@@ -467,6 +468,6 @@
   document.getElementById('splat').style.setProperty('--splat', 'url(' + c.toDataURL() + ')');
 })();
 </script>
-<script src="game.js?v=M6.13.7"></script>
+<script src="game.js?v=M6.13.8"></script>
 </body>
 </html>
