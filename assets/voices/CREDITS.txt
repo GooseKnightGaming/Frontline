@@ -23,3 +23,8 @@ intercept_*.mp3  (M6.13.5 - the captain and his pilot, overheard on their radio)
   Licence: CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/)
   Changes: filtered to sound like a radio (narrow band, drive, hiss,
   squelch bursts; a rotor throb on the pilot); converted to MP3.
+
+spoken_*.mp3 (M6.17.10): every guard line that has no human recording, and every Yellow
+line, spoken by Piper (https://github.com/rhasspy/piper) with the LibriTTS voice
+(en-us-libritts-high; LibriTTS, CC BY 4.0, https://www.openslr.org/60/). Speakers: 182 the
+Yellow boss, 846 and 296 his men, 105 and 278 the reds. Trimmed and levelled with ffmpeg.
