@@ -28,3 +28,4 @@ spoken_*.mp3 (M6.17.10): every guard line that has no human recording, and every
 line, spoken by Piper (https://github.com/rhasspy/piper) with the LibriTTS voice
 (en-us-libritts-high; LibriTTS, CC BY 4.0, https://www.openslr.org/60/). Speakers: 182 the
 Yellow boss, 846 and 296 his men, 105 and 278 the reds. Trimmed and levelled with ffmpeg.
+M6.17.11: the shouted lines (those ending "!") said faster, a little higher and compressed, to sound less calm.
