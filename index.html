@@ -6,9 +6,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Frontline - Training Facility</title>
 <style>
+  /* (M6.18.3, Rhys: "check if you can render these specific characters") fonts of our own, so every
+     machine draws Severian's letters - Ȍ ȍ О̏ Ъ Є Ї і Ԏ ԏ Џ Ѕ Ѵ Ԁ Ӧ - the same (Noto, subset: Latin,
+     Cyrillic and its supplements, the combining accents; assets/fonts/OFL.txt) */
+  @font-face { font-family: 'Severia Sans'; src: url('assets/fonts/NotoSans-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+  @font-face { font-family: 'Severia Sans'; src: url('assets/fonts/NotoSans-Bold.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+  @font-face { font-family: 'Severia Sans Condensed'; src: url('assets/fonts/NotoSans-CondensedBold.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+  @font-face { font-family: 'Severia Serif'; src: url('assets/fonts/NotoSerif-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+  @font-face { font-family: 'Severia Serif'; src: url('assets/fonts/NotoSerif-Bold.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+  .sev { font-family: 'Severia Sans', sans-serif; }
   :root { --amber: #e8b423; --ink: #0d1014; --panel: rgba(12,15,19,0.86); --line: #2b333d; --text: #d7dce2; --dim: #8a939c; }
   html, body { margin: 0; height: 100%; overflow: hidden; background: #000; color: var(--text);
-    font-family: 'Roboto Condensed', 'Arial Narrow', Roboto, Arial, sans-serif; user-select: none; -webkit-user-select: none; }
+    font-family: 'Roboto Condensed', 'Arial Narrow', Roboto, Arial, 'Severia Sans', sans-serif; user-select: none; -webkit-user-select: none; }
   #app { position: fixed; inset: 0; width: 100%; height: 100%; display: block; outline: none; }
   .overlay { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; z-index: 20;
     background: radial-gradient(ellipse at center, rgba(10,14,18,0.72), rgba(0,0,0,0.92)); }
@@ -473,6 +482,6 @@
   document.getElementById('splat').style.setProperty('--splat', 'url(' + c.toDataURL() + ')');
 })();
 </script>
-<script src="game.js?v=M6.18.3"></script>
+<script src="game.js?v=M6.18.4"></script>
 </body>
 </html>
