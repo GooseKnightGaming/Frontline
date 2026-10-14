@@ -74,11 +74,13 @@
   #detect { position: absolute; left: 50%; top: 50%; width: 140px; height: 140px; transform: translate(-50%, -50%); pointer-events: none; }
   /* what the guards say, like subtitles */
   #bark { position: absolute; left: 50%; bottom: 64px; transform: translateX(-50%); font-size: 15px; color: #f2f2ec;
-    background: rgba(8,11,14,0.6); padding: 6px 14px; opacity: 0; transition: opacity 0.4s; pointer-events: none; white-space: nowrap; }
+    background: rgba(8,11,14,0.6); padding: 6px 14px; opacity: 0; transition: opacity 0.4s; pointer-events: none;
+    width: max-content; max-width: min(900px, 88vw); text-align: center; line-height: 1.45; }   /* (M6.18.7: long lines wrap, not off the screen) */
   #bark span { color: #e05050; letter-spacing: 1px; margin-right: 6px; }
   #bark span.radio { color: #6cc4e8; }
   #bark span.yellow { color: #e8b423; }
   #bark span.staff { color: #8fb4ff; }
+  #bark span.front { color: #b9bcc2; }
   .brief-card { max-width: 560px; text-align: left; }
   .credits-card { max-height: 86vh; overflow-y: auto; }
   .credits-card h3 { margin: 14px 0 2px; font-size: 12px; letter-spacing: 3px; color: #e8b423; }
@@ -482,6 +484,6 @@
   document.getElementById('splat').style.setProperty('--splat', 'url(' + c.toDataURL() + ')');
 })();
 </script>
-<script src="game.js?v=M6.18.6"></script>
+<script src="game.js?v=M6.18.7"></script>
 </body>
 </html>
