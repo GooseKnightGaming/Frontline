@@ -57,6 +57,7 @@
   #zone { position: absolute; left: 22px; top: 18px; font-size: 13px; letter-spacing: 4px; color: #e6eaee; text-shadow: 0 1px 3px #000; }
   #zone::before { content: 'GHOST TRAINING  //  '; color: var(--amber); }
   body.mission #zone::before { content: 'LEVEL 0  //  '; }
+  body.offduty #zone::before { content: 'OFF DUTY  //  '; }      /* (M6.18.10) the train: nothing to do with Ghost */
   #weapon { position: absolute; right: 22px; bottom: 22px; text-align: right; text-shadow: 0 1px 3px #000; }
   #w-name { font-size: 12px; letter-spacing: 3px; color: var(--amber); }
   #w-ammo { font-size: 26px; letter-spacing: 2px; color: #e6eaee; font-weight: 600; }
@@ -484,6 +485,6 @@
   document.getElementById('splat').style.setProperty('--splat', 'url(' + c.toDataURL() + ')');
 })();
 </script>
-<script src="game.js?v=M6.18.9"></script>
+<script src="game.js?v=M6.18.10"></script>
 </body>
 </html>
