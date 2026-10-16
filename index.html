@@ -57,7 +57,8 @@
   #zone { position: absolute; left: 22px; top: 18px; font-size: 13px; letter-spacing: 4px; color: #e6eaee; text-shadow: 0 1px 3px #000; }
   #zone::before { content: 'GHOST TRAINING  //  '; color: var(--amber); }
   body.mission #zone::before { content: 'LEVEL 0  //  '; }
-  body.offduty #zone::before { content: 'OFF DUTY  //  '; }      /* (M6.18.10) the train: nothing to do with Ghost */
+  body.offduty #zone::before { content: 'OFF DUTY  //  '; }
+  body.draft #zone::before { content: var(--zpre); }      /* (M6.19.0) a first draft: its level number */      /* (M6.18.10) the train: nothing to do with Ghost */
   #weapon { position: absolute; right: 22px; bottom: 22px; text-align: right; text-shadow: 0 1px 3px #000; }
   #w-name { font-size: 12px; letter-spacing: 3px; color: var(--amber); }
   #w-ammo { font-size: 26px; letter-spacing: 2px; color: #e6eaee; font-weight: 600; }
@@ -274,6 +275,7 @@
       <button class="btn" id="t-factory">Level 2: Derelict Factory</button>
       <button class="btn" id="t-casino">Level 3: Casino</button>
       <button class="btn" id="t-train">Level 4: The Night Train</button>
+      <button class="btn" id="t-drafts">Levels 5 onward (first drafts)</button>
       <button class="btn" id="t-credits">Credits</button>
       <button class="btn" id="t-load">Saved games</button>
       <button class="btn" id="t-settings">Settings</button>
@@ -282,6 +284,15 @@
     </div>
     <img id="t-gk" onerror="if(!this.dataset.r){this.dataset.r=1;this.src=this.src.split('?')[0]+'?r='+Date.now()}" src="assets/ui/gooseknight.png" alt="GooseKnight">
     <div class="credit">GooseKnight &middot; music, voices, models and sounds by others: see Credits &middot; <span id="ver2"></span></div>
+  </div>
+</div>
+
+<div id="drafts" class="overlay">
+  <div class="card brief-card credits-card">
+    <h2>FIRST DRAFTS</h2>
+    <p class="brief-where">Every level Rhys has asked for, a first pass of each: play them and send notes.</p>
+    <div class="tmenu" id="drafts-list"></div>
+    <button class="btn" id="drafts-back">Back</button>
   </div>
 </div>
 
@@ -485,6 +496,6 @@
   document.getElementById('splat').style.setProperty('--splat', 'url(' + c.toDataURL() + ')');
 })();
 </script>
-<script src="game.js?v=M6.18.11"></script>
+<script src="game.js?v=M6.19.0"></script>
 </body>
 </html>
