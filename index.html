@@ -48,6 +48,18 @@
     color: #fff; text-shadow: 0 1px 3px #000; background: rgba(0,0,0,0.35); padding: 3px 10px; }
   #prompt:empty { display: none; }
   #vitals { position: absolute; left: 22px; bottom: 22px; width: 250px; }
+  /* (M6.20.11) the Jump Pack's fuel, above the stamina bar, whenever it is not full */
+  #jet { position: absolute; left: 22px; bottom: 64px; width: 250px; display: none; }
+  #jet-fill { background: #f0a040; }
+  /* (M6.20.11) down in a battle: the class you go back in as */
+  #class-pick { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 380px; display: none; background: rgba(12,14,17,0.88);
+    border: 1px solid rgba(232,180,35,0.4); padding: 14px 16px; color: #e6eaee; font-size: 13px; z-index: 5; pointer-events: auto; }
+  #class-pick h3 { margin: 0 0 8px; font-size: 13px; letter-spacing: 0.12em; color: #e8b423; }
+  #class-pick .cp { padding: 4px 6px; cursor: pointer; border-radius: 3px; }
+  #class-pick .cp.on { background: rgba(232,180,35,0.22); }
+  #class-pick .cp b { color: #e8b423; display: inline-block; width: 16px; }
+  #class-pick .cp span { display: block; margin-left: 22px; opacity: 0.6; font-size: 11px; }
+  #class-pick p { margin: 8px 0 0; opacity: 0.6; font-size: 11px; }
   .bar { height: 9px; background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.18); margin-top: 6px; }
   .bar > div { height: 100%; width: 100%; transition: width 0.15s; }
   .lbl { font-size: 11px; letter-spacing: 3px; color: #cfd6dc; text-shadow: 0 1px 2px #000; margin-top: 6px; }
@@ -215,6 +227,8 @@
   <div id="bark"></div>
   <div id="crosshair"></div>
   <div id="prompt"></div>
+  <div id="class-pick"></div>
+  <div id="jet"><div class="lbl">JUMP PACK</div><div class="bar"><div id="jet-fill"></div></div></div>
   <div id="br"><div class="lbl">BREATH</div><div class="bar"><div id="br-fill"></div></div></div>
   <div id="vitals">
     <div id="stance">CROUCHED</div>
@@ -505,6 +519,6 @@
   document.getElementById('splat').style.setProperty('--splat', 'url(' + c.toDataURL() + ')');
 })();
 </script>
-<script src="game.js?v=M6.20.10"></script>
+<script src="game.js?v=M6.20.11"></script>
 </body>
 </html>
