@@ -90,6 +90,14 @@
   .brief-card p { line-height: 1.55; margin: 8px 0; }
   .brief-where { color: #e8b423; letter-spacing: 1px; }
   .brief-note { opacity: 0.75; font-size: 13px; }
+  .kit-pick { margin: 14px 0 10px; padding: 10px 12px; border: 1px solid rgba(232,180,35,0.35); border-radius: 6px; }
+  .kit-pick h3 { margin: 0 0 8px; font-size: 14px; letter-spacing: 0.08em; color: #e8b423; }
+  .kit-pick label { display: flex; align-items: center; gap: 10px; margin: 5px 0; font-size: 13px; }
+  .kit-pick label span { width: 78px; flex: none; opacity: 0.85; }
+  .kit-pick label i { opacity: 0.6; font-size: 12px; }
+  .kit-pick select { flex: 1; min-width: 0; background: #1b1f24; color: #e6eaee; border: 1px solid #444; border-radius: 4px; padding: 4px; font: inherit; }
+  .kit-weight { margin-top: 8px; font-size: 13px; }
+  .kit-weight span { opacity: 0.7; }
   #mend-result { font-size: 16px; letter-spacing: 2px; margin: 4px 0 10px; }
   #mend-result .ok, #mend-objectives .ok { color: #7fd07f; }
   #mend-result .no, #mend-objectives .no { color: #e05050; }
@@ -496,6 +504,6 @@
   document.getElementById('splat').style.setProperty('--splat', 'url(' + c.toDataURL() + ')');
 })();
 </script>
-<script src="game.js?v=M6.20.7"></script>
+<script src="game.js?v=M6.20.8"></script>
 </body>
 </html>
