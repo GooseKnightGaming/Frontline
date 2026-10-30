@@ -1,0 +1,13 @@
+{
+ "tickets": ["Tickets, please.", "Тикетс, плиз.", ["sv1","sv2"]],
+ "checked": ["The 21:40 to Belyagorsk. Coach 3. Have a good journey.", "Зе твенти-ван форти ту Белягорск. Коуч сри. Хэв э гуд джорни.", ["sv1"]],
+ "after": ["Platform 3, straight through. She leaves at 21:40.", "Платформ сри, стрейт сру. Ши ливз эт твенти-ван форти.", ["sv1"]],
+ "wrong1": ["This is Platform 1, for Port Ostrel. Belyagorsk is Platform 3.", "Зис из платформ ван, фор Порт Острел. Белягорск из платформ сри.", ["sv2"]],
+ "wrong2": ["Platform 2 is closed tonight. You want Platform 3.", "Платформ ту из клоузд тунайт. Ю вонт платформ сри.", ["sv2"]],
+ "wrong4": ["This is Platform 4, for Kirova. Belyagorsk is Platform 3.", "Зис из платформ фор, фор Кирова. Белягорск из платформ сри.", ["sv1"]],
+ "police": ["Police! Somebody call the police!", "Полис! Самбади, кол зе полис!", ["sv1","sv2"]],
+ "kiosk": ["Coffee? A paper?", "Кофи? Э пейпер?", ["sv3"]],
+ "coffee": ["One coffee. Mind, it is hot.", "Ван кофи. Майнд, ит из хот.", ["sv3"]],
+ "paper": ["The evening paper. Here you are.", "Зе ивнинг пейпер. Хиа ю ар.", ["sv3"]],
+ "depart": ["Пойиз до васдат-оден и зорок до Белягорска видправляется з третзей платформа. Просиме, одступте од дверей. — The 21:40 to Belyagorsk is about to depart from Platform 3. Please stand clear of the doors.", ["Пойиз до васдат-оден и зорок до Белягорска видправляется з третзей платформа. Просиме, одступте од дверей.", "Зе твенти-ван форти ту Белягорск из эбаут ту дипарт фром платформ сри. Плиз, стэнд клиа оф зе дорз."], ["sva"]]
+}
