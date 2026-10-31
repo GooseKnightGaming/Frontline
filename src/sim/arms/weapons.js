@@ -911,7 +911,7 @@ export class Arsenal {
     if (w.lure) { this.events.push({ type: 'lure', id: p.id, pos: p.pos.slice(), noise: w.noise || 1.3 }); return; }
     this.lastNoise = 1.6;
     this.events.push({ type: 'blast', id: p.id, pos: p.pos.slice(), radius: w.blast, noise: 1.6,
-      flash: !!w.blind, blind: w.blind || 0, smoke: w.smoke || (w.gas === 'fire' ? w.burn || 6 : 0), gas: w.gas || null, damage: w.damage || 0, breach: !!w.breach });
+      flash: !!w.blind, blind: w.blind || 0, smoke: w.smoke || (w.gas === 'fire' ? w.burn || 6 : 0), gas: w.gas || null, damage: w.damage || 0, breach: !!w.breach, emp: !!w.emp });
     // (Rhys) a blast sets off the non-insulated explosives near it - remote and proximity mines, a moment
     // after (so a string of them goes off one after another); C5 and the like only go when you set them off
     if (w.damage > 0) for (const q of this.projectiles) {

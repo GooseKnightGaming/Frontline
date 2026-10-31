@@ -311,6 +311,7 @@ export class Guard {
   //        guards, doors, bark(guard, text), alarm(guard, pos) } - or just blockers (stage 1 callers)
   step(dt, ctx) {
     if (this.dead) { this.sinkIntoSeat(dt); return; }
+    if (this.jammed > 0) this.jammed = Math.max(0, this.jammed - dt);       // an EMP: his goggles or torch dark a while (sim/arms/emp.js)
     if (this.away) return;                        // gone: out of the front door and away
     this.clock = (this.clock || 0) + dt;
     if (Array.isArray(ctx) || !ctx) ctx = { blockers: ctx || [] };
@@ -423,6 +424,7 @@ export class Guard {
   // in the dark: can he make out something d metres off, ang off his nose?
   darkSees(d, ang) {
     if (d < DARK.close) return true;
+    if (this.jammed > 0) return false;
     if (this.sees === 'nvg') return true;
     if (this.sees === 'torch') return ang < DARK.beam && d < DARK.beamRange;
     return false;

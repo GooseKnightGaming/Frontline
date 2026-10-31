@@ -65,7 +65,8 @@ How weapons are earned (Rhys, 31 Oct 2026): **most new weapons are found or
 captured in the field** - picked up on a mission and kept once you get home;
 **some come from completing particular missions**. Done in M6.25.0: the sheet's
 Standard weapons are carried by the enemy and kept once brought home; its Unlock
-weapons are mission rewards - **which mission gives which: Rhys to say**.
+weapons are mission rewards - M6.26.0: a first pass in `src/sim/play/rewards.js`
+(one per mission), for Rhys to change as he likes.
 
 ## Factions: told apart by uniform (Rhys, M6.3.0)
 The red uniforms are right for Level 0 — a trainee must be able to tell. On

@@ -19,6 +19,7 @@ import { spokenVoice } from '../core/spoken.js';
 import { inTrain, inCoach, nearestSeat, FLOOR as FLOOR_Y, HIJACK, HIJACK_TALK, STAFF_TALK, NEWSPAPER, RUN as TRAIN_RUN } from './train.js';
 import * as Trophies from '../core/trophies.js';
 import * as Saves from '../core/saves.js';
+import { rewardFor } from '../../sim/play/rewards.js';
 
 
 const RED = [1.9, 0.72, 0.66];          // the reds' uniform: the field kit, tinted
@@ -1811,6 +1812,10 @@ export function setupMission(ctx) {
       // the enemy's weapons you took and brought out (not when it failed): yours from now on, at Logistics
       const taken = [...(m.taken || [])].map(baseId).filter((id) => ITEMS[id] && ITEMS[id].sheet);
       const homeNew = m.result === 'failed' ? [] : Saves.addArmoury(Saves.currentSlot(), taken);
+      // and the weapon this mission gives for completing it (sim/play/rewards.js), the first time
+      const key = L0 ? 'mission0' : level.draft ? level.draft : level.factory ? 'factory' : level.casino ? 'casino' : level.trainRun ? 'train' : 'hotel';
+      const prize = rewardFor(key, m.result, B && B.retreated);
+      const earned = prize && ITEMS[prize] ? Saves.addArmoury(Saves.currentSlot(), [prize]) : [];
       const t = Math.floor(m.time), mm = Math.floor(t / 60), ss = String(t % 60).padStart(2, '0');
       const tick = (b) => b ? '<b class="ok">&#10003;</b>' : '<b class="no">&#10007;</b>';
       const row = (k, v) => '<div>' + k + ' <b>' + v + '</b></div>';
@@ -1837,6 +1842,7 @@ export function setupMission(ctx) {
         (m.kills ? row('Headshots', m.headshots + ' of ' + m.kills) : '') +
         row('Favourite weapon', favName) +
         row('Doors breached', m.breaches) +
+        (earned.length ? row('Weapon earned', ITEMS[earned[0]].name + ' &mdash; at Logistics in Ghost HQ') : '') +
         (homeNew.length ? row('Weapons captured', homeNew.map((id) => ITEMS[id].name).join(', ') + ' &mdash; at Logistics in Ghost HQ') : '') +
         (taken.length && m.result === 'failed' ? row('Weapons captured', 'none brought home') : '') +
         (hostages.length ? row('Hostages rescued', rescued() + ' of ' + hostages.length) : '') +

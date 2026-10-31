@@ -95,4 +95,38 @@ T('Logistics and the Quartermaster: only what this run has brought home; the deb
   A(/'Weapons captured'/.test(rt), 'the debrief does not say');
 });
 
+{
+  const { REWARDS, rewardFor } = await import('../src/sim/play/rewards.js');
+  const { DRAFTS } = await import('../src/game/levels/drafts/index.js');
+  T('every one of the sheet\'s Unlock weapons comes from completing one mission', () => {
+    const want = Object.keys(ITEMS).filter((id) => ITEMS[id].sheet && ITEMS[id].unlock === 'mission').sort();
+    const given = Object.values(REWARDS).slice().sort();
+    A(JSON.stringify(want) === JSON.stringify(given), 'given ' + given.join(' ') + ' / wanted ' + want.join(' '));
+    const levels = new Set(['mission0', 'hotel', 'factory', 'casino', 'train'].concat(DRAFTS.map((d) => d.id)));
+    const odd = Object.keys(REWARDS).filter((k) => !levels.has(k));
+    A(!odd.length, 'no such mission: ' + odd.join(' '));
+  });
+  T('only for completing it: not for failing, not for withdrawing', () => {
+    A(rewardFor('hotel', 'success') === 'PA9T' && rewardFor('hotel', 'partial') === 'PA9T', 'not given');
+    A(rewardFor('hotel', 'failed') === null && rewardFor('beachhead', 'success', true) === null && rewardFor('factory_battle', 'success') === null, 'given wrongly');
+    A(/rewardFor\(key, m\.result, B && B\.retreated\)/.test(src('game/levels/mission_runtime.js')) && /'Weapon earned'/.test(src('game/levels/mission_runtime.js')), 'the debrief does not give it');
+  });
+}
+{
+  const { pulse, EMP } = await import('../src/sim/arms/emp.js');
+  const { Drivable } = await import('../src/sim/vehicles/drive.js');
+  T('the EMP: night vision and torches dark, turrets blind, engines dead - in reach, for a while', () => {
+    const w = new World();
+    const near = new Guard(w, { id: 'n', pos: [3, 0, 0], faction: 'red', sees: 'nvg' });
+    const far = new Guard(w, { id: 'f', pos: [40, 0, 0], faction: 'red', sees: 'nvg' });
+    const tur = { turret: { pos: [0, 2, 5] } }, car = { pos: [-4, 0, 0] };
+    const hit = pulse([0, 1, 0], { guards: [near, far], turrets: [tur], vehicles: [car] });
+    A(hit.guards === 1 && hit.turrets === 1 && hit.vehicles === 1, JSON.stringify(hit));
+    A(near.jammed === EMP.secs && !far.jammed && tur.turret.jammed === EMP.secs && car.stalled === EMP.secs, 'timers not set');
+    A(!near.darkSees(20, 0) && far.darkSees(20, 0), 'his night vision still works');
+    A(ITEMS.VDEMP.emp && ITEMS.VDEMP.damage === 0, 'the launcher is not an EMP');
+    A(/emp: !!w\.emp/.test(src('sim/arms/weapons.js')) && /empPulse\(ev\.pos/.test(src('game/main.js')), 'the blast does not pulse');
+    A(/q\.jammed > 0/.test(src('game/levels/ranges.js')) && /this\.stalled > 0/.test(src('sim/vehicles/drive.js')), 'turrets or engines ignore it');
+  });
+}
 console.log(fails.length ? '\nFAILURES (' + fails.length + '):\n' + fails.map((f) => '  * ' + f).join('\n') : '\nALL ' + pass + ' PASSED');

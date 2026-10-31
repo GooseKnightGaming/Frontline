@@ -52,6 +52,7 @@ import { SEAT } from '../sim/people/guard.js';
 import { quickKey, Arsenal, WEAPONS } from '../sim/arms/weapons.js';
 import { scopeKind } from './draw/weapons_view.js';
 import { scopeSvg } from './draw/scope.js';
+import { pulse as empPulse, EMP } from '../sim/arms/emp.js';
 import { Loadout, ITEMS, FAMILIES, MODS, AMMO, SLOTS, SLOT_KEY, fits, modFits, loadEffect, itemWeight, CLASSES, classById, classAllows, ROUND_KG, statsOf, itemKind, withTags, cratePrompt } from '../sim/arms/loadout.js';
 import * as Saves from './core/saves.js';
 import { recordOutcome } from '../sim/play/story.js';
@@ -70,7 +71,7 @@ import { DoorMove } from '../sim/world/doors.js';
 import { kickOpens } from '../sim/play/mission.js';
 import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './core/input.js';
 
-const VERSION = 'M6.25.0';
+const VERSION = 'M6.26.0';
 const $ = (id) => document.getElementById(id);
 const TEST = /[?&]test\b/.test(location.search);
 // Level 0, the training mission, is its own page load: index.html?level=0
@@ -2158,6 +2159,11 @@ function boot() {
       if (ev.type === 'swing') wview.onSwing();
       if (ev.type === 'target') { hitMark = 1; if (ev.killed) { score += ev.target.score; audio.targetDown(); } }
       if (ev.type === 'blast') {
+        // an EMP: night vision, torches, turrets and engines out a while, in its reach
+        if (ev.emp) {
+          const hit = empPulse(ev.pos, { guards: level.guards || [], turrets: level.turrets || [], vehicles: level.world.vehicles || [] });
+          if (hit.guards + hit.turrets + hit.vehicles) { S.noteT = 3; S.noteText = 'EMP: ' + [hit.guards && hit.guards + ' night vision or torches', hit.turrets && hit.turrets + ' turrets', hit.vehicles && hit.vehicles + ' engines'].filter(Boolean).join(', ') + ' out for ' + EMP.secs + ' s'; }
+        }
         wview.onBlast(ev.flash ? 0.4 : 1); wview.addBlast(ev); if (ev.flash) blindFlash = 1;
         audio.blast(Math.hypot(ev.pos[0] - player.pos[0], ev.pos[1] - player.pos[1], ev.pos[2] - player.pos[2]), ev.flash);
       }

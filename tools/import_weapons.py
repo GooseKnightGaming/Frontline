@@ -112,14 +112,14 @@ def entry(r):
         rocket = 'rocket' in low or 'anti-armour' in low
         it.update({'launcher': True, 'speed': 48 if rocket else 32, 'blast': 5 if rocket else 4.5, 'roundKg': 2.4 if rocket else 0.23})
         if rocket: it['breach'] = True
-        if fam == 'Launcher':           # the EMP launcher: no blast of fire - its pulse is still to come
+        if fam == 'Launcher':           # the EMP launcher: no blast of fire - a pulse (sim/arms/emp.js)
             it.update({'damage': 0, 'blast': 6, 'emp': True})
     if 'breach' in low: it.update({'breach': True, 'breachReach': 3})
     if fam == 'Anti-materiel': it['roundKg'] = 0.115
     if game == 'shotgun' and int(mag or 0) == 2: it['double'] = True
     it['model'] = model; it['like'] = like; it['length'] = length
     trait = '“' + it['nick'] + '” – ' + maker + '. ' + (role or '').strip()
-    if it.get('emp'): trait += ' (Its pulse - shutting down electronics - is still to come.)'
+    if it.get('emp'): trait += ' Night vision, torches, turrets and engines in its reach go out a while.'
     if nonlethal: trait += ' Non-lethal: knocks out.'
     it['trait'] = trait
     return ident(short), it

@@ -6,7 +6,7 @@ Made from each file's opening comment by `python3 tools/code_map.py`. The rules 
 
 | File | Lines | What it is |
 |---|---|---|
-| `main.js` | 2381 | the game in the browser: main.js starts it, builds the level you asked for, and runs it. |
+| `main.js` | 2387 | the game in the browser: main.js starts it, builds the level you asked for, and runs it. |
 
 ## `src/game/core/` - Input, sound, music, voices, saves
 
@@ -51,8 +51,8 @@ Made from each file's opening comment by `python3 tools/code_map.py`. The rules 
 | `hq.js` | 197 | Ghost HQ, under Yard 7 (Rhys: "Yard 7 is Ghost HQ - an underground laboratory and command centre (the briefing room, the trophy cabinet), a helipad, a van or chopper out to a level"). |
 | `kit.js` | 955 | the level kit (Rhys: "put together ALL the other levels I've asked for, so that I can play through the game and give pointers on each individual level"). |
 | `mission0.js` | 473 | Level 0: the training mission. |
-| `mission_runtime.js` | 1867 | running Level 0 in the game: the guards' bodies, the keycard, the terminal, breaching and bullet time, the hints, and the end. main.js calls in at a handful of points; the rules live in src/sim/play/mission.js. |
-| `ranges.js` | 499 | the weapons half of the training course. |
+| `mission_runtime.js` | 1873 | running Level 0 in the game: the guards' bodies, the keycard, the terminal, breaching and bullet time, the hints, and the end. main.js calls in at a handful of points; the rules live in src/sim/play/mission.js. |
+| `ranges.js` | 501 | the weapons half of the training course. |
 | `train.js` | 1115 | Level 4, the Night Train (Rhys: "An intercity train that has underground sections. It travels between two fictional cities in a fictional country 'somewhere near the former USSR'... You're off duty, enjoying yourself... [it] defin… |
 | `yard7.js` | 609 | Ghost Training Facility, "Yard 7". A grey-boxed container yard for learning to move: vault lane, climb wall, crouch duct, stairs and catwalk, a dive tower over a deep pool, drop platforms; the training course and the ranges beneat… |
 
@@ -100,7 +100,7 @@ Made from each file's opening comment by `python3 tools/code_map.py`. The rules 
 | `captain.js` | 169 | stopping the captain (Rhys: "time for the 'Stop the Captain' objective"). The Riverside Hotel's captain (P13) runs for his helicopter: through the roof door he locks behind him, up the ladder, across the roof to his post (P13A) - … |
 | `contacts.js` | 70 | what you know about who is around you. |
 | `factions.js` | 266 | who is against whom (Rhys: in the casino's Businessman's Suite "a Yellow Team of 3: Boss, and his two bodyguards. They are NOT naturally hostile towards YOU. Reds are naturally hostile to You AND Yellows ... You can therefore talk… |
-| `guard.js` | 1164 | a guard (M6). Stage 1: he exists. Stage 2: he notices you. |
+| `guard.js` | 1166 | a guard (M6). Stage 1: he exists. Stage 2: he notices you. |
 | `hostage.js` | 390 | hostages (the Riverside Hotel: "found, freed, escorted to the police, kept alive"). A hostage sits bound where the reds left him. E frees him (a moment's work, standing over him); then he follows you - the stairs, the corridors, o… |
 | `hotel_guards.js` | 143 | the Riverside Hotel's reds, from Rhys's map. The Guards tab says who each man is (rank, weapon, temperament, notes); the floor sheets say where he stands (his P square) and the squares he walks (his route, R2, R3...). This turns b… |
 | `player.js` | 984 | the operative's body. Pure simulation: no graphics, no browser. Input goes in, a new state comes out, so every rule here can be tested exactly. |
@@ -126,6 +126,7 @@ Made from each file's opening comment by `python3 tools/code_map.py`. The rules 
 
 | File | Lines | What it is |
 |---|---|---|
+| `emp.js` | 16 | an electromagnetic pulse (the sheet's VD-EMP "Blackout" launcher): it hurts no one, but for a while, within its reach, electronics stop - a guard's night vision or torch goes dark, a turret goes blind and quiet, an engine dies. Pu… |
 | `issue.js` | 45 | what each side's guards carry, from Rhys's weapons sheet (sheet.js). |
 | `loadout.js` | 596 | what you carry. |
 | `sheet.js` | 116 | Rhys's weapons sheet (docs/Frontline_Weapons.xlsx), in the game's terms. WRITTEN BY tools/import_weapons.py - change the sheet and run that, not this file. (How the sheet's columns become these figures: the top of tools/import_wea… |
@@ -138,10 +139,11 @@ Made from each file's opening comment by `python3 tools/code_map.py`. The rules 
 | `battle.js` | 107 | battle mode (Rhys's Beachhead sheet: "Battle Map; 10 minute timer; 100 reserve units per team; ends at the timer or when one team has zero in reserve AND zero in the field"). Two sides, each with a reserve: every man sent onto the… |
 | `course.js` | 115 | the training course: one step at a time, with doors that open when you have shown you can do the thing. |
 | `mission.js` | 190 | a mission: objectives, what you have found, how it ended. Pure logic. The level says where things are; this says what they mean. |
+| `rewards.js` | 37 | the weapons a mission gives you for completing it (Rhys: "Most new weapons are found/captured in the field. Some are from completing particular missions"). |
 | `story.js` | 201 | the story so far (Rhys: "time to make Mission Objectives independent from Mission Completion"). |
 
 ## `src/sim/vehicles/` - Driving
 
 | File | Lines | What it is |
 |---|---|---|
-| `drive.js` | 209 | driving (the start of M8: "the Riverboat Pursuit, vehicle missions"). |
+| `drive.js` | 211 | driving (the start of M8: "the Riverboat Pursuit, vehicle missions"). |

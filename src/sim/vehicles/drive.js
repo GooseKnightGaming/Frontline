@@ -73,6 +73,8 @@ export class Drivable {
     ctl = ctl || {};
     this.t = (this.t || 0) + dt;
     const K = this.K;
+    // an EMP: the engine dies for a while (it rolls on, steering, but nothing drives it)
+    if (this.stalled > 0) { this.stalled = Math.max(0, this.stalled - dt); ctl = Object.assign({}, ctl, { throttle: 0 }); }
     if (this.wrecked) { ctl = { throttle: 0, steer: 0, brake: true }; if (!K_GROUND(this)) this.sink = Math.min(0.9, (this.sink || 0) + dt * 0.12); }     // (a wrecked boat settles low in the water)
     const th = Math.max(-1, Math.min(1, ctl.throttle || 0));
     // throttle: forward, or backward - braking first when it is going the other way

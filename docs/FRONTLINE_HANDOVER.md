@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.25.0)
+# Frontline — Handover (M6.26.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,18 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.26.0 — mission rewards, and the EMP (Rhys: the field/mission split "Seems right to me!")
+- **Each of the sheet's 21 earnable Unlock weapons comes from completing one mission** (`src/sim/play/rewards.js`:
+  REWARDS, a first pass for Rhys to change - each matched to its mission: the tranquilliser pistol at the hotel, the
+  HMG at the Fortress, the EMP launcher at the airport, prototypes at the research station and the space port...).
+  Complete it (success or partial; not failed, not withdrawn from a battle) and the debrief says *Weapon earned*; it
+  is in the slot's armoury, at Logistics. Nothing says beforehand what a mission gives (like trophies). The HAS-L3
+  and HLP-2 are class kit, available already.
+- **The EMP** (`src/sim/arms/emp.js`): the VD-EMP's round hurts no one; within 12 m, for 12 s, guards' night vision
+  and torches go dark (`Guard.jammed`: in the dark they see only close), turrets go blind and quiet (`turret.jammed`),
+  engines die (`Drivable.stalled`). The note line says what went out. CCTV is unaffected (cameras only watch).
+- `test/arsenal.test.mjs` covers both.
 
 ## M6.25.0 — the whole weapons sheet, and capturing weapons (Rhys: "Most new weapons are found/captured in the field. Some are from completing particular missions")
 - **All 84 weapons on Rhys's sheet are in the game** (`docs/Frontline_Weapons.xlsx` -> `tools/import_weapons.py` ->

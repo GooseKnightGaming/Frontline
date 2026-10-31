@@ -468,6 +468,8 @@ export function stepRanges(level, player, arsenal, dt, t) {
   for (const tg of level.turrets || []) {
     const q = tg.turret;
     if (!q || tg.down) continue;
+    // an EMP: blind and quiet until it comes back (sim/arms/emp.js)
+    if (q.jammed > 0) { q.jammed = Math.max(0, q.jammed - dt); q.canSee = false; q.firing = false; q.seen = 0; continue; }
     const eye = player.eyePos;
     const d = [eye[0] - q.pos[0], eye[1] - q.pos[1], eye[2] - q.pos[2]];
     const dist = Math.hypot(d[0], d[1], d[2]);
