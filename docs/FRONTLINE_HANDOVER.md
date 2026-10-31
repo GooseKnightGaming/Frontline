@@ -15,7 +15,7 @@ game into the repository's root.
   Quaternius assets"): `draw/puppet.js` builds lofted tubes and rounded blobs with averaged normals (smooth shading);
   each vertex follows one or two joints, blended over the elbows, knees, waist and neck, so the body bends rather
   than breaks. The head is one shape crown to chin, with hair, eyes, brows, ears, nose and mouth; a plate carrier with
-  pouches and a pack, knee pads, a thigh pocket, gloves with thumbs, boots with soles. About 9,000 triangles.
+  pouches and a pack, knee pads, a thigh pocket, gloves with thumbs, boots with soles. About 6,300 triangles.
 - **`src/game/draw/puppet.js`**: a low-poly body (head with eyes, brows, nose, ears and hair; collar, vest and
   pouches, belt and buckle; sleeves, cuffs and gloves; trousers with a thigh pocket; boots with soles) on a
   17-joint skeleton, built as **one skinned mesh** - one draw per person, coloured by vertex. A faction's tint
