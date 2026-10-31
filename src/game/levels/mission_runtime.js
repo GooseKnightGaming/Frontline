@@ -363,7 +363,7 @@ export function setupMission(ctx) {
     if (o.arrival) o.solid.disabled = true;      // Belyagorsk's police: there once you are
     return o;
   });
-  const npcBodies = npcs.map((n) => new Operative(pc, app, 'assets/characters/Operative.glb', { tint: n.tint || [1, 1, 1], shadows: false, hat: n.hat }));
+  const npcBodies = npcs.map((n) => new Operative(pc, app, null, { tint: n.tint || [1, 1, 1], shadows: false, hat: n.hat }));
   const npcNear = () => npcs.find((n) => !n.down && !n.gone && n.kind !== 'police' && Math.hypot(n.pos[0] - player.pos[0], n.pos[2] - player.pos[2]) < 2.2 && Math.abs(n.pos[1] - player.pos[1]) < 1) || null;
   const announcer = { id: 'pa', faction: 'staff', title: 'Station announcement', voice: 'sva', pos: player.pos };
   const frontPA = { id: 'fmpa', faction: 'front', title: 'Front of Memory (the train\'s tannoy)', voice: 'fm1', pos: player.pos };
@@ -676,7 +676,7 @@ export function setupMission(ctx) {
   };
   const detect = $('detect').getContext('2d');
   // one uniform for the side; the officer's a shade darker; rank in the hat
-  const bodies = guards.map((g) => new Operative(pc, app, 'assets/characters/Operative.glb',
+  const bodies = guards.map((g) => new Operative(pc, app, null,
     { tint: g.tint ? g.tint : g.side === 'ally' ? [0.45, 0.6, 1.35] : g.side === 'front' ? (g.rank === 'officer' ? [0.95, 0.96, 1.02] : [1.3, 1.31, 1.38]) : g.faction === 'yellow' ? (g.rank === 'officer' ? [1.4, 1.1, 0.35] : YELLOW) : g.rank === 'officer' ? [1.35, 0.5, 0.46] : g.rank === 'specialist' ? [1.5, 0.62, 0.56] : RED, shadows: false,
       hat: (RANKS[g.rank] || RANKS.guard).hat, goggles: level.dark && g.sees === 'nvg' }));
 
@@ -892,7 +892,7 @@ export function setupMission(ctx) {
     const mins = mt.hour * 60 + mt.minute + Math.floor((S.missionT || 0) / 60);
     return { hour: Math.floor(mins / 60) % 24, minute: mins % 60 };
   };
-  const hbodies = hostages.map(() => new Operative(pc, app, 'assets/characters/Operative.glb', { tint: [1.55, 1.38, 1.12], shadows: false }));
+  const hbodies = hostages.map(() => new Operative(pc, app, null, { tint: [1.55, 1.38, 1.12], shadows: false }));
   const zone = level.policeZone;
   const inSafe = (p) => inStreetZone(zone, p);
   // (Rhys: in the lift his "E - tell him to wait" sat over the

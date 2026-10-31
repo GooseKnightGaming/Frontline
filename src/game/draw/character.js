@@ -1,13 +1,11 @@
-// FRONTLINE - the operative you see in third person (and, later, every guard).
-// The Universal Base Character on Quaternius's 65-bone rig, with clips from
-// the Universal Animation Library (all CC0), chosen by src/sim/people/anim.js.
+// FRONTLINE - the people you see: you in third person, every guard, hostage and passer-by.
+// Drawn in code (Rhys: "I'd actually prefer the characters code-drawn rather than from asset-packs"): a
+// low-poly body on a skeleton of joints (draw/puppet.js), moved by poses written in code (sim/people/poses.js),
+// with the clip for the moment chosen by sim/people/anim.js. Hats, goggles and the weapon in hand are added here.
 
-import { pickClip, poseFor, DERIVED, ONCE } from '../../sim/people/anim.js';
-
-// One download and parse per model, shared by everyone who wears it (the
-// player and every guard use the same body).
-const CACHE = {};
-
+import { pickClip, poseFor } from '../../sim/people/anim.js';
+import { poseAt, blend } from '../../sim/people/poses.js';
+import { makeBody, applyPose } from './puppet.js';
 // (Rhys's screenshots: people across the casino floor came out as
 // black cut-outs) the level is lit by its baked light; people only by the
 // few lamps switched on near the camera and the scene's ambient - which on a
@@ -105,84 +103,33 @@ function makeGoggles(pc) {
   return hat;
 }
 
+// where the body sits, for the code-drawn body: treading water the head is just under the surface (your feet
+// are 1.52 m below it, player.js), the front crawl lies flat just beneath it; lying prone the pose is on the floor
+export const PUPPET_SWIM = { still: -0.12, moving: 0.42 };
+
 export class Operative {
-  // opts.tint: [r, g, b] multiplies the clothing's colour (a faction's uniform)
+  // opts.tint: [r, g, b] multiplies the uniform's colour (a faction's); opts.hat, opts.goggles, opts.shadows;
+  // opts.colours: { skin, hair, top, ... } to dress someone differently. (url: no longer used - nothing to load)
   constructor(pc, app, url, opts) {
     this.opts = opts || {};
     this.pc = pc; this.app = app;
-    this.ready = false;
-    this.cur = null;
     this.root = new pc.Entity('operative');
-    this.body = null;
-    this.hand = null;
     app.root.addChild(this.root);
-    let asset = CACHE[url];
-    if (!asset) {
-      asset = CACHE[url] = new pc.Asset('operative', 'container', { url });
-      app.assets.add(asset);
-      app.assets.load(asset);
-    }
-    if (asset.loaded && asset.resource) this.build(asset);
-    else { asset.once('load', () => this.build(asset)); asset.once('error', (e) => { this.error = String(e); }); }
-  }
-
-  build(asset) {
-    const pc = this.pc;
-    const e = asset.resource.instantiateRenderEntity({ castShadows: this.opts.shadows !== false });   // guards: none (cheaper)
-    this.root.addChild(e);
-    this.body = e;
-    // a faction's colours: the clothes (not the skin) tinted, on a copy of the material
-    if (this.opts.tint) {
-      const [r, g, b] = this.opts.tint, made = new Map();
-      for (const rc of e.findComponents('render')) for (const mi of rc.meshInstances) {
-        if (!/Ranger/.test(mi.material.name || '')) continue;
-        let m = made.get(mi.material);
-        if (!m) { m = mi.material.clone(); m.diffuse = new pc.Color(r, g, b); m.update(); made.set(mi.material, m); }
-        mi.material = m;
-      }
-    }
-    for (const rc of e.findComponents('render')) for (const mi of rc.meshInstances) fill(pc, mi.material);
-    // scale the model to a real 1.8 m
-    let hi = -Infinity, lo = Infinity;
-    for (const r of e.findComponents('render')) for (const mi of r.meshInstances) {
-      const b = mi.aabb, c = b.center, h = b.halfExtents;
-      hi = Math.max(hi, c.y + h.y); lo = Math.min(lo, c.y - h.y);
-    }
-    const tall = hi - lo;
-    this.scale = tall > 0.1 ? 1.8 / tall : 1;
-    e.setLocalScale(this.scale, this.scale, this.scale);
-    e.setLocalPosition(0, -lo * this.scale, 0);
-    // animations: every clip in the model, by name; the ones that play once
-    // hold their last frame; and the derived copies (reversed cycles for
-    // walking backwards, a looping climb for ladders)
-    e.addComponent('anim', { activate: true });
-    this.clips = [];
-    const tracks = {};
-    for (const track of asset.resource.animations || []) {
-      const t = track.resource || track;
-      const name = (t && t.name) || (track.name || '').replace(/\.(gltf|glb)$/i, '');
-      if (!name) continue;
-      tracks[name] = t;
-      try { e.anim.assignAnimation(name, t, undefined, 1, ONCE.indexOf(name) < 0); this.clips.push(name); } catch (err) { /* skip */ }
-    }
-    for (const [name, [from, speed]] of Object.entries(DERIVED)) {
-      if (!tracks[from]) continue;
-      try { e.anim.assignAnimation(name, tracks[from], undefined, speed, true); this.clips.push(name); } catch (err) { /* skip */ }
-    }
+    const b = makeBody(pc, app, this.opts);
+    this.puppet = b;
+    this.body = b.body;
+    this.root.addChild(this.body);
+    fill(pc, b.material);
+    this.hand = b.joints.hand_r;
+    this.knuckle = b.knuckle;
+    this.headBone = b.joints.head;
+    this.scale = 1;
     this.turn = 0;
-    // the right hand, for holding a weapon (this rig: hand_r)
-    this.knuckle = e.findByName('middle_01_r');
-    this.headBone = e.findByName('Head');
+    this.cur = null; this.t = 0; this.speed = 1;
+    this.from = null; this.blendT = 0; this.blendLen = 0;
     if (this.opts.hat) { this.hat = makeHat(pc, this.opts.hat); this.root.addChild(this.hat); }
     if (this.opts.goggles) { this.goggles = makeGoggles(pc); this.root.addChild(this.goggles); }
-    const wants = ['hand_r', 'Wrist.R', 'Hand.R', 'Wrist_R', 'Hand_R', 'RightHand', 'mixamorig:RightHand'];
-    e.forEach((node) => { if (/^(pistol|gun|rifle|weapon)/i.test(node.name || '')) node.enabled = false; });
-    for (const n of wants) { const b = e.findByName(n); if (b) { this.hand = b; break; } }
-    if (!this.hand) {
-      const all = [];
-      e.forEach((node) => { if (/hand/i.test(node.name || '')) all.push(node); });
-      this.hand = all.find((n) => /r/i.test(n.name)) || all[0] || null;
-    }
+    applyPose(pc, b, poseAt('Idle_Loop', 0));
     this.ready = true;
   }
 
@@ -190,21 +137,33 @@ export class Operative {
   set enabled(v) { this.root.enabled = v; }
 
   play(want) {
-    if (!this.ready || !this.body.anim) return;
     // a strike asked for again (a second slash) starts again from the top
-    if (want.restart !== undefined && want.restart !== this.lastRestart && this.clips.indexOf(want.clip) >= 0) {
+    if (want.restart !== undefined && want.restart !== this.lastRestart) {
       this.lastRestart = want.restart;
-      try { this.body.anim.baseLayer.transition(want.clip, 0.06, 0); this.cur = want.clip; this.blendT = 0.06; this.body.anim.speed = want.speed || 1; } catch (e) { /* keep going */ }
+      this.switchTo(want.clip, 0.06);
+      this.speed = want.speed || 1;
       return;
     }
-    // one-shot clips (a death, a climb) play through and hold their last frame.
-    // The blend into a new clip runs at full speed, then the clip takes its
-    // own pace: a near-still clip (lying prone) would otherwise take seconds
-    // to blend into.
-    if (want.clip === this.cur) { this.body.anim.speed = this.blendT > 0 ? Math.max(1, want.speed || 1) : (want.speed === 0 ? 0 : want.speed || 1); return; }
-    if (this.clips.indexOf(want.clip) < 0) return;
-    try { this.body.anim.baseLayer.transition(want.clip, 0.15); this.cur = want.clip; this.blendT = 0.15; this.body.anim.speed = Math.max(1, want.speed || 1); }
-    catch (e) { /* the clip is missing: keep what is playing */ }
+    if (want.clip === this.cur) { this.speed = want.speed === 0 ? 0 : want.speed || 1; return; }
+    this.switchTo(want.clip, 0.15);
+    this.speed = Math.max(1, want.speed || 1);
+  }
+  // start a clip from its beginning, blending from wherever the body is now
+  switchTo(clip, over) {
+    this.from = this.pose || null;
+    this.cur = clip; this.t = 0;
+    this.blendT = this.blendLen = this.from ? over : 0;
+  }
+  // the pose now: the clip at its time, blended in from the last one
+  step(dt) {
+    this.t += dt * this.speed;
+    let P = poseAt(this.cur || 'Idle_Loop', this.t);
+    if (this.blendT > 0 && this.from) {
+      this.blendT = Math.max(0, this.blendT - dt);
+      P = blend(this.from, P, 1 - this.blendT / this.blendLen);
+    }
+    this.pose = P;
+    applyPose(this.pc, this.puppet, P);
   }
 
   // (Rhys: in third person, where are my goggles?) worn when the
@@ -218,15 +177,15 @@ export class Operative {
   update(dt, state, pos, yaw) {
     if (!this.ready) return;
     const want = pickClip(state);
-    this.blendT = Math.max(0, (this.blendT || 0) - dt);
     this.play(want);
     // a slump: the fall stopped part-way, where a wall behind him caught him
     // (state.slump: seconds into the death clip to hold at)
-    if (want.clip === 'Death01') {
-      this.deathT = (this.deathT || 0) + dt * (this.body.anim.speed || 0);
-      if (state.slump !== undefined && state.slump !== null && this.deathT >= state.slump) this.body.anim.speed = 0;
-    } else this.deathT = 0;
+    if (want.clip === 'Death01' && state.slump !== undefined && state.slump !== null && this.t >= state.slump) this.speed = 0;
+    this.step(dt);
     const pose = poseFor(state.stance, state.mode, want.clip === 'Swim_Fwd_Loop');
+    // the code-drawn body's own heights: poses lie down and swim for themselves
+    if (state.mode === 'swim') pose.lower = want.clip === 'Swim_Fwd_Loop' ? PUPPET_SWIM.moving : PUPPET_SWIM.still;
+    else if (state.stance === 2) pose.lower = 0;
     // on a ladder you face the wall, not the way the camera is looking
     if (pose.faceWall && state.ladderFace !== null && state.ladderFace !== undefined) yaw = state.ladderFace;
     // moving sideways, the body turns towards where it is going - smoothly
@@ -284,8 +243,7 @@ export class Operative {
       }
     }
     if (!state.dead) this.hatDown = null;
-    const s = this.scale;
-    this.body.setLocalScale(s, s * pose.scaleY, s);
+    this.body.setLocalScale(1, pose.scaleY, 1);
     // Both hands are busy on a ladder, swimming or hauling yourself up: the
     // weapon is slung (hidden) rather than held pointing somewhere odd.
     const busy = state.mode === 'ladder' || state.mode === 'swim' || state.mode === 'traverse' || state.dead;   // (the fallen do not hold a gun)

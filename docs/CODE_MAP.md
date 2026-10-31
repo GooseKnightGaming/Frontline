@@ -26,11 +26,12 @@ Made from each file's opening comment by `python3 tools/code_map.py`. The rules 
 
 | File | Lines | What it is |
 |---|---|---|
-| `character.js` | 303 | the operative you see in third person (and, later, every guard). The Universal Base Character on Quaternius's 65-bone rig, with clips from the Universal Animation Library (all CC0), chosen by src/sim/people/anim.js. |
+| `character.js` | 261 | the people you see: you in third person, every guard, hostage and passer-by. Drawn in code (Rhys: "I'd actually prefer the characters code-drawn rather than from asset-packs"): a low-poly body on a skeleton of joints (draw/puppet.… |
 | `ladders.js` | 42 | a ladder you can see the rungs of. |
 | `matrix_font.js` | 118 | a dot-matrix font (Rhys: the departures board "is a bit blurry - certain letters don't quite render properly"). Each letter drawn lamp by lamp, 5 wide and 7 high, capitals only (as such boards are): Latin, Cyrillic, and Severian's… |
 | `minimap.js` | 148 | the minimap. |
 | `props.js` | 50 | models placed in the world as scenery (vehicles, for now). |
+| `puppet.js` | 322 | a person drawn in code: a smooth, rounded body on a skeleton of joints, as one skinned mesh (one draw for the whole body), coloured by vertex. The joints are moved by poses from src/sim/people/poses.js. |
 | `render.js` | 873 | turns level data into a PlayCanvas scene. Static geometry is merged into one mesh per material (few draw calls, kind to a Chromebook). A cheap "baked" look comes from shading painted into the vertices: surfaces darken toward the g… |
 | `scope.js` | 39 | what you see through a sight (Rhys: "including when alt-aiming, if the scope has iron-sight or a reticule, that'd be nice to look through too"). Pure: a string of SVG for each kind (weapons_view.js scopeKind), drawn over the view;… |
 | `textures.js` | 760 | textures, painted in code at start-up. No image files: every surface is drawn here, so it all belongs to the game. |
@@ -94,7 +95,7 @@ Made from each file's opening comment by `python3 tools/code_map.py`. The rules 
 
 | File | Lines | What it is |
 |---|---|---|
-| `anim.js` | 157 | which animation the body should be playing. |
+| `anim.js` | 154 | which animation the body should be playing. |
 | `captain.js` | 169 | stopping the captain (Rhys: "time for the 'Stop the Captain' objective"). The Riverside Hotel's captain (P13) runs for his helicopter: through the roof door he locks behind him, up the ladder, across the roof to his post (P13A) - … |
 | `contacts.js` | 70 | what you know about who is around you. |
 | `factions.js` | 266 | who is against whom (Rhys: in the casino's Businessman's Suite "a Yellow Team of 3: Boss, and his two bodyguards. They are NOT naturally hostile towards YOU. Reds are naturally hostile to You AND Yellows ... You can therefore talk… |
@@ -102,6 +103,7 @@ Made from each file's opening comment by `python3 tools/code_map.py`. The rules 
 | `hostage.js` | 390 | hostages (the Riverside Hotel: "found, freed, escorted to the police, kept alive"). A hostage sits bound where the reds left him. E frees him (a moment's work, standing over him); then he follows you - the stairs, the corridors, o… |
 | `hotel_guards.js` | 143 | the Riverside Hotel's reds, from Rhys's map. The Guards tab says who each man is (rank, weapon, temperament, notes); the floor sheets say where he stands (his P square) and the squares he walks (his route, R2, R3...). This turns b… |
 | `player.js` | 984 | the operative's body. Pure simulation: no graphics, no browser. Input goes in, a new state comes out, so every rule here can be tested exactly. |
+| `poses.js` | 364 | how a body moves, written in code: every clip the game asks for (by the names anim.js picks), as joint angles over time. Pure: no drawing (draw/puppet.js turns poses into a moving body). |
 
 ## `src/sim/world/` - The world: shapes, doors, lifts, paths, light
 

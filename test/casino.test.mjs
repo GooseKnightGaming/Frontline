@@ -992,7 +992,7 @@ T('people across a dark room are not black cut-outs: on a night level their ambi
   A(k > 2 && Math.abs(k * lum - FILL.target) < 0.01, 'night fill ' + k);
   A(fillFor([0, 0, 0]) === FILL.most, 'no ceiling in the dark');
   const main = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8'), ch = readFileSync(new URL('../src/game/draw/character.js', import.meta.url), 'utf8');
-  A(/characterFill\(pc, \[a\.r, a\.g, a\.b\]\)/.test(main) && /rc\.meshInstances\) fill\(pc, mi\.material\)/.test(ch), 'not applied to the people');
+  A(/characterFill\(pc, \[a\.r, a\.g, a\.b\]\)/.test(main) && /fill\(pc, b\.material\)/.test(ch), 'not applied to the people');
 });
 console.log('\n-- M6.17.9 --');
 // the real casino, the Yellows following you: a fresh building, every door open

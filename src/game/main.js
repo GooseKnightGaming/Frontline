@@ -70,7 +70,7 @@ import { DoorMove } from '../sim/world/doors.js';
 import { kickOpens } from '../sim/play/mission.js';
 import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './core/input.js';
 
-const VERSION = 'M6.21.0';
+const VERSION = 'M6.22.0';
 const $ = (id) => document.getElementById(id);
 const TEST = /[?&]test\b/.test(location.search);
 // Level 0, the training mission, is its own page load: index.html?level=0
@@ -140,7 +140,7 @@ function boot() {
   // ── your body, props and vehicles ───────────────────────────────────────────
   const body = buildOperative(pc, app);      // box stand-in, used until the model loads
   body.enabled = false;
-  const opr = new Operative(pc, app, 'assets/characters/Operative.glb');
+  const opr = new Operative(pc, app, null);
   placeProps(pc, app, level.props);
   const vehicleEntities = (level.vehicles || []).map((v) => buildVehicle(pc, app, v));
   // the things you (or they) can drive: drawn where they are, each frame

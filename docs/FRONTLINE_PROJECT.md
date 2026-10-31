@@ -229,7 +229,7 @@ missed** and are worth writing again for any new level:
 
 ## 8. Assets and credits (these must stay)
 
-- **Models:** Quaternius (Universal Base Character, Modular Character Outfits – Fantasy and Universal Animation Library for the operative; weapons) and Kenney (Car Kit) —
+- **Models:** Quaternius (weapons and vehicles) and Kenney (Car Kit); the people are drawn and animated in code (`src/game/draw/puppet.js`, `src/sim/people/poses.js`) —
   CC0. `assets_library/` holds unused packs (43 converted Quaternius vehicles,
   Kenney watercraft, racing and prototype kits) which are not shipped.
 - **Music:** **Kevin MacLeod (incompetech.com), CC BY 4.0** — twelve tracks.

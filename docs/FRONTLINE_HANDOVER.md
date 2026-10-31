@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.21.0)
+# Frontline — Handover (M6.22.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,29 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.22.0 — people drawn in code (Rhys: "I'd actually prefer the characters code-drawn rather than from asset-packs")
+- **Every person is drawn and animated in code** - you in third person, guards, hostages, passers-by. No more
+  Quaternius body or animation library: `assets/characters/Operative.glb` (and `Swat.glb`) and the tools that made
+  them are gone; the credits now name Quaternius for weapons and vehicles only.
+- **Smooth, rounded bodies in the Quaternius manner** (Rhys: "make them look better... still look similar to the
+  Quaternius assets"): `draw/puppet.js` builds lofted tubes and rounded blobs with averaged normals (smooth shading);
+  each vertex follows one or two joints, blended over the elbows, knees, waist and neck, so the body bends rather
+  than breaks. The head is one shape crown to chin, with hair, eyes, brows, ears, nose and mouth; a plate carrier with
+  pouches and a pack, knee pads, a thigh pocket, gloves with thumbs, boots with soles. About 9,000 triangles.
+- **`src/game/draw/puppet.js`**: a low-poly body (head with eyes, brows, nose, ears and hair; collar, vest and
+  pouches, belt and buckle; sleeves, cuffs and gloves; trousers with a thigh pocket; boots with soles) on a
+  17-joint skeleton, built as **one skinned mesh** - one draw per person, coloured by vertex. A faction's tint
+  colours the uniform; `opts.colours` can dress anyone differently (skin, hair, top, legs, vest, belt, boots...).
+- **`src/sim/people/poses.js`** (pure, tested in node): every clip the game asks for, written as joint angles
+  over time - walking, jogging, sprinting and walking backwards; crouching and crouch-walking; treading water
+  and the front crawl; jumps, landings, the roll; the fall on your back and slumps; hits; the pistol held low,
+  aimed, fired, reloaded; jab and cross, knife slashes each way, the hook; reaching, sitting, talking, arms
+  folded, climbing up, a ladder hand over hand, the prone creep, getting up, an overhand throw; strikes from a
+  crouch. `anim.js` still chooses which; character.js blends between them.
+- Hats, goggles and the weapon in hand are placed exactly as before (the head and hand are joints of the new body).
+- Tests: `anim` checks every clip is written, every joint a number, and that the poses mean what they say
+  (dead on his back, the crawl face down, a crouch low, loops wrapping, one-shots holding).
 
 ## M6.21.0 — housekeeping (Rhys: "the code needs housekeeping")
 - **The source lives in the repository** (it had only been in a temporary workspace and handover zips):

@@ -8,15 +8,34 @@ const base = { mode: 'walk', stance: 0, speed: 0, forward: 0, strafe: 0, onGroun
   armed: true, melee: false, aiming: false, firing: false, dashing: false, hurt: false, dead: false };
 const pick = (o) => pickClip(Object.assign({}, base, o));
 
-// the clip names actually inside the model file
-const glb = readFileSync(new URL('../assets/characters/Operative.glb', import.meta.url));
-const json = JSON.parse(glb.subarray(20, 20 + glb.readUInt32LE(12)).toString());
-const inModel = new Set((json.animations || []).map((a) => a.name));
+// the clips are poses written in code (src/sim/people/poses.js): every name the picker can ask for is there
+import { CLIP, poseAt, JOINTS } from '../src/sim/people/poses.js';
+const inModel = new Set(Object.keys(CLIP));
 
-T('the model carries every clip the picker knows, and the copies come from real clips', () => {
-  for (const c of MODEL_CLIPS) A(inModel.has(c), 'missing from Operative.glb: ' + c);
-  for (const [name, [from]] of Object.entries(DERIVED)) A(inModel.has(from), name + ' copies a missing clip ' + from);
-  for (const c of ONCE) A(inModel.has(c), 'one-shot clip not in the model: ' + c);
+T('every clip the picker knows is written as poses, and the copies come from real clips', () => {
+  for (const c of MODEL_CLIPS) A(inModel.has(c), 'no poses for: ' + c);
+  for (const [name, [from]] of Object.entries(DERIVED)) A(inModel.has(from) && inModel.has(name), name + ' copies a missing clip ' + from);
+  for (const c of ONCE) A(inModel.has(c) && !CLIP[c].loop, 'one-shot clip missing or looping: ' + c);
+});
+T('the poses: every joint, every clip, numbers all the way through', () => {
+  for (const name of Object.keys(CLIP)) for (const t of [0, 0.1, 0.37, 1.3, 9]) {
+    const P = poseAt(name, t);
+    for (const j of JOINTS) A(P.j[j] && P.j[j].length === 3 && P.j[j].every(Number.isFinite), name + ' ' + j + ' at ' + t);
+    A(P.hip.every(Number.isFinite) && Number.isFinite(P.pitch), name + ' hip/pitch at ' + t);
+  }
+});
+T('the poses mean what they say: dead is on his back on the floor, the crawl is face down, a crouch is low', () => {
+  const d = poseAt('Death01', 5);
+  A(d.pitch < -80 && d.hip[1] < -0.7, 'death: pitch ' + d.pitch + ', hips ' + d.hip[1]);
+  const c = poseAt('Crawl_Loop', 0.4);
+  A(c.pitch > 80 && c.hip[1] < -0.7, 'crawl: pitch ' + c.pitch);
+  A(poseAt('Crouch_Idle_Loop', 1).hip[1] < -0.3, 'crouch');
+  A(poseAt('Walk_Loop', 0.25).j.thigh_l[0] !== poseAt('Walk_Loop', 0.75).j.thigh_l[0], 'walking moves the legs');
+  // the backward walk is the forward walk run backwards
+  A(Math.abs(poseAt('Walk_Back', 0.3).j.thigh_l[0] - poseAt('Walk_Loop', 0.7).j.thigh_l[0]) < 1e-9, 'walking backwards');
+  // a loop wraps; a one-shot holds its last frame
+  A(Math.abs(poseAt('Jog_Fwd_Loop', 0.1).j.thigh_r[0] - poseAt('Jog_Fwd_Loop', 0.1 + CLIP.Jog_Fwd_Loop.len).j.thigh_r[0]) < 1e-9, 'loops wrap');
+  A(poseAt('Roll', 3).pitch === poseAt('Roll', 30).pitch, 'one-shots hold');
 });
 T('every clip it can ask for exists, at a sensible speed', () => {
   const cases = [{}, { speed: 2 }, { speed: 4.3, forward: 1 }, { speed: 7.2, forward: 1 }, { speed: 4, forward: -1 },

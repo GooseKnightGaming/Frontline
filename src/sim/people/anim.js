@@ -1,22 +1,19 @@
 // FRONTLINE - which animation the body should be playing.
 //
-// The operative is the Universal Base Character on Quaternius's 65-bone rig,
-// with clips from the Universal Animation Library 1 and 2 (CC0). Those have
-// real crouching, swimming, climbing and jumping, but no strafing or walking
-// backwards: sideways, the body turns towards where it is going and plays the
-// forward cycle; backwards, it plays the cycle in reverse (the _Back clips are
-// the same tracks registered at negative speed by character.js). Pure logic:
-// the renderer plays what this returns.
+// The clips are poses written in code (poses.js; the names are those of the
+// Universal Animation Library the game first used). There is no strafing:
+// sideways, the body turns towards where it is going and plays the forward
+// cycle; backwards, it plays the cycle in reverse (the _Back clips). Pure
+// logic: the renderer plays what this returns.
 
-// clips in the model (tools/build_operative.mjs puts exactly these in)
+// the clips (poses.js writes each one)
 export const MODEL_CLIPS = ['Idle_Loop', 'Walk_Loop', 'Jog_Fwd_Loop', 'Sprint_Loop', 'Crouch_Idle_Loop',
   'Crouch_Fwd_Loop', 'Swim_Idle_Loop', 'Swim_Fwd_Loop', 'Jump_Start', 'Jump_Loop', 'Jump_Land', 'Roll',
   'Death01', 'Hit_Chest', 'Pistol_Idle_Loop', 'Pistol_Aim_Neutral', 'Pistol_Shoot', 'Pistol_Reload',
   'Punch_Jab', 'Punch_Cross', 'Sword_Attack', 'Sword_Idle', 'Interact', 'Driving_Loop', 'Idle_Talking_Loop',
   'ClimbUp_1m', 'LayToIdle', 'OverhandThrow', 'Hit_Knockback', 'Idle_FoldArms_Loop',
   'Sword_Regular_A', 'Sword_Regular_B', 'Melee_Hook',
-  // made by tools/build_operative.mjs from parts of other clips: the front
-  // crawl's arms on the walk's legs for a ladder; the swim, damped, for a crawl
+  // climbing a ladder hand over hand; creeping along face down
   'Ladder_Loop', 'Crawl_Loop',
   // strikes from a crouch: the strike's upper body on the crouch's legs
   'Crouch_Punch_Jab', 'Crouch_Punch_Cross', 'Crouch_Sword_Regular_A', 'Crouch_Sword_Regular_B', 'Crouch_Melee_Hook'];
