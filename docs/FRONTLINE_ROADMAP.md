@@ -61,6 +61,11 @@ The Quartermaster offers "everything unlocked"; today that is everything.
 When missions exist, `unlocked()` in main.js becomes the player's record of
 what has been earned — weapons, gear, mods and outfits.
 
+How weapons are earned (Rhys, 31 Oct 2026): **most new weapons are found or
+captured in the field** - picked up on a mission and kept once you get home;
+**some come from completing particular missions**. Which is which is still to
+be decided (Rhys will say).
+
 ## Factions: told apart by uniform (Rhys, M6.3.0)
 The red uniforms are right for Level 0 — a trainee must be able to tell. On
 **true missions**, sides are recognised by **uniform design** (cut, kit,
