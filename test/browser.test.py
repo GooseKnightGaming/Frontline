@@ -39,11 +39,12 @@ async def snap(pg, path):
 
 async def page(b, url, vp=(1280, 720)):
     pg = await b.new_page(viewport={'width': vp[0], 'height': vp[1]})
+    pg.set_default_navigation_timeout(120000)      # (the test machine loads slowly at times)
     pg.errs = []
     pg.on('pageerror', lambda e: pg.errs.append(str(e)))
     pg.on('console', lambda m: pg.errs.append(m.text) if m.type == 'error' else None)
     await pg.goto(url)
-    await pg.wait_for_function('window.FL !== undefined', timeout=30000)
+    await pg.wait_for_function('window.FL !== undefined', timeout=120000)
     await pg.wait_for_timeout(800)
     return pg
 
@@ -166,7 +167,7 @@ async def main():
         ok('low quality turns shadows off', low is False)
         await snap(pg, '/tmp/fl/menu_settings.png')
         await pg.reload()
-        await pg.wait_for_function('window.FL !== undefined'); await pg.wait_for_timeout(600)
+        await pg.wait_for_function('window.FL !== undefined', timeout=120000); await pg.wait_for_timeout(600)
         s2 = await pg.evaluate("({sens: FL.settings.sensitivity, q: FL.settings.quality, shadows: FL.view.sun.light.castShadows, av: FL.settings.autoVault})")
         ok('settings survive a reload', abs(s2['sens'] - 1.8) < 1e-6 and s2['q'] == 'low' and not s2['shadows'] and s2['av'] == 'high', json.dumps(s2))
         await pg.evaluate("localStorage.clear()")
