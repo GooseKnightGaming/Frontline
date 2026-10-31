@@ -21,6 +21,7 @@
 // His body is a shootable target (the range system), so every weapon, blast
 // and the radar already know how to deal with him.
 
+import { issued } from '../arms/issue.js';
 import { makeTarget } from '../arms/weapons.js';
 
 // an escort's paces: you walk at 4.3 m/s, so they must be able to
@@ -242,6 +243,8 @@ export class Guard {
     this.rank = def.rank || 'guard';
     this.armsName = def.arms || 'carbine';
     this.arms = ARMS[this.armsName];
+    // the weapon he carries (and drops): his side's, from Rhys's weapons sheet (sim/arms/issue.js)
+    this.item = def.item !== undefined ? def.item : (issued(this.faction, this.armsName, this.id) || (this.arms && this.arms.item) || null);
     this.temper = def.temper || 'bold';
     this.sees = def.sees || null;               // 'nvg' | 'torch' | null: what he sees by in the dark
     this.fleeOn = def.fleeOn || 'hurt';         // a coward runs when hurt - or, some, at the first sign of trouble

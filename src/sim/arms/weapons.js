@@ -433,7 +433,9 @@ export class Arsenal {
     // bare hands, or anything without a damage figure, still land a blow; a
     // strike with a gun hits like a strike, not like its bullet
     let dmg = blow === 'bash' ? (this.punchDamage || 14) : (w && w.damage) || this.punchDamage || 14;
-    if (blow === 'shot' || blow === 'blade') t.lethalHit = true;
+    // (Rhys's sheet: the tranquilliser pistol, the stun carbine) a non-lethal round knocks out, as a fist does
+    const sleeper = blow === 'shot' && w && w.nonLethal;
+    if ((blow === 'shot' && !sleeper) || blow === 'blade') t.lethalHit = true;
     // what it lost going through things on the way
     dmg *= (this.passKeep === undefined ? 1 : this.passKeep);
     // past its useful range a round arrives with far less behind it
@@ -444,7 +446,7 @@ export class Arsenal {
     // A headshot (Rhys): a round that arrives with real force - after range
     // falloff - kills outright; a weak one does triple. Blows to the head from
     // a fist, a pistol-whip or a rifle butt stay non-lethal.
-    const head = blow === 'shot' && reachesHead(t, point, dir);
+    const head = blow === 'shot' && !sleeper && reachesHead(t, point, dir);
     if (head) dmg = dmg >= HEADSHOT_KILL ? t.hp + 1 : dmg * 3;
     t.hp -= dmg;
     if (t.hp <= 0) { t.down = true; t.downAt = this.time; t.downBy = blow; t.headshot = head; this.events.push({ type: 'target', target: t, point, killed: true }); }

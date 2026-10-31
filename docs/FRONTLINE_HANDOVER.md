@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.24.0)
+# Frontline — Handover (M6.25.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,31 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.25.0 — the whole weapons sheet, and capturing weapons (Rhys: "Most new weapons are found/captured in the field. Some are from completing particular missions")
+- **All 84 weapons on Rhys's sheet are in the game** (`docs/Frontline_Weapons.xlsx` -> `tools/import_weapons.py` ->
+  `src/sim/arms/sheet.js`, which says not to edit it by hand; `loadout.js` adds them to ITEMS). Those already in by hand
+  (the class kit: PX-19, HLP-2, V-19P, IM-8S, HAS-L3, KD-MR3, VX-40, RV-357, V-27C) keep their tuning. The top of the
+  importer says how each column becomes the game's figures. Each entry keeps its maker, nickname, sheet family
+  (`kind`) and role (shown as its trait).
+- **Unlocks**: the sheet's *Standard* weapons (61) are `unlock: 'field'` - found or captured; its *Unlock* weapons (23:
+  energy weapons, anti-materiel rifles, the HMG, the specials) are `unlock: 'mission'` - **which mission gives which
+  is Rhys's to say** (none are earnable yet).
+- **Who carries what** (`src/sim/arms/issue.js`): each side buys from its own makers - reds: Ironmark, Blackridge,
+  Northstar; yellows: Kestrel, Rook & Vale; the Front: Veyra, Palisade. A guard's way of fighting (carbine, pistol,
+  marksman, dmr, smg, lmg) picks the kind; his id picks which, steadily. Special weapons keep their part (the
+  hotel's BR-12 breacher, the Yellow boss's revolver, the classes' kit, launchers, the HMG). `Guard.item` is what he
+  carries and drops.
+- **Bringing them home**: a weapon you take from a downed guard (`m.taken`) and bring out of a mission that did not
+  fail is added to the slot's **armoury** (`Saves.addArmoury`, `frontline.armoury.<slot>`, carried in saves and codes,
+  erased with the slot); the debrief lists *Weapons captured*. **Logistics and the Quartermaster** hand out every
+  hand-made item and only those sheet weapons the run has brought home.
+- **Non-lethal rounds**: the PA-9T tranquilliser pistol and KD-NL2 stun carbine (sheet damage 0) knock a man out,
+  as fists do - never a kill, not even in the head (`nonLethal`).
+- The crate's Primary/Secondary tabs go by the slot a weapon takes, so energy weapons and PDWs now appear.
+- Still to come: the VD-EMP's pulse (it fires, but shuts nothing down yet); attachments per weapon (the sheet's
+  Legend: still to decide); weapon models beyond the four Quaternius ones.
+- `test/arsenal.test.mjs`.
 
 ## M6.24.0 — each save slot is its own run (Rhys)
 - **Trophies are per slot** (`core/trophies.js`): kept under `frontline.trophies.<slot>`, earned into the slot this tab

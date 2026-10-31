@@ -18,6 +18,7 @@ import { pickFoe, hostileToYou, Standing, YELLOW_TALK, YellowJob, vaultWhere, LO
 import { spokenVoice } from '../core/spoken.js';
 import { inTrain, inCoach, nearestSeat, FLOOR as FLOOR_Y, HIJACK, HIJACK_TALK, STAFF_TALK, NEWSPAPER, RUN as TRAIN_RUN } from './train.js';
 import * as Trophies from '../core/trophies.js';
+import * as Saves from '../core/saves.js';
 
 
 const RED = [1.9, 0.72, 0.66];          // the reds' uniform: the field kit, tinted
@@ -1208,7 +1209,7 @@ export function setupMission(ctx) {
           // dead in the helicopter's door, his gun goes with him; anywhere
           // else it falls to the floor under where it left his hand
           const inHeli = capRun && g === capRun.g && capRun.stage === 'aboard';
-          if (!inHeli && g.arms.item) dropAt(g.arms.item, g.arms.model, groundBelow(level.world, [g.pos[0] + side[0], g.pos[1], g.pos[2] + side[1]]), Math.max(0, g.ammo || 0) + g.arms.mag);
+          if (!inHeli && g.item) dropAt(g.item, (ITEMS[g.item] && ITEMS[g.item].model) || g.arms.model, groundBelow(level.world, [g.pos[0] + side[0], g.pos[1], g.pos[2] + side[1]]), Math.max(0, g.ammo || 0) + g.arms.mag);
         }
         if (g.dead && !g.counted) {
           g.counted = true;
@@ -1807,6 +1808,9 @@ export function setupMission(ctx) {
       const all = L0 ? m.trophies() : B ? [] : level.trainRun ? [] : level.draft ? clearTrophies(m, targets, level.draft, level.title, level.spec.place || 'the ' + level.title, 'enemy') : level.factory ? factoryTrophies(m, guards) : level.casino ? casinoTrophies(m, targets) : hotelTrophies(m, hostages, guards.length);
       const fresh = Trophies.earn(all);
       const isNew = new Set(fresh.map((x) => x.id));
+      // the enemy's weapons you took and brought out (not when it failed): yours from now on, at Logistics
+      const taken = [...(m.taken || [])].map(baseId).filter((id) => ITEMS[id] && ITEMS[id].sheet);
+      const homeNew = m.result === 'failed' ? [] : Saves.addArmoury(Saves.currentSlot(), taken);
       const t = Math.floor(m.time), mm = Math.floor(t / 60), ss = String(t % 60).padStart(2, '0');
       const tick = (b) => b ? '<b class="ok">&#10003;</b>' : '<b class="no">&#10007;</b>';
       const row = (k, v) => '<div>' + k + ' <b>' + v + '</b></div>';
@@ -1833,6 +1837,8 @@ export function setupMission(ctx) {
         (m.kills ? row('Headshots', m.headshots + ' of ' + m.kills) : '') +
         row('Favourite weapon', favName) +
         row('Doors breached', m.breaches) +
+        (homeNew.length ? row('Weapons captured', homeNew.map((id) => ITEMS[id].name).join(', ') + ' &mdash; at Logistics in Ghost HQ') : '') +
+        (taken.length && m.result === 'failed' ? row('Weapons captured', 'none brought home') : '') +
         (hostages.length ? row('Hostages rescued', rescued() + ' of ' + hostages.length) : '') +
         (level.intel && level.intel.length ? row('Intel found', level.intel.filter((q) => q.found).length + ' of ' + level.intel.length) : '') +
         // (Rhys: he could not find them all) where the rest were -

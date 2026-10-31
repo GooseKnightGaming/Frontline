@@ -52,7 +52,7 @@ import { SEAT } from '../sim/people/guard.js';
 import { quickKey, Arsenal, WEAPONS } from '../sim/arms/weapons.js';
 import { scopeKind } from './draw/weapons_view.js';
 import { scopeSvg } from './draw/scope.js';
-import { Loadout, ITEMS, MODS, AMMO, SLOTS, SLOT_KEY, fits, modFits, loadEffect, itemWeight, CLASSES, classById, classAllows, ROUND_KG, statsOf, itemKind, withTags, cratePrompt } from '../sim/arms/loadout.js';
+import { Loadout, ITEMS, FAMILIES, MODS, AMMO, SLOTS, SLOT_KEY, fits, modFits, loadEffect, itemWeight, CLASSES, classById, classAllows, ROUND_KG, statsOf, itemKind, withTags, cratePrompt } from '../sim/arms/loadout.js';
 import * as Saves from './core/saves.js';
 import { recordOutcome } from '../sim/play/story.js';
 import { Course, movementSteps, weaponsSteps } from '../sim/play/course.js';
@@ -70,7 +70,7 @@ import { DoorMove } from '../sim/world/doors.js';
 import { kickOpens } from '../sim/play/mission.js';
 import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './core/input.js';
 
-const VERSION = 'M6.24.0';
+const VERSION = 'M6.25.0';
 const $ = (id) => document.getElementById(id);
 const TEST = /[?&]test\b/.test(location.search);
 // Level 0, the training mission, is its own page load: index.html?level=0
@@ -368,11 +368,17 @@ function boot() {
     }
     return best;
   }
-  // Everything the Quartermaster can hand out. Until unlocking exists, that
-  // is every weapon, piece of gear, mod and kind of ammunition in the game.
+  // Everything the Quartermaster (and Logistics) can hand out: every weapon, piece of gear,
+  // mod and kind of ammunition - except Rhys's sheet weapons this run has not yet brought
+  // home (captured in the field, or earned from a mission: Saves.loadArmoury).
+  const gunSize = (id) => {
+    const it = ITEMS[id], f = it && FAMILIES[it.family];
+    return f && (f.kind === 'gun' || f.kind === 'melee') ? (it.size || f.size) : null;
+  };
   const QM_TABS = [
-    ['primary', 'Primary', (id) => ITEMS[id] && ['rifle', 'smg', 'sniper', 'shotgun', 'launcher', 'mg'].includes(ITEMS[id].family)],
-    ['secondary', 'Secondary', (id) => ITEMS[id] && ['pistol', 'revolver', 'knife'].includes(ITEMS[id].family)],
+    // by the slot a weapon takes (a PDW or a laser pistol is a secondary; a big pistol may be a primary)
+    ['primary', 'Primary', (id) => gunSize(id) === 'primary'],
+    ['secondary', 'Secondary', (id) => gunSize(id) === 'backup'],
     ['utility', 'Utility', (id) => ITEMS[id] && ['grenade', 'charge', 'aid'].includes(ITEMS[id].family)],
     ['gear', 'Gear', (id) => ITEMS[id] && ITEMS[id].family === 'gear'],
     ['mods', 'Mods', (id) => !!MODS[id]],
@@ -380,7 +386,8 @@ function boot() {
   ];
   let qmTab = 'primary';
   function unlocked() {
-    return Object.keys(ITEMS).concat(Object.keys(MODS), Object.keys(AMMO));
+    const home = new Set(Saves.loadArmoury(slotNo));
+    return Object.keys(ITEMS).filter((id) => !ITEMS[id].sheet || home.has(id)).concat(Object.keys(MODS), Object.keys(AMMO));
   }
   function showCrate(c) {
     openCrate = c;
@@ -573,7 +580,7 @@ function boot() {
   // ── title screen and saved games ─────────────────────────────────────────
   let slotNo = Saves.currentSlot(), playtime = 0;
   // story: how each mission ended, kept per slot (Saves.loadStory)
-  const gameState = () => ({ name: 'Operative', playtime, score, story: Saves.loadStory(slotNo), trophies: Trophies.raw(slotNo),
+  const gameState = () => ({ name: 'Operative', playtime, score, story: Saves.loadStory(slotNo), trophies: Trophies.raw(slotNo), armoury: Saves.loadArmoury(slotNo),
     loadout, found: Object.keys(arsenal.owned), place: player.pos.slice(), yaw: input.yaw,
     course: course && !course.done ? { part: course.part || 'full', at: course.at } : null });
   function applySave(s) {
@@ -581,6 +588,7 @@ function boot() {
     // a save (or a transfer code) brings its story with it
     if (s.story && !Saves.loadStory(slotNo)) Saves.saveStory(slotNo, s.story);
     if (s.trophies && !Trophies.earned(slotNo).length) Trophies.restore(slotNo, s.trophies);
+    if (s.armoury && !Saves.loadArmoury(slotNo).length) Saves.saveArmoury(slotNo, s.armoury);
     for (const k of Object.keys(s.loadout.slots || {})) loadout.put(k, s.loadout.slots[k], (s.loadout.mods || {})[k]);
     arsenal.reset(loadout);
     score = s.score || 0; playtime = s.playtime || 0;
@@ -597,11 +605,12 @@ function boot() {
     if (ON_MISSION) return;          // a mission is not saved part-way: it runs start to finish
     if (n !== undefined && n !== slotNo) {
       // saving this run into another slot: its story and trophies go with it
-      const story = Saves.loadStory(slotNo), have = Trophies.raw(slotNo);
+      const story = Saves.loadStory(slotNo), have = Trophies.raw(slotNo), arms = Saves.loadArmoury(slotNo);
       slotNo = n;
       Saves.clearSlot(n);
       if (story) Saves.saveStory(n, story);
       Trophies.restore(n, have);
+      Saves.saveArmoury(n, arms);
     }
     Saves.setCurrentSlot(slotNo);
     Saves.saveSlot(slotNo, Saves.snapshot(gameState()));
@@ -684,6 +693,7 @@ function boot() {
     Saves.clearSlot(slotNo);                 // the run that was in this slot gives way to the code's
     Saves.saveStory(slotNo, r.data.story || null);
     Trophies.restore(slotNo, r.data.trophies || {});
+    Saves.saveArmoury(slotNo, r.data.armoury || []);
     Saves.saveSlot(slotNo, r.data);
     applySave(r.data);
     drawSlots();

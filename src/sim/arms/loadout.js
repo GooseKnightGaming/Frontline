@@ -18,6 +18,8 @@ export const SLOT_TAKES = {
 };
 export const SLOT_KEY = { 1: 'primary', 2: 'backup', 3: 'utility1', 4: 'utility2', 5: 'gear' };
 
+import { SHEET } from './sheet.js';
+
 // ── families: shared behaviour, different numbers ──────────────────────────
 export const FAMILIES = {
   knife:   { kg: 0.4, kind: 'melee', size: 'backup', label: 'Blade' },
@@ -214,6 +216,9 @@ export const ITEMS = {
   CUSHION:  { name: 'Cushioned Landing', family: 'perk', fallMul: 0.3, note: 'Falls hurt far less.' },
   DEMOKIT:  { name: 'Demolition Kit', kg: 1.5, family: 'gear', blastBonus: 0.3, note: 'Your charges do more, and arm faster.' },
 };
+// Rhys's weapons sheet (sheet.js, written from docs/Frontline_Weapons.xlsx): every weapon on it
+// joins the catalogue - except those already here by hand (the class kit), which keep their tuning
+for (const [id, it] of Object.entries(SHEET)) if (!ITEMS[id]) ITEMS[id] = it;
 
 // Ammunition: not carried in a slot, taken from a crate straight into reserve.
 // (Rhys: "carried ammo ... should have weight") kilograms a round - real

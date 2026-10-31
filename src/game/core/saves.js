@@ -25,6 +25,8 @@ export function snapshot(g) {
     story: g.story ? JSON.parse(JSON.stringify(g.story)) : null,
     // and the trophies this run has earned (core/trophies.js)
     trophies: g.trophies ? JSON.parse(JSON.stringify(g.trophies)) : null,
+    // and the weapons this run has brought home (loadArmoury)
+    armoury: g.armoury ? g.armoury.slice() : null,
   };
 }
 
@@ -43,7 +45,7 @@ export function saveSlot(n, data) {
 export function loadSlot(n) { return listSlots()[n]; }
 // erasing a slot ends its run: the save, its story and its trophies
 export function clearSlot(n) {
-  try { for (const k of [KEY(n), STORY(n), TROPHIES(n)]) localStorage.removeItem(k); return true; } catch (e) { return false; }
+  try { for (const k of [KEY(n), STORY(n), TROPHIES(n), ARMOURY(n)]) localStorage.removeItem(k); return true; } catch (e) { return false; }
 }
 // the first slot with no run in it, or -1
 export function freeSlot() {
@@ -138,5 +140,17 @@ export function currentSlot() {
 const STORY = (n) => 'frontline.story.' + n;
 // and its trophies (core/trophies.js reads and writes them)
 export const TROPHIES = (n) => 'frontline.trophies.' + n;
+// The weapons a run has brought home (Rhys: "Most new weapons are found/captured in the
+// field. Some are from completing particular missions") - at Logistics and the
+// Quartermaster from then on. Kept per slot, like the story: a mission page writes it.
+const ARMOURY = (n) => 'frontline.armoury.' + n;
+export function loadArmoury(n) { try { return JSON.parse(localStorage.getItem(ARMOURY(n)) || '[]') || []; } catch (e) { return []; } }
+export function saveArmoury(n, ids) { try { localStorage.setItem(ARMOURY(n), JSON.stringify(ids || [])); return true; } catch (e) { return false; } }
+// add some; returns only those that are new to this run
+export function addArmoury(n, ids) {
+  const have = loadArmoury(n), fresh = (ids || []).filter((id, i, a) => !have.includes(id) && a.indexOf(id) === i);
+  if (fresh.length) saveArmoury(n, have.concat(fresh));
+  return fresh;
+}
 export function loadStory(n) { try { return JSON.parse(localStorage.getItem(STORY(n)) || 'null'); } catch (e) { return null; } }
 export function saveStory(n, story) { try { localStorage.setItem(STORY(n), JSON.stringify(story)); return true; } catch (e) { return false; } }

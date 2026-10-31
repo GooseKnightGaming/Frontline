@@ -109,6 +109,13 @@ catwalk, a parkour lane, a pool with a dive tower, a drop test, a penetration bo
 thin wall, toughened, bulletproof), a vehicle dock, a perimeter gangway with
 seven ladders, a watchtower, hangar doors with friendly security turrets.
 
+**The arsenal.** Rhys's weapons sheet (`docs/Frontline_Weapons.xlsx`, 84 weapons from
+ten makers) is in the game through `tools/import_weapons.py`, which writes
+`src/sim/arms/sheet.js`. Each side's guards carry their own makers' weapons
+(`src/sim/arms/issue.js`); take one from a downed guard, bring it home, and it is
+yours at Logistics and the Quartermaster (per save slot). The sheet's specials are
+to be mission rewards.
+
 **Ghost HQ** (`src/game/levels/hq.js`), under Yard 7. A bunker hut in the
 yard's south-west, west of the Quartermaster's ammo dump, with three flights
 of stairs down 12 m to the operations hall: the **operations table** (E: your

@@ -29,6 +29,11 @@ const REAL_LENGTH = { KNIFE: 0.30, PISTOL: 0.22, RIFLE: 0.72, SNIPER: 1.05, GREN
   SERVICE: 0.11, CONCUSS: 0.11, INCEND: 0.12, NERVE: 0.12, AIRINC: 0.13, AIRFLARE: 0.13, LANDMINE: 0.3, AIDPACK: 0.2, REPAIRKIT: 0.3 };
 // the catalogue ids are held the same way as the originals
 for (const [id, like] of LIKE) if (!HOLD[id]) HOLD[id] = HOLD[like];
+// Rhys's weapons sheet: each held like its kind, at its own length (sim/arms/sheet.js)
+for (const [id, it] of Object.entries(ITEMS)) {
+  if (it.like && !HOLD[id]) HOLD[id] = HOLD[it.like];
+  if (it.length && !REAL_LENGTH[id]) REAL_LENGTH[id] = it.length;
+}
 
 // Measure a loaded model in its own units, so it can be scaled to metres and
 // turned the right way round: these packs do not agree on units or on which

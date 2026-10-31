@@ -63,8 +63,9 @@ what has been earned — weapons, gear, mods and outfits.
 
 How weapons are earned (Rhys, 31 Oct 2026): **most new weapons are found or
 captured in the field** - picked up on a mission and kept once you get home;
-**some come from completing particular missions**. Which is which is still to
-be decided (Rhys will say).
+**some come from completing particular missions**. Done in M6.25.0: the sheet's
+Standard weapons are carried by the enemy and kept once brought home; its Unlock
+weapons are mission rewards - **which mission gives which: Rhys to say**.
 
 ## Factions: told apart by uniform (Rhys, M6.3.0)
 The red uniforms are right for Level 0 — a trainee must be able to tell. On
@@ -863,7 +864,7 @@ Built with the level kit (src/game/levels/kit.js), a spec each in src/game/level
    **ammunition and mod weight, Rhys's seven classes (quick-select presets with a Special each), their kit** - M6.20.9.
    The class weapons as Rhys's weapons sheet has them, and energy weapons (heat) - M6.20.10. Rhys's notes on them
    (a class on every fall in battle, retreat, classes for everyone, restricted lists, fire, ammo dumping) - M6.20.11. The rest of the sheet
-   (85 weapons, ten makers) to come in, with unlocks, once Yard 7 has them.
+   (84 weapons, ten makers) - in, M6.25.0: captured in the field, or (to assign) from missions.
    Characters (B(ii): one signature item or trick each) - Rhys to draft, later.
 Then the **hub map** (Rhys: after the levels exist) - each level a place you find in it. Rhys (M6.20.8):
 Yard 7 is Ghost HQ - an underground laboratory and command centre (the briefing room, the trophy cabinet),

@@ -98,7 +98,7 @@ T('the Fortress\'s guns: light and heavy machine guns, rockets that burst where 
   const F = DRAFTS.find((d) => d.id === 'fortress');
   A(['lmg', 'hmg', 'rocket'].every((a) => F.guards.some((g) => g.arms === a)), 'the Fortress has not all three');
   const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
-  A(/arsenal\.detonate\(\{ id: 'ROCKET', pos: at \}, player\)/.test(rt) && /if \(!inHeli && g\.arms\.item\) dropAt/.test(rt), 'rockets do not burst, or an HMG man drops nothing gracefully');
+  A(/arsenal\.detonate\(\{ id: 'ROCKET', pos: at \}, player\)/.test(rt) && /if \(!inHeli && g\.item\) dropAt/.test(rt), 'rockets do not burst, or an HMG man drops nothing gracefully');
 });
 T('the Drop: you start in the air, a parachute in your gear; the way out is the helicopter pad', () => {
   const d = DRAFTS.find((q) => q.id === 'drop'), L = buildKitLevel(d);
