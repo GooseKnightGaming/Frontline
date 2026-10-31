@@ -209,6 +209,10 @@
   #cctv .cctv-help { position: absolute; left: 50%; bottom: 40px; transform: translateX(-50%); color: #d8f5d0; font: 13px monospace; background: rgba(0,0,0,0.5); padding: 4px 10px; }
   .set.pick { outline: 1px solid #e8b423; outline-offset: 3px; }
   #loading { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; letter-spacing: 6px; color: var(--dim); z-index: 40; background: #000; }
+  #assign .card { max-height: 92vh; overflow-y: auto; }
+  .ride { margin: 4px 0 10px; display: flex; align-items: center; gap: 8px; }
+  .ride .ride-btn { width: auto; flex: 1; margin: 0; padding: 6px 10px; }
+  .ride-btn.on { background: #e8b423; color: #111; }
 </style>
 </head>
 <body>
@@ -262,7 +266,7 @@
     <p><b>Getting out</b> &mdash; back to the van, with the file.</p>
     <p class="brief-note">This is a training mission: hints will appear as you go. The guards see, hear, come looking &mdash; and shoot. Stay out of sight, or stay behind something.</p>
     <button class="btn primary" id="b-begin">Begin</button>
-    <button class="btn" id="b-yard">Back to Yard 7</button>
+    <button class="btn" id="b-yard">Back to Ghost HQ</button>
   </div>
 </div>
 <div id="mend" class="overlay">
@@ -280,7 +284,7 @@
       <div id="mend-trophies"></div>
     </div>
     <button class="btn" id="mend-page" style="display:none"></button>
-    <button class="btn primary" id="mend-yard">Back to Yard 7</button>
+    <button class="btn primary" id="mend-yard">Back to Ghost HQ</button>
     <button class="btn" id="mend-again">Play again</button>
   </div>
 </div>
@@ -291,13 +295,7 @@
       <button class="btn primary" id="t-continue">Continue</button>
       <button class="btn primary" id="t-new">New game</button>
       <button class="btn" id="t-weapons">Weapons training only</button>
-      <button class="btn" id="t-fresh">Skip to Yard 7</button>
-      <button class="btn" id="t-mission">Level 0: Training Mission</button>
-      <button class="btn" id="t-hotel">Level 1: Riverside Hotel (being built)</button>
-      <button class="btn" id="t-factory">Level 2: Derelict Factory</button>
-      <button class="btn" id="t-casino">Level 3: Casino</button>
-      <button class="btn" id="t-train">Level 4: The Night Train</button>
-      <button class="btn" id="t-drafts">Levels 5 onward (first drafts)</button>
+      <button class="btn" id="t-fresh">Skip to Ghost HQ</button>
       <button class="btn" id="t-credits">Credits</button>
       <button class="btn" id="t-load">Saved games</button>
       <button class="btn" id="t-settings">Settings</button>
@@ -306,6 +304,24 @@
     </div>
     <img id="t-gk" onerror="if(!this.dataset.r){this.dataset.r=1;this.src=this.src.split('?')[0]+'?r='+Date.now()}" src="assets/ui/gooseknight.png" alt="GooseKnight">
     <div class="credit">GooseKnight &middot; music, voices, models and sounds by others: see Credits &middot; <span id="ver2"></span></div>
+  </div>
+</div>
+
+<!-- Ghost HQ's operations table (E): every assignment, and how you go -->
+<div id="assign" class="overlay">
+  <div class="card brief-card credits-card">
+    <h2>ASSIGNMENTS</h2>
+    <p class="brief-where">Ghost HQ &middot; Operations. Choose where you go next.</p>
+    <div class="ride"><span>Going by:</span> <button class="btn ride-btn" id="ride-van">Van</button> <button class="btn ride-btn" id="ride-heli">Helicopter</button></div>
+    <div class="tmenu">
+        <button class="btn" id="t-mission">Level 0: Training Mission</button>
+        <button class="btn" id="t-hotel">Level 1: Riverside Hotel (being built)</button>
+        <button class="btn" id="t-factory">Level 2: Derelict Factory</button>
+        <button class="btn" id="t-casino">Level 3: Casino</button>
+        <button class="btn" id="t-train">Level 4: The Night Train</button>
+        <button class="btn" id="t-drafts">Levels 5 onward (first drafts)</button>
+    </div>
+    <button class="btn" id="assign-back">Back to HQ</button>
   </div>
 </div>
 

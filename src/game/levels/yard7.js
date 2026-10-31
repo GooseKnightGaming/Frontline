@@ -1,7 +1,8 @@
 // FRONTLINE - Ghost Training Facility, "Yard 7".
 // A grey-boxed container yard for learning to move: vault lane, climb wall,
 // crouch duct, stairs and catwalk, a dive tower over a deep pool, drop
-// platforms, and a weapons range that stays locked until there are weapons.
+// platforms; the training course and the ranges beneath its west side; and
+// Ghost HQ beneath its south side (hq.js), down the stairs behind where you start.
 //
 // Each piece is both a collider (sim) and a visual (render), so what you see
 // is exactly what you stand on.
@@ -13,6 +14,7 @@ import { buildTutorial } from './course.js';
 import { buildWeapons } from './ranges.js';
 import { hangDoors } from '../../sim/world/doors.js';
 import { drawLadder } from '../draw/ladders.js';
+import { buildHQ, hqGround } from './hq.js';
 
 export const CONTAINER = { w20: 6.06, w40: 12.19, h: 2.59, d: 2.44 };
 
@@ -57,7 +59,7 @@ export function buildTraining() {
   // ── Ground, with a hole for the pool ─────────────────────────────────────
   const E = 60;                     // yard half-size
   const pool = { x0: 20, x1: 40, z0: -30, z1: -10, floor: -5, surface: -0.35 };
-  box([-E, -6, -E], [pool.x0, 0, E], 'concrete');               // west of pool
+  hqGround(box, E, pool.x0);                                    // west of pool, round the stairs down to Ghost HQ
   box([pool.x1, -6, -E], [E, 0, E], 'concrete');                // east of pool
   box([pool.x0, -6, -E], [pool.x1, 0, pool.z0], 'concrete');     // north of pool
   box([pool.x0, -6, pool.z1], [pool.x1, 0, E], 'concrete');      // south of pool
@@ -590,6 +592,8 @@ export function buildTraining() {
   // the training course runs west of the yard and lets out into it
   buildTutorial(level);
   buildWeapons(level);
+  // Ghost HQ, under the yard behind where you start
+  buildHQ(level);
   // (Rhys: "Back to the start of this section" in Weapons Training put
   // him on the range's roof - it had its own spot, from before the course went
   // underground) where each part of the course starts: one place, for the

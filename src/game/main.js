@@ -70,7 +70,7 @@ import { DoorMove } from '../sim/world/doors.js';
 import { kickOpens } from '../sim/play/mission.js';
 import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './core/input.js';
 
-const VERSION = 'M6.22.0';
+const VERSION = 'M6.23.0';
 const $ = (id) => document.getElementById(id);
 const TEST = /[?&]test\b/.test(location.search);
 // Level 0, the training mission, is its own page load: index.html?level=0
@@ -92,7 +92,9 @@ const goTrain = () => { location.href = 'index.html?level=4' + (TEST ? '&test' :
 const goCasino = () => { location.href = 'index.html?level=3' + (TEST ? '&test' : ''); };
 const goFactory = () => { location.href = 'index.html?level=2' + (TEST ? '&test' : ''); };
 const goHotel = () => { location.href = 'index.html?level=1' + (TEST ? '&test' : ''); };
-const goYard = () => { location.href = 'index.html' + (TEST ? '?test' : ''); };
+// back from a level: to Ghost HQ, under Yard 7 (index.html?at=hq puts you in its hall)
+const AT_HQ = /[?&]at=hq\b/.test(location.search);
+const goYard = () => { location.href = 'index.html?at=hq' + (TEST ? '&test' : ''); };
 const goMission = () => { location.href = 'index.html?level=0' + (TEST ? '&test' : ''); };
 
 function boot() {
@@ -677,9 +679,24 @@ function boot() {
     const list = $('drafts-list');
     list.innerHTML = DRAFTS.map((d) => '<button class="btn" data-id="' + d.id + '">Level ' + d.no + ': ' + d.title + '</button>').join('');
     list.querySelectorAll('button').forEach((b) => { b.onclick = () => { saveNow(); goDraft(b.dataset.id); }; });
-    $('t-drafts').onclick = () => { show('title', false); show('drafts', true); };
-    $('drafts-back').onclick = () => { show('drafts', false); show('title', true); };
+    $('t-drafts').onclick = () => { show('assign', false); show('drafts', true); };
+    $('drafts-back').onclick = () => { show('drafts', false); show('assign', true); };
   }
+  // ── Ghost HQ: the assignments at the operations table, and how you go ─────
+  // (the level buttons live here, not on the title screen: you choose your next
+  // assignment in the HQ). The van or the helicopter is remembered for now; the
+  // levels will start you out of it.
+  const RIDE_KEY = 'frontline.ride';
+  const ride = () => { try { return localStorage.getItem(RIDE_KEY) === 'heli' ? 'heli' : 'van'; } catch (e) { return 'van'; } };
+  const drawRide = () => { $('ride-van').classList.toggle('on', ride() === 'van'); $('ride-heli').classList.toggle('on', ride() === 'heli'); };
+  for (const r of ['van', 'heli']) $('ride-' + r).onclick = () => { try { localStorage.setItem(RIDE_KEY, r); } catch (e) { /* private window */ } drawRide(); };
+  function openAssignments() {
+    S.menu = true;
+    if (document.pointerLockElement) document.exitPointerLock();
+    drawRide();
+    show('assign', true);
+  }
+  $('assign-back').onclick = () => { show('assign', false); deploy(); };
   // ── credits ─────────────────────────────────────────────────────────────────
   // the credits: everyone whose work is in the game (a licence condition, and fair)
   $('t-credits').onclick = () => { show('title', false); show('credits', true); };
@@ -697,7 +714,7 @@ function boot() {
       <p><b>How it ends</b> &mdash; at the Ghost jeep, however it went. A hostage lost or the captain escaped does not end the mission: it changes what comes after, and Ghost will remember. Once nothing more can be done, reaching the jeep ends it; before then, hold E at the jeep to withdraw. Only your own death fails it outright.</p>
       <p><b>Intel</b> &mdash; papers left about the rooms say more about who is here and why. None of it is needed; all of it may matter later.</p>
       <button class="btn primary" id="b-begin">Begin</button>
-      <button class="btn" id="b-yard">Back to Yard 7</button>`;
+      <button class="btn" id="b-yard">Back to Ghost HQ</button>`;
   }
   if (FACTORY) {
     document.querySelector('#briefing .brief-card').innerHTML = `
@@ -710,7 +727,7 @@ function boot() {
       <p><b>How it ends</b> &mdash; at your way in, however it went: once the last yellow is down, reaching it ends the mission; before then, hold E there to withdraw. Only your own death fails it outright.</p>
       <p class="brief-note">Drawn by Rhys as a battle map - two sides, reserves and a ten-minute timer. That mode is still to come; for now, it is a mission.</p>
       <button class="btn primary" id="b-begin">Begin</button>
-      <button class="btn" id="b-yard">Back to Yard 7</button>`;
+      <button class="btn" id="b-yard">Back to Ghost HQ</button>`;
   }
   if (TRAIN) {
     document.querySelector('#briefing .brief-card').innerHTML = `
@@ -721,7 +738,7 @@ function boot() {
       <p><b>What to do</b> &mdash; find your platform on the departures board (the signs are in Severian - Cyrillic - with English beneath), show your ticket at the gate, and board. Coach 3 is yours. The train leaves at 21:40 by the station clock, with you or without you; aboard early, take your seat and wait.</p>
       <p class="brief-note">Also aboard tonight, in first class: the Minister for Belyagorsk Province, Tamash Dravets. Belyagorsk - Alyejka Azvestya is about eighteen minutes from 21:40.</p>
       <button class="btn primary" id="b-begin">Begin</button>
-      <button class="btn" id="b-yard">Back to Yard 7</button>`;
+      <button class="btn" id="b-yard">Back to Ghost HQ</button>`;
   }
   if (CASINO) {
     document.querySelector('#briefing .brief-card').innerHTML = `
@@ -735,13 +752,13 @@ function boot() {
       <p><b>Doors</b> &mdash; reinforced doors take a breaching charge (C5) or a breaching shotgun. The security post on the ramp has a terminal: hack it to open the vault's own doors.</p>
       <p class="brief-note">Built from Rhys's preliminary map: its layout, so it can be walked and marked up. The story and the guards are placeholders until the map's Info and Guards tabs are filled in.</p>
       <button class="btn primary" id="b-begin">Begin</button>
-      <button class="btn" id="b-yard">Back to Yard 7</button>`;
+      <button class="btn" id="b-yard">Back to Ghost HQ</button>`;
   }
   if (DRAFT) {
     document.querySelector('#briefing .brief-card').innerHTML = '<h2>LEVEL ' + DRAFT.no + ' &middot; ' + DRAFT.title.toUpperCase() + '</h2>' +
       '<p class="brief-where">' + DRAFT.where + '</p>' + DRAFT.brief.map(([k, v]) => '<p><b>' + k + '</b> &mdash; ' + v + '</p>').join('') +
       '<p class="brief-note">A first draft, to play and mark up: the place, who is in it and what to do may all change with Rhys\'s notes.</p>' +
-      '<button class="btn primary" id="b-begin">Begin</button><button class="btn" id="b-yard">Back to Yard 7</button>';
+      '<button class="btn primary" id="b-begin">Begin</button><button class="btn" id="b-yard">Back to Ghost HQ</button>';
   }
   // ── loadout and classes before a mission; the class pick in battle ──────────
   // (Rhys: "choose your loadout from your available weapons before
@@ -933,7 +950,7 @@ function boot() {
     const lockedTip = lockedFor(ldoor);
     const vn = !player.driving && vehicleNear();
     const mp = (player.driving ? (player.driving.kind === 'boat' ? 'Boat' : 'Driving') + '  ' + player.driving.kmh + ' km/h' + (player.driving.wrecked ? '  -  WRECKED' : '') + '   -   W/S throttle, A/D steer, SPACE brake, E to get out' : null) ||
-      (vn ? (vn.kind === 'boat' ? 'E  Take the helm' : 'E  Get in and drive') : null) || (missionRt && missionRt.prompt()) || (atConsole ? 'E  Watch the CCTV cameras' : null) || keyTip() || intelTip() || noteTip() || safeTip() || stopTip() || liftTip() || lockedTip || chargeTip();
+      (vn ? (vn.kind === 'boat' ? 'E  Take the helm' : 'E  Get in and drive') : null) || (missionRt && missionRt.prompt()) || (atConsole ? 'E  Watch the CCTV cameras' : null) || hqTip() || keyTip() || intelTip() || noteTip() || safeTip() || stopTip() || liftTip() || lockedTip || chargeTip();
     if (S.visionMsg > 0) S.visionMsg -= 1 / 60;
     S.repackShown = false;                  // set below if repacking is what E would do now
     drawSafeUi();
@@ -1324,6 +1341,31 @@ function boot() {
       return true;
     }
     return false;
+  }
+
+  // ── Ghost HQ's stations ─────────────────────────────────────────
+  // At the operations table, E for your assignments; at the trophy cabinet, E
+  // to look at what you have earned. (Logistics is a crate, like the Quartermaster.)
+  function hqStation() {
+    const hq = level.hq;
+    if (!hq || ON_MISSION || S.cctv != null || Math.abs(player.pos[1] - hq.floor) > 1.5) return null;
+    const [ox, oz] = hq.ops, [tx, tz] = hq.trophies;
+    const dx = Math.max(0, Math.abs(player.pos[0] - ox) - 2.6), dz = Math.max(0, Math.abs(player.pos[2] - oz) - 1.5);
+    if (Math.hypot(dx, dz) < 1.3) return 'ops';
+    if (Math.abs(player.pos[0] - tx) < 6 && player.pos[2] - tz < 2) return 'trophies';
+    return null;
+  }
+  function hqTip() {
+    const at = hqStation();
+    return at === 'ops' ? 'E  Assignments' : at === 'trophies' ? 'E  The trophy cabinet' : null;
+  }
+  function hqUse() {
+    const at = hqStation();
+    if (!at) return false;
+    audio.confirm();
+    if (at === 'ops') openAssignments();
+    else { openMenu(); tab('trophies'); }
+    return true;
   }
 
   // ── the lift ────────────────────────────────────────────────────
@@ -1879,6 +1921,8 @@ function boot() {
           Math.hypot(level.courseEntry.pos[0] - player.pos[0], level.courseEntry.pos[2] - player.pos[2]) < 2.4) {
         audio.confirm();
         S.transport = { t: 0, moved: false, to: 'course' };
+      } else if (inp.interactPressed && hqUse()) {
+        // Ghost HQ: the operations table, the trophy cabinet
       } else if (inp.interactPressed && vehicleUse()) {
         // in at the wheel, or out
       } else if (inp.interactPressed && keyUse()) {
@@ -2211,7 +2255,7 @@ function boot() {
         show('mend', true);
       } });
     $('btn-respawn').textContent = 'Restart the mission';
-    $('btn-title').textContent = 'Leave the mission (back to Yard 7)';
+    $('btn-title').textContent = 'Leave the mission (back to Ghost HQ)';
     $('btn-save').style.display = 'none';
     document.body.classList.add('mission');
     if (!TEST) { show('briefing', true); S.menu = true; }
@@ -2248,10 +2292,21 @@ function boot() {
         show('mend', true);
       } });
     $('btn-respawn').textContent = 'Start again';
-    $('btn-title').textContent = 'Leave (back to Yard 7)';
+    $('btn-title').textContent = 'Leave (back to Ghost HQ)';
     $('btn-save').style.display = 'none';
     if (!TEST) { show('briefing', true); S.menu = true; }
-  } else if (!TEST) showTitle();
+  } else {
+    // back from a level: your save, moved to Ghost HQ's hall, so Continue carries on from there
+    if (AT_HQ && level.hq) {
+      const saved = Saves.listSlots()[slotNo];
+      if (saved) applySave(saved);
+      player.pos = level.hq.arrive.pos.slice(); player.vel = [0, 0, 0];
+      input.yaw = player.yaw = level.hq.arrive.yaw; input.pitch = 0;
+      saveNow();
+      try { history.replaceState(null, '', location.pathname + (TEST ? '?test' : '')); } catch (e) { /* file:// */ }
+    }
+    if (!TEST) showTitle();
+  }
 
   // ── test hooks (used by the automated browser tests) ────────────────────
   window.FL = {

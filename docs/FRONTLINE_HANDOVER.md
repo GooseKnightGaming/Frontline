@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.22.0)
+# Frontline — Handover (M6.23.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,23 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.23.0 — Ghost HQ, under Yard 7 (Rhys: "Yard 7 becomes Ghost HQ - an underground lab and command centre")
+- **`src/game/levels/hq.js`**: a bunker hut in the yard (x -42..-26, z 49..55, west of the ammo dump, its door well
+  back from the watchtower's ladder) and three switchback flights down 12 m to the operations hall (y -12, running
+  east under the yard). The plan is drawn in its own coordinates and mirrored/moved into the yard by `X()`/`Z()`.
+  `hqGround()` replaces the yard's one ground slab with four, leaving the stairwell's hole.
+- **The operations table**: E opens **Assignments** (`#assign` in index.html) - the level buttons that were on the
+  title screen (same ids), the first drafts, and *Going by: Van / Helicopter* (remembered in `frontline.ride`;
+  cosmetic until the levels start you out of it).
+- **The trophy cabinet**: E opens the pause menu's Trophies tab. **Logistics**: an infinite 'armoury' crate.
+  **Q Branch**: a bench and a sign, gadgets to come. **Helipad**: painted in the yard at (-46, 28).
+- **Coming back**: every "Back to ..." now reads *Back to Ghost HQ* and goes to `index.html?at=hq`: your save is
+  loaded, moved to the hall (`HQ.arrive`) and saved, so Continue on the title screen carries on from there.
+- The corner of the screen says *Ghost HQ* down there (world zones). `test/hq.test.mjs` walks a player down the
+  stairs into the hall and back up, and checks the buttons moved.
+- Weapons (Rhys): most new ones are found or captured in the field; some come from particular missions - which is
+  which, Rhys will say. Noted in FRONTLINE_ROADMAP.md.
 
 ## M6.22.0 — people drawn in code (Rhys: "I'd actually prefer the characters code-drawn rather than from asset-packs")
 - **Every person is drawn and animated in code** - you in third person, guards, hostages, passers-by. No more

@@ -109,8 +109,18 @@ catwalk, a parkour lane, a pool with a dive tower, a drop test, a penetration bo
 thin wall, toughened, bulletproof), a vehicle dock, a perimeter gangway with
 seven ladders, a watchtower, hangar doors with friendly security turrets.
 
+**Ghost HQ** (`src/game/levels/hq.js`), under Yard 7. A bunker hut in the
+yard's south-west, west of the Quartermaster's ammo dump, with three flights
+of stairs down 12 m to the operations hall: the **operations table** (E: your
+assignments - every level, and whether you go by van or helicopter), the
+**trophy cabinet** (E: what you have earned), **Logistics** (a counter that
+hands out anything unlocked, like the Quartermaster) and **Q Branch** (the
+inventor's bench; gadgets to come). A helipad is painted in the yard. The level
+buttons left the title screen for the operations table, and every "back"
+from a level now lands you in the hall (`index.html?at=hq`).
+
 **Level 0 — the training mission.** Its own page (`index.html?level=0`, or
-the title screen). An occupied office block, three floors, three ways in, a
+the operations table in Ghost HQ). An occupied office block, three floors, three ways in, a
 keycard, a reinforced server room, breaching (kick or charge) with bullet time,
 ten patrolling guards, hints, an end screen, and hidden trophies.
 
