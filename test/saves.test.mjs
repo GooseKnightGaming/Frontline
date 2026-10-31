@@ -65,6 +65,35 @@ T('the story travels with a save and its transfer code; each slot keeps its own 
   S.setCurrentSlot(2); A(S.currentSlot() === 2, 'the slot in play is not remembered');
   S.setCurrentSlot(9); A(S.currentSlot() === 0, 'a slot out of range was believed');
 });
+// ── each slot its own run ─────────────────────────────────────────────────
+{
+  const Tr = await import('../src/game/core/trophies.js');
+  for (const k of Object.keys(store)) delete store[k];
+  T('the old shared trophies move to slot 1, once', () => {
+    store['frontline.trophies.v1'] = JSON.stringify({ old_one: { name: 'Old', about: 'from before', at: 1 } });
+    A(Tr.earned(0).length === 1 && Tr.earned(0)[0].id === 'old_one', 'not moved to slot 1');
+    A(Tr.earned(1).length === 0 && !('frontline.trophies.v1' in store), 'shared set not cleared');
+  });
+  T('earning in one slot leaves the others alone', () => {
+    A(Tr.earn([{ id: 'a', name: 'A', about: 'a' }], 1).length === 1, 'not earned');
+    A(Tr.earn([{ id: 'a', name: 'A', about: 'a' }], 1).length === 0, 'earned twice');
+    A(Tr.earned(1).length === 1 && Tr.earned(2).length === 0 && Tr.earned(0).length === 1, 'leaked between slots');
+  });
+  T('a save carries its trophies, and a code with them', () => {
+    const snap = S.snapshot(Object.assign({}, game, { trophies: Tr.raw(1) }));
+    A(snap.trophies && snap.trophies.a, 'not in the save');
+    const back = S.importCode(S.exportCode(snap));
+    A(back.ok && back.data.trophies.a.name === 'A', 'lost in the code');
+    A(/1 trophies/.test(S.describe(snap).detail), 'not described: ' + S.describe(snap).detail);
+  });
+  T('erasing a slot ends its run: save, story and trophies', () => {
+    S.saveSlot(1, S.snapshot(game)); S.saveStory(1, { m0: 'done' });
+    A(S.freeSlot() === 2, 'free slot: ' + S.freeSlot());
+    S.clearSlot(1);
+    A(!S.loadSlot(1) && !S.loadStory(1) && Tr.earned(1).length === 0, 'something of the run is left');
+    A(S.freeSlot() === 1, 'free slot after erasing: ' + S.freeSlot());
+  });
+}
 console.log('\n' + '='.repeat(50));
 console.log(fails.length ? 'FAILURES (' + fails.length + ')' : 'ALL ' + pass + ' PASSED');
 process.exit(fails.length ? 1 : 0);

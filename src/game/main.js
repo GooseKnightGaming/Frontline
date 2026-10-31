@@ -70,7 +70,7 @@ import { DoorMove } from '../sim/world/doors.js';
 import { kickOpens } from '../sim/play/mission.js';
 import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './core/input.js';
 
-const VERSION = 'M6.23.0';
+const VERSION = 'M6.24.0';
 const $ = (id) => document.getElementById(id);
 const TEST = /[?&]test\b/.test(location.search);
 // Level 0, the training mission, is its own page load: index.html?level=0
@@ -573,13 +573,14 @@ function boot() {
   // ── title screen and saved games ─────────────────────────────────────────
   let slotNo = Saves.currentSlot(), playtime = 0;
   // story: how each mission ended, kept per slot (Saves.loadStory)
-  const gameState = () => ({ name: 'Operative', playtime, score, story: Saves.loadStory(slotNo),
+  const gameState = () => ({ name: 'Operative', playtime, score, story: Saves.loadStory(slotNo), trophies: Trophies.raw(slotNo),
     loadout, found: Object.keys(arsenal.owned), place: player.pos.slice(), yaw: input.yaw,
     course: course && !course.done ? { part: course.part || 'full', at: course.at } : null });
   function applySave(s) {
     if (!s) return false;
     // a save (or a transfer code) brings its story with it
     if (s.story && !Saves.loadStory(slotNo)) Saves.saveStory(slotNo, s.story);
+    if (s.trophies && !Trophies.earned(slotNo).length) Trophies.restore(slotNo, s.trophies);
     for (const k of Object.keys(s.loadout.slots || {})) loadout.put(k, s.loadout.slots[k], (s.loadout.mods || {})[k]);
     arsenal.reset(loadout);
     score = s.score || 0; playtime = s.playtime || 0;
@@ -594,7 +595,14 @@ function boot() {
   }
   function saveNow(n) {
     if (ON_MISSION) return;          // a mission is not saved part-way: it runs start to finish
-    if (n !== undefined) slotNo = n;
+    if (n !== undefined && n !== slotNo) {
+      // saving this run into another slot: its story and trophies go with it
+      const story = Saves.loadStory(slotNo), have = Trophies.raw(slotNo);
+      slotNo = n;
+      Saves.clearSlot(n);
+      if (story) Saves.saveStory(n, story);
+      Trophies.restore(n, have);
+    }
     Saves.setCurrentSlot(slotNo);
     Saves.saveSlot(slotNo, Saves.snapshot(gameState()));
   }
@@ -638,7 +646,18 @@ function boot() {
     if (i >= 0) { slotNo = i; Saves.setCurrentSlot(i); applySave(saved[i]); }
     deploy();
   };
-  $('t-new').onclick = () => { startCourse(); deploy(); };
+  // a new game is a new run, in a slot of its own: the first empty one (or, with
+  // all three in use, the saved games, to erase one first)
+  $('t-new').onclick = () => {
+    const free = Saves.freeSlot();
+    if (free < 0) {
+      show('title', false); show('slots', true); drawSlots();
+      $('slot-msg').textContent = 'All three slots hold a game. Erase one to start a new game in it.';
+      return;
+    }
+    slotNo = free; Saves.clearSlot(free); Saves.setCurrentSlot(free);
+    startCourse(); deploy(); saveNow();
+  };
   $('t-weapons').onclick = () => { startCourse('weapons'); deploy(); };
   $('t-fresh').onclick = () => {
     // empty slots, full ammunition, clean slate
@@ -662,6 +681,9 @@ function boot() {
   $('slot-paste').onclick = () => {
     const r = Saves.importCode($('slot-code').value);
     if (!r.ok) { $('slot-msg').textContent = r.why; return; }
+    Saves.clearSlot(slotNo);                 // the run that was in this slot gives way to the code's
+    Saves.saveStory(slotNo, r.data.story || null);
+    Trophies.restore(slotNo, r.data.trophies || {});
     Saves.saveSlot(slotNo, r.data);
     applySave(r.data);
     drawSlots();
@@ -884,7 +906,7 @@ function boot() {
   }
   // only what you have earned: nothing says what else there is
   function drawTrophies() {
-    const have = Trophies.earned();
+    const have = Trophies.earned(slotNo);
     $('trophy-list').innerHTML = have.length
       ? have.map((t) => '<div class="trophy"><b>' + t.name + '</b><i>' + t.about + '</i></div>').join('')
       : '<p>None yet.</p>';

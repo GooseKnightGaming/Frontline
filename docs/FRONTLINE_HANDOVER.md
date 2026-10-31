@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.23.0)
+# Frontline — Handover (M6.24.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,16 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.24.0 — each save slot is its own run (Rhys)
+- **Trophies are per slot** (`core/trophies.js`): kept under `frontline.trophies.<slot>`, earned into the slot this tab
+  is playing (`Saves.currentSlot()`), carried in the save and its transfer code (`snapshot().trophies`) and put back
+  when loaded. The old shared set (`frontline.trophies.v1`) moves to slot 1 the first time the game loads.
+- **Erasing a slot ends its run**: the save, its story and its trophies (`Saves.clearSlot`).
+- **New game starts a new run in the first empty slot** (`Saves.freeSlot()`); with all three in use, it opens Saved
+  games to erase one first. Saving into another slot takes the run's story and trophies with it; pasting a transfer
+  code into a slot replaces that slot's whole run.
+- The slot list shows each save's trophy count.
 
 ## M6.23.0 — Ghost HQ, under Yard 7 (Rhys: "Yard 7 becomes Ghost HQ - an underground lab and command centre")
 - **`src/game/levels/hq.js`**: a bunker hut in the yard (x -42..-26, z 49..55, west of the ammo dump, its door well

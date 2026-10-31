@@ -23,6 +23,8 @@ export function snapshot(g) {
     course: g.course || null,       // { part, at } if a course was running
     // the story so far: how each mission ended (src/sim/play/story.js)
     story: g.story ? JSON.parse(JSON.stringify(g.story)) : null,
+    // and the trophies this run has earned (core/trophies.js)
+    trophies: g.trophies ? JSON.parse(JSON.stringify(g.trophies)) : null,
   };
 }
 
@@ -39,7 +41,15 @@ export function saveSlot(n, data) {
   try { localStorage.setItem(KEY(n), JSON.stringify(data)); return true; } catch (e) { return false; }
 }
 export function loadSlot(n) { return listSlots()[n]; }
-export function clearSlot(n) { try { localStorage.removeItem(KEY(n)); return true; } catch (e) { return false; } }
+// erasing a slot ends its run: the save, its story and its trophies
+export function clearSlot(n) {
+  try { for (const k of [KEY(n), STORY(n), TROPHIES(n)]) localStorage.removeItem(k); return true; } catch (e) { return false; }
+}
+// the first slot with no run in it, or -1
+export function freeSlot() {
+  const has = (k) => { try { return localStorage.getItem(k) !== null; } catch (e) { return false; } };
+  return listSlots().findIndex((s, i) => !s && !loadStory(i) && !has(TROPHIES(i)));
+}
 
 export function describe(s) {
   if (!s) return { title: 'Empty', detail: 'No saved game' };
@@ -49,7 +59,8 @@ export function describe(s) {
   const carry = s.loadout && s.loadout.slots ? (s.loadout.slots.primary || 'unarmed') : 'unarmed';
   return {
     title: s.name || 'Operative',
-    detail: `${day} \u00b7 ${mins < 1 ? 'under a minute' : mins + ' min'} \u00b7 ${s.score || 0} pts \u00b7 ${carry}`,
+    detail: `${day} \u00b7 ${mins < 1 ? 'under a minute' : mins + ' min'} \u00b7 ${s.score || 0} pts \u00b7 ${carry}` +
+      (s.trophies && Object.keys(s.trophies).length ? ` \u00b7 ${Object.keys(s.trophies).length} trophies` : ''),
   };
 }
 
@@ -125,5 +136,7 @@ export function currentSlot() {
 // its outcome even when that slot has never been saved; a save carries a copy
 // (and so does a transfer code), put back when the save is loaded.
 const STORY = (n) => 'frontline.story.' + n;
+// and its trophies (core/trophies.js reads and writes them)
+export const TROPHIES = (n) => 'frontline.trophies.' + n;
 export function loadStory(n) { try { return JSON.parse(localStorage.getItem(STORY(n)) || 'null'); } catch (e) { return null; } }
 export function saveStory(n, story) { try { localStorage.setItem(STORY(n), JSON.stringify(story)); return true; } catch (e) { return false; } }
