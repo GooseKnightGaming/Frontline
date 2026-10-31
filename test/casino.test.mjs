@@ -1,25 +1,25 @@
 // FRONTLINE - Level 3, the Casino (M6.15.0): round, from Rhys's preliminary map. Plain node.
-import { casinoRedDefs, COIL, coilFloor, RAMP_KEYS as RK, LETTERS } from '../src/game/level_casino.js';
-import { DrawCull, sightPoints, inSight } from '../src/sim/drawcull.js';
-import { buildCasino, casinoRamp, casinoStairs, CX, CZ, R_OUT, R_MID, T_MID, BAND, C_FLOORS, RAMP_KEYS, RAMP_TOP, ACCESS, CASINO_REDS, STREET, JEEP_AT } from '../src/game/level_casino.js';
-import { insideMask, rooms } from '../src/game/level_hotel.js';
-import { pointInPoly } from '../src/sim/shapes.js';
-import { Loadout, ITEMS } from '../src/sim/loadout.js';
-import { Arsenal } from '../src/sim/weapons.js';
-import MAP from '../src/game/maps/casino.json' with { type: 'json' };
-import { arcWallBoxes, gridWallSegments, segmentRect, Ramp } from '../src/sim/curves.js';
-import { World } from '../src/sim/world.js';
-import { Player, repackChute, chuteLabel, packGrip, CHUTE } from '../src/sim/player.js';
-import { NavGrid } from '../src/sim/nav.js';
-import { Mission, casinoTrophies, kickOpens } from '../src/sim/mission.js';
+import { casinoRedDefs, COIL, coilFloor, RAMP_KEYS as RK, LETTERS } from '../src/game/levels/casino.js';
+import { DrawCull, sightPoints, inSight } from '../src/sim/world/drawcull.js';
+import { buildCasino, casinoRamp, casinoStairs, CX, CZ, R_OUT, R_MID, T_MID, BAND, C_FLOORS, RAMP_KEYS, RAMP_TOP, ACCESS, CASINO_REDS, STREET, JEEP_AT } from '../src/game/levels/casino.js';
+import { insideMask, rooms } from '../src/game/levels/hotel.js';
+import { pointInPoly } from '../src/sim/world/shapes.js';
+import { Loadout, ITEMS } from '../src/sim/arms/loadout.js';
+import { Arsenal } from '../src/sim/arms/weapons.js';
+import MAP from '../src/game/levels/maps/casino.json' with { type: 'json' };
+import { arcWallBoxes, gridWallSegments, segmentRect, Ramp } from '../src/sim/world/curves.js';
+import { World } from '../src/sim/world/world.js';
+import { Player, repackChute, chuteLabel, packGrip, CHUTE } from '../src/sim/people/player.js';
+import { NavGrid } from '../src/sim/world/nav.js';
+import { Mission, casinoTrophies, kickOpens } from '../src/sim/play/mission.js';
 const kickOpensAny = (d) => [0, 0.5, 0.999].some((r) => kickOpens(d, r));
-import { RULES } from '../src/sim/story.js';
-import { pickFoe, hostileTo, hostileToYou, Standing, STANDING, YELLOW_TALK, YellowJob, JOB, vaultWhere, LOCKET_CHOICES } from '../src/sim/factions.js';
-import { YELLOW_LINES, LINES } from '../src/sim/guard.js';
-import { Guard, ARMS, seatFor, SEAT, raiseAlarm } from '../src/sim/guard.js';
-import { pickClip } from '../src/sim/anim.js';
+import { RULES } from '../src/sim/play/story.js';
+import { pickFoe, hostileTo, hostileToYou, Standing, STANDING, YELLOW_TALK, YellowJob, JOB, vaultWhere, LOCKET_CHOICES } from '../src/sim/people/factions.js';
+import { YELLOW_LINES, LINES } from '../src/sim/people/guard.js';
+import { Guard, ARMS, seatFor, SEAT, raiseAlarm } from '../src/sim/people/guard.js';
+import { pickClip } from '../src/sim/people/anim.js';
 import { readFileSync } from 'fs';
-import { fillFor, FILL } from '../src/game/character.js';
+import { fillFor, FILL } from '../src/game/draw/character.js';
 let pass = 0; const fails = [];
 const T = (n, f) => { try { f(); pass++; console.log('  PASS  ' + n); } catch (e) { fails.push(n); console.log('  FAIL  ' + n + ' :: ' + e.message); } };
 const A = (c, m) => { if (!c) throw new Error(m); };
@@ -498,7 +498,7 @@ T('slot machines: a mix of six games, no two neighbours the same', () => {
   const kinds = new Set(faces.map((f) => f.mat));
   A(kinds.size >= 5, kinds.size + ' different games');
   for (const a of faces) for (const b of faces) if (a !== b && Math.hypot(a.x - b.x, a.z - b.z) < 1.05) A(a.mat !== b.mat, 'neighbouring machines on the same game at ' + [a.x, a.z].map((v) => v.toFixed(1)));
-  const tex = readFileSync(new URL('../src/game/textures.js', import.meta.url), 'utf8');
+  const tex = readFileSync(new URL('../src/game/draw/textures.js', import.meta.url), 'utf8');
   const titles = [...tex.matchAll(/title: '([^']+)', prize: '([^']+)'/g)].map((m) => m[1] + m[2]);
   A(titles.length === 6 && new Set(titles).size === 6, 'the games\' names and prizes: ' + titles.join(', '));
   for (const k of kinds) A(new RegExp('\\b' + k + '\\(g, w, h, r\\)').test(tex), 'no painting for ' + k);
@@ -655,7 +655,7 @@ T('repacking takes a hold that began with a press: a key stuck down does not do 
   A(/const holding = packGrip\(S\.packGrip, input\.held\('interact'\)/.test(main) && /S\.playing && !S\.menu && !openCrate\);/.test(main), 'the game does not use the press-started hold, or repacks in a menu');
   A(/function deploy\(\) \{[\s\S]{0,400}if \(!S\.startedOnce\) S\.chute = /.test(main), 'Resume still hands you a fresh parachute');
   A(/S\.frameDt = dt;/.test(main), 'repacking is not on the real clock');
-  const inp = readFileSync(new URL('../src/game/input.js', import.meta.url), 'utf8');
+  const inp = readFileSync(new URL('../src/game/core/input.js', import.meta.url), 'utf8');
   A(/visibilitychange[\s\S]{0,80}this\.down\.clear\(\)/.test(inp), 'keys are not let go when the page is hidden');
 });
 
@@ -689,7 +689,7 @@ T('down the spiral stairs: from the floor above to the foot, walking or running,
   // the rail is never stepped up onto
   const s = L.stairs[0], P = s.plan, i = 9, a = P.a0 + P.per * (i + 0.5), yt = s.y0 + P.h * (i + 1);
   A(L.world.hits([s.cx + Math.cos(a) * 1.0 - 0.05, yt, s.cz + Math.sin(a) * 1.0 - 0.05], [s.cx + Math.cos(a) * 1.0 + 0.05, yt + 1.7, s.cz + Math.sin(a) * 1.0 + 0.05]).every((q) => q.tag !== 'stairpost'), 'the post guard reaches out over the treads');
-  const pl = readFileSync(new URL('../src/sim/player.js', import.meta.url), 'utf8');
+  const pl = readFileSync(new URL('../src/sim/people/player.js', import.meta.url), 'utf8');
   A(/!hits\.some\(\(s\) => s\.person \|\| s\.tag === 'rail'\)/.test(pl), 'a rail can still be stepped up onto');
 });
 T('the guard by the bar: his post out in the room, clear of the stools; the patrol\'s corner not on top of him; nobody posted inside anything', () => {
@@ -729,7 +729,7 @@ T('a red who dies by a stool or a chair is left sitting in it - slumped, the sea
   const g3 = new Guard(w, { id: 'z', pos: [40, 0, 40], faction: 'red' });
   g3.target.hp = 0; g3.target.down = true; g3.step(1 / 60, { world: w, seats, guards: [g3] });
   A(!g3.seat && pickClip(g3.animState()).clip === 'Death01', 'fell into a seat from afar');
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/seats: level\.seats \|\| null/.test(rt), 'the mission does not hand the guards the seats');
 });
 T('the Yellows: the boss and two bodyguards in the Businessman\'s Suite - not counted as reds, not against you; the reds against you both', () => {
@@ -749,7 +749,7 @@ T('the Yellows: the boss and two bodyguards in the Businessman\'s Suite - not co
   // the casino's rules count the reds only
   const o = RULES.casino.outcome({ guards: L.guards.filter((g) => g.objective !== false), ledger: false, yellows: Y });
   A(o.total === CASINO_REDS, o.total + ' to clear');
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/const targets = level\.guards\.filter\(\(g\) => g\.objective !== false\)/.test(rt) && /guards: targets/.test(rt), 'the mission counts the Yellows');
 });
 T('who each goes for: a calm Yellow - no one, until a red is in sight; a red - a Yellow he can see, or you; a Yellow hurt by an unseen red goes for him', () => {
@@ -802,12 +802,12 @@ T('how the Yellows take it: a stray round in a fire-fight forgiven (twice); a ro
   A(warned === 1 && s.hostile && s.why === 'aimed', 'a gun held on them: ' + warned + ' warnings, ' + s.state);
   s = new Standing(); for (let t = 0; t < 1.5; t += 0.1) s.aim(0.1, true); for (let t = 0; t < 5; t += 0.1) s.aim(0.1, false);
   A(s.aimT === 0 && !s.hostile, 'lowering the gun did not ease it');
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/if \(g && g\.faction === 'yellow'\) yellowHit\(g\);/.test(rt) && /standing\.takenDown\(lethal\)/.test(rt) && /standing\.aim\(simDt/.test(rt), 'the mission does not ask how they take it');
 });
 T('talking to the Yellows: E beside one at peace; the boss tells of the ledger in the Cash Vault, and knows when you have it', () => {
   A(YELLOW_TALK.boss.length >= 3 && YELLOW_TALK.boss.some((l) => /ledger/i.test(l) && /vault/i.test(YELLOW_TALK.boss.join(' '))) && YELLOW_TALK.bossLedger && YELLOW_TALK.guard.length >= 3, 'lines');
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/'E  Talk to ' \+ \(yn\.boss/.test(rt) && /const yn = yellowNear\(\); if \(yn\) \{ talkTo\(yn\); return true; \}/.test(rt), 'no talking');
 });
 T('the reds\' ledger: on the Cash Vault\'s counting table, taken with E, and in the debrief', () => {
@@ -817,7 +817,7 @@ T('the reds\' ledger: on the Cash Vault\'s counting table, taken with E, and in 
   const lines = (ledger) => RULES.casino.lines(RULES.casino.outcome({ guards: [], ledger, yellows: [] }));
   A(lines(true).some((l) => l.ok && /ledger/.test(l.text)) && lines(false).some((l) => !l.ok && /ledger/.test(l.text)), 'no ledger line');
   A(RULES.casino.grade(RULES.casino.outcome({ guards: [{ dead: true }], ledger: false })) === 'partial' && RULES.casino.grade(RULES.casino.outcome({ guards: [{ dead: false }], ledger: true })) === 'success', 'the ledger is not the mission');
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/'E  Take the ledger'/.test(rt) && /level\.ledger\.taken = true; m\.ledger = true;/.test(rt), 'the ledger cannot be taken');
 });
 
@@ -854,7 +854,7 @@ T('the Yellows\' errand: a word with them and they follow where you walk; in sig
   const ys2 = [mk('b2', [0, 0, 0], true)], j2 = new YellowJob(ys2, { pos: [0, 0, -9], taken: false }, exit);
   j2.start([0, 0, 1]); j2.stop();
   A(j2.stage === 'off' && !ys2[0].escort, 'still following after turning on you');
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/job\.start\(\)/.test(rt) && /ctxG\.lead = /.test(rt) && /if \(job\) job\.stop\(\);/.test(rt), 'the mission does not run the errand');
   A(L.locket && L.yellowExit && Math.abs(L.locket.pos[1] - C_FLOORS[2] - 1.11) < 0.05, 'no locket in the vault');
 });
@@ -890,14 +890,14 @@ T('the Yellows speak as Yellows - no reds\' lines (no "Target engaged") - and a 
   const r = new Guard(new World(), { id: 'r', pos: [0, 0, 0], faction: 'red' }), rs = [];
   r.say({ bark: (g, t, k) => rs.push([t, k]), you: { guard: y } }, 'alert');
   A(rs[0][1] === 'alertRival' && LINES.alertRival.includes(rs[0][0]), 'the red called the Yellows intruders');
-  const html = readFileSync(new URL('../src/index.html', import.meta.url), 'utf8'), rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const html = readFileSync(new URL('../src/index.html', import.meta.url), 'utf8'), rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/#bark span\.yellow \{ color: #e8b423; \}/.test(html) && /class="' \+ \(g\.faction === 'yellow' \? 'yellow' : g\.faction === 'staff' \? 'staff' : /.test(rt), 'the Yellows\' names are not gold');
 });
 T('words on screen when they are heard: a recording from where its sound starts; the browser\'s speech when it starts to speak', () => {
-  const v = readFileSync(new URL('../src/game/voice.js', import.meta.url), 'utf8'), a = readFileSync(new URL('../src/game/audio.js', import.meta.url), 'utf8');
+  const v = readFileSync(new URL('../src/game/core/voice.js', import.meta.url), 'utf8'), a = readFileSync(new URL('../src/game/core/audio.js', import.meta.url), 'utf8');
   A(/u\.onstart = begin;/.test(v) && /setTimeout\(begin, SPEECH_WAIT \* 1000\)/.test(v), 'speech: words shown before it is said');
   A(/src\.start\(t, Math\.max\(0, \(\(this\.leads && this\.leads\[name\]\) \|\| 0\) - 0\.02\)\)/.test(a) && /this\.leads\[name\] = leadingSilence\(buf\)/.test(a), 'recordings: their silence first');
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/voices\.say\(g\.id, text, key, Math\.max\(0\.15, Math\.min\(1, 1\.25 - d \/ 20\)\), \(said\) => subtitle\(g, said, 2\.8\), spokenVoice\(g, key\.startsWith\('y_'\)\)\)/.test(rt), 'barks shown before they are heard');
 });
 
@@ -951,12 +951,12 @@ T('the Yellows keep your pace: they run to catch up, and never fall back a whole
   let far = 0;
   yRun(h, [y], you, (t) => { if (you[0] > -15) you[0] -= 4.3 / 60; far = Math.max(far, Math.hypot(y.pos[0] - you[0], y.pos[2] - you[2])); }, 8);
   A(far < 9, 'fell ' + far.toFixed(1) + ' m behind');
-  const src = readFileSync(new URL('../src/sim/guard.js', import.meta.url), 'utf8');
+  const src = readFileSync(new URL('../src/sim/people/guard.js', import.meta.url), 'utf8');
   A(!/followTrail/.test(src), 'still replaying your steps');
 });
 T('"Lead on" is not said (a word a voice reads two ways); the locket shows: big enough to see, and it glints', () => {
   A(!/\blead on\b/i.test(JSON.stringify(YELLOW_TALK)), 'still "Lead on"');
-  const fit = readFileSync(new URL('../src/game/casino_fit.js', import.meta.url), 'utf8');
+  const fit = readFileSync(new URL('../src/game/levels/casino_fit.js', import.meta.url), 'utf8');
   A(/locketGlint/.test(fit), 'no glint on the locket');
   A(L.locket && L.locket.size >= 0.06, 'the locket is too small to see: ' + (L.locket && L.locket.size));
   // its plinth stands clear of everything else in the vault, inside the vault
@@ -983,7 +983,7 @@ T('the debrief: a Yellow the reds killed is not counted against you (Rhys\'s scr
   A(ls.some((l) => l.neutral && /killed by the reds/.test(l.text)), 'not told the reds killed him');
   const mine = RULES.casino.outcome({ guards: [], yellows: [y(true, 'you'), y(false, null)] });
   A(mine.yellows.down === 1 && RULES.casino.lines(mine).some((l) => !l.ok && /by your hand/.test(l.text)), 'yours not counted');
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/l\.neutral \?/.test(rt), 'the debrief does not show a neutral line');
 });
 T('people across a dark room are not black cut-outs: on a night level their ambient is lifted to a daylight level\'s (Rhys\'s screenshots)', () => {
@@ -991,7 +991,7 @@ T('people across a dark room are not black cut-outs: on a night level their ambi
   const k = fillFor([0.15, 0.16, 0.22]), lum = 0.2126 * 0.15 + 0.7152 * 0.16 + 0.0722 * 0.22;
   A(k > 2 && Math.abs(k * lum - FILL.target) < 0.01, 'night fill ' + k);
   A(fillFor([0, 0, 0]) === FILL.most, 'no ceiling in the dark');
-  const main = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8'), ch = readFileSync(new URL('../src/game/character.js', import.meta.url), 'utf8');
+  const main = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8'), ch = readFileSync(new URL('../src/game/draw/character.js', import.meta.url), 'utf8');
   A(/characterFill\(pc, \[a\.r, a\.g, a\.b\]\)/.test(main) && /rc\.meshInstances\) fill\(pc, mi\.material\)/.test(ch), 'not applied to the people');
 });
 console.log('\n-- M6.17.9 --');
@@ -1099,11 +1099,11 @@ T('"The vault is upstairs. Keep moving." is gone: where the vault is, said from 
   A(!/Keep moving/.test(JSON.stringify(YELLOW_TALK)), 'still giving orders');
   A(vaultWhere(8, false) === YELLOW_TALK.vault.above && vaultWhere(0, false) === YELLOW_TALK.vault.here && vaultWhere(-7, false) === YELLOW_TALK.vault.below && vaultWhere(0, true) === YELLOW_TALK.vault.in, 'not by where they are');
   A(/up/.test(YELLOW_TALK.vault.above) && /this floor/.test(YELLOW_TALK.vault.here) && /down/.test(YELLOW_TALK.vault.below), 'the words do not say it');
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/line = vaultWhere\(/.test(rt), 'the mission does not use it');
 });
 T('the locket is a locket, not an Oreo: an upright oval in an open case, lid up, on its chain', () => {
-  const fit = readFileSync(new URL('../src/game/casino_fit.js', import.meta.url), 'utf8');
+  const fit = readFileSync(new URL('../src/game/levels/casino_fit.js', import.meta.url), 'utf8');
   A(!/cylinder\(kx, kz, 0\.065/.test(fit), 'still the flat gold disc');
   A(/the oval: slices/.test(fit) && /its lid up behind/.test(fit) && /its chain looped/.test(fit), 'not an upright locket in an open case');
 });
@@ -1218,7 +1218,7 @@ T('the locket and the ledger are gone once taken: each its own thing to draw, hi
   A(!left.length, left.length + ' pieces of the locket left behind');
   // the case stays: velvet still in the merged geometry by the locket
   A(C.pieces.some((p) => !p.prop && Math.hypot((p.min[0] + p.max[0]) / 2 - C.locket.pos[0], (p.min[2] + p.max[2]) / 2 - C.locket.pos[2]) < 0.2 && p.max[1] > C.locket.pos[1]), 'the case went with it');
-  const rd = readFileSync(new URL('../src/game/render.js', import.meta.url), 'utf8'), main = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8');
+  const rd = readFileSync(new URL('../src/game/draw/render.js', import.meta.url), 'utf8'), main = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8');
   A(/staticPieces = level\.pieces\.filter\(\(p\) => !doorTag\(p\) && !p\.prop\)/.test(rd), 'still merged into the room');
   A(/tickProps\(\) \{[^\n]*level\[name\]\.taken/.test(rd) && /view\.tickProps\(\)/.test(main), 'never hidden when taken');
 });
@@ -1242,7 +1242,7 @@ T('the casino\'s objectives: the ledger the main task; teaming up with the Yello
   // a Yellow caught in your blast: counted apart from those you shot
   const bl = R.outcome({ guards: reds(0), ledger: true, job: 'escort', yellows: ys({ dead: true, target: { downBy: 'blast' } }) });
   A(bl.yellows.blast === 1 && bl.yellows.down === 0 && R.lines(bl).some((l) => l.neutral && /caught in your blast/.test(l.text)) && !R.lines(bl).some((l) => /by your hand/.test(l.text)), 'the blast line: ' + JSON.stringify(bl.yellows));
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/job: job \? job\.stage : 'idle'/.test(rt) && /Find the reds\\' ledger \(the Cash Vault\)/.test(rt) && /casinoTrophies\(m, targets\)/.test(rt), 'the runtime does not follow them');
 });
 
@@ -1304,9 +1304,9 @@ T('the reds keep off the coil for a noise or a fight with the Yellows on another
   A(!r.pursuit && r.navOpts().noRamp, 'losing a Yellow sent him round the coil');
   r.setState('patrol', ctx); r.fightingYou = true; r.setState('search', ctx, 'lost');
   A(r.pursuit && r.navOpts() === null, 'losing you did not');
-  const gs2 = readFileSync(new URL('../src/sim/guard.js', import.meta.url), 'utf8');
+  const gs2 = readFileSync(new URL('../src/sim/people/guard.js', import.meta.url), 'utf8');
   A(/this\.fightingYou = !ctx\.you\.guard;/.test(gs2) && /this\.pursuit = this\.target\.lastBy === 'you';/.test(gs2), 'who he was fighting is not kept');
-  const gsrc = readFileSync(new URL('../src/sim/guard.js', import.meta.url), 'utf8');
+  const gsrc = readFileSync(new URL('../src/sim/people/guard.js', import.meta.url), 'utf8');
   A(/ctx\.alarm\(this, ctx\.you\.pos, \{ rival: !!ctx\.you\.guard \}\)/.test(gsrc), 'the alarm does not say whom it is about');
   void officer;
 });
@@ -1329,7 +1329,7 @@ T('with the locket, each Yellow takes his own way out from where he stands - not
   A(asked.length === 3, 'ways found: ' + asked.length);
 });
 T('no reds-down count on the screen (M6.17.12, Rhys)', () => {
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(!/reds down: ' \+ now\.down/.test(rt), 'still counting the reds on screen');
 });
 
@@ -1363,7 +1363,7 @@ T('the locket for yourself: take it, and the boss asks - hand it over and they g
   A(/in your pocket/.test(line({ job: 'idle', locketMine: true }).text), 'not teamed, pocketed');
   A(R.settled(R.outcome({ guards: reds, ledger: true, yellows: ys3, job: 'missing', locketMine: true, locketAnswer: 'lied' })) && !R.settled(R.outcome({ guards: reds, ledger: true, yellows: ys3, job: 'missing', locketMine: true })), 'an unanswered question holds the ending; an answered one does not');
   // the game's side: E takes it; the boss asks, with your two answers as buttons; caught if one of them watched
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/if \(locketNear\(\)\) \{ takeLocket\(\); return true; \}/.test(rt) && /'E  Take the locket'/.test(rt), 'no taking it');
   A(/\[LOCKET_CHOICES\.give, \(\) => answerLocket\('give', boss\)\]/.test(rt) && /\[LOCKET_CHOICES\.deny, \(\) => answerLocket\('deny', boss\)\]/.test(rt), 'no choice');
   A(/rt\.locketSeenBy = guards\.filter/.test(rt) && /if \(rt\.locketSeenBy && rt\.locketSeenBy\.length\) \{/.test(rt) && /turnYellows\(YELLOW_TALK\.caught\)/.test(rt), 'never caught out');
@@ -1379,7 +1379,7 @@ T('the security post\'s terminal: hold E to hack it - the Cash Vault\'s steel do
   const r = Math.hypot(t.pos[0] - CX, t.pos[2] - CZ);
   A(r - COIL.clear[1] < 1.4, 'out of reach from the walkway: ' + (r - COIL.clear[1]).toFixed(2));
   A(L.signs.some((s) => s.coil === 'post' && /staff & VIPs/.test(s.sub)), 'the sign');
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8'), main = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8'), main = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8');
   A(/'Hold E  ' \+ \(tn\.verb \|\| 'Hack'\) \+ ' ' \+ tnm/.test(rt) && /tn\.label \|\| 'the security terminal'/.test(rt) && /input\.held\('interact'\) && player\.mode !== 'dead'\) \{ rt\.hackT = \(rt\.hackT \|\| 0\) \+ simDt/.test(rt), 'no hacking');
   A(/if \(d\.locked && d\.def\.vault\) d\.unlock\(\);/.test(rt) && /level\.revealT = t\.reveal/.test(rt), 'hacking does nothing');
   A(/level\.revealT > 0 && t\.guard && t\.guard\.faction === 'red'/.test(main), 'the reds are not shown on the radar');
@@ -1412,7 +1412,7 @@ T('a dead red is no "man down" to a Yellow - only one of his own is (Rhys: "Man 
   A(said.includes('y_manDown'), 'his own man down went unremarked: ' + said);
 });
 T('after answering the boss the game carries on: the pointer is asked for afresh, so the pause menu does not open in the moment it takes (Rhys: it "remains paused")', () => {
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/el\.style\.display = 'none'; S\.dialog = false; audio\.click\(\); fn\(\);\s+if \(S\.dialog\) return;[^\n]*\s+S\.wantLock = S\.time; input\.requestLock\(\);/.test(rt) && /for \(const ms of \[400, 1100\]\)/.test(rt), 'still paused after the answer');
   const main = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8');
   A(/const settled = S\.time - \(S\.wantLock \|\| 0\) > 2;/.test(main), 'the pause watch changed');

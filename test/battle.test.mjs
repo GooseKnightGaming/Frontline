@@ -1,12 +1,12 @@
 // FRONTLINE - battle mode (M6.19.5): the reserves, the clock, the result; a man brought back on; the
 // Beachhead and the Factory's battle as Rhys drew them. Plain node.
-import { Battle, BATTLE, battleRules } from '../src/sim/battle.js';
-import { RULES } from '../src/sim/story.js';
-import { buildKitLevel } from '../src/game/level_kit.js';
-import { DRAFTS } from '../src/game/levels/index.js';
-import { hostileTo, hostileToYou } from '../src/sim/factions.js';
+import { Battle, BATTLE, battleRules } from '../src/sim/play/battle.js';
+import { RULES } from '../src/sim/play/story.js';
+import { buildKitLevel } from '../src/game/levels/kit.js';
+import { DRAFTS } from '../src/game/levels/drafts/index.js';
+import { hostileTo, hostileToYou } from '../src/sim/people/factions.js';
 import { readFileSync } from 'fs';
-import MAP from '../src/game/maps/beachhead.json' with { type: 'json' };
+import MAP from '../src/game/levels/maps/beachhead.json' with { type: 'json' };
 
 let pass = 0; const fails = [];
 const T = (n, f) => { try { f(); pass++; console.log('  PASS  ' + n); } catch (e) { fails.push(n + ' -> ' + e.message); console.log('  FAIL  ' + n + ' :: ' + e.message); } };
@@ -82,7 +82,7 @@ T('a man down is brought back on as the next: fresh, at his side\'s end', () => 
   A(g.pos[0] === p[0] && g.push[0] === 10 && g.ammo === g.arms.mag && g.target.solid.min[0] < p[0], 'where');
 });
 T('the runtime: you down is not the end while your side has men; back in at your end; the step line; the gun', () => {
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8'), main = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8'), main = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8');
   A(/youDown\(\)/.test(rt) && /missionRt\.youDown && missionRt\.youDown\(\)/.test(main) && /respawnYou\(\)/.test(main), 'respawn');
   A(/function battleTick/.test(rt) && /BATTLE\.corpse/.test(rt) && /g\.revive\(/.test(rt), 'the field');
   A(/E  Fire the gun/.test(rt), 'the gun');

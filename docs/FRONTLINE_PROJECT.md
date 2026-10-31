@@ -53,41 +53,23 @@ are usually found before a playtest.
 
 ## 3. File map
 
-| File | Lines | What it holds |
-|---|---|---|
-| `src/sim/player.js` | ~790 | All movement: walking, sprinting, crouch, prone and the prone shuffle, jumping, vaulting, climbing, ladders, swimming and diving, dashing, the backward roll, peeking over cover, leaning round corners, jump-and-grab, parkour (run-up, going over walls), stamina, breath, fall damage, noise |
-| `src/sim/doors.js` | 115 | Ordinary hinged doors: where the leaf is for collision (shut or open), which way it swings, and its turn for drawing |
-| `src/sim/guard.js` | ~330 | A guard: patrol routes and posts; sight, hearing, awareness and states (suspicious, search, return, alert); walking found paths and opening doors; a shootable body; death or knockout |
-| `src/game/voice.js` | ~90 | Spoken lines: the browser's speech synthesis, a voice per speaker, recordings take over where listed |
-| `src/sim/nav.js` | ~170 | Finding a way through a building: a grid per floor, stairs as links, A*, straightened paths |
-| `src/sim/mission.js` | ~90 | A mission's rules: keycard, download, kicking odds, extraction, hidden trophies |
-| `src/game/level_mission0.js` | ~330 | Level 0: Meridian House, three floors, ten guards |
-| `src/game/mission_runtime.js` | ~230 | The mission in the game: guards' bodies, prompts, E and F, bullet time, hints, the end screen |
-| `src/game/trophies.js` | ~30 | Hidden trophies, kept in the browser |
-| `src/sim/contacts.js` | 90 | What you know: senses (sight, heat, sound, close by), a memory with fading last-known positions, the radar's three ranges |
-| `src/sim/weapons.js` | 558 | `Arsenal`: firing, spread, recoil and pull, reloads (including automatic), grenades and charges, medkits, melee and bare hands, penetration through glass and thin walls, range falloff, targets |
-| `src/sim/loadout.js` | 250 | The item catalogue (`ITEMS`), mods (`MODS`), ammunition (`AMMO`), slots and what fits where, `Loadout` and `Crate` |
-| `src/sim/world.js` | 117 | Collision: axis-aligned boxes, ladders, zones, water, raycasting (with an optional skip, so sight looks through glass). Solids can be `noClimb`, `ghost` (blocks bodies, not bullets), `tough` (penetrable) or `glass` |
-| `src/sim/course.js` | 115 | The training course as a list of steps with tests and the doors each opens |
-| `src/game/level_hotel.js` | ~230 | Level 1, the Riverside Hotel, built from `src/game/maps/riverside.json` (Rhys's spreadsheet, via `tools/map_to_json.py`): 1.5 m a square, thin walls along the squares, doors from runs of door squares (double doors paired), furniture by room (restaurant tables, the bar, kitchen steel, the concierge desk), CCTV cameras and console, ceilings, a light per room, room names as zones; the city round it, the garden, river ladders |
-| `src/sim/bake.js` | ~150 | Planning the light bake: big faces cut into tiles, the level cut into chunks (one lightmap per chunk, shared by its materials), the lightmap layout, the size each chunk asks for (pixels per metre), bounce fill. Pure |
-| `src/sim/perf.js` | ~30 | Noticing a frame rate that stays low, to offer Low Quality once. Pure |
-| `src/sim/anim.js` | ~150 | Chooses an animation clip from the player's state for the Universal rig: which clip, how fast, and how far the body turns for sideways movement. Pure |
-| `src/game/main.js` | 1010 | Boot, the 60 Hz loop, HUD, crate and Quartermaster panels, title screen, saves, transport, door override, radar, music selection |
-| `src/game/render.js` | 393 | Materials, merged static meshes (chunked when baked), the light bake, sky, water, signs, doors as separate entities, indoor lights with a budget |
-| `src/game/level_training.js` | 560 | Yard 7: walls, containers, vault lane, ducts, catwalk, pool and dive tower, drop test, penetration booth, vehicle dock, Quartermaster, gangway, watchtower, hangar doors, the desert beyond |
-| `src/game/level_tutorial.js` | 186 | The movement course, written at ground level then sunk (`COURSE_DY = -16`) |
-| `src/game/level_weapons.js` | 477 | The shooting galleries, grenade bay, turret bay, transport bay and the stairwell down from the yard |
-| `src/game/weapons_view.js` | 490 | Viewmodels, target models, turrets, blasts, bullet marks, tracers |
-| `src/game/vehicle_models.js` | 282 | Vehicles built in code: personnel truck, light 4×4, motorcycle |
-| `src/game/textures.js` | 435 | Every texture painted in code |
-| `src/game/audio.js` | 245 | Sound synthesised at the moment it plays, plus recorded samples |
-| `src/game/character.js` | ~125 | The animated operative: the Universal Base Character in a painted uniform (`Operative.glb`), reversed and looping clip copies, the body turn |
-| `tools/recolour_outfit.py`, `tools/dress_operative.mjs`, `tools/build_operative.mjs` | | How `Operative.glb` is made from Rhys's zips: the outfit recoloured as field kit, the head dressed in the Ranger parts, then the clips |
-| `src/game/minimap.js` | ~140 | The radar and compass: draws what you know — seen, heard, heat, remembered |
-| `src/game/saves.js` | 113 | Three slots, transfer codes |
-| `src/game/music.js` | 90 | Streamed music, chosen by situation |
-| `src/game/props.js`, `ladders.js`, `camsmooth.js`, `input.js` | small | Scenery models, ladder geometry, camera spring, input and bindings |
+Every source file, with what it is, is listed in **`docs/CODE_MAP.md`** (made from the files' own opening
+comments by `python3 tools/code_map.py`). In short:
+
+| Folder | What is in it |
+|---|---|
+| `src/sim/people/` | You (`player.js`: all movement), guards, the captain, hostages, what you know (`contacts.js`), factions, choosing animation clips |
+| `src/sim/world/` | Collision (`world.js`), shapes, curved walls, doors, lifts, finding paths (`nav.js`), planning the light bake, frame-rate watching |
+| `src/sim/arms/` | Firing and everything about weapons (`weapons.js`); the catalogue, mods, ammunition, loadouts and classes (`loadout.js`) |
+| `src/sim/play/` | A mission's rules, the story's branches, the training course, battles |
+| `src/sim/vehicles/` | Driving |
+| `src/game/main.js` | Starts the game, builds the level, runs every frame; its opening comment lists its sections in order |
+| `src/game/core/` | Input and bindings, sound (made in code), music, voices and recorded lines, saves, trophies, Severian |
+| `src/game/draw/` | The scene and its materials (`render.js`), textures painted in code, the operative, weapons in your hands, vehicles, the radar, scopes, ladders, props |
+| `src/game/levels/` | Each hand-built level (`yard7.js`, `course.js`, `ranges.js`, `mission0.js`, `hotel.js`, `factory.js`, `casino.js`, `train.js`), the level kit (`kit.js`) and its first drafts (`drafts/`), what runs a mission (`mission_runtime.js`), Rhys's maps as data (`maps/`) |
+
+Comments in the code say what a thing does and why (Rhys's words where they decided it); which release
+did what is in `FRONTLINE_HANDOVER.md`, not in the code.
 
 ---
 
@@ -194,7 +176,7 @@ missed** and are worth writing again for any new level:
 - **The engine sizes a lightmap from the mesh's bounds**, not its area: one
   map-wide mesh per material gave the building's plaster 256 pixels for
   everything (about 4 px/m, the blotches). Chunk baked levels and ask for a
-  size (`src/sim/bake.js`). Bake time follows chunks × lights, so each chunk
+  size (`src/sim/world/bake.js`). Bake time follows chunks × lights, so each chunk
   shares one lightmap across its materials (84 meshes → 28).
 - **With merged, map-wide meshes, lights and small entities cost frames, not
   triangles.** 99 always-on lights and three objects per target halved the
@@ -309,25 +291,15 @@ thermal and UV vision; the mod bench; Ghost HQ.
 
 ## 11. Uploading a build
 
-The repository root should contain:
-
-```
-index.html   controls.html   game.js
-assets/
-  ui/          3 images        weapons/     9 .glb
-  characters/  Operative.glb   music/       12 .mp3
-  voices/      14 .mp3 + 9 .ogg + CREDITS.txt
-  sfx/         42 recordings + CREDITS.txt
-  sfx/         3 .mp3          vehicles/    (kept, unused)
-```
-
-GitHub's web upload cannot create folders: use **Add file → Create new file**
-and type `assets/music/placeholder.txt` to make the path, then upload into it.
+The repository is the whole project: source, tests, tools, notes, and the built game at its root, which
+GitHub Pages serves. `node build.mjs` writes `index.html`, `controls.html`, `game.js` and the bake check
+straight into the root; `assets/` is already there. Run the node tests, build, commit, push to `main`
+(Rhys is happy for releases to go straight to main).
 
 
 ## Where to pick up (M6.9.23)
-The Riverside Hotel (`src/game/level_hotel.js`) is built floor by floor from
-`src/game/maps/riverside.json` (converted from Rhys's spreadsheet by
+The Riverside Hotel (`src/game/levels/hotel.js`) is built floor by floor from
+`src/game/levels/maps/riverside.json` (converted from Rhys's spreadsheet by
 `tools/map_to_json.py`): G, 1, 2, 3 and the roof; the basement and sewer,
 the guards, the hostages and the captain's escape are next (README "Pick up
 here"). Pure logic for its new systems lives in `src/sim/` (`lift.js`,

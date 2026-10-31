@@ -1,10 +1,10 @@
 // FRONTLINE - the drafts, after Rhys's playthrough of M6.18.11 - M6.19.5 (M6.19.6): the kit's shared faults
 // (walls open at a slant, doors onto walls and into the air, grass under buildings, slabs past the walls,
 // no windows, no way out of deep water, open stairwells) and each level's own notes. Plain node.
-import { buildKitLevel, tidyRows, autoWindows, slabBoxes, insideOf, doorsOf, cellOf } from '../src/game/level_kit.js';
-import { DRAFTS } from '../src/game/levels/index.js';
+import { buildKitLevel, tidyRows, autoWindows, slabBoxes, insideOf, doorsOf, cellOf } from '../src/game/levels/kit.js';
+import { DRAFTS } from '../src/game/levels/drafts/index.js';
 import { readFileSync } from 'fs';
-import { NavGrid } from '../src/sim/nav.js';
+import { NavGrid } from '../src/sim/world/nav.js';
 
 let pass = 0; const fails = [];
 const T = (n, f) => { try { f(); pass++; console.log('  PASS  ' + n); } catch (e) { fails.push(n + ' -> ' + e.message); console.log('  FAIL  ' + n + ' :: ' + e.message); } };
@@ -94,7 +94,7 @@ console.log('\n-- the levels --');
 T('the Sewers: lamps in the street and over the steps down; brighter tunnels', () => {
   const d = built.find((q) => q.d.id === 'sewers').d, L = built.find((q) => q.d.id === 'sewers').L;
   A(L.lights.filter((l) => l.street).length >= 4 && d.floors.S.lampPower >= 0.9, 'dark');
-  A(/level\.draft \? new pc\.Color\(0\.24/.test(readFileSync(new URL('../src/game/render.js', import.meta.url), 'utf8')), 'the drafts\' night ambient');
+  A(/level\.draft \? new pc\.Color\(0\.24/.test(readFileSync(new URL('../src/game/draw/render.js', import.meta.url), 'utf8')), 'the drafts\' night ambient');
 });
 T('the Estate: a number on every front door (Rhys: "no indication of which house is which?")', () => {
   const L = built.find((q) => q.d.id === 'estate').L, t = L.signs.map((s) => s.text);
@@ -103,7 +103,7 @@ T('the Estate: a number on every front door (Rhys: "no indication of which house
 T('the Assassination: Colonel Rusk in his own colours; a named man\'s name shows under your sights', () => {
   const L = built.find((q) => q.d.id === 'vantage').L, r = L.guards.find((g) => g.id === 'rusk');
   A(r.tint && r.tint[0] > 1.5, 'Rusk');
-  A(/a named man, under your sights/.test(readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8')), 'the name');
+  A(/a named man, under your sights/.test(readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8')), 'the name');
 });
 T('the Ward: more that does not add up - a turning room, stairs that only go up (three times), a door on its own', () => {
   const d = built.find((q) => q.d.id === 'ward').d, L = built.find((q) => q.d.id === 'ward').L;
@@ -128,11 +128,11 @@ T('down in a battle: no menu, no pause; back in with the kit you started with, f
   A(/battleKit\.slots\[sl\]/.test(main) && /arsenal\.ammo = \{\}; arsenal\.slotAmmo = \{\}/.test(main), 'the kit');
 });
 T('a line that names a side is said only of that side', () => {
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/misnames/.test(rt) && /foeSide !== 'yellow'/.test(rt) && /foeSide !== 'red'/.test(rt), 'names');
 });
 T('thermal: a body\'s heat shows through walls and doors', () => {
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/throughMat/.test(rt) && /depthTest = false/.test(rt), 'through walls');
 });
 
@@ -210,11 +210,11 @@ T('Fort Kerreth: a way in through the gate, and a postern (Rhys: "no actual door
   A(gate.length >= 2, 'the gate: ' + gate.length);
 });
 T('glass looks its kind: toughened and bulletproof have materials of their own', () => {
-  const r = readFileSync(new URL('../src/game/render.js', import.meta.url), 'utf8'), k = readFileSync(new URL('../src/game/level_kit.js', import.meta.url), 'utf8');
+  const r = readFileSync(new URL('../src/game/draw/render.js', import.meta.url), 'utf8'), k = readFileSync(new URL('../src/game/levels/kit.js', import.meta.url), 'utf8');
   A(/'glassT'/.test(r) && /'glassB'/.test(r) && /tg >= 3 \? 'glassB'/.test(k), 'materials');
 });
 T('the radar\'s way-out diamond is where the way out is; no sprinting in the air', () => {
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8'), pl = readFileSync(new URL('../src/sim/player.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8'), pl = readFileSync(new URL('../src/sim/people/player.js', import.meta.url), 'utf8');
   A(/return \[level\.apcZone\.pos\[0\], level\.apcZone\.pos\[2\]\]/.test(rt), 'the diamond');
   A(/!this\.chute && \(this\.onGround/.test(pl), 'sprint');
 });
@@ -223,7 +223,7 @@ T('the Factory battle: more men a side, lanes through the middle', () => {
   A(L.battle.pools.ghost.length === 13 && L.battle.pools.yellow.length === 14 && L.battle.lanes.ghost.length >= 6, 'the field');
 });
 T('thermal: a body\'s shape (head, chest, arms, legs), not a capsule', () => {
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/const BODY = \[\['sphere'/.test(rt) && !/type: 'capsule', material: throughMat/.test(rt), 'shape');
 });
 

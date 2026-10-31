@@ -1,4 +1,4 @@
-// FRONTLINE (M6.9.28) - the bake check, for the machine that matters. Each
+// FRONTLINE - the bake check, for the machine that matters. Each
 // case: two floors, the same lamps over each - baked into the left floor,
 // lighting the right one live. With nothing in the way they should match.
 // M6.9.27 showed one lamp bakes fine on Rhys's Chromebook while the game's

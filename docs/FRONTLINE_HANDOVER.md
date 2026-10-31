@@ -1,10 +1,26 @@
-# Frontline — Handover (M6.20.15)
+# Frontline — Handover (M6.21.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
-(gooseknightgaming.github.io/Frontline). Source is in `frontline_source.zip`;
-`npm install && node build.mjs` builds `dist/`. Upload `index.html`,
-`controls.html`, `game.js` and the `assets/` folders.
+(gooseknightgaming.github.io/Frontline). Everything is in the GitHub repository
+GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
+(`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
+game into the repository's root.
+
+## M6.21.0 — housekeeping (Rhys: "the code needs housekeeping")
+- **The source lives in the repository** (it had only been in a temporary workspace and handover zips):
+  `src/`, `test/`, `tools/`, `maps/`, `build.mjs`, and these notes in `docs/`. The README is Frontline's.
+- **Folders by what they do**: `src/sim/` into `people/`, `world/`, `arms/`, `play/`, `vehicles/`;
+  `src/game/` into `core/`, `draw/`, `levels/` (the hand-built levels renamed for what they are:
+  `yard7.js`, `course.js`, `ranges.js`, `mission0.js`, `hotel.js`, `factory.js`, `casino.js`, `train.js`,
+  the level kit `kit.js`, its specs in `levels/drafts/`, the maps' data in `levels/maps/`). Every import
+  and path rewritten by script.
+- **Comments say what and why, not when**: release numbers taken out of over a thousand comment lines
+  (the history is here, in the handover); Rhys's words kept where they explain a choice.
+- **main.js** opens with what it is, where things are, and its sections in order, each marked in the code.
+- **`docs/CODE_MAP.md`**: every file and what it is, remade by `python3 tools/code_map.py`.
+- The game itself is unchanged: the built `game.js` came out byte-for-byte the same as M6.20.15's before
+  the version number moved. All 746 node tests pass.
 
 **Where it stands:** movement (walk, sprint, crouch, prone, vault, climb,
 ladders, swimming, diving, dash, back-roll, peek over cover, parkour run-ups
@@ -96,49 +112,49 @@ jasinski, transitking, Blender Foundation.
 
 ## Files
 ```
-src/sim/world.js          collision world: boxes, water volumes, ladders, zones, raycast
-src/sim/player.js         the operative's movement (pure logic, tested in node)
-src/game/level_training.js  Yard 7 layout (colliders + visuals from one description)
-src/game/textures.js      every texture painted in code (canvas)
-src/game/render.js        merged meshes per material, vertex "baked" shading,
+src/sim/world/world.js          collision world: boxes, water volumes, ladders, zones, raycast
+src/sim/people/player.js         the operative's movement (pure logic, tested in node)
+src/game/levels/yard7.js  Yard 7 layout (colliders + visuals from one description)
+src/game/draw/textures.js      every texture painted in code (canvas)
+src/game/draw/render.js        merged meshes per material, vertex "baked" shading,
                           sun/shadows/fog, vertex-colour sky dome, water, signs,
                           box stand-in operative
-src/game/input.js         settings, bindings, Chromebook detection, aim/fire rules
-src/game/camsmooth.js     camera height spring (tested in node)
+src/game/core/input.js         settings, bindings, Chromebook detection, aim/fire rules
+src/game/core/camsmooth.js     camera height spring (tested in node)
 src/game/main.js          boot, fixed 60 Hz loop, camera feel, HUD, menus, test hooks
 src/index.html            page, HUD, start/pause/death screens, styles
 build.mjs                 esbuild → dist/index.html + dist/game.js (2.4 MB)
-src/sim/weapons.js        weapons: ammo, spread, recoil, grenades, targets
-src/game/weapons_view.js  viewmodels (GLB), range targets, projectiles, effects
+src/sim/arms/weapons.js        weapons: ammo, spread, recoil, grenades, targets
+src/game/draw/weapons_view.js  viewmodels (GLB), range targets, projectiles, effects
 test/sim.test.mjs         movement + camera tests (node)
-src/sim/loadout.js        catalogue, slots, mods, gear, crates
-src/sim/anim.js           which animation clip the body should play
-src/game/character.js     the animated operative (Quaternius rig)
+src/sim/arms/loadout.js        catalogue, slots, mods, gear, crates
+src/sim/people/anim.js           which animation clip the body should play
+src/game/draw/character.js     the animated operative (Quaternius rig)
 test/weapons.test.mjs     weapon + loadout tests (node)
 test/anim.test.mjs        7 animation-choice tests (node)
 test/browser.test.py      browser tests (Playwright + Chromium)
-src/sim/doors.js          ordinary hinged doors (SwingDoor): shut/open boxes, swing, drawing yaw
-src/sim/guard.js          a guard: patrol, posts, senses, awareness, states, searching, shootable body, death
-src/sim/nav.js            finding a way through a building: grid per floor, stairs links, A*
-src/sim/drawcull.js       who is drawn: near, on your floor, or in plain sight (M6.13.5)
-src/sim/story.js          the story so far: each mission's outcome, grade and rules (RULES)
-src/sim/curves.js         curves for a box world: arc walls, the helical ramp, round floors, merged grid walls
-src/sim/shapes.js         shapes that are not boxes: flat faces with holes (earcut), prisms, oriented boxes, sweeps, outlines of map squares, smoothing
-src/sim/earcut.js         earcut 3.0.2 (Mapbox, ISC), vendored: cutting a flat face with holes into triangles
-src/sim/factions.js       who is against whom (level.relations), each guard's foe (pickFoe), how the Yellows stand with you (Standing), what they say
-src/game/scope.js         the sight picture when aiming through a scope or a red dot (SVG)
-src/game/casino_fit.js    the casino's floors, spiral stairs, glass pool, smoothed walls and furniture (tables, chairs, bars, slots, washrooms)
+src/sim/world/doors.js          ordinary hinged doors (SwingDoor): shut/open boxes, swing, drawing yaw
+src/sim/people/guard.js          a guard: patrol, posts, senses, awareness, states, searching, shootable body, death
+src/sim/world/nav.js            finding a way through a building: grid per floor, stairs links, A*
+src/sim/world/drawcull.js       who is drawn: near, on your floor, or in plain sight (M6.13.5)
+src/sim/play/story.js          the story so far: each mission's outcome, grade and rules (RULES)
+src/sim/world/curves.js         curves for a box world: arc walls, the helical ramp, round floors, merged grid walls
+src/sim/world/shapes.js         shapes that are not boxes: flat faces with holes (earcut), prisms, oriented boxes, sweeps, outlines of map squares, smoothing
+src/sim/world/earcut.js         earcut 3.0.2 (Mapbox, ISC), vendored: cutting a flat face with holes into triangles
+src/sim/people/factions.js       who is against whom (level.relations), each guard's foe (pickFoe), how the Yellows stand with you (Standing), what they say
+src/game/draw/scope.js         the sight picture when aiming through a scope or a red dot (SVG)
+src/game/levels/casino_fit.js    the casino's floors, spiral stairs, glass pool, smoothed walls and furniture (tables, chairs, bars, slots, washrooms)
 test/detect.test.mjs      11 detection tests (node)
 test/fight.test.mjs       13 combat tests (node): firing, accuracy, ranks, weapons, temperaments
-src/game/voice.js         spoken lines: browser speech, recordings (RECORDED), Control (RADIO), the reds' radio (INTERCEPT)
-src/sim/mission.js        a mission's rules: keycard, download, kicks, extraction, trophies
-src/game/level_mission0.js Level 0, Meridian House
-src/game/level_factory.js  Level 2, the Derelict Factory (Rhys's battle map, as a mission)
-src/game/level_casino.js   Level 3, the Casino: round (Rhys's preliminary map)
-src/game/mission_runtime.js the mission in the game: guards' bodies, prompts, E/F, bullet time, hints, end
-src/game/trophies.js      hidden trophies, kept in the browser
+src/game/core/voice.js         spoken lines: browser speech, recordings (RECORDED), Control (RADIO), the reds' radio (INTERCEPT)
+src/sim/play/mission.js        a mission's rules: keycard, download, kicks, extraction, trophies
+src/game/levels/mission0.js Level 0, Meridian House
+src/game/levels/factory.js  Level 2, the Derelict Factory (Rhys's battle map, as a mission)
+src/game/levels/casino.js   Level 3, the Casino: round (Rhys's preliminary map)
+src/game/levels/mission_runtime.js the mission in the game: guards' bodies, prompts, E/F, bullet time, hints, end
+src/game/core/trophies.js      hidden trophies, kept in the browser
 test/mission0.test.mjs    20 Level 0 tests (node)
-src/sim/contacts.js       what you know: senses (sight/heat/sound/near), Tracker memory, radar ranges
+src/sim/people/contacts.js       what you know: senses (sight/heat/sound/near), Tracker memory, radar ranges
 test/contacts.test.mjs    13 radar-knowledge tests (node)
 test/browser_shots.py     screenshot tour
 ```
@@ -188,7 +204,7 @@ The esbuild config marks `node:worker_threads` external (engine code for Node on
 - Rhys's Severian.zip: Severian.docx (the language reference and game brief - its canon policy: never invent,
   mark anything new provisional, the case spreadsheet authoritative), Severian Cases.xlsx, the alphabet /
   romanisation / IPA sheet. Rhys: "If anything new needs adding, please ask me before you implement anything".
-- `src/game/severian.js`: CANON - his established words, spelled exactly (О̏ = О + U+030F, never Ӧ); `negate()`
+- `src/game/core/severian.js`: CANON - his established words, spelled exactly (О̏ = О + U+030F, never Ӧ); `negate()`
   - the established negative particle rule (ня / нє by the last vowel of the word before; /a/ counts front).
 - In the station so far: the kiosk КО̏ФИЪ · ГАЗЕТИ; Platform 2 обслувани нє (not in service - not закворына);
   Port Ȍstrel in the English. Everything else Severian in the game is still the old placeholder.
@@ -403,7 +419,7 @@ The esbuild config marks `node:worker_threads` external (engine code for Node on
 - **Mineshaft**: rock under the ramp's landing where it leaves the pit floor (the sky showed through).
 
 ## M6.20.0 — Vehicles begin (M8): driving, and Level 20, the Riverboat Pursuit
-- **Driving** (`src/sim/drive.js`, tested in `test/drive.test.mjs`): `Drivable` and `Pilot`. In main.js
+- **Driving** (`src/sim/vehicles/drive.js`, tested in `test/drive.test.mjs`): `Drivable` and `Pilot`. In main.js
   `vehicleNear`/`vehicleUse` (first in the E chain), the driven vehicle steps before the player (moveZ
   throttle, moveX steer, jump brake), the player rides the seat (player.js `driving` branch), a chase camera
   (8.5 m behind a boat, 7.5 a car), the prompt shows km/h. Your own vehicle is a `ghost` solid while you
@@ -492,7 +508,7 @@ The esbuild config marks `node:worker_threads` external (engine code for Node on
 
 ## M6.19.5 — battle mode: Level 18 the Beachhead (Rhys's sheet), Level 19 the Factory: Battle
 
-- **Battle mode** (src/sim/battle.js, pure): two sides, a reserve each (100), a clock (600 s). Every man
+- **Battle mode** (src/sim/play/battle.js, pure): two sides, a reserve each (100), a clock (600 s). Every man
   sent onto the field is paid for out of his side's reserve - you as well, each time you go back in. It
   ends at the clock (more men left, reserve + field, wins; level is a draw) or when a side has none in
   reserve and none on the field (Rhys's Info tab), or when you are down with none left to send.
@@ -509,7 +525,7 @@ The esbuild config marks `node:worker_threads` external (engine code for Node on
   kit as you deployed (`respawnYou` in the mission ctx); the step line counts it down.
 - **Running water** (kit `spec.currents`): swimming in it carries you. **A fixed gun that swivels**
   (`level.cannons`): stand at it, E fires a shell (the rocket's blast) where you are looking; 8 s to load.
-- **Level 18, the Beachhead** (beachhead.js, from src/game/maps/beachhead.json - the xlsx through
+- **Level 18, the Beachhead** (beachhead.js, from src/game/levels/maps/beachhead.json - the xlsx through
   tools/map_to_json.py): a square 2 m; the river (fast: swim it and it carries you south), the sea; the
   reds' 8 m sea wall with a wall-walk (its diagonal steps filled so it is a wall, not posts), the gate
   and the two destructible barricades (reinforced: C5), the artillery bunker with the gun on its roof;
@@ -621,7 +637,7 @@ level (mood-board places included); the order proposed (ready-now levels in thre
 levels, then battle mode, then vehicles, then the big settings and the mood boards); who/what/when is
 Claude's call, notes after playing; almost all Ghost assignments (the Train off duty, the drugged level
 outside the real world); the Campus as one map; self-contained levels now, the hub map after.
-- **The kit** (src/game/level_kit.js): `buildKitLevel(spec)` builds a level from a spec - floors as
+- **The kit** (src/game/levels/kit.js): `buildKitLevel(spec)` builds a level from a spec - floors as
   rows of characters (or `carve`d: rooms cut out of solid, walls put round them, doors and furniture
   after), one square `spec.cell` m (1.5). Walls, windows, doors (D, L locked, R reinforced, V vault),
   floors and ceilings (a ceiling wherever the storey above does not floor it), water channels, furniture
@@ -1001,7 +1017,7 @@ Tournament Room's locked doors should be reinforced so you still breach; and "If
 it's labelled as a 'Breaching Shotgun', I expect it to be able to breach with a
 similar effect as C5". Also sent his M6.17.12 screenshots (seen: the casino's
 briefing still said "clear the reds out").
-- **The Night Train** (`src/game/level_train.js`, `index.html?level=4`, title
+- **The Night Train** (`src/game/levels/train.js`, `index.html?level=4`, title
   button "Level 4: The Night Train"): Severia; Novomir Central, a terminus; the
   21:40 to Belyagorsk, service 207. You start in the street outside, unarmed
   (`startLoadout` all empty), at 21:31 on a November night.
@@ -1289,7 +1305,7 @@ audio"; the last red "followed us right up to the roof" unseen. New idea
   `arsenal.stash`). The crate's own stock still shows the full item.
 - **The delay**: browser speech (even with a local voice) can take a second or
   more to start. Every guard line and every Yellow line is now **recorded**
-  (Piper TTS, LibriTTS voice, CC BY 4.0): `src/game/spoken.js` maps each line
+  (Piper TTS, LibriTTS voice, CC BY 4.0): `src/game/core/spoken.js` maps each line
   to an id (`SPOKEN`), which recordings each set has (`SPOKEN_SETS`), and
   `spokenVoice(g, yellowLine)` gives each man a fixed voice (the boss `yb`;
   other Yellows `yg1`/`yg2`; reds `r1`/`r2`). `voices.say(..., voiceId)` plays
@@ -1997,9 +2013,9 @@ are a few maps he will play them all and say what he wants where.
   came up through it. Now a soft dome over the crown on a headband, slumped to
   one side, badge kept. The cap, peaked cap and tactical cap were checked in
   close-ups: they sit right.
-- **Level 3, the Casino** (`src/game/level_casino.js`, `?level=3`, the title
+- **Level 3, the Casino** (`src/game/levels/casino.js`, `?level=3`, the title
   screen's "Level 3: Casino"). From Rhys's preliminary map
-  (`maps/Frontline_Map_Casino__Prelim.xlsx` -> `src/game/maps/casino.json`;
+  (`maps/Frontline_Map_Casino__Prelim.xlsx` -> `src/game/levels/maps/casino.json`;
   map_to_json/draw_map now read "Roof Terrace" as RT). One square = 1 m:
   60 m across. Floors: G 0, 1 4, 2 8 (a hall two floors high), 2A 11.6 (the
   mezzanine: a cross of glass-walled walkways), 3 15.2, 4 19.2, RT 23.2.
@@ -2009,7 +2025,7 @@ are a few maps he will play them all and say what he wants where.
     short chords (`arcWallBoxes`), merged floor to floor. The renderer now takes
     free-form pieces (`p.quads`, render.js; the bake keeps them whole).
   - **The ramp** (Rhys: "one smooth ramp coiling up round the building"): the
-    band between the two walls, `Ramp` (src/sim/curves.js) - a turn a floor,
+    band between the two walls, `Ramp` (src/sim/world/curves.js) - a turn a floor,
     meeting G, 1 and 2 on the east and 3, 4 and the roof on the north (where
     the map puts its S marks), 5.25 turns in all, at least 3.6 m between turns.
     Drawn smooth; stood on as row-merged cells (1 m, steps of ~2 cm - the
@@ -2070,9 +2086,9 @@ maps for variety (asked which first: **the Derelict Factory**).
   climbing out of the shoving (as it already did for guards). Up works the same.
   (`if (!this.path) this.climbing = false` is a safety net the tests do not
   reach - the next step along clears it anyway.)
-- **Level 2, the Derelict Factory** (`src/game/level_factory.js`;
+- **Level 2, the Derelict Factory** (`src/game/levels/factory.js`;
   `?level=2`; the title screen's "Level 2: Derelict Factory"). Rhys's battle
-  map (`maps/Frontline_Battle_Map_Factory.xlsx` -> `src/game/maps/factory.json`
+  map (`maps/Frontline_Battle_Map_Factory.xlsx` -> `src/game/levels/maps/factory.json`
   by `tools/map_to_json.py`), two floors of 60 x 60 squares at **1.5 m a
   square** (90 m across): brick walls, steel doors (L locked: kick; R the
   core's reinforced pairs: a charge), crates, machines and barrels for cover
@@ -2136,7 +2152,7 @@ and a sky-dive start. Also a GPT_Images zip of story mood boards.
   and the captain's (`outcomeLines`). Trophies on a partial result too; Swift
   Extraction now needs every hostage out. Level 0 (training) still needs its
   file - unchanged.
-- **The story is recorded**: `src/sim/story.js` (`hotelOutcome`,
+- **The story is recorded**: `src/sim/play/story.js` (`hotelOutcome`,
   `recordOutcome`) - each slot keeps its story under its own key
   (`frontline.story.N`, `Saves.loadStory/saveStory`); the slot in play is
   remembered for the tab (`Saves.setCurrentSlot`, sessionStorage), so the
@@ -2249,7 +2265,7 @@ subtitles; to clarify, the objectives are NOT yet optional?
 - **The guard from nowhere**: nothing spawns mid-mission - he was there, not
   drawn. Bodies were drawn within 8 m, or 42 m on your own floor (feet within
   2.5 m); a guard on the stairs, or across a stairwell a floor away, was
-  invisible until 8 m and then popped in. Now `DrawCull` (src/sim/drawcull.js)
+  invisible until 8 m and then popped in. Now `DrawCull` (src/sim/world/drawcull.js)
   also draws anyone in plain sight - a clear line from your eye (or the
   camera you are watching) to his head or chest, glass and railings see-
   through. Two sight checks a frame, round robin; a guard once seen stays
@@ -2449,7 +2465,7 @@ hostage shoved off the embankment stood on the river; then: Stop the Captain.
   biosciences lab's "restricted floor", the yellows, the 23:30 flight. And a
   second way into the safe: the letterhead's "EST. 1962" + the memo's "the
   year we opened".
-- **Stop the Captain** (`src/sim/captain.js`, `CaptainRun`): after his
+- **Stop the Captain** (`src/sim/people/captain.js`, `CaptainRun`): after his
   escape (door, ladder, P13A) he walks to the rope ladder, climbs it (1.1
   m/s), sits in the open door while the rotors wind up (8 s - the last
   chance), then the helicopter lifts and flies north. Dead or knocked out
@@ -2670,7 +2686,7 @@ the police cars.
 2. **Supply cases on the bedside tables**: the smallest wooden top at table
    height in the room with nothing on it (Room 104 and Room 201 - bedside
    tables); a smaller case.
-3. **Hostages** (`src/sim/hostage.js`, pure; `hotelHostages`): Hostage 1
+3. **Hostages** (`src/sim/people/hostage.js`, pure; `hotelHostages`): Hostage 1
    (floor 1, behind the reinforced door P4 watches), 2 (floor 2, Room 206), 3
    (floor 3, with P12) - from the map's labels. Bound and seated; **hold E** to
    cut one loose (1.4 s); he **follows** (2.2 m back, hurrying past 6 m), by
@@ -2838,7 +2854,7 @@ Rhys on M6.9.28: the sewer is lit (baked light 520 ms, 49 fps). On to the guards
   notes). A post typed "17, 10" arrives from Sheets as a date: day = x,
   month = y. Posts come from the map's P squares where there is one (P10 had
   none in the tab).
-- **`src/sim/hotel_guards.js`** (pure): `routeCells`, `mapPosts`,
+- **`src/sim/people/hotel_guards.js`** (pure): `routeCells`, `mapPosts`,
   `orderRoute` (a ring walked clockwise/anticlockwise from the post - the
   shoelace sign on the sheet; a line walked to its end and back; every post on
   a shared route fills its gap, so P7 and P8 start across one ring),
@@ -3320,7 +3336,7 @@ of". And: lockpicks and lockpicking, some day (on the roadmap).
 - **No note.** Four of the nine cameras (chosen at random each time, like the
   code) carry one number of it each (`camera.clue`), in the cameras' own
   order, lowest first - so repeated numbers are fine. `cameraGlitch` (in
-  `src/sim/safe.js`, pure): such a camera tears for about a third of a second
+  `src/sim/world/safe.js`, pure): such a camera tears for about a third of a second
   every six to eight seconds; the others never do.
 - **The feed now has a clock** (`#cctv-time`, "01-10-2026 23:40:..", running
   from when you first watch). In a glitch a pale tear line crosses the feed,
@@ -3355,7 +3371,7 @@ Rhys on M6.9.12:
 4. **The first floor's emergency exit roof is railed all round**, but at the
    ladder (`buildRoofWalk`: railings down both ends).
 5-7. **The Room 207 key is in the Estate Room safe** (Rhys: players would not
-   look in Room 201). `src/sim/safe.js` (pure): a dial 0-9 turned a notch at
+   look in Room 201). `src/sim/world/safe.js` (pure): a dial 0-9 turned a notch at
    a time, four numbers set in turn, checked at the end; a heavier click when
    the dial is on the number it waits for (a careful ear can crack it); a
    breaching charge within 1.8 m blows the door off. In the game: E at the
@@ -3515,7 +3531,7 @@ Rhys on M6.9.7: all good, but for one off-colour patch in Room 101's floor.
    (M6.9.7) had its concrete but no carpet - bare concrete showing. Carpeted
    now (`buildStairs`); a test walks the strip and fails on any bare floor.
 2. **The lift** (Rhys's map: "Elevator (G, 1, 2)" at (21, 35), the lobby's
-   south-east corner). `src/sim/lift.js` (pure): a car (moving floor, roof and
+   south-east corner). `src/sim/world/lift.js` (pure): a car (moving floor, roof and
    door solids) serving a list of floors; sliding doors on each landing and on
    the car; calls queued in order; speeds up and slows to a stop; doors open
    4 s, and will not shut on anyone in the doorway (`step(dt, bodies)`);
@@ -3806,10 +3822,10 @@ away and add the features there step by step** - Meridian House stays as it
 is. Hostages first when the systems start.
 
 **The hotel, from Rhys's spreadsheet.** `tools/map_to_json.py` turns
-`maps/Frontline_Map_Riverside_Hotel.xlsx` into `src/game/maps/riverside.json`
+`maps/Frontline_Map_Riverside_Hotel.xlsx` into `src/game/levels/maps/riverside.json`
 (each floor as rows of one-letter codes; room names, UP/DOWN, routes and
 guard posts as labels). Rerun it whenever the map changes.
-`src/game/level_hotel.js` builds a floor from it (`buildFloor`):
+`src/game/levels/hotel.js` builds a floor from it (`buildFloor`):
 - **1.5 m a square** (Rhys's scale note: one-square corridors widened), walls
   0.2 m thick (plaster) drawn along the middle of their squares and joined to their
   neighbours - a room four squares across is 6 m.
@@ -3914,7 +3930,7 @@ Step 1 of the plan, continued ("Let's Get Baked"). No playtest notes on M6.7.7.
 **Why Level 0 was dark, and what was done:**
 - **The lightmaps were tiny.** PlayCanvas sizes a lightmap from the mesh's
   bounds; one map-wide mesh per material gave the building's plaster a single
-  256-pixel map (about 4 px/m) - the blotches. New `src/sim/bake.js`: baked
+  256-pixel map (about 4 px/m) - the blotches. New `src/sim/world/bake.js`: baked
   levels are cut into 24 m chunks, big faces into 12 m tiles, and each chunk
   is one entity whose materials share one lightmap, asking for ~8 px/m (cap
   1024). 28 baked meshes (not 20 map-wide ones, nor the 84 of a first try).
@@ -3937,7 +3953,7 @@ likely several seconds on the Chromebook on every start (the yard is behind
 the title screen); and the sunlit yard came out shaded. A one-cascade sun for
 the bake made it 272 s and was taken back out. See the roadmap.
 
-**Low Quality offer:** `src/sim/perf.js` `FpsWatch` - under 20 fps for about
+**Low Quality offer:** `src/sim/world/perf.js` `FpsWatch` - under 20 fps for about
 8 s of play (not menus, not the first 6 s, not already on Low) shows a banner
 once (`#lowq`): Switch to Low / Keep as it is. The answer is saved
 (`settings.lowAsked`). Off under `?test`.
@@ -4378,7 +4394,7 @@ guards readier to react and reinforce while others keep to their stations.
 ## M6.2.0 — stage 3: they shoot back, and they speak
 Rhys, after M6.1.0: "it'll need enemies attacking you, AND actual audio
 dialogue — not just subtitled text."
-- **Guards fight** (`src/sim/guard.js`, `FIGHT`): alerted and able to see
+- **Guards fight** (`src/sim/people/guard.js`, `FIGHT`): alerted and able to see
   you, a guard waits **0.55 s** to react, then fires his carbine in bursts of
   3–5 rounds 0.11 s apart, 0.6–1.3 s between bursts; 30 to a magazine, a
   2.4 s reload ("Reloading!"). **9 damage** a hit (yours hit harder: a game
@@ -4394,7 +4410,7 @@ dialogue — not just subtitled text."
   (`weapons_view.spawnModel`: built and turned like your own); slung when
   they fall. **Muzzle flashes and tracers**; their shots **heard by
   distance** (`audio.shot(w, far)`), and heard by other guards too.
-- **Voices** (`src/game/voice.js`): lines are **spoken**, by the browser's
+- **Voices** (`src/game/core/voice.js`): lines are **spoken**, by the browser's
   own speech synthesis (built into Chrome and ChromeOS), as a stand-in for
   recordings. Each guard has his own voice, pitch and pace from his name, so
   he always sounds like himself; quieter with distance; only near you; an
@@ -4422,7 +4438,7 @@ dialogue — not just subtitled text."
 
 ## M6.1.0 — stage 2: the guards notice you
 Rhys: M6.0.4 closes stage 1. Now detection.
-- **Awareness** (`src/sim/guard.js`): each guard has 0–1, filled by what he
+- **Awareness** (`src/sim/people/guard.js`): each guard has 0–1, filled by what he
   sees and hears, fading after 1.5 s of nothing. **States:** *patrol* →
   *suspicious* (≥ 0.3: stops, turns to it, "Hm? Who's there?") → *search*
   (≥ 0.6, or still wondering after 2.5 s: walks to where you **were**, looks
@@ -4445,7 +4461,7 @@ Rhys: M6.0.4 closes stage 1. Now detection.
   for a knockout), a search there, and the alarm.
 - **The alarm:** an alert, or a body found, sends every guard within 20 m on
   his floor (8 m through a floor) to search where you were seen.
-- **Finding the way** (`src/sim/nav.js`): a 0.5 m grid per floor (the ground
+- **Finding the way** (`src/sim/world/nav.js`): a 0.5 m grid per floor (the ground
   floor takes in the street and lot), cells open where a guard fits (checked
   a little slim, 0.4 m, so 1 m doorways pass on a 0.5 m grid), doors counted
   open (he opens them as he reaches them — even locked ones: he has the key),
@@ -4575,7 +4591,7 @@ And a place to learn **breaching**, with a moment of **bullet time**.
 Hidden trophy: **No Casualties**.
 
 - **A level of its own.** `index.html?level=0` builds `buildMission0()`
-  instead of Yard 7 (`src/game/level_mission0.js`). The title screen has
+  instead of Yard 7 (`src/game/levels/mission0.js`). The title screen has
   **Level 0: Training Mission**; a mission is one page load from the van to
   the end, so leaving (end screen, pause menu) reloads into Yard 7. A
   briefing screen comes first (it is also the click Chrome needs before it
@@ -4598,7 +4614,7 @@ Hidden trophy: **No Casualties**.
     through a first-floor window.
   - Thirteen ordinary hinged doors, thirty lights, one stair shaft with two
     flights (a 2 m walkway between them on the first floor).
-- **Guards** (`src/sim/guard.js`): ten reds — lobby, security office,
+- **Guards** (`src/sim/people/guard.js`): ten reds — lobby, security office,
   loading bay, open plan, first-floor corridor, two at the server door, one
   patrolling the operations floor, two in the guard room. They patrol routes
   or stand at posts looking about; their bodies are shootable targets (the
@@ -4607,7 +4623,7 @@ Hidden trophy: **No Casualties**.
   notice you yet** (stage 2). Drawn as the operative's own model, loaded
   once and shared, in a **red-tinted** copy of the uniform. Not yet carrying
   weapons.
-- **The mission** (`src/sim/mission.js`, `src/game/mission_runtime.js`):
+- **The mission** (`src/sim/play/mission.js`, `src/game/levels/mission_runtime.js`):
   take the keycard (E); use it on the server door (E); **hold E** at the
   terminal to download (4 s; progress kept if you let go); then back to the
   van (E). The objective line, the radar's diamond, and the end screen (time,
@@ -4623,7 +4639,7 @@ Hidden trophy: **No Casualties**.
   time you sense someone), the keycard, the IT office's map, the fire escape,
   the guard room's locked door, the server door (with or without the card),
   the terminal, and "get out" once you have the file.
-- **Trophies** (`src/game/trophies.js`): hidden achievements, kept in the
+- **Trophies** (`src/game/core/trophies.js`): hidden achievements, kept in the
   browser across save slots. Nothing lists what exists; the end screen
   announces a new one; **Pause → Trophies** shows only those earned. The first:
   **No Casualties** — complete Level 0 without killing anyone.
@@ -4755,7 +4771,7 @@ is no longer used and can be deleted from the repository.
   the mannequin's bone lengths differ from the body's by up to 4.5 cm, and
   copying them would reshape the body. Hip movement is scaled to this body's
   hip height.
-- **What plays when** (`src/sim/anim.js`, tested against the model file):
+- **What plays when** (`src/sim/people/anim.js`, tested against the model file):
   - walk under 2.6 m/s, **jog** to 5.4 (your normal walk speed is really a
     jog), **sprint** above; each paced so the feet do not slide;
   - **crouch** and **prone** are real poses now — no more squashing the body
@@ -4801,7 +4817,7 @@ Playtest notes on M5.14.0, answered in order.
   Signs: **WEAPONS RANGE → turn right** beside the door, **WEAPONS RANGE** over
   the south opening, and on the stairs side **through the door, then left**.
   The door shuts again when a course run starts.
-  *How it works:* `src/sim/doors.js`. Collision is boxes, so a door is in one
+  *How it works:* `src/sim/world/doors.js`. Collision is boxes, so a door is in one
   of two places — across the doorway or flat against the wall — and only the
   swing between them is drawn (a pivot entity in `render.js`, turned by
   `door.yaw()`).
@@ -4941,7 +4957,7 @@ Playtest notes on M5.14.0, answered in order.
   access road running north from the hangar doors. All non-solid and far away.
   New textures: `desert`, `rock`, `asphalt`. **Fog pushed back** from 45-190 m
   to 120-850 m and warmed, or none of it would be visible.
-- **Ladders have rungs** (`src/game/ladders.js`): two stiles, a rung every
+- **Ladders have rungs** (`src/game/draw/ladders.js`): two stiles, a rung every
   30 cm and wall brackets, in **iron, escape-yellow or timber**. Every ladder
   in the yard, the course and the pool uses it. The old test looked for the
   flat ladder pieces; it now checks what matters — that the climbing column is
@@ -5003,7 +5019,7 @@ Playtest notes on M5.14.0, answered in order.
 ## M5.9.0 — vehicles built in code
 Rhys wants vehicles that look right to *drive*: early-2000s low-mid-poly
 realism, not the cartoon packs. No CC0 pack matched, so they are built in code.
-- **`src/game/vehicle_models.js`**: a small mesh builder (`quad`, `tri`,
+- **`src/game/draw/vehicle_models.js`**: a small mesh builder (`quad`, `tri`,
   `hull` — an eight-cornered box whose sides can lean — `box`, `cylX`,
   `cylY`) and painted materials (olive and sand paint with panel lines, rivets,
   dust and chips; canvas; tread; glass; chrome; lit head and tail lamps).
@@ -5044,7 +5060,7 @@ realism, not the cartoon packs. No CC0 pack matched, so they are built in code.
   Also extracted for later: `van`, `police`, `ambulance`. They live in
   `assets/vehicles/`, and **reference `Textures/colormap.png`** — keep that
   sub-folder or they load untextured.
-- **`src/game/props.js`** places scenery models: loads each once, measures it,
+- **`src/game/draw/props.js`** places scenery models: loads each once, measures it,
   scales it to a real length (Kenney models are toy-sized, about 3 units),
   stands it on the ground and turns it. **Collision stays the level's own
   box** (drawn invisible), so a prop is cover without needing a mesh collider.
@@ -5222,7 +5238,7 @@ of it did land** — a half-applied batch is worse than none.
   volume sliders for sound and music, and a browser test that calls every
   sound and pushes every movement event through the handler, so this class of
   break cannot ship again.
-- **Music** (`src/game/music.js`): streamed, one track at a time, cross-faded.
+- **Music** (`src/game/core/music.js`): streamed, one track at a time, cross-faded.
   `pickTrack()` chooses by situation — title, course, range, yard, tension,
   action, chase, briefing, complex, battle, loop, death. Tracks re-encoded to
   96 kbps (79 MB → 22 MB). **All by Kevin MacLeod (incompetech.com), CC BY
@@ -5243,7 +5259,7 @@ of it did land** — a half-applied batch is worse than none.
   things of interest (grey), objective (yellow diamond, **pinned to the rim**
   when off the edge so it still points the way). Walls and crates are no longer
   drawn. That also fixes the backwards "me" marker.
-- **Sound, made in code** (`src/game/audio.js`): every sound is synthesised at
+- **Sound, made in code** (`src/game/core/audio.js`): every sound is synthesised at
   the moment it plays, so a suppressed weapon really is a different sound (the
   crack is removed and the action is left) rather than a second recording.
   Covers gunfire by family, dry fire, reloads, melee, impacts (flesh vs hard,
@@ -5262,7 +5278,7 @@ of it did land** — a half-applied batch is worse than none.
 - **Stamina in the debug line** (it had been lost in a failed patch).
 
 ## M5.2 — minimap and compass
-- **`src/game/minimap.js`** draws a 170 px map from the level's own collision
+- **`src/game/draw/minimap.js`** draws a 170 px map from the level's own collision
   boxes, so it cannot disagree with the world. North up, your arrow turns.
   Shows walls, doors (amber shut / dark open), crates (green, gear blue),
   standing targets (red) and a ring for the current objective (the course
@@ -5497,7 +5513,7 @@ one-item-per-crate in the field; 2D art from Rhys to replace painted textures.
   screen, so you can see where the shot lands.
 
 ## M4.1 — the weapons half, and indoor lighting
-- **`src/game/level_weapons.js`** — five roofed, walled areas south of the
+- **`src/game/levels/ranges.js`** — five roofed, walled areas south of the
   movement course, reached by dropping through the crawl grate:
   pistol range (five small plates, 10-35 m), rifle range (silhouettes, three
   of them moving on tracks), sniper range (68 m long, a mover, and two in
@@ -5524,11 +5540,11 @@ one-item-per-crate in the field; 2D art from Rhys to replace painted textures.
 
 ## M4.0 — the training course (movement half)
 Built to Rhys's outline: a corridor of rooms that lets out into Yard 7.
-- **`src/sim/course.js`** — `Course` walks a list of steps; a step is done when
+- **`src/sim/play/course.js`** — `Course` walks a list of steps; a step is done when
   you reach its zone (or its `test` passes), which opens the doors it names and
   shows the next instruction. `skipSection('movement')` and `skipAll()` open
   everything they pass. `movementSteps()` holds the eight steps.
-- **`src/game/level_tutorial.js`** — the geometry, built into the same world as
+- **`src/game/levels/course.js`** — the geometry, built into the same world as
   the yard (x −198 to −60), so there is no level switching: room and jump
   trench (with a ladder out, since a miss must not be a dead end), ladder to a
   platform and a 2.4 m hop, a crate climb to a catwalk, a catwalk whose walls
@@ -5647,7 +5663,7 @@ water/prone/ladders; crate-stair judder; the camera turning to follow movement.
   trimmed, black made transparent, 820 px, `assets/ui/frontline_logo.png`
   (409 kB). Menu: Continue (hidden with no saves) / New game / Saved games /
   Settings / How to play / Buy me a cuppa (ko-fi.com/gooseknight).
-- **`src/game/saves.js`** — three slots in localStorage plus **transfer codes**
+- **`src/game/core/saves.js`** — three slots in localStorage plus **transfer codes**
   (`FL1.<base64url>.<crc>`, whitespace forgiven, checksum refuses a typo, a
   newer save version refused politely). A save holds name, playtime, score,
   the loadout with its mods, what has been found, position and facing.
@@ -5719,14 +5735,14 @@ intro (`gooseknight/render_intro.py`, `tdr_logo_600.png`) is the model to follow
 ## M3.1 — the operative (animated character)
 - **`assets/characters/Swat.glb`** (1.8 MB): Quaternius Swat from the Ultimate
   Animated Character Pack, converted from glTF. 24 clips on a 68-node rig.
-- **`src/sim/anim.js`** picks the clip from the player's state (pure, tested):
+- **`src/sim/people/anim.js`** picks the clip from the player's state (pure, tested):
   idle / Idle_Gun / Idle_Sword / Idle_Gun_Pointing / Idle_Gun_Shoot, Walk vs
   Run by speed with playback paced to it, Run_Back/Left/Right by direction,
   Run_Shoot, Roll for jumps and dashes, Interact for vaults/climbs, Death and
   HitRecieve overriding everything. **The rig has no crouch, prone, swim or
   climb clips**, so those borrow Walk/Idle and `poseFor()` bends the body
   instead (crouch squashes to 0.66, prone and swimming pitch it flat).
-- **`src/game/character.js`** loads the model, measures it and scales it to
+- **`src/game/draw/character.js`** loads the model, measures it and scales it to
   1.8 m, assigns every clip by name, and finds the right hand. **Two gotchas:
   the bones use dots (`Wrist.R`, not `Wrist_R`), and the model ships holding
   its own pistol**, which is disabled so the carried weapon is the only one.
@@ -5736,7 +5752,7 @@ intro (`gooseknight/render_intro.py`, `tdr_logo_600.png`) is the model to follow
 - Next for the cast: guards using the same class, and blending between clips.
 
 ## M3.0 — loadout, families, mods, gear and crates
-- **`src/sim/loadout.js`** holds the catalogue and the rules. Five slots
+- **`src/sim/arms/loadout.js`** holds the catalogue and the rules. Five slots
   (primary, backup, utility1, utility2, gear) that take items **by size**:
   `SLOT_TAKES` lets a backup-sized item ride in the primary slot, so two
   sidearms are legal, and both utility slots take any utility item, so double

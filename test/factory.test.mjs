@@ -1,10 +1,10 @@
 // FRONTLINE - Level 2, the Derelict Factory (M6.14.0): built from Rhys's map. Plain node.
-import { buildFactory, factoryLadders, spawnPoints, factoryRows, yellowDefs, FS, F_FLOORS, YELLOW_COUNT } from '../src/game/level_factory.js';
-import MAP from '../src/game/maps/factory.json' with { type: 'json' };
-import { Player } from '../src/sim/player.js';
-import { NavGrid } from '../src/sim/nav.js';
-import { Mission, factoryTrophies } from '../src/sim/mission.js';
-import { RULES, factoryOutcome, recordOutcome } from '../src/sim/story.js';
+import { buildFactory, factoryLadders, spawnPoints, factoryRows, yellowDefs, FS, F_FLOORS, YELLOW_COUNT } from '../src/game/levels/factory.js';
+import MAP from '../src/game/levels/maps/factory.json' with { type: 'json' };
+import { Player } from '../src/sim/people/player.js';
+import { NavGrid } from '../src/sim/world/nav.js';
+import { Mission, factoryTrophies } from '../src/sim/play/mission.js';
+import { RULES, factoryOutcome, recordOutcome } from '../src/sim/play/story.js';
 import { readFileSync } from 'fs';
 let pass = 0; const fails = [];
 const T = (n, f) => { try { f(); pass++; console.log('  PASS  ' + n); } catch (e) { fails.push(n); console.log('  FAIL  ' + n + ' :: ' + e.message); } };

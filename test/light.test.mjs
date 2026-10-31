@@ -1,8 +1,8 @@
 // FRONTLINE - baked lighting and the frame-rate watch (node).
-import { BAKE, tilePiece, planChunks, packLightmap, lightmapMultiplier, lightmapSize, bounceFill, bakeWhen, BAKE_AFTER_FRAMES } from '../src/sim/bake.js';
-import { FpsWatch } from '../src/sim/perf.js';
-import { buildMission0 } from '../src/game/level_mission0.js';
-import { buildTraining } from '../src/game/level_training.js';
+import { BAKE, tilePiece, planChunks, packLightmap, lightmapMultiplier, lightmapSize, bounceFill, bakeWhen, BAKE_AFTER_FRAMES } from '../src/sim/world/bake.js';
+import { FpsWatch } from '../src/sim/world/perf.js';
+import { buildMission0 } from '../src/game/levels/mission0.js';
+import { buildTraining } from '../src/game/levels/yard7.js';
 let pass = 0; const fails = [];
 const T = (n, f) => { try { f(); pass++; console.log('  PASS  ' + n); } catch (e) { fails.push(n); console.log('  FAIL  ' + n + ' :: ' + e.message); } };
 const A = (c, m) => { if (!c) throw new Error(m); };
@@ -139,8 +139,8 @@ T('(M6.16.0) a sheet - many faces laid out where they really are - is one patch:
 {
   // (the renderer's mesh-building, run with a stand-in for the engine: in M6.16.0 the chunks'
   // sheets were left out where a chunk's materials are packed together, and only a browser found it)
-  const { buildMergedMeshes } = await import('../src/game/render.js');
-  const { buildCasino } = await import('../src/game/level_casino.js');
+  const { buildMergedMeshes } = await import('../src/game/draw/render.js');
+  const { buildCasino } = await import('../src/game/levels/casino.js');
   const C = buildCasino();
   const fake = { Mesh: class { setPositions(p) { this.p = p; } setNormals() {} setUvs(i, u) { if (i === 1) this.uv1 = u; } setColors32() {} setIndices(i) { this.i = i; } update() {} }, PRIMITIVE_TRIANGLES: 4 };
   T('the casino\'s baked chunks build, their lightmap coordinates all inside the map', () => {

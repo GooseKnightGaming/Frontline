@@ -1,10 +1,10 @@
 // FRONTLINE - movement tests. Plain node, no browser.
-import { World } from '../src/sim/world.js';
-import { Player, P, blankInput, forwardOf } from '../src/sim/player.js';
-import { Arsenal, makeTarget } from '../src/sim/weapons.js';
-import { Loadout } from '../src/sim/loadout.js';
-import { buildTraining, CONTAINER } from '../src/game/level_training.js';
-import { CamSmoother } from '../src/game/camsmooth.js';
+import { World } from '../src/sim/world/world.js';
+import { Player, P, blankInput, forwardOf } from '../src/sim/people/player.js';
+import { Arsenal, makeTarget } from '../src/sim/arms/weapons.js';
+import { Loadout } from '../src/sim/arms/loadout.js';
+import { buildTraining, CONTAINER } from '../src/game/levels/yard7.js';
+import { CamSmoother } from '../src/game/core/camsmooth.js';
 
 let pass = 0; const fails = [];
 const T = (name, fn) => { try { fn(); pass++; console.log('  PASS  ' + name); } catch (e) { fails.push(name + ' -> ' + e.message); console.log('  FAIL  ' + name + ' :: ' + e.message); } };

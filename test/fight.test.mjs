@@ -1,7 +1,7 @@
 // FRONTLINE - M6 stage 3: guards fight back. Run against the real Level 0.
-import { buildMission0, FLOORS } from '../src/game/level_mission0.js';
-import { NavGrid } from '../src/sim/nav.js';
-import { FIGHT, hitChance, LINES, ARMS, raiseAlarm, RANKS, lineFor, ON_ALERT } from '../src/sim/guard.js';
+import { buildMission0, FLOORS } from '../src/game/levels/mission0.js';
+import { NavGrid } from '../src/sim/world/nav.js';
+import { FIGHT, hitChance, LINES, ARMS, raiseAlarm, RANKS, lineFor, ON_ALERT } from '../src/sim/people/guard.js';
 
 let pass = 0; const fails = [];
 const T = (n, f) => { try { f(); pass++; console.log('  PASS  ' + n); } catch (e) { fails.push(n); console.log('  FAIL  ' + n + ' :: ' + e.message); } };

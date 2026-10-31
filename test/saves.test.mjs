@@ -2,7 +2,7 @@
 const store = {};
 global.localStorage = { getItem: (k) => (k in store ? store[k] : null),
   setItem: (k, v) => { store[k] = String(v); }, removeItem: (k) => { delete store[k]; } };
-const S = await import('../src/game/saves.js');
+const S = await import('../src/game/core/saves.js');
 let pass = 0; const fails = [];
 const T = (n, f) => { try { f(); pass++; console.log('  PASS  ' + n); } catch (e) { fails.push(n); console.log('  FAIL  ' + n + ' :: ' + e.message); } };
 const A = (c, m) => { if (!c) throw new Error(m); };

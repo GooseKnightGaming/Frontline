@@ -1,5 +1,5 @@
 # FRONTLINE - turn one of Rhys's map spreadsheets into JSON the game reads.
-#   python3 tools/map_to_json.py maps/Frontline_Map_Riverside_Hotel.xlsx src/game/maps/riverside.json
+#   python3 tools/map_to_json.py maps/Frontline_Map_Riverside_Hotel.xlsx src/game/levels/maps/riverside.json
 # Each floor becomes rows of one-letter codes (the Key tab: W wall, G glass,
 # D door, L locked, R reinforced, S stairs, A ladder, C cover, E way in,
 # X extraction, O objective, K item, T terminal, H hostage, V vehicle,

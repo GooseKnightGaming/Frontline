@@ -1,58 +1,89 @@
-// FRONTLINE - Milestone 1: the Training Facility.
-import { cameraGlitch, glitchSpot } from '../sim/safe.js';
+// FRONTLINE - the game in the browser: main.js starts it, builds the level you asked for, and runs it.
+//
+// Which level: index.html on its own is Yard 7; ?level=0 the training mission, 1 the Riverside Hotel,
+// 2 the Derelict Factory, 3 the Casino, 4 the Night Train; ?level=<name> a first draft (levels/drafts/).
+// ?test puts the game in the state the automated tests expect.
+//
+// Where things are:
+//   src/sim/      the rules, with no drawing (tested in node): people/, world/, arms/, play/, vehicles/
+//   src/game/     core/ (input, sound, voices, saves), draw/ (models, textures, the HUD's pictures),
+//                 levels/ (each level, the level kit and its drafts, what runs a mission)
+//
+// boot() below, in order:
+//   - the engine, the level, the light bake
+//   - your body, props and vehicles
+//   - your kit: what you carry and what it weighs
+//   - what you know about who is about
+//   - the training course
+//   - doors and the Quartermaster's crates
+//   - state
+//   - HUD
+//   - title screen and saved games
+//   - credits
+//   - loadout and classes before a mission; the class pick in battle
+//   - the gear and trophy screens
+//   - screens
+//   - aiming and the camera
+//   - the safe's dial, night vision
+//   - keys, consoles, the lift's emergency stop
+//   - the lift
+//   - footsteps and the parachute
+//   - every frame: the loop
+//   - test hooks (used by the automated browser tests)
+import { cameraGlitch, glitchSpot } from '../sim/world/safe.js';
 import * as pc from 'playcanvas';
-import { Player, P, forwardOf, followEye, shotOrigin, repackChute, chuteLabel, packGrip, CHUTE } from '../sim/player.js';
-import { buildTraining } from './level_training.js';
-import { buildMission0 } from './level_mission0.js';
-import { buildHotel } from './level_hotel.js';
-import { buildFactory } from './level_factory.js';
-import { buildKitLevel } from './level_kit.js';
-import { DRAFTS } from './levels/index.js';
-import { buildTrain } from './level_train.js';
-import { buildCasino } from './level_casino.js';
-import { setupMission } from './mission_runtime.js';
-import * as Trophies from './trophies.js';
-import { buildScene, buildOperative } from './render.js';
-import { Operative, characterFill } from './character.js';
-import { placeProps } from './props.js';
-import { buildVehicle } from './vehicle_models.js';
-import { stateOf } from '../sim/anim.js';
-import { SEAT } from '../sim/guard.js';
-import { quickKey, Arsenal, WEAPONS } from '../sim/weapons.js';
-import { scopeKind } from './weapons_view.js';
-import { scopeSvg } from './scope.js';
-import { Loadout, ITEMS, MODS, AMMO, SLOTS, SLOT_KEY, fits, modFits, loadEffect, itemWeight, CLASSES, classById, classAllows, ROUND_KG, statsOf, itemKind, withTags, cratePrompt } from '../sim/loadout.js';
-import * as Saves from './saves.js';
-import { recordOutcome } from '../sim/story.js';
-import { Course, movementSteps, weaponsSteps } from '../sim/course.js';
-import * as Minimap from './minimap.js';
-import { Tracker, sense, RADAR_RANGES, RADAR_NAMES, fade } from '../sim/contacts.js';
-import { Audio } from './audio.js';
-import { Music, pickTrack } from './music.js';
-import { stepRanges } from './level_weapons.js';
-import { WeaponView, MODEL_BY_ID } from './weapons_view.js';
-import { CamSmoother } from './camsmooth.js';
-import { FpsWatch, ResScaler } from '../sim/perf.js';
-import { bakeWhen, BAKE_AFTER_FRAMES } from '../sim/bake.js';
-import { holdLiftFor } from '../sim/hostage.js';
-import { DoorMove } from '../sim/doors.js';
-import { kickOpens } from '../sim/mission.js';
-import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './input.js';
+import { Player, P, forwardOf, followEye, shotOrigin, repackChute, chuteLabel, packGrip, CHUTE } from '../sim/people/player.js';
+import { buildTraining } from './levels/yard7.js';
+import { buildMission0 } from './levels/mission0.js';
+import { buildHotel } from './levels/hotel.js';
+import { buildFactory } from './levels/factory.js';
+import { buildKitLevel } from './levels/kit.js';
+import { DRAFTS } from './levels/drafts/index.js';
+import { buildTrain } from './levels/train.js';
+import { buildCasino } from './levels/casino.js';
+import { setupMission } from './levels/mission_runtime.js';
+import * as Trophies from './core/trophies.js';
+import { buildScene, buildOperative } from './draw/render.js';
+import { Operative, characterFill } from './draw/character.js';
+import { placeProps } from './draw/props.js';
+import { buildVehicle } from './draw/vehicle_models.js';
+import { stateOf } from '../sim/people/anim.js';
+import { SEAT } from '../sim/people/guard.js';
+import { quickKey, Arsenal, WEAPONS } from '../sim/arms/weapons.js';
+import { scopeKind } from './draw/weapons_view.js';
+import { scopeSvg } from './draw/scope.js';
+import { Loadout, ITEMS, MODS, AMMO, SLOTS, SLOT_KEY, fits, modFits, loadEffect, itemWeight, CLASSES, classById, classAllows, ROUND_KG, statsOf, itemKind, withTags, cratePrompt } from '../sim/arms/loadout.js';
+import * as Saves from './core/saves.js';
+import { recordOutcome } from '../sim/play/story.js';
+import { Course, movementSteps, weaponsSteps } from '../sim/play/course.js';
+import * as Minimap from './draw/minimap.js';
+import { Tracker, sense, RADAR_RANGES, RADAR_NAMES, fade } from '../sim/people/contacts.js';
+import { Audio } from './core/audio.js';
+import { Music, pickTrack } from './core/music.js';
+import { stepRanges } from './levels/ranges.js';
+import { WeaponView, MODEL_BY_ID } from './draw/weapons_view.js';
+import { CamSmoother } from './core/camsmooth.js';
+import { FpsWatch, ResScaler } from '../sim/world/perf.js';
+import { bakeWhen, BAKE_AFTER_FRAMES } from '../sim/world/bake.js';
+import { holdLiftFor } from '../sim/people/hostage.js';
+import { DoorMove } from '../sim/world/doors.js';
+import { kickOpens } from '../sim/play/mission.js';
+import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './core/input.js';
 
-const VERSION = 'M6.20.15';
+const VERSION = 'M6.21.0';
 const $ = (id) => document.getElementById(id);
 const TEST = /[?&]test\b/.test(location.search);
 // Level 0, the training mission, is its own page load: index.html?level=0
 const MISSION = /[?&]level=0\b/.test(location.search);
 // Level 1, the Riverside Hotel (being built a floor at a time): index.html?level=1
 const HOTEL = /[?&]level=1\b/.test(location.search);
-// (M6.14.0, Rhys: "let's build up some of the other maps") Level 2, the Derelict Factory
+// (Rhys: "let's build up some of the other maps") Level 2, the Derelict Factory
 const FACTORY = /[?&]level=2\b/.test(location.search);
-// (M6.15.0, Rhys: "can we set about building the Casino next please") Level 3
+// (Rhys: "can we set about building the Casino next please") Level 3
 const CASINO = /[?&]level=3\b/.test(location.search);
-// (M6.18.0, Rhys: the intercity train - "wrong place, wrong time") Level 4
+// (Rhys: the intercity train - "wrong place, wrong time") Level 4
 const TRAIN = /[?&]level=4\b/.test(location.search);
-// (M6.19.0) the first-draft levels, by name: index.html?level=sewers
+// the first-draft levels, by name: index.html?level=sewers
 const DRAFT_ID = (location.search.match(/[?&]level=([a-z][a-z0-9_]*)/i) || [])[1] || null;
 const DRAFT = DRAFT_ID ? DRAFTS.find((d) => d.id === DRAFT_ID) || null : null;
 const goDraft = (id) => { location.href = 'index.html?level=' + id + (TEST ? '&test' : ''); };
@@ -65,6 +96,7 @@ const goYard = () => { location.href = 'index.html' + (TEST ? '?test' : ''); };
 const goMission = () => { location.href = 'index.html?level=0' + (TEST ? '&test' : ''); };
 
 function boot() {
+  // ── the engine, the level, the light bake ───────────────────────────────────
   const canvas = $('app');
   const settings = loadSettings();
   const app = new pc.Application(canvas, {
@@ -85,13 +117,13 @@ function boot() {
   const fillQ = location.search.match(/[?&]fill=(shadow|soft|none)\b/);
   if (fillQ) level.bakeFill = fillQ[1];
   if (/[?&]lmfilter=0\b/.test(location.search)) level.bakeFilter = false;
-  // ?cl=0 (M6.9.28): the engine's clustered lighting off - lights the older
+  // ?cl=0: the engine's clustered lighting off - lights the older
   // way, bake included; a diagnostic for the Chromebook's dark baked lamps
   if (/[?&]cl=0\b/.test(location.search)) app.scene.clusteredLightingEnabled = false;
   const view = buildScene(pc, app, level, settings);
-  // (M6.17.7) people lit up to a daylight level's ambient on dark levels (not black cut-outs across a big room)
+  // people lit up to a daylight level's ambient on dark levels (not black cut-outs across a big room)
   { const a = app.scene.ambientLight; characterFill(pc, [a.r, a.g, a.b]); }
-  // The light bake (M6.9.28): only once the engine has drawn a few frames.
+  // The light bake: only once the engine has drawn a few frames.
   // Baked before the first frame (as it was until now), the engine's lighting
   // is not yet set up and the bake silently leaves lamps out - whole walls of
   // the sewer, and the hotel's rooms at night, came out dark. Baking again
@@ -105,12 +137,13 @@ function boot() {
     const once = () => { if (++frames < BAKE_AFTER_FRAMES) return; app.off('frameend', once); bakedLight = view.bakeLighting(); };
     app.on('frameend', once);
   }
+  // ── your body, props and vehicles ───────────────────────────────────────────
   const body = buildOperative(pc, app);      // box stand-in, used until the model loads
   body.enabled = false;
   const opr = new Operative(pc, app, 'assets/characters/Operative.glb');
   placeProps(pc, app, level.props);
   const vehicleEntities = (level.vehicles || []).map((v) => buildVehicle(pc, app, v));
-  // (M6.20.0) the things you (or they) can drive: drawn where they are, each frame
+  // the things you (or they) can drive: drawn where they are, each frame
   const drivables = level.drivables || [];
   const driveEnts = drivables.map((v) => buildVehicle(pc, app, { type: v.model || (v.kind === 'boat' ? 'speedboat' : 'lightUtility'), pos: v.pos, yaw: v.yaw * 180 / Math.PI, paint: v.paint || (v.kind === 'boat' ? 'white' : 'olive') }));
   const drawDrivables = () => drivables.forEach((v, i) => {
@@ -121,7 +154,7 @@ function boot() {
     v.spin = (v.spin || 0) + v.speed * 0.016 * 140;
     for (const w of e.wheels || []) w.setLocalEulerAngles(-v.spin, 0, 0);
   });
-  // (M6.20.1) engines: yours while you drive; the nearest other one running, louder as it comes closer
+  // engines: yours while you drive; the nearest other one running, louder as it comes closer
   const engineSounds = () => {
     const live = S.playing && !S.menu;
     const me = player.driving;
@@ -166,13 +199,14 @@ function boot() {
   const input = new Input(canvas, settings);
   input.yaw = player.yaw;
 
+  // ── your kit: what you carry and what it weighs ─────────────────────────────
   // Training kit: a sensible starting loadout. Everything else is in the
   // crates by the Logistics sign.
   // on the mission: a fixed kit for now (a loadout screen comes with Ghost HQ) -
   // breaching charges instead of frag
-  // (M6.17.0) a level may bring its own kit (the casino: Rhys's choice), mods fitted
+  // a level may bring its own kit (the casino: Rhys's choice), mods fitted
   const kit0 = Object.assign({}, level.startLoadout || { primary: 'K7', backup: 'PX9', utility1: ON_MISSION ? 'C5' : 'FRAG', utility2: 'FLASH', gear: level.startGear || 'LENSES' });
-  // (M6.20.8, Rhys: a mission that needs an item "grants you a 'Special' slot
+  // (Rhys: a mission that needs an item "grants you a 'Special' slot
   // specifically for that item (e.g. Parachute Pack) which doesn't interfere
   // with your loadout otherwise") - a level names it in `requires`; a kit that
   // put the parachute in the gear slot hands it over, and wears lenses instead
@@ -181,8 +215,8 @@ function boot() {
   const loadout = new Loadout(Object.fromEntries(Object.entries(kit0).filter(([k]) => k !== 'mods')));
   loadout.special = special;
   for (const [slot, mods] of Object.entries(kit0.mods || {})) for (const m of mods) loadout.fit(slot, m);
-  // (M6.20.8) what you carry weighs on you
-  // (M6.20.9) rounds, grenades and mods count - what is actually left of them - and the
+  // what you carry weighs on you
+  // rounds, grenades and mods count - what is actually left of them - and the
   // gear and specials that change how you move: the Jump Pack, Cushioned Landing
   const applyLoad = () => {
     player.load = loadEffect(loadout.weight(arsenal));
@@ -198,6 +232,7 @@ function boot() {
   let score = 0, hitMark = 0, blindFlash = 0;
   let openCrate = null, crateSlot = 'primary';
   let course = null;
+  // ── what you know about who is about ────────────────────────────────────────
   // what you know about who is about: fed by your senses, shown on the radar
   const tracker = new Tracker();
 
@@ -264,7 +299,7 @@ function boot() {
   $('btn-skip-weap').onclick = () => { if (course) { course.skipSection('weapons'); showStep(); if (course.done) endCourse(true); } deploy(); };
   $('btn-skip-all').onclick = () => { if (course) course.skipAll(); endCourse(true); deploy(); };
 
-  // ── crates ───────────────────────────────────────────────────────────────
+  // ── doors and the Quartermaster's crates ────────────────────────────
   // A shut door within reach, measured to its nearest part (a wide door's
   // panel is metres from its middle). Its panel works from either side.
   function doorNear() {
@@ -282,7 +317,7 @@ function boot() {
   // an ordinary door within reach
   function swingDoorNear() {
     // The nearest door in reach - not the first in the list, which made the
-    // second of a pair of doors almost impossible to pick (M6.7.1). Crouched,
+    // second of a pair of doors almost impossible to pick. Crouched,
     // the one your crosshair is closest to wins; standing, the closest.
     let best = null, bestScore = Infinity;
     const look = player.lookDir();
@@ -296,19 +331,19 @@ function boot() {
     return best;
   }
   // Doors give to kicks and charges on every level, not only in a mission
-  // (M6.9.1, Rhys: the hotel's doors would not blow). Level 0 keeps its own
+  // (Rhys: the hotel's doors would not blow). Level 0 keeps its own
   // (hints, bullet time); this is the plain version.
   function kickDoor() {
     const d = swingDoorNear();
     if (!d || d.open || d.blown) return false;
-    if (d.def.build === 'reinforced') {                   // (M6.9.5) say so, rather than kick in vain
+    if (d.def.build === 'reinforced') {                   // say so, rather than kick in vain
       S.kickText = "Reinforced - a kick won't open it"; S.kickMsg = 2.5;
       return true;
     }
     S.kickText = 'It held';
     audio.bash();
     player.noise = Math.max(player.noise || 0, 0.8);
-    if (kickOpens(d, Math.random())) { d.breachWith(level.swingDoors, player.pos, 'kick'); audio.door(false); S.kickMsg = 0; }   // (M6.9.10) no stale 'It held' once it gives
+    if (kickOpens(d, Math.random())) { d.breachWith(level.swingDoors, player.pos, 'kick'); audio.door(false); S.kickMsg = 0; }   // no stale 'It held' once it gives
     else { S.kickMsg = 1.2; audio.hitHard(1); }
     return true;
   }
@@ -324,7 +359,7 @@ function boot() {
   function crateNear() {
     let best = null, bestD = 2.6;
     for (const c of level.crates || []) {
-      // on the same floor: 2.6 m sideways used to count from any storey above or below (M6.7.2)
+      // on the same floor: 2.6 m sideways used to count from any storey above or below
       if (Math.abs((c.pos[1] || 0) - player.pos[1]) > 1.6) continue;
       const d = Math.hypot(c.pos[0] - player.pos[0], c.pos[2] - player.pos[2]);
       if (d < bestD) { bestD = d; best = c; }
@@ -363,7 +398,7 @@ function boot() {
     if (it.range) return `${it.damage} dmg  ${it.range} m reach`;
     return it.note || '';
   }
-  // (M6.17.10) your own slots: what is actually left in them, not what they hold when full
+  // your own slots: what is actually left in them, not what they hold when full
   function mineDetail(slot, id) {
     const r = arsenal.slotReadout && arsenal.slotReadout(slot);
     if (!r) return detail(id);
@@ -410,7 +445,7 @@ function boot() {
     none.onclick = () => { const out = loadout.put(crateSlot, null); c.store(out); arsenal.reset(loadout, { keep: !c.infinite }); drawCrate(); };
     box.appendChild(none);
     const items = c.items.slice().sort();
-    const nth = {};       // (M6.17.11) which copy of each item this row is
+    const nth = {};       // which copy of each item this row is
     for (const id of items) {
       const isMod = !!MODS[id], isAmmo = !!AMMO[id];
       if (c.infinite) {
@@ -446,11 +481,11 @@ function boot() {
           if (!fits(id, crateSlot)) return;
           c.swap(loadout, crateSlot, id);
         } else {
-          // (M6.10.4, Rhys) the same thing again into its slot: a restock, not a
+          // (Rhys) the same thing again into its slot: a restock, not a
           // like-for-like swap (which handed you back your own empty box)
           const slotAmmo = arsenal.ammo[loadout.keyOf(crateSlot)];
           if (loadout.get(crateSlot) === id && slotAmmo && slotAmmo.count !== undefined) {
-            // (M6.11.0) what was left in the box you take, full or part-used
+            // what was left in the box you take, full or part-used
             const n = c.takeCount(id);
             slotAmmo.count += n;
             arsenal.events.push({ type: 'ammo', id, rounds: n });
@@ -458,8 +493,8 @@ function boot() {
             drawCrate();
             return;
           }
-          if (arsenal.stow) arsenal.stow(loadout.keyOf(crateSlot));     // (M6.10.3) its loose rounds to your pouch
-          // (M6.11.0) a box keeps its count, in the crate and out of it
+          if (arsenal.stow) arsenal.stow(loadout.keyOf(crateSlot));     // its loose rounds to your pouch
+          // a box keeps its count, in the crate and out of it
           const isCount = ITEMS[id] && ITEMS[id].count !== undefined;
           const leftIn = slotAmmo && slotAmmo.count !== undefined ? slotAmmo.count : undefined, outId = loadout.get(crateSlot);
           const takes = isCount ? c.takeCount(id) : undefined;
@@ -489,7 +524,7 @@ function boot() {
       }
       box.insertBefore(bar, box.firstChild);
     }
-    // (M6.20.11, Rhys) leave the rounds you have gathered beyond a full issue - they weigh
+    // (Rhys) leave the rounds you have gathered beyond a full issue - they weigh
     {
       const extra = arsenal.dumpSpare(true), n = Object.values(extra).reduce((a, b) => a + b, 0);
       if (n > 0) {
@@ -535,13 +570,13 @@ function boot() {
 
   // ── title screen and saved games ─────────────────────────────────────────
   let slotNo = Saves.currentSlot(), playtime = 0;
-  // (M6.13.8) story: how each mission ended, kept per slot (Saves.loadStory)
+  // story: how each mission ended, kept per slot (Saves.loadStory)
   const gameState = () => ({ name: 'Operative', playtime, score, story: Saves.loadStory(slotNo),
     loadout, found: Object.keys(arsenal.owned), place: player.pos.slice(), yaw: input.yaw,
     course: course && !course.done ? { part: course.part || 'full', at: course.at } : null });
   function applySave(s) {
     if (!s) return false;
-    // (M6.13.8) a save (or a transfer code) brings its story with it
+    // a save (or a transfer code) brings its story with it
     if (s.story && !Saves.loadStory(slotNo)) Saves.saveStory(slotNo, s.story);
     for (const k of Object.keys(s.loadout.slots || {})) loadout.put(k, s.loadout.slots[k], (s.loadout.mods || {})[k]);
     arsenal.reset(loadout);
@@ -637,7 +672,7 @@ function boot() {
   if ($('t-factory')) $('t-factory').onclick = () => { saveNow(); goFactory(); };
   if ($('t-casino')) $('t-casino').onclick = () => { saveNow(); goCasino(); };
   if ($('t-train')) $('t-train').onclick = () => { saveNow(); goTrain(); };
-  // (M6.19.0) the first drafts: a list of their own
+  // the first drafts: a list of their own
   if ($('t-drafts')) {
     const list = $('drafts-list');
     list.innerHTML = DRAFTS.map((d) => '<button class="btn" data-id="' + d.id + '">Level ' + d.no + ': ' + d.title + '</button>').join('');
@@ -645,11 +680,12 @@ function boot() {
     $('t-drafts').onclick = () => { show('title', false); show('drafts', true); };
     $('drafts-back').onclick = () => { show('drafts', false); show('title', true); };
   }
+  // ── credits ─────────────────────────────────────────────────────────────────
   // the credits: everyone whose work is in the game (a licence condition, and fair)
   $('t-credits').onclick = () => { show('title', false); show('credits', true); };
   $('credits-back').onclick = () => { show('credits', false); show('title', true); };
   if (HOTEL) {
-    // a briefing, never a pause menu, to start (M6.9.1: no level opens paused)
+    // a briefing, never a pause menu, to start (no level opens paused)
     document.querySelector('#briefing .brief-card').innerHTML = `
       <h2>LEVEL 1 &middot; RIVERSIDE HOTEL</h2>
       <p class="brief-where">A riverside hotel, taken by the reds. Being built, a floor at a time.</p>
@@ -707,11 +743,12 @@ function boot() {
       '<p class="brief-note">A first draft, to play and mark up: the place, who is in it and what to do may all change with Rhys\'s notes.</p>' +
       '<button class="btn primary" id="b-begin">Begin</button><button class="btn" id="b-yard">Back to Yard 7</button>';
   }
-  // (M6.20.8, Rhys: "choose your loadout from your available weapons before
+  // ── loadout and classes before a mission; the class pick in battle ──────────
+  // (Rhys: "choose your loadout from your available weapons before
   // hitting 'Begin'") - on any mission you go into on duty; a kit you were
   // given and that you change keeps its mods only where the item is unchanged
   const PICK = ON_MISSION && !TRAIN && !level.offDuty && !level.fixedKit;
-  // (M6.20.11) the class you go in as - kept for a battle, where you choose again each time you fall
+  // the class you go in as - kept for a battle, where you choose again each time you fall
   S.cls = null;
   const applyClass = (cls, kit) => {
     S.cls = cls;
@@ -723,7 +760,7 @@ function boot() {
     const names = { primary: 'Primary', backup: 'Secondary', utility1: 'Utility 1', utility2: 'Utility 2', gear: 'Gear' };
     const box = document.createElement('div');
     box.className = 'kit-pick';
-    // (M6.20.11, Rhys: the list was "a bit TOO much") a class, and what it may carry; or the kit the
+    // (Rhys: the list was "a bit TOO much") a class, and what it may carry; or the kit the
     // mission issues, as it is
     const opts = (slot) => {
       const allow = classAllows(S.cls, slot);
@@ -767,7 +804,7 @@ function boot() {
   $('mend-again').onclick = () => location.reload();
   $('btn-trophies').onclick = () => tab('trophies');
   $('btn-gear').onclick = () => tab('gear');
-  // (M6.20.11, Rhys: "choose your New Class upon every death") down in a battle: 1-7 (or a click) picks
+  // (Rhys: "choose your New Class upon every death") down in a battle: 1-7 (or a click) picks
   // the class you go back in as; nothing pressed, you go back in as you were
   function showClassPick() {
     const el = $('class-pick');
@@ -787,7 +824,8 @@ function boot() {
     const n = /^Digit(\d)$/.exec(e.code);
     if (n && +n[1] >= 1 && +n[1] <= CLASSES.length) { S.nextCls = CLASSES[+n[1] - 1]; if (S.drawClassPick) S.drawClassPick(); e.preventDefault(); }
   });
-  // what you are carrying (M6.9.23, Rhys: pause and check your gear) - each
+  // ── the gear and trophy screens ─────────────────────────────────────────────
+  // what you are carrying (Rhys: pause and check your gear) - each
   // slot, its mods, what is left in it
   function drawGear() {
     const names = { primary: 'Primary', backup: 'Secondary', utility1: 'Utility 1', utility2: 'Utility 2', gear: 'Gear' };
@@ -801,7 +839,7 @@ function boot() {
       if (a && a.mag !== undefined) left = a.mag + ' / ' + (a.reserve !== undefined ? a.reserve : a.spare !== undefined ? a.spare : '');
       else if (a && a.count !== undefined) left = a.count + ' left';
       const placed = arsenal.liveCharges ? arsenal.liveCharges(key).length : 0;
-      // (M6.17.3, Rhys: the Parachute Pack "should say (packed) or (unpacked) alongside it")
+      // (Rhys: the Parachute Pack "should say (packed) or (unpacked) alongside it")
       const state = d.chute ? ' &nbsp; <span style="opacity:0.75">(' + chuteLabel(S.chute) + ')</span>' : '';
       rows.push('<div style="margin:6px 0"><b style="color:#e8b423">' + names[slot] + '</b> &nbsp; ' + withTags(d.name || key, modList) + state
         + (left ? ' &nbsp; <span style="opacity:0.75">' + left + '</span>' : '')
@@ -816,12 +854,12 @@ function boot() {
         + (d.note ? '<div style="opacity:0.6;font-size:12px;margin-left:12px">' + d.note + '</div>' : '') + '</div>');
     }
     if (lo) { const e = loadEffect(lo.weight(arsenal)); rows.push('<div style="margin-top:10px"><b style="color:#e8b423">Weight</b> &nbsp; ' + e.kg.toFixed(1) + ' kg &nbsp; <span style="opacity:0.75">' + e.label + '</span></div>'); }
-    // (M6.10.3) rounds in your pouch, for guns you are not carrying (yet)
+    // rounds in your pouch, for guns you are not carrying (yet)
     const pouch = Object.entries(arsenal.spare || {}).filter(([, n]) => n > 0).map(([k, n]) => ((AMMO[k] || {}).name || k) + ' ' + n);
     if (pouch.length) rows.push('<div style="margin-top:10px"><b style="color:#e8b423">Pouch</b> &nbsp; ' + pouch.join(', ') + '</div>');
     const keys = (level.keys || []).filter((k) => k.taken).map((k) => k.label);
     if (keys.length) rows.push('<div style="margin-top:10px"><b style="color:#e8b423">Keys</b> &nbsp; ' + keys.join(', ') + '</div>');
-    // (M6.20.11) and, anywhere, a way to put down the rounds you have gathered beyond a full issue
+    // and, anywhere, a way to put down the rounds you have gathered beyond a full issue
     const extra = arsenal.dumpSpare(true), nx = Object.values(extra).reduce((a, b) => a + b, 0);
     if (nx > 0) rows.push('<button class="btn" id="dump-ammo" style="margin-top:12px">Drop ' + nx + ' spare rounds (down to a full issue)</button>');
     $('gear-list').innerHTML = rows.join('');
@@ -852,7 +890,7 @@ function boot() {
     // weapon panel
     const w = arsenal.weapon, am = arsenal.ammoNow;
     $('w-name').textContent = w ? w.name : '';
-    // (M6.20.10) an energy weapon: its heat, not its rounds
+    // an energy weapon: its heat, not its rounds
     $('w-ammo').textContent = !am ? '\u2014' : am.count !== undefined ? String(am.count)
       : w && w.energy ? (arsenal.reloading > 0 ? 'COOLING' : 'HEAT ' + Math.round((1 - am.mag / w.mag) * 100) + '%')
       : arsenal.reloading > 0 ? 'RELOADING' : am.mag + ' / ' + am.reserve;
@@ -861,7 +899,7 @@ function boot() {
     $('hitmark').style.opacity = hitMark > 0 ? 1 : 0;
     let stance = player.mode === 'swim' ? '' : player.stance === 2 ? 'PRONE' : player.stance === 1 ? 'CROUCHED' : '';
     if (S.lock) stance = 'LOCKED ON' + (stance ? '  ' + stance : '');
-    // (M6.20.11, Rhys: the Jump Pack "should show its fuel % all the while it's NOT at 100%, similar to your Stamina Bar")
+    // (Rhys: the Jump Pack "should show its fuel % all the while it's NOT at 100%, similar to your Stamina Bar")
     const jetShow = !!player.jetPack && player.jetFuel !== undefined && player.jetFuel < 0.999;
     $('jet').style.display = jetShow ? 'block' : 'none';
     if (jetShow) { $('jet-fill').style.width = (player.jetFuel * 100) + '%'; $('jet').querySelector('.lbl').textContent = 'JUMP PACK  ' + Math.round(player.jetFuel * 100) + '%'; }
@@ -886,7 +924,7 @@ function boot() {
     const near = !openCrate && !charge && !dr && !sd && crateNear();
     const cc = level.cctv;
     const atConsole = cc && S.cctv == null && atAConsole(cc);
-    // (M6.10.1, Rhys: "E Open the door" on locked and reinforced doors) the
+    // (Rhys: "E Open the door" on locked and reinforced doors) the
     // hotel has a mission runtime now, which had switched these off; and the
     // plain door prompt below never asks whether the door is locked
     const lockedFor = (d) => d && d.locked && !d.open && !d.blown ? d.def.lockedText ? d.def.lockedText : (d.needs && hasKey(d.needs) ? 'E  Unlock it with the ' + keyLabel(d.needs)
@@ -897,7 +935,7 @@ function boot() {
     const mp = (player.driving ? (player.driving.kind === 'boat' ? 'Boat' : 'Driving') + '  ' + player.driving.kmh + ' km/h' + (player.driving.wrecked ? '  -  WRECKED' : '') + '   -   W/S throttle, A/D steer, SPACE brake, E to get out' : null) ||
       (vn ? (vn.kind === 'boat' ? 'E  Take the helm' : 'E  Get in and drive') : null) || (missionRt && missionRt.prompt()) || (atConsole ? 'E  Watch the CCTV cameras' : null) || keyTip() || intelTip() || noteTip() || safeTip() || stopTip() || liftTip() || lockedTip || chargeTip();
     if (S.visionMsg > 0) S.visionMsg -= 1 / 60;
-    S.repackShown = false;                  // (M6.17.3) set below if repacking is what E would do now
+    S.repackShown = false;                  // set below if repacking is what E would do now
     drawSafeUi();
     drawIntel();
     drawVision();
@@ -906,7 +944,7 @@ function boot() {
       : dr ? 'E  Door override'
       : sd ? (S.doorMsg > 0 ? 'Step out of the doorway' : lockedFor(sd) || (sd.open ? 'E  Shut the door' : 'E  Open the door  (hold E: slip through and shut it)'))
       : charge ? (arsenal.canTakeBack(charge) ? 'E  Make safe and take back' : 'Your pouch is full: no room to take it back')
-      // (M6.17.5, Rhys: "'E - Open Breaching Charges' ... should just say 'Open Crate' so that the
+      // (Rhys: "'E - Open Breaching Charges' ... should just say 'Open Crate' so that the
       // contents are a mystery") - what is in it is for opening it to find out; only the
       // Quartermaster, who is a station rather than a box, keeps his name
       : near ? cratePrompt(near) : player.prompt ? player.prompt
@@ -919,7 +957,7 @@ function boot() {
     if (S.debug) {
       const sp = Math.hypot(player.vel[0], player.vel[2]);
       $('debug').style.display = 'block';
-      $('score').style.top = (($('debug').offsetHeight || 22) + 18) + 'px';     // (M6.13.8, Rhys: the line ran into the score) the score goes below it
+      $('score').style.top = (($('debug').offsetHeight || 22) + 18) + 'px';     // (Rhys: the line ran into the score) the score goes below it
       $('debug').textContent = `${S.fps.toFixed(0)} fps (game code ${(S.jsMs || 0).toFixed(1)} ms of ${(1000 / Math.max(1, S.fps)).toFixed(0)})${bakedLight ? (bakedLight.ok ? ' | baked light ' + bakedLight.ms + ' ms' : ' | LIVE light (bake failed)') : ''} | ${player.mode}${player.crouching ? ' crouch' : ''}${player.sprinting ? ' sprint' : ''} | ` +
         `x ${player.pos[0].toFixed(1)} y ${player.pos[1].toFixed(2)} z ${player.pos[2].toFixed(1)} | ${sp.toFixed(1)} m/s | stance ${player.stance} | ` +
         `stamina ${player.stamina.toFixed(0)}${player.exhausted ? ' (winded)' : ''} | ` +
@@ -932,7 +970,7 @@ function boot() {
   canvas.addEventListener('mousedown', () => audio.start());
   window.addEventListener('keydown', () => audio.start());
   function deploy() {
-    // (M6.17.0) a fresh parachute each time you go in - (M6.17.4, Rhys: it "got
+    // a fresh parachute each time you go in - (Rhys: it "got
     // fully repacked on just one press") going in, not coming back from the
     // pause menu: Resume runs this too, and had repacked it for you
     if (!S.startedOnce) S.chute = { used: false, repack: 0 };
@@ -969,11 +1007,11 @@ function boot() {
       if (section === 'weapons') {
         for (const list of Object.values(level.groups || {})) for (const t of list) { t.down = false; t.hp = t.maxHp; }
         for (const c of level.crates || []) if (c.stock) c.items = c.stock.slice();
-        // (M6.13.7) the ranges' doors as at the start of the section: the way
+        // the ranges' doors as at the start of the section: the way
         // out of the link room open, the rest shut until you earn them
         for (const s of level.world.solids) if (/^wdoor\d/.test(s.tag || '')) s.disabled = s.tag === 'wdoor0';
       }
-      // (M6.13.7, Rhys: it put him on the range's roof) the section's own start
+      // (Rhys: it put him on the range's roof) the section's own start
       const st = level.sectionStarts[section === 'weapons' ? 'weapons' : 'movement'];
       player.reset(); player.pos = st.pos.slice(); player.vel = [0, 0, 0]; player.settle();
       input.yaw = st.yaw;
@@ -1009,7 +1047,7 @@ function boot() {
 
   function openMenu() {
     S.menu = true;
-    if ($('safe-ui')) $('safe-ui').style.display = 'none';     // (M6.9.15) the safe's dial waits behind the menu
+    if ($('safe-ui')) $('safe-ui').style.display = 'none';     // the safe's dial waits behind the menu
     if (document.pointerLockElement) document.exitPointerLock();
     tab('main');
     show('menu', true);
@@ -1083,23 +1121,24 @@ function boot() {
   $('set-map').onchange = (e) => { settings.map = e.target.checked; saveSettings(settings); $('map-wrap').style.display = settings.map ? 'block' : 'none'; };
   $('set-view').onchange = (e) => { settings.view = e.target.value; S.third = settings.view === 'third'; wview.setThird(S.third, body); saveSettings(settings); };
   $('set-fps').onchange = (e) => { settings.showFps = e.target.checked; S.debug = settings.showFps; saveSettings(settings); };
-  // (M6.13.0, Rhys: the glitches can be very discreet) a ring where each camera's glitch shows
+  // (Rhys: the glitches can be very discreet) a ring where each camera's glitch shows
   $('set-glitch').onchange = (e) => { settings.glitchHints = e.target.checked; saveSettings(settings); };
 
   // back on your feet with your starting kit (Rhys: redeploying kept what you had used up)
   $('btn-redeploy').onclick = () => { arsenal.reset(loadout); player.reset(); input.yaw = player.yaw; input.pitch = 0; show('dead', false); deploy(); };
 
-  // ── camera ───────────────────────────────────────────────────────────────
+  // ── aiming and the camera ───────────────────────────────────────────
   // Where the crosshair is pointing. In third person the camera sits off to
   // one side, so we aim at whatever it is looking at, not straight ahead.
+  // ── the safe's dial, night vision ───────────────────────────────────────────
   // the dial, while you work it: the numbers either side, what you have set
   function drawSafeUi() {
     let el = $('safe-ui');
-    if (!S.cracking || S.menu) { if (el) el.style.display = 'none'; return; }      // (M6.9.15: not over the pause menu)
+    if (!S.cracking || S.menu) { if (el) el.style.display = 'none'; return; }      // (not over the pause menu)
     if (!el) {
       el = document.createElement('div'); el.id = 'safe-ui';
       el.style.cssText = 'position:fixed;left:50%;top:50%;transform:translate(-50%,-38%);background:rgba(10,12,14,0.88);color:#eee;padding:14px 22px;border:1px solid #e8b423;font:16px monospace;text-align:center;z-index:30;letter-spacing:2px';
-      // (M6.13.2, Rhys: an actual circular dial) drawn on a canvas, turned to the number set
+      // (Rhys: an actual circular dial) drawn on a canvas, turned to the number set
       el.innerHTML = '<div style="color:#e8b423;margin-bottom:6px">SAFE DIAL</div><canvas id="safe-dial" width="240" height="240" style="width:200px;height:200px;display:block;margin:0 auto"></canvas>'
         + '<div id="safe-slots" style="margin:8px 0 4px;font-size:18px"></div><div id="safe-msg" style="color:#e05050;min-height:0"></div>'
         + '<div style="font-size:12px;opacity:0.75;letter-spacing:0">mouse or A / D to turn &middot; E to set the number &middot; W / S to step away</div>';
@@ -1154,15 +1193,15 @@ function boot() {
     g.fillStyle = '#e04040'; g.fill();
   }
 
-  // night vision (M6.9.19): the picture brightened and turned green, grain and
+  // night vision: the picture brightened and turned green, grain and
   // a dark edge over it; the cameras at night show as grey infra-red
   function drawVision() {
     const watching = S.cctv != null, nv = S.vision === 'night' && !watching && S.playing;
     const ir = watching && level.night;
-    // (M6.19.2) thermal: the world cold and grey, anything warm white-hot (drawn by the runtime); UV:
+    // thermal: the world cold and grey, anything warm white-hot (drawn by the runtime); UV:
     // violet, the marks glowing; EMF: dark, the wiring and devices green
     const vm = !watching && S.playing ? S.vision : 'normal';
-    // (M6.19.2) drugged: the colours drift and the edges swim, until the antidote is taken
+    // drugged: the colours drift and the edges swim, until the antidote is taken
     const dr = level.drugged && S.playing && !(level.pickups || []).some((q) => q.id === level.drugged.until && q.taken);
     if (dr && !nv && vm === 'normal' && !ir) {
       const t = performance.now() / 1000;
@@ -1176,7 +1215,7 @@ function boot() {
     if (ov) ov.style.display = nv ? 'block' : 'none';
   }
 
-  // ── keys, consoles, the lift's emergency stop (M6.9.11) ─────────────────
+  // ── keys, consoles, the lift's emergency stop ─────────────────
   function atAConsole(cc) {
     return (cc.consoles || [cc.console]).some((k) => Math.abs(player.pos[1] - k[1]) < 1.5 && Math.hypot(k[0] - player.pos[0], k[2] - player.pos[2]) < 1.8);
   }
@@ -1186,7 +1225,7 @@ function boot() {
     return (level.keys || []).find((k) => !k.taken && (!k.safe || k.safe.open) && Math.abs(player.pos[1] - k.pos[1]) < 1.6 && Math.hypot(k.pos[0] - player.pos[0], k.pos[2] - player.pos[2]) < 1.4);
   }
   function keyTip() { const k = keyNear(); return k ? 'E  Take the ' + k.label : null; }
-  // (M6.17.5) the sight picture: drawn once per kind, shown or hidden
+  // the sight picture: drawn once per kind, shown or hidden
   function drawScope(kind) {
     if (S.scopeKind === kind) return;
     S.scopeKind = kind;
@@ -1196,9 +1235,9 @@ function boot() {
     el.style.display = kind === 'none' ? 'none' : 'block';
     $('crosshair').style.visibility = kind === 'none' ? '' : 'hidden';
   }
-  // charges you have placed (M6.9.13): how many, and how to set them off
+  // charges you have placed: how many, and how to set them off
   function chargeTip() {
-    // (M6.17.5) placed from Z / X as well as by hand: how many, and the key that sets them off
+    // placed from Z / X as well as by hand: how many, and the key that sets them off
     const inHand = arsenal.weapon && arsenal.weapon.kind === 'placeable' ? arsenal.current : null;
     for (const [n, slot] of [[1, 'utility1'], [2, 'utility2']]) {
       const k = loadout.keyOf(slot), w = k && arsenal.def(k);
@@ -1212,11 +1251,11 @@ function boot() {
     }
     return null;
   }
-  // a note you can read (M6.9.13: the safe's combination)
+  // a note you can read (the safe's combination)
   function noteNear() {
     return (level.notes || []).find((n) => Math.abs(player.pos[1] - n.pos[1]) < 1.6 && Math.hypot(n.pos[0] - player.pos[0], n.pos[2] - player.pos[2]) < 1.3);
   }
-  // (M6.13.0, Rhys: lore in the rooms) intel: papers to read, counted in the debrief
+  // (Rhys: lore in the rooms) intel: papers to read, counted in the debrief
   function intelNear() {
     return (level.intel || []).find((n) => Math.abs(player.pos[1] - n.floorY) < 1.2 && Math.hypot(n.pos[0] - player.pos[0], n.pos[2] - player.pos[2]) < 1.4);
   }
@@ -1248,7 +1287,7 @@ function boot() {
     if (!n) return null;
     return S.reading === n ? n.text : 'E  Read the note';
   }
-  // the safe (M6.9.13): E at it to work the dial, or to take what is inside
+  // the safe: E at it to work the dial, or to take what is inside
   function safeNear() {
     return (level.safes || []).find((sf) => sf.safe && Math.abs(player.pos[1] - sf.pos[1]) < 1 && Math.hypot(sf.pos[0] - player.pos[0], sf.pos[2] - player.pos[2]) < 1.1);
   }
@@ -1287,7 +1326,7 @@ function boot() {
     return false;
   }
 
-  // ── the lift (M6.9.8) ────────────────────────────────────────────────────
+  // ── the lift ────────────────────────────────────────────────────
   // In the car: look at a floor's button and press E. On a landing: E calls it.
   function liftTip() {
     const lift = level.lift;
@@ -1322,7 +1361,7 @@ function boot() {
     return true;
   }
 
-  // (M6.13.0, Rhys: crouched, aiming lifts you to peek - and the shot went
+  // (Rhys: crouched, aiming lifts you to peek - and the shot went
   // high) peeking raises your eyes half a metre over half a second, and the
   // camera follows them a moment behind; a shot from the eyes' new height
   // passed over what the crosshair showed. A round starts where you SEE from.
@@ -1337,7 +1376,7 @@ function boot() {
       : [from[0] + dir[0] * 300, from[1] + dir[1] * 300, from[2] + dir[2] * 300];
     const d = [at[0] - eye[0], at[1] - eye[1], at[2] - eye[2]];
     const len = Math.hypot(d[0], d[1], d[2]) || 1;
-    // (M6.20.1, Rhys: "very difficult to aim a weapon AND steer a boat") at the wheel, a shot near enough on a man
+    // (Rhys: "very difficult to aim a weapon AND steer a boat") at the wheel, a shot near enough on a man
     // goes to him: within a few degrees of the crosshair (more when aiming), in sight, the nearest to it
     if (player.driving) {
       const cone = lastInput && lastInput.aim ? 0.09 : 0.055;
@@ -1420,14 +1459,14 @@ function boot() {
     }
     if (S.cctv != null && level.cctv) {
       // watching a camera: its view, nothing of your own kit
-      // (M6.9.2, Rhys: pan with the mouse; and you were invisible on camera 7)
+      // (Rhys: pan with the mouse; and you were invisible on camera 7)
       const c = level.cctv.cameras[S.cctv];
       for (const k of Object.keys(wview.held)) wview.held[k].enabled = false;
       const home = S.cctvHome || { yaw: input.yaw, pitch: input.pitch };
       if (opr && opr.ready) {
         opr.enabled = true; body.enabled = false;
         opr.update(dt, stateOf(player, arsenal, lastInput), [rp[0], rp[1], rp[2]], home.yaw);
-        // your weapon stays in your hands at the console (M6.9.9, Rhys: on camera
+        // your weapon stays in your hands at the console (Rhys: on camera
         // 7 you held nothing, in a pose for holding something); back to the
         // camera when you stop watching
         const held = wview.held[arsenal.current];
@@ -1443,12 +1482,12 @@ function boot() {
       const pitch = Math.max(-1.3, Math.min(0.35, Math.asin(d[1] / dl) + (input.pitch - ref.pitch)));
       cam.setPosition(c.pos[0], c.pos[1], c.pos[2]);
       cam.lookAt(c.pos[0] - Math.sin(yaw) * Math.cos(pitch), c.pos[1] + Math.sin(pitch), c.pos[2] - Math.cos(yaw) * Math.cos(pitch));
-      // hold aim (right mouse) to zoom in (M6.9.3); the mouse turns slower when zoomed
+      // hold aim (right mouse) to zoom in; the mouse turns slower when zoomed
       const zoomIn = !!(lastInput && lastInput.aim);
       S.cctvFov = (S.cctvFov || 75) + ((zoomIn ? 22 : 75) - (S.cctvFov || 75)) * Math.min(1, dt * 8);
       cam.camera.fov = S.cctvFov;
       // the feed's clock - and, on a camera that has been playing up, a
-      // moment's glitch now and then in which its seconds are wrong (M6.9.14)
+      // moment's glitch now and then in which its seconds are wrong
       const mt = level.missionTime || { date: [9, 7, 2026], hour: 22, minute: 47 };
       const now = mt.hour * 3600 + mt.minute * 60 + (S.missionT || 0);
       const g = cameraGlitch(c, performance.now() / 1000);
@@ -1465,7 +1504,7 @@ function boot() {
       if (hintOn) { const sp = glitchSpot(c); hr.style.left = 'calc(' + sp[0] + '% + 15px)'; hr.style.top = 'calc(' + sp[1] + '% + 20px)'; }
       if (g) {
         // not printed on the lens: the picture itself goes a little off in the
-        // shape of the number (M6.9.19, Rhys)
+        // shape of the number (Rhys)
         const svg = "<svg xmlns='http://www.w3.org/2000/svg' width='60' height='80'><text x='30' y='66' font-family='monospace' font-weight='bold' font-size='76' text-anchor='middle' fill='white'>" + c.clue + "</text></svg>";
         const url = 'url("data:image/svg+xml;utf8,' + encodeURIComponent(svg) + '")';
         gh.style.webkitMaskImage = url; gh.style.maskImage = url;
@@ -1483,7 +1522,7 @@ function boot() {
     if (player.mode === 'traverse') pitch -= 0.12 * Math.sin(Math.PI * Math.min(1, player.traverse.t / player.traverse.dur));
 
     if (player.driving) {
-      // (M6.20.0) at the wheel: the camera behind and above, turned with the mouse
+      // at the wheel: the camera behind and above, turned with the mouse
       const v = player.driving, cp = Math.cos(pitch), sp = Math.sin(pitch);
       const dir = [-Math.sin(input.yaw) * cp, sp, -Math.cos(input.yaw) * cp];
       const dist = v.kind === 'boat' ? 8.5 : 7.5, o = [v.pos[0], v.pos[1] + (v.kind === 'boat' ? 2.2 : 2.4), v.pos[2]];
@@ -1492,7 +1531,7 @@ function boot() {
       const dd = hit ? Math.max(1.2, hit.t - 0.3) : dist;
       px = o[0] + back[0] * dd; py = o[1] + back[1] * dd; pz = o[2] + back[2] * dd;
       for (const k of Object.keys(wview.held)) wview.held[k].enabled = false;
-      // (M6.20.1, Rhys: "can't see myself") you, in the driver's seat: hips on the seat, feet ahead of them
+      // (Rhys: "can't see myself") you, in the driver's seat: hips on the seat, feet ahead of them
       const st = v.K.seat, c = Math.cos(v.yaw), sn = Math.sin(v.yaw), fz = st[2] - SEAT.feet;
       const at = [v.pos[0] + st[0] * c + fz * sn, v.pos[1] + st[1] - SEAT.hips + 0.04, v.pos[2] - st[0] * sn + fz * c];
       const live = opr.ready;
@@ -1518,7 +1557,7 @@ function boot() {
       if (live) {
         const st = stateOf(player, arsenal, lastInput);
         if (S.strike && S.strike.t > 0) { st.strike = S.strike; S.strike.t -= dt; }
-        opr.setGoggles(!!loadout.gearTrait('nightSight'));      // (M6.10.3) your goggles, seen in third person
+        opr.setGoggles(!!loadout.gearTrait('nightSight'));      // your goggles, seen in third person
         opr.update(dt, st, [rp[0], bodyY, rp[2]], input.yaw);
         const held = wview.held[arsenal.current];
         if (held && held.parent !== opr.root) wview.setThird(true, opr);
@@ -1547,7 +1586,7 @@ function boot() {
       }
     }
     cam.setPosition(px, py, pz);
-    // (M6.13.0) where your eyes are drawn, in first person: shots start here
+    // where your eyes are drawn, in first person: shots start here
     S.viewEye = S.third || player.driving ? null : [px, py, pz];
     cam.setEulerAngles(pitch * 180 / Math.PI, input.yaw * 180 / Math.PI, 0);
     const zoom = inp && inp.aim && arsenal.weapon && arsenal.weapon.zoom ? arsenal.weapon.zoom : 1;
@@ -1563,6 +1602,7 @@ function boot() {
     view.tick(dt, S.time, tmp);
   }
 
+  // ── footsteps and the parachute ─────────────────────────────────────────────
   // what you are walking on, as far as sound is concerned
   // what a round strikes, for the sound it makes
   function surfaceOf(solid) {
@@ -1589,7 +1629,7 @@ function boot() {
     return 'concrete';
   }
   function footsteps(dt) {
-    if (player.driving) return;                    // (M6.20.1) at the wheel: the engine, not your feet
+    if (player.driving) return;                    // at the wheel: the engine, not your feet
     if (player.mode === 'swim') {
       S.swimT = (S.swimT || 0) + dt;
       if (S.swimT > 0.6 && Math.hypot(player.vel[0], player.vel[2]) > 0.6) { S.swimT = 0; audio.swim(); }
@@ -1602,7 +1642,7 @@ function boot() {
     const stride = player.sprinting ? 2.1 : player.stance === 2 ? 1.1 : player.stance === 1 ? 1.3 : 1.7;
     if (S.stepDist > stride) { S.stepDist = 0; audio.step(surfaceUnder(), player.sprinting); }
   }
-  // (M6.17.0) the parachute: carried while the gear slot holds the pack and it
+  // the parachute: carried while the gear slot holds the pack and it
   // has not been used this deployment; a canopy over you while it is open
   let canopy = null;
   const makeCanopy = () => {
@@ -1636,9 +1676,9 @@ function boot() {
   function tickParachute() {
     S.chute = S.chute || { used: false, repack: 0 };
     const hasPack = !!loadout.gearTrait('chute');
-    // (M6.17.3) repacked by hand: hold E, standing still on the ground, with nothing else to use E on
+    // repacked by hand: hold E, standing still on the ground, with nothing else to use E on
     const still = player.mode === 'walk' && Math.hypot(player.vel[0], player.vel[2]) < 0.3;
-    // (M6.17.4) a hold that began with a press while repacking was on offer: a
+    // a hold that began with a press while repacking was on offer: a
     // key the browser never saw let go of (a screenshot taken mid-hold) cannot
     // repack it on its own. Real time, not a sixtieth a frame.
     S.packGrip = S.packGrip || {};
@@ -1673,7 +1713,7 @@ function boot() {
         audio.died();
         const why = { fell: 'The fall was too much.', drowned: 'You ran out of air.' }[ev.why] || 'Operative down.';
         $('dead-why').textContent = why;
-        // (M6.19.6, Rhys: "Battle - autopauses upon death?") a battle: back in shortly - the game goes on, no menu
+        // (Rhys: "Battle - autopauses upon death?") a battle: back in shortly - the game goes on, no menu
         if (missionRt && missionRt.youDown && missionRt.youDown()) { showClassPick(); /* back in at your end */ }
         // on a mission, death ends it: the debrief, not a redeploy
         else if (missionRt) { if (document.pointerLockElement) document.exitPointerLock(); missionRt.fail(ev.why === 'fell' ? 'Killed by a fall' : ev.why === 'drowned' ? 'Drowned' : ev.why === 'radiation' ? 'Radiation sickness' : 'Killed in action'); }
@@ -1683,11 +1723,11 @@ function boot() {
     player.events.length = 0;
   }
 
-  // ── loop ─────────────────────────────────────────────────────────────────
+  // ── every frame: the loop ───────────────────────────────────────────
   const DT = 1 / 60;
   const fpsWatch = new FpsWatch();
   const resScaler = new ResScaler();
-  // A notice, not a question (M6.8.1, Rhys: you have to press Esc to click it,
+  // A notice, not a question (Rhys: you have to press Esc to click it,
   // and Esc already opens the menu with the setting in it). Shown once, for
   // eight seconds; the setting row is picked out the next time the menu opens.
   const showLowQ = () => {
@@ -1708,20 +1748,20 @@ function boot() {
     dt = Math.min(dt, 0.1);
     S.time += dt; S.frames++;
     if (S.playing && !S.menu) { playtime += dt; S.saveT = (S.saveT || 0) + dt; if (S.saveT > 20) { S.saveT = 0; saveNow(); } }
-    // (M6.17.13, Rhys: after Begin, "the framerate jumped right up to over 900 then down to
+    // (Rhys: after Begin, "the framerate jumped right up to over 900 then down to
     // ~200") frames counted against the clock, half a second at a time: the engine's catch-up
     // frames after a stall (a dt of nearly nothing) had read as 1000 fps each
     S.fpsN = (S.fpsN || 0) + 1;
     { const nowMs = performance.now(); if (!S.fpsAt) S.fpsAt = nowMs; if (nowMs - S.fpsAt >= 500) { S.fps = S.fpsN * 1000 / (nowMs - S.fpsAt); S.fpsN = 0; S.fpsAt = nowMs;
-      // (M6.18.6) a frame rate held low: fewer pixels drawn, a step at a time (src/sim/perf.js ResScaler)
+      // a frame rate held low: fewer pixels drawn, a step at a time (src/sim/world/perf.js ResScaler)
       if (S.playing && !S.menu && !S.dialog) { if (app.graphicsDevice.maxPixelRatio !== resScaler.ratio) resScaler.reset(app.graphicsDevice.maxPixelRatio, view.ratioFloor); const r = resScaler.sample(S.fps); if (r !== null) app.graphicsDevice.maxPixelRatio = r; }
     } }
     if (!missionRt && S.kickMsg > 0) S.kickMsg -= dt;
     if (S.noteT > 0) S.noteT -= dt;
-    // (M6.20.9) flares burn out; the Pilot's Auto-Repair mends what he drives
+    // flares burn out; the Pilot's Auto-Repair mends what he drives
     if (S.flares) S.flares = S.flares.filter((f) => { f.left -= dt; f.e.light.intensity = 2.2 * Math.min(1, f.left / 3) * (0.9 + Math.random() * 0.2); if (f.left > 0) return true; f.e.destroy(); return false; });
-    { const ar = loadout.gearTrait('autoRepair'), v = player.driving; if (ar && v && !v.wrecked) v.hp = Math.min(v.maxHp || v.hp, v.hp + (v.maxHp || 400) * ar * dt); }    // "It held" wears off (M6.9.2: it stayed up for ever outside Level 0)
-    // a struggling frame rate: offer Low Quality, once (src/sim/perf.js)
+    { const ar = loadout.gearTrait('autoRepair'), v = player.driving; if (ar && v && !v.wrecked) v.hp = Math.min(v.maxHp || v.hp, v.hp + (v.maxHp || 400) * ar * dt); }    // "It held" wears off (it stayed up for ever outside Level 0)
+    // a struggling frame rate: offer Low Quality, once (src/sim/world/perf.js)
     if (!TEST && fpsWatch.step(dt, { quality: settings.quality, paused: !S.playing || S.menu || !!openCrate, asked: settings.lowAsked })) showLowQ();
     if (S.lowqT > 0 && (S.lowqT -= dt) <= 0) $('lowq').style.display = 'none';
     S.hurt = Math.max(0, S.hurt - dt * 1.6);
@@ -1737,7 +1777,7 @@ function boot() {
         if (S.pend[k]) { inp[k] = true; S.pend[k] = false; }
       }
       input.frameAim = inp.aim;
-      // working a safe's dial (M6.9.13): the mouse (or A and D) turns it, E
+      // working a safe's dial: the mouse (or A and D) turns it, E
       // sets each number, a step away stops; you stand still meanwhile
       if (S.cracking) {
         const sf = S.cracking, sd = sf.safe, NOTCH = 0.12;
@@ -1764,9 +1804,9 @@ function boot() {
       // V: vision modes (Rhys: night vision, thermal, UV, EMF, normal) - only
       // normal exists yet. First or third person is in Settings now.
       if (inp.visionPressed) {
-        // vision modes (M6.9.19): normal and night vision so far. Night vision
-        // needs goggles in the gear slot (M6.9.24, Rhys)
-        // (M6.19.2) and thermal, UV and EMF: V steps through whichever the gear slot gives, then normal
+        // vision modes: normal and night vision so far. Night vision
+        // needs goggles in the gear slot (Rhys)
+        // and thermal, UV and EMF: V steps through whichever the gear slot gives, then normal
         const modes = ['normal'].concat(loadout.gearTrait('nightSight') ? ['night'] : [], loadout.gearTrait('heatSight') ? ['thermal'] : [], loadout.gearTrait('uvSight') ? ['uv'] : [], loadout.gearTrait('emfSight') ? ['emf'] : []);
         if (modes.length < 2) S.visionNo = true;
         else { S.vision = modes[(modes.indexOf(S.vision) + 1) % modes.length]; S.visionNo = false; }
@@ -1776,7 +1816,7 @@ function boot() {
         if (!S.third && opr.carry) { opr.carry.enabled = true; opr.carry = null; }
       }
       if (inp.slotPressed) arsenal.selectSlot(inp.slotPressed);
-      // (M6.20.9, Rhys's Heavy: "lock-on to nearby enemy vehicles with the KD-MR3 ... highly effective
+      // (Rhys's Heavy: "lock-on to nearby enemy vehicles with the KD-MR3 ... highly effective
       // but very limited range") aiming a launcher, with Vehicle Targeting: the vehicle nearest the
       // middle of the sight, within range and a few degrees, is locked on to
       {
@@ -1797,7 +1837,7 @@ function boot() {
         S.lock = best;
       }
       // the radar: M steps close -> normal -> wide -> off -> close; , and . zoom
-      // (M6.20.9) aiming down a variable sight: , and . step it in and out, not the radar
+      // aiming down a variable sight: , and . step it in and out, not the radar
       if (inp.aim && (inp.mapInPressed || inp.mapOutPressed) && arsenal.stepZoom(inp.mapInPressed ? 1 : -1)) { inp.mapInPressed = inp.mapOutPressed = false; }
       if (inp.mapPressed || inp.mapInPressed || inp.mapOutPressed) {
         let z = settings.mapZoom === undefined ? 1 : settings.mapZoom;
@@ -1840,7 +1880,7 @@ function boot() {
         audio.confirm();
         S.transport = { t: 0, moved: false, to: 'course' };
       } else if (inp.interactPressed && vehicleUse()) {
-        // (M6.20.0) in at the wheel, or out
+        // in at the wheel, or out
       } else if (inp.interactPressed && keyUse()) {
         // a key, a door it opens, the lift's emergency stop
       } else if (inp.interactPressed && liftUse()) {
@@ -1857,11 +1897,11 @@ function boot() {
           const r = sd.use(player.pos, b);
           if (r === 'blocked') { audio.deny(); S.doorMsg = 1.2; } else audio.door(r === 'opened');
           // walking in (standing): both leaves of a double door go together;
-          // sneaking (crouched or prone): only the one you chose (M6.7.1)
+          // sneaking (crouched or prone): only the one you chose
           if (sd.def.pair && player.stance === 0 && (r === 'opened' || r === 'shut')) {
             for (const o of level.swingDoors) if (o !== sd && o.def.pair === sd.def.pair && !o.blown && o.open !== sd.open) o.use(player.pos, b);
           }
-          // (M6.13.0) opened: a one-way door pulled towards you - a step back
+          // opened: a one-way door pulled towards you - a step back
           // out of its swing; and keep E held to slip on through and shut it
           if (r === 'opened') {
             const pair = sd.def.pair ? level.swingDoors.filter((o) => o !== sd && o.def.pair === sd.def.pair && o.open) : [];
@@ -1875,7 +1915,7 @@ function boot() {
       }
       if (inp.reloadPressed) arsenal.reload();
       // firing: a single press for everything except the rifle, which holds
-      // (M6.17.3) a burst, once begun, fires its rounds by itself
+      // a burst, once begun, fires its rounds by itself
       const wantFire = arsenal.burstLeft > 0 || (arsenal.weapon && arsenal.weapon.auto ? inp.fire : inp.firePressed);
       // F at a shut door on a mission is a kick; anywhere else, a strike
       if (inp.bashPressed) { if (!((missionRt && missionRt.kick()) || (!MISSION && kickDoor()))) arsenal.bash(player.eyePos, aimDir()); }
@@ -1884,11 +1924,11 @@ function boot() {
         arsenal.fire(shotEye(), aimDir(), { aim: inp.aim, moving, on: player, fresh: !!inp.firePressed, lock: S.lock || null });
       }
       // X (eXplode) with a charge in hand: set off every one of them you have placed
-      // (M6.9.19, Rhys: on a Chromebook right-click is Alt, so it zoomed and set
+      // (Rhys: on a Chromebook right-click is Alt, so it zoomed and set
       // them off together - it was M6.9.13's right mouse)
       const w0 = arsenal.weapon;
       if (inp.detonatePressed && w0 && w0.kind === 'placeable') arsenal.detonateAll();
-      // (M6.17.5) Z and X: what is in utility slots 1 and 2, used without switching to it
+      // Z and X: what is in utility slots 1 and 2, used without switching to it
       S.quick = S.quick || {};
       if (S.quickTipT > 0) S.quickTipT -= dt;
       for (const [n, slot] of [[1, 'utility1'], [2, 'utility2']]) {
@@ -1900,14 +1940,14 @@ function boot() {
       }
       if (inp.debugPressed) S.debug = !S.debug;
       S.acc += dt * (missionRt ? missionRt.timeScale() : 1);     // bullet time: less time, same steps
-      S.missionT = (S.missionT || 0) + dt;                       // the mission's clock: runs while you play (M6.9.16)
+      S.missionT = (S.missionT || 0) + dt;                       // the mission's clock: runs while you play
       let steps = 0;
       while (S.acc >= DT && steps < 8) {
         S.prevPos = player.pos.slice();
         if (level.lift) {
           // the car carries whoever stands in it (the floor coming up would not)
           const riding = level.lift.carries(player.pos);
-          // (M6.11.1) hostages ride it too, and keep its doors from shutting on them
+          // hostages ride it too, and keep its doors from shutting on them
           const hs = (level.hostages || []).filter((h) => h.alive && h.state !== 'rescued');
           const hRide = hs.filter((h) => level.lift.carries(h.pos));
           holdLiftFor(level.lift, hs, player.pos);
@@ -1915,7 +1955,7 @@ function boot() {
           if (riding && dy) player.pos[1] += dy;
           if (dy) for (const h of hRide) { h.pos[1] += dy; h.rodeLift = true; h.moveBody(); }
         }
-        // (M6.13.0) a step back from a door you pulled, or slipping through one
+        // a step back from a door you pulled, or slipping through one
         if (S.doorMove) {
           const dm = S.doorMove;
           const res = dm.step(DT, player, input.held('interact') && !TEST || !!S.testHoldE);
@@ -1923,13 +1963,13 @@ function boot() {
           else if (res) S.doorMove = null;
           else if (dm.moving) { inp.moveX = 0; inp.moveZ = 0; inp.jumpPressed = false; inp.sprint = false; }
         }
-        // (M6.20.0) at the wheel: W/S throttle (and reverse), A/D steer, SPACE the brake
+        // at the wheel: W/S throttle (and reverse), A/D steer, SPACE the brake
         if (player.driving) {
           if (player.mode === 'dead') { player.driving.driver = null; player.driving.solid.ghost = false; player.driving = null; }
           else {
             const v = player.driving, y0 = v.yaw;
             v.step(DT, { throttle: inp.moveZ || 0, steer: inp.moveX || 0, brake: !!inp.jump });
-            // (M6.20.1, Rhys: "very difficult to aim a weapon AND steer") the view turns with the boat - unless you
+            // (Rhys: "very difficult to aim a weapon AND steer") the view turns with the boat - unless you
             // are aiming (right mouse): then it holds where you point it, whatever the boat does; and with the
             // mouse left alone a moment it comes round behind the boat again
             if (!inp.aim) {
@@ -1964,7 +2004,7 @@ function boot() {
     // and hold still while you are not
     if (active) S.rangeT = (S.rangeT || 0) + dt;
     stepRanges(level, player, arsenal, active ? dt : 0, S.rangeT || 0);
-    S.aimNow = { aim: !!(lastInput && lastInput.aim), dir: aimDir() };      // (M6.17.5) for the Yellows: is a gun held on them?
+    S.aimNow = { aim: !!(lastInput && lastInput.aim), dir: aimDir() };      // for the Yellows: is a gun held on them?
     if (missionRt) missionRt.tick(dt, active ? dt * missionRt.timeScale() : 0, active);
     if (course) {
       const was = course.text;
@@ -1983,10 +2023,10 @@ function boot() {
     hitMark = Math.max(0, hitMark - dt * 3);
     for (const ev of arsenal.events) {
       if (ev.type === 'blast') { if (missionRt && MISSION) missionRt.onBlast(ev); else blastDoors(ev); }
-      // (M6.17.15) the breaching shotgun's round at a door: as a charge, without the bang's damage
+      // the breaching shotgun's round at a door: as a charge, without the bang's damage
       if (ev.type === 'breachShot') { const b = { breach: true, pos: ev.pos }; if (missionRt && MISSION) missionRt.onBlast(b); else blastDoors(b); }
       if (missionRt && (ev.type === 'shot' || ev.type === 'blast' || ev.type === 'bash' || ev.type === 'lure')) missionRt.hear(ev);
-      // (M6.17.0) a lure chirps where it lies; glassware a round passes through shatters and rings
+      // a lure chirps where it lies; glassware a round passes through shatters and rings
       if (ev.type === 'lure') audio.lure(Math.hypot(ev.pos[0] - player.pos[0], ev.pos[1] - player.pos[1], ev.pos[2] - player.pos[2]));
       if (ev.type === 'pierce' && ev.solid && ev.solid.glassware) audio.glassware(Math.hypot(ev.point[0] - player.pos[0], ev.point[2] - player.pos[2]));
       if (missionRt && ev.type === 'shot') missionRt.fired(ev);
@@ -1999,7 +2039,7 @@ function boot() {
       if (ev.type === 'empty') audio.dryFire();
       if (ev.type === 'reload') audio.reload('start');
       if (ev.type === 'reloaded' || ev.type === 'autoreload') audio.reload('done');
-      if (ev.type === 'roundIn') audio.roundIn();                 // (M6.17.6) a round into the revolver's cylinder
+      if (ev.type === 'roundIn') audio.roundIn();                 // a round into the revolver's cylinder
       if (ev.type === 'bash' || ev.type === 'swing') {
         audio.bash();
         // and the body strikes, in third person: fists punch, a knife slashes,
@@ -2009,7 +2049,7 @@ function boot() {
         S.strike = { kind, n: ((S.strike && S.strike.n) || 0) + 1, t: 0.55 };
       }
       if (ev.type === 'throw') audio.throwArc();
-      // (M6.20.9) a flare: a light where it fell, for as long as it burns
+      // a flare: a light where it fell, for as long as it burns
       if (ev.type === 'flare') {
         const fe = new pc.Entity('flare');
         fe.addComponent('light', { type: 'omni', color: new pc.Color(1, 0.86, 0.72), intensity: 2.2, range: 22, castShadows: false, affectDynamic: true, affectLightmapped: true });
@@ -2038,7 +2078,7 @@ function boot() {
         S.recoilPull = (S.recoilPull || 0) + (arsenal.weapon.pull || 0) * arsenal.weapon.recoil * 0.5;
         if (ev.hit && ev.hit.solid) wview.addMark(ev.hit.point, ev.hit.solid, ev.dir);
       }
-      if (ev.type === 'pellet' && ev.hit && ev.hit.solid && !ev.hit.target) wview.addMark(ev.hit.point, ev.hit.solid, ev.dir);   // (M6.20.9) a shotgun's other pellets
+      if (ev.type === 'pellet' && ev.hit && ev.hit.solid && !ev.hit.target) wview.addMark(ev.hit.point, ev.hit.solid, ev.dir);   // a shotgun's other pellets
       if (ev.type === 'swing') wview.onSwing();
       if (ev.type === 'target') { hitMark = 1; if (ev.killed) { score += ev.target.score; audio.targetDown(); } }
       if (ev.type === 'blast') {
@@ -2047,7 +2087,7 @@ function boot() {
       }
     }
     arsenal.events.length = 0;
-    // (M6.17.5) through the sight: a scope's reticle filling the view, or a red dot
+    // through the sight: a scope's reticle filling the view, or a red dot
     const sk = !S.third && lastInput && lastInput.aim && player.mode !== 'dead' ? scopeKind(arsenal.weapon) : 'none';
     const zoomNow = (arsenal.weapon && arsenal.weapon.zoom) || 1;
     const scoped = (sk === 'cross' || sk === 'chevron') && S.fov < settings.fov / zoomNow * 1.25;
@@ -2082,10 +2122,10 @@ function boot() {
       const found = [];
       (level.world.targets || []).forEach((t, i) => {
         if (t.down || (t.guard && t.guard.dormant) || (t.hostage && (t.hostage.state === 'dead' || t.hostage.state === 'rescued'))) { tracker.forget('t' + i); return; }
-        // (M6.17.13) the guard rota from a hacked terminal: every red on the radar while it lasts
+        // the guard rota from a hacked terminal: every red on the radar while it lasts
         const how = sense(level.world, me, { pos: t.centre, solid: t.solid, loud: t.turret && t.turret.firing ? 1 : 0 }) ||
           (level.revealT > 0 && t.guard && t.guard.faction === 'red' && !t.guard.dead ? 'intel' : null);
-        // (M6.11.1) a hostage is a friend on the radar, not an enemy
+        // a hostage is a friend on the radar, not an enemy
         if (how) found.push({ id: 't' + i, kind: t.hostage || (t.guard && t.guard.side === 'ally') ? 'ally' : t.guard && t.guard.neutral ? 'neutral' : 'enemy', pos: t.centre, how, state: t.guard ? t.guard.state : null });
       });
       if (level.revealT > 0) level.revealT -= since;
@@ -2112,7 +2152,7 @@ function boot() {
     if (view.tickSwingDoors) view.tickSwingDoors();
     if (view.tickProps) view.tickProps();
     if (level.lift) level.lift.alpha = S.alpha;     // drawn in step with you
-    if (level.helicopter) level.helicopter.t += dt;   // its rotor turns, it bobs (M6.9.21)
+    if (level.helicopter) level.helicopter.t += dt;   // its rotor turns, it bobs
     if (view.tickMovers) view.tickMovers();
     if (level.lift) for (const ev of level.lift.events.splice(0)) { if (ev.type === 'ding') audio.liftDing(); else audio.liftDoors(); }
     S.doorMsg = Math.max(0, (S.doorMsg || 0) - dt);
@@ -2177,20 +2217,20 @@ function boot() {
     if (!TEST) { show('briefing', true); S.menu = true; }
   } else if (HOTEL || FACTORY || CASINO || TRAIN || DRAFT) {
     if (level.offDuty) document.body.classList.add('offduty');
-    // (M6.20.11, Rhys: "stuck as a basic trooper forevermore after your first death") the kit is taken as you
+    // (Rhys: "stuck as a basic trooper forevermore after your first death") the kit is taken as you
     // deployed with it (it was taken before the briefing's choice), and you choose a class again each time you fall
     const battleKit = { slots: Object.assign({}, loadout.slots), mods: JSON.parse(JSON.stringify(loadout.mods || {})), specials: loadout.specials.slice() };
     const keepKit = () => { battleKit.slots = Object.assign({}, loadout.slots); battleKit.mods = JSON.parse(JSON.stringify(loadout.mods || {})); battleKit.specials = loadout.specials.slice(); };
     const beginWas = $('b-begin').onclick;
     $('b-begin').onclick = () => { keepKit(); beginWas(); };
     if (DRAFT) { document.body.classList.add('draft'); document.body.style.setProperty('--zpre', '"LEVEL ' + DRAFT.no + '  //  "'); }
-    // (M6.10.0) the reds are in: their brains, bodies and guns from Level 0's
+    // the reds are in: their brains, bodies and guns from Level 0's
     // runtime; the hotel's doors, keys, safe and cameras stay with main.js
     missionRt = setupMission({ pc, app, level, player, input, audio, S, $, tracker, canvas, wview, settings, arsenal,
-      // (M6.13.8, Rhys: objectives independent of completion) how it ended, into
+      // (Rhys: objectives independent of completion) how it ended, into
       // the story of the slot you deployed from - for the missions after it
-      // (M6.19.5) a battle: back in at your side's end, with your kit as you deployed with it
-      // (M6.19.6, Rhys: "respawn with full ammo") the kit you started with, as you started with it: whatever you
+      // a battle: back in at your side's end, with your kit as you deployed with it
+      // (Rhys: "respawn with full ammo") the kit you started with, as you started with it: whatever you
       // picked up is left behind, every magazine and pouch full again (classes to choose from come later)
       respawnYou() {
         if (S.nextCls !== undefined) { applyClass(S.nextCls); keepKit(); S.nextCls = undefined; }
@@ -2243,7 +2283,7 @@ function boot() {
   };
 }
 
-// (M6.18.3) the signs are drawn onto canvases once, at the start: the game's own fonts (Severian's
+// the signs are drawn onto canvases once, at the start: the game's own fonts (Severian's
 // letters) are fetched first - but never waited for more than a few seconds
 const fontsThenBoot = () => {
   const want = ['700 32px "Severia Sans Condensed"', '400 16px "Severia Sans"', '700 16px "Severia Sans"', '400 16px "Severia Serif"'];

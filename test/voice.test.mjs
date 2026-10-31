@@ -1,10 +1,10 @@
 // FRONTLINE - every recorded voice file the game names exists, and is credited.
 import { existsSync, readFileSync } from 'fs';
-import { RECORDED, RADIO, INTERCEPT, Voices } from '../src/game/voice.js';
-import { SFX } from '../src/game/audio.js';
-import { SPOKEN, SPOKEN_VOICES, spokenVoice } from '../src/game/spoken.js';
-import { LINES, YELLOW_LINES } from '../src/sim/guard.js';
-import { YELLOW_TALK } from '../src/sim/factions.js';
+import { RECORDED, RADIO, INTERCEPT, Voices } from '../src/game/core/voice.js';
+import { SFX } from '../src/game/core/audio.js';
+import { SPOKEN, SPOKEN_VOICES, spokenVoice } from '../src/game/core/spoken.js';
+import { LINES, YELLOW_LINES } from '../src/sim/people/guard.js';
+import { YELLOW_TALK } from '../src/sim/people/factions.js';
 let pass = 0; const fails = [];
 const T = (n, f) => { try { f(); pass++; console.log('  PASS  ' + n); } catch (e) { fails.push(n); console.log('  FAIL  ' + n + ' :: ' + e.message); } };
 const A = (c, m) => { if (!c) throw new Error(m); };
@@ -144,7 +144,7 @@ T('the recordings load a few at a time, not all 260 at the start of the level (M
     for (let i = 0; i < 5; i++) timers.shift()[0]();
     A(loaded.length === 6, 'not one a step: ' + loaded.length);
   } finally { globalThis.setTimeout = real; }
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/preloadSpoken\(level\.train \? \['staff', 'staff2', 'kiosk', 'pa', 'guard', 'front', 'minister', 'steward', 'red'\] : rel \? \['yellow', 'red'\] : \['red'\], 0\.15\)/.test(rt), 'the mission still loads them all at once');
 });
 

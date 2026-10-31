@@ -1,17 +1,17 @@
 // FRONTLINE - M6.20.9: classes, and the kit they brought (Rhys's first draft):
 // ammunition and mods weigh, rockets, pellets, sticky and gas grenades, landmines,
 // the Health & Ammo Pack, the Repair Kit, variable sights, the Jump Pack and the specials.
-import { World } from '../src/sim/world.js';
-import { Player, blankInput } from '../src/sim/player.js';
-import { Arsenal, makeTarget } from '../src/sim/weapons.js';
-import { Drivable } from '../src/sim/drive.js';
-import { Guard } from '../src/sim/guard.js';
-import { Loadout, ITEMS, MODS, CLASSES, SLOTS, fits, itemWeight, loadEffect, modFits, classAllows, BATTLE_MIX } from '../src/sim/loadout.js';
-import { Arsenal as Ars2, BURN } from '../src/sim/weapons.js';
-import { Battle, battleRules } from '../src/sim/battle.js';
-import { ARMS } from '../src/sim/guard.js';
-import { buildKitLevel } from '../src/game/level_kit.js';
-import { DRAFTS } from '../src/game/levels/index.js';
+import { World } from '../src/sim/world/world.js';
+import { Player, blankInput } from '../src/sim/people/player.js';
+import { Arsenal, makeTarget } from '../src/sim/arms/weapons.js';
+import { Drivable } from '../src/sim/vehicles/drive.js';
+import { Guard } from '../src/sim/people/guard.js';
+import { Loadout, ITEMS, MODS, CLASSES, SLOTS, fits, itemWeight, loadEffect, modFits, classAllows, BATTLE_MIX } from '../src/sim/arms/loadout.js';
+import { Arsenal as Ars2, BURN } from '../src/sim/arms/weapons.js';
+import { Battle, battleRules } from '../src/sim/play/battle.js';
+import { ARMS } from '../src/sim/people/guard.js';
+import { buildKitLevel } from '../src/game/levels/kit.js';
+import { DRAFTS } from '../src/game/levels/drafts/index.js';
 import { readFileSync } from 'fs';
 
 let pass = 0; const fails = [];
@@ -257,7 +257,7 @@ T('Special Camouflage: harder to see, all the more prone', () => {
 });
 T('wired up: the lock, the Quick Intel Device, Auto-Repair, the class picker', () => {
   const main = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8');
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/lock: S\.lock \|\| null/.test(main) && /gearTrait\('lockOn'\)/.test(main), 'the lock');
   A(/gearTrait\('hackSpeed'\)/.test(rt) && /gearTrait\('camo'\)/.test(rt), 'QID or camo');
   A(/gearTrait\('autoRepair'\)/.test(main), 'auto-repair');
@@ -331,7 +331,7 @@ T('the KD-MR3 takes doors off their hinges', () => {
 });
 T('wired up: the class picker after every fall, the jump pack bar, the beam from the muzzle', () => {
   const main = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8');
-  const vw = readFileSync(new URL('../src/game/weapons_view.js', import.meta.url), 'utf8');
+  const vw = readFileSync(new URL('../src/game/draw/weapons_view.js', import.meta.url), 'utf8');
   A(/youDown\(\)\) \{ showClassPick\(\)/.test(main) && /S\.nextCls/.test(main) && /keepKit\(\)/.test(main), 'no class choice on falling');
   A(/\$\('jet'\)\.style\.display = jetShow/.test(main), 'no jump pack bar');
   A(/this\.flash\.getPosition\(\)/.test(vw), 'the beam starts in your middle');

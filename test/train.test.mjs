@@ -1,16 +1,16 @@
 // FRONTLINE - Level 4, the Night Train (M6.18.0): the station, the train, the journey. Plain node.
-import { buildTrain, carriages, doorSpans, inTrain, inCoach, TrainRun, RUN, ROUTE, sectionAt, CAR, FLOOR, TRAIN_X0, STAFF_TALK, STAFF_VOICE, STAFF_SAY, NEWSPAPER, NOSE, departures, nearestSeat, BODY, TERMINUS, HIJACK, HIJACK_TALK, HIJACK_VOICE } from '../src/game/level_train.js';
-import { SPOKEN, SPOKEN_SETS, setOfVoice } from '../src/game/spoken.js';
+import { buildTrain, carriages, doorSpans, inTrain, inCoach, TrainRun, RUN, ROUTE, sectionAt, CAR, FLOOR, TRAIN_X0, STAFF_TALK, STAFF_VOICE, STAFF_SAY, NEWSPAPER, NOSE, departures, nearestSeat, BODY, TERMINUS, HIJACK, HIJACK_TALK, HIJACK_VOICE } from '../src/game/levels/train.js';
+import { SPOKEN, SPOKEN_SETS, setOfVoice } from '../src/game/core/spoken.js';
 import { existsSync } from 'fs';
-import { RULES } from '../src/sim/story.js';
-import { Player, blankInput } from '../src/sim/player.js';
-import { matrixLetters } from '../src/game/matrix_font.js';
-import { ResScaler } from '../src/sim/perf.js';
-import { pickFoe } from '../src/sim/factions.js';
-import { NavGrid } from '../src/sim/nav.js';
+import { RULES } from '../src/sim/play/story.js';
+import { Player, blankInput } from '../src/sim/people/player.js';
+import { matrixLetters } from '../src/game/draw/matrix_font.js';
+import { ResScaler } from '../src/sim/world/perf.js';
+import { pickFoe } from '../src/sim/people/factions.js';
+import { NavGrid } from '../src/sim/world/nav.js';
 import { readFileSync } from 'fs';
-import { pickClip } from '../src/sim/anim.js';
-import { MATRIX } from '../src/game/textures.js';
+import { pickClip } from '../src/sim/people/anim.js';
+import { MATRIX } from '../src/game/draw/textures.js';
 
 let pass = 0; const fails = [];
 const T = (n, f) => { try { f(); pass++; console.log('  PASS  ' + n); } catch (e) { fails.push(n + ' -> ' + e.message); console.log('  FAIL  ' + n + ' :: ' + e.message); } };
@@ -62,7 +62,7 @@ T('a ticket inspector at every one of the four gates; each gate shut until shown
   }
   const g = L.ticketGate, xb = TRAIN_X0 - 4;
   A(walk(L.world, [[xb - 6, FLOOR, 3.2], [xb + 2, FLOOR, 3.2]]) && walk(L.world, [[xb - 6, FLOOR, 6.8], [xb + 2, FLOOR, 6.8]]), 'round the gate');
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/'E  Show your ticket'/.test(rt) && /gateOpen\(\); speak\(n, STAFF_TALK\.checked\)/.test(rt) && /speak\(n, STAFF_TALK\.tickets\)/.test(rt), 'no inspecting');
   A(/if \(n\.platform !== '3'\) \{ speak\(n, STAFF_TALK\['wrong' \+ n\.platform\]\); return; \}/.test(rt), 'the wrong gate opens');
   // every line recorded, in every voice that says it, and in the set its voice loads with
@@ -105,7 +105,7 @@ T('each coach has its doors on the platform side, open at the station: their lea
   for (const c of carriages().filter((c) => c.id !== 'loco')) A(doorSpans(c).length === 2, c.id);
   A(L.trainDoors.hidden && L.trainDoors.spans.length === 10 && L.trainDoors.spans.every((s) => s.solid.disabled), 'the doors');
   A(L.pieces.filter((p) => p.prop === 'trainDoors').length === 20, 'their leaves are not their own to hide');
-  const rd = readFileSync(new URL('../src/game/render.js', import.meta.url), 'utf8');
+  const rd = readFileSync(new URL('../src/game/draw/render.js', import.meta.url), 'utf8');
   A(/level\[name\]\.taken \|\| level\[name\]\.hidden/.test(rd), 'render cannot hide them');
 });
 T('furnished: seats two and two in C and D, first class at tables, the buffet counter, the van\'s cages, the cab\'s desk', () => {
@@ -138,7 +138,7 @@ T('the 21:40 leaves at 21:40 by the clock: you arrive at 21:36; a warning half a
   A(e.state === 'waiting' && !e.fast && e.t < RUN.departAt && e.t > RUN.departAt - RUN.sitTo - 1, 'sat past the time, or not to it: ' + e.t);
   const u = new TrainRun(); u.step(30, true); u.sit(); u.unsit(); u.step(1, true);
   A(Math.abs(u.t - 31) < 1e-9, 'stood up, and the time still ran fast');
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/'E  Take your seat and wait for 21:40'/.test(rt) && /nearestSeat\(level\.seats, player\.pos, level\.hijacked \? \['C', 'D'\] : null\)/.test(rt) && /const waits = level\.trainRun\.sit\(\);/.test(rt) && /rt\.fail\('You missed the 21:40 to Belyagorsk\.'\)/.test(rt), 'the game does not let you sit, or miss it');
   A(inCoach([carriages()[2].x0 + 5, FLOOR, 0], 'C') && !inCoach([carriages()[3].x0 + 5, FLOOR, 0], 'C'), 'Coach 3');
 });
@@ -163,12 +163,12 @@ T('the world streams past: the station slides back; tunnel under the city, then 
   run.state = 'waiting'; run.dist = 0;
 });
 T('the game\'s side: the run ticks with you aboard; the doors shut and turn solid; the station\'s solids go when it leaves; the top line follows it', () => {
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/run\.step\(dt, player\.mode !== 'dead' && inTrain\(player\.pos\)\)/.test(rt), 'no run');
   A(/level\.trainDoors\.hidden = false;\s+for \(const d of level\.trainDoors\.spans\) d\.solid\.disabled = false;/.test(rt), 'the doors do not shut');
   A(/for \(const sld of level\.stationSolids \|\| \[\]\) sld\.disabled = true;/.test(rt), 'the station stays solid');
   A(/'Find your train: the 21:40 to Belyagorsk \(the departures board\)'/.test(rt), 'no top line');
-  const rd = readFileSync(new URL('../src/game/render.js', import.meta.url), 'utf8');
+  const rd = readFileSync(new URL('../src/game/draw/render.js', import.meta.url), 'utf8');
   A(/for \(const s of signHolders\) if \(s\.follow\)/.test(rd) && /for \(const l of lampEntities\) if \(l\.follow\)/.test(rd), 'signs and lamps cannot follow');
   const main = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8');
   A(/const TRAIN = \/\[\?&\]level=4\\b\//.test(main) && /TRAIN \? buildTrain\(\{ express: /.test(main) && /THE NIGHT TRAIN/.test(main), 'not in the game');
@@ -231,7 +231,7 @@ T('seated: you sit in your seat - eyes low, held there a moment whatever you pre
 T('the kiosk: a vendor behind the counter; coffee or the evening paper (Rhys: "pick up (and drink/read) a coffee and a newspaper")', () => {
   const v = L.npcs.find((q) => q.id === 'vendor');
   A(v && v.kind === 'vendor', 'no vendor');
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/'A coffee, please\.  \(' \+ PRICES\.coffee/.test(rt) && /'The evening paper\.  \(' \+ PRICES\.paper/.test(rt) && /rt\.read\(NEWSPAPER\)/.test(rt), 'nothing to buy');
   A(/if \(S\.dialog\) return;/.test(rt), 'the pointer is taken back while the paper is open');
 });
@@ -245,7 +245,7 @@ T('the paper is in Severian - Cyrillic, its own language (its letter Ӧ), not Ru
   A(/Front of Memory/.test(P.stories.map((s) => s.ten).join(' ')) && /Dravets/.test(P.stories[0].ten), 'not tonight\'s news');
 });
 T('a ticket inspector can be knocked down - and one who sees it calls the police, who arrest you if you are still at the station (Rhys: "you should be ABLE to, but that causes the others to turn on you")', () => {
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/tn\.down = true; tn\.fell = S\.time; tn\.solid\.disabled = true; m\.takedowns\+\+;/.test(rt), 'no takedown');
   A(/'F  Knock him down'/.test(rt), 'no prompt');
   A(/speak\(w, STAFF_TALK\.police\)/.test(rt) && /rt\.fail\('The station police arrested you at Novomir Central\.'\)/.test(rt), 'no police');
@@ -273,7 +273,7 @@ console.log('\n-- M6.18.3 --');
 T('the railway\'s people speak plain English again; only the announcer has a Severian voice (M6.18.3, Rhys: "not keen on the Russified accents... the Tannoy Announcer is perfect")', () => {
   for (const k of Object.keys(STAFF_TALK)) A(STAFF_VOICE[k].every((v) => k === 'depart' || k === 'arrive' ? v === 'sva' : /^st\d$/.test(v)), k + ': ' + STAFF_VOICE[k]);
   A(L.npcs.filter((n) => n.voice).every((n) => /^st\d$/.test(n.voice)), 'someone still has the accent');
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/voice: 'sva'/.test(rt) && !/'sv[123]'/.test(rt), 'the announcer');
   A(STAFF_SAY.depart.every((t) => /[Ѐ-ӿ]{3}/.test(t) && !/[A-Za-z]/.test(t)), 'the announcement\'s spelling');
 });
@@ -296,7 +296,7 @@ T('the departures board is a dot-matrix that runs with the clock: the next train
   while (r.state !== 'running') r.step(0.5, true);
   for (let i = 0; i < 200; i++) r.step(1, true);
   A(!departures(r, true).some((q) => /Belyagorsk/.test(q[0])) && /Kirova/.test(departures(r, true)[1][0]), 'she is still on it after leaving');
-  const rd = readFileSync(new URL('../src/game/render.js', import.meta.url), 'utf8'), tx = readFileSync(new URL('../src/game/textures.js', import.meta.url), 'utf8');
+  const rd = readFileSync(new URL('../src/game/draw/render.js', import.meta.url), 'utf8'), tx = readFileSync(new URL('../src/game/draw/textures.js', import.meta.url), 'utf8');
   A(/if \(s\.board\) \{ const rows = s\.board\(\), key = JSON\.stringify\(rows\); if \(key !== s\.shown\)/.test(rd) && /export function makeMatrixSign/.test(tx), 'not drawn as a matrix');
 });
 T('the street ends both ways in buildings standing across it, its sides solid; the city lit by nothing but its windows (Rhys: "buildings that appear to sit IN the street")', () => {
@@ -310,14 +310,14 @@ T('the street ends both ways in buildings standing across it, its sides solid; t
   A(L.world.hit([sp[0] - 9, 0.3, sp[2] - 0.3], [sp[0] - 8.4, 1.7, sp[2] + 0.3]), 'through the far side of the street');
   A(!walk(L.world, [[sp[0], 0, sp[2]], [sp[0], 0, sp[2] - 40]]), 'cannot walk up the street');
   A(L.movers[0].pieces.filter((p) => p.mat === 'facade' && p.unlit).length >= 300, 'the city is lit by the lamps');
-  const rd = readFileSync(new URL('../src/game/render.js', import.meta.url), 'utf8');
+  const rd = readFileSync(new URL('../src/game/draw/render.js', import.meta.url), 'utf8');
   A(/m\.useLighting = false;/.test(rd) && /moverChunks\(m\.pieces\)/.test(rd), 'the city costs the frame rate');
   A(L.noSunShadow === true && /lc\.castShadows = q !== 'low' && !level\.noSunShadow;/.test(rd), 'the moon casting shadows nobody sees');
   A(L.lampCap === 5 && /if \(level\.lampCap\) this\.lampBudget = Math\.min\(this\.lampBudget, level\.lampCap\);/.test(rd), 'ten lamps on every pixel (M6.18.3: ~20 fps in the train)');
 });
 
 T('the debrief names the Night Train, not the hotel (M6.18.3, Rhys\'s screenshot)', () => {
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/level\.trainRun \? 'Level 4 &middot; The Night Train'/.test(rt), 'Riverside Hotel');
 });
 
@@ -351,7 +351,7 @@ T('Severian\'s letters drawn on the board, each one its own shape - Ȍ ȍ О̏ �
   for (const en of [false, true]) for (const row of departures(r, en)) for (const t of row) A(matrixLetters(t).every((l) => l.known), 'no shape in: ' + t);
   // the fonts: in the game, declared, and used by the signs, the subtitles and the paper
   for (const f of ['NotoSans-Regular', 'NotoSans-Bold', 'NotoSans-CondensedBold', 'NotoSerif-Regular', 'NotoSerif-Bold']) A(existsSync(new URL('../assets/fonts/' + f + '.woff2', import.meta.url)), 'no font ' + f);
-  const html = readFileSync(new URL('../src/index.html', import.meta.url), 'utf8'), tx = readFileSync(new URL('../src/game/textures.js', import.meta.url), 'utf8'), rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8'), main = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8');
+  const html = readFileSync(new URL('../src/index.html', import.meta.url), 'utf8'), tx = readFileSync(new URL('../src/game/draw/textures.js', import.meta.url), 'utf8'), rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8'), main = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8');
   A(/@font-face \{ font-family: 'Severia Sans Condensed'; src: url\('assets\/fonts\/NotoSans-CondensedBold\.woff2'\)/.test(html) && /Arial, 'Severia Sans', sans-serif/.test(html), 'not declared');
   A(/bold \$\{size\}px 'Severia Sans Condensed'/.test(tx) && /font-family:\\'Severia Serif\\'/.test(rt), 'the signs or the paper not in them');
   A(/document\.fonts\.load\(f/.test(main), 'the signs are drawn before the fonts come');
@@ -376,7 +376,7 @@ T('E sits you in the free seat nearest you - in Coach 3\'s seating only, not by 
   A(!nearestSeat(L.seats, [D.x0 + 8, FLOOR, 0]), 'Coach 4 sits you down');
   for (const x of [C.x0 + 1, C.x0 + 2, C.x1 - 1, C.x1 - 2]) A(!nearestSeat(L.seats, [x, FLOOR, 0]), 'by the doors at ' + (x - C.x0).toFixed(1));
   A(nearestSeat(L.seats, [C.x0 + 3, FLOOR, 0]), 'not in the seating');
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/if \(level\.trainRun && \(!level\.hijacked \|\| level\.hijack\.done\) && !player\.seated && nearestSeat\(level\.seats, player\.pos, level\.hijacked \? \['C', 'D'\] : null\) && player\.mode === 'walk'\)/.test(rt) && /'E  Sit down'/.test(rt), 'cannot sit again once moving');
   A(/const seat = level\.trainRun && \(!level\.hijacked \|\| level\.hijack\.done\) && !player\.seated && player\.mode === 'walk' \? nearestSeat\(level\.seats, player\.pos, level\.hijacked \? \['C', 'D'\] : null\)/.test(rt), 'E does not sit you again once moving');
   A(L.hijacked === false, 'no hijack flag');
@@ -440,7 +440,7 @@ T('Belyagorsk: its platform on the doors\' side, under a canopy, its name in Cyr
   A(!blocked, 'cannot step off: ' + (blocked && blocked.map((v) => v.toFixed(1))));
   const police = L.npcs.filter((n) => n.kind === 'police');
   A(police.length >= 6 && police.every((n) => n.pos[2] > A1.z0 && n.pos[2] < A1.z1 && Math.abs(n.yaw) < 1e-9 && n.follow && n.arrival), 'the police');
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/if \(e\.type === 'arrive'\) \{\s+level\.trainDoors\.hidden = true;/.test(rt) && /for \(const sld of level\.arrivalSolids \|\| \[\]\) sld\.disabled = false;/.test(rt), 'the doors do not open');
   A(/run\.state === 'arrived' && A && !m\.done && player\.mode === 'walk' && !inTrain\(player\.pos\) && player\.pos\[2\] > A\.z0/.test(rt) && /rt\.endHotel\(outcome\(\)\)/.test(rt), 'stepping off does not end it');
   A(/n\.kind !== 'police' &&/.test(rt), 'the police are to be talked to / knocked down');
@@ -451,7 +451,7 @@ T('the debrief: in at Belyagorsk is a success; no trophy for the time (Rhys: "ti
   A(o.arrived && RULES.train.grade(o) === 'success' && RULES.train.lines(o).every((l) => l.ok), 'not a success');
   const mid = RULES.train.outcome({ run: { state: 'braking', boarded: true, dist: 30000 } });
   A(RULES.train.grade(mid) === 'partial' && /30 km of 31/.test(RULES.train.lines(mid)[1].text), 'on the way');
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/level\.trainRun \? \[\] :/.test(rt), 'a trophy for the train');
 });
 T('the nose is solid - you cannot stand inside it (Rhys) - and the cab still sees out over it', () => {
@@ -469,7 +469,7 @@ T('a frame rate held low brings the drawing resolution down a step at a time - H
   A(run(40, 3) === null && run(40, 1) === 1.4, 'not after two seconds low');
   run(30, 100); A(r.ratio === 0.8, 'past the floor: ' + r.ratio);
   run(60, 100); A(r.ratio === 0.8, 'climbed back');
-  const main = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8'), rd = readFileSync(new URL('../src/game/render.js', import.meta.url), 'utf8');
+  const main = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8'), rd = readFileSync(new URL('../src/game/draw/render.js', import.meta.url), 'utf8');
   A(/const r = resScaler\.sample\(S\.fps\); if \(r !== null\) app\.graphicsDevice\.maxPixelRatio = r;/.test(main) && /this\.ratioFloor = q === 'low' \? 0\.75 : Math\.min\(this\.ratioCap, 0\.8\);/.test(rd), 'not in the game');
 });
 
@@ -493,7 +493,7 @@ T('six of them, the Front of Memory, in grey: two in the locomotive, two in firs
   const mn = L.npcs.find((n) => n.kind === 'minister'), tg = L.npcs.find((n) => n.kind === 'trainguard');
   A(mn && inCoach(mn.pos, 'A') && mn.onTrain && tg && inCoach(tg.pos, 'van') && tg.onTrain, 'the Minister and the guard');
   A(!hs[0].canBeTakenDown([hs[0].pos[0] - 1, FLOOR, hs[0].pos[2]], L.world), 'a dormant one can be taken down');
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/if \(g\.dormant\) continue;/.test(rt) && /const visible = shown\[i\] && !g\.dormant;/.test(rt), 'drawn or moving before the hijack');
   A(/t\.guard && t\.guard\.dormant/.test(readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8')), 'on the radar before the hijack');
 });
@@ -502,7 +502,7 @@ T('the hijack comes just out of the city tunnel, about two minutes in (Rhys); th
   while (r.dist < HIJACK.at) { r.step(0.1, true); r.events.length = 0; }
   const mins = (r.t - RUN.departAt) / 60;
   A(mins > 1.4 && mins < 2.4 && sectionAt(HIJACK.at - 1) === 'tunnel' && sectionAt(HIJACK.at + 1) === 'country', 'at ' + mins.toFixed(2) + ' min');
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/if \(level\.hijackers && !level\.hijacked && run\.moving && run\.dist >= HIJACK\.at\) hijackNow\(\);/.test(rt), 'no trigger');
   A(/level\.hijacked = true;[^]*?for \(const g of level\.hijackers\) \{ if \(seenByYou\(g\)\) g\.wakeLater = true; else wakeHijacker\(g\); \}/.test(rt) && /if \(cab\) \{ cab\.set\(false, 1\); cab\.locked = true;/.test(rt) && /if \(player\.seated\) player\.stand\(\);/.test(rt) && /speak\(frontPA, HIJACK_TALK\.hijack\)/.test(rt), 'the hijack');
   for (const [k, t] of Object.entries(HIJACK_TALK)) for (const v of HIJACK_VOICE[k]) {
@@ -529,7 +529,7 @@ T('in the train they patrol, see you, and come for you - through the gangways (t
   A(v.canBeTakenDown([v.pos[0] + 1.0, FLOOR, v.pos[2]], S2.L7.world), 'the van\'s man cannot be taken from behind');
 });
 T('the Minister: held by the two in first class; a fight there burns a short fuse; at Belyagorsk they kill him if still standing - a partial result, and the story branches (Rhys)', () => {
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/const holders = \(\) => \(level\.hijackers \|\| \[\]\)\.filter\(\(g\) => g\.holds && !g\.dead && !g\.dormant\);/.test(rt), 'holders');
   A(/if \(H\.fuse > HIJACK\.fuse\) killMinister\(/.test(rt) && HIJACK.fuse > 5 && HIJACK.fuse < 30, 'the fuse');
   A(/if \(level\.hijacked && level\.hijack\.minister === 'alive' && holders\(\)\.length\) killMinister\(/.test(rt), 'killed at Belyagorsk');
@@ -541,7 +541,7 @@ T('the Minister: held by the two in first class; a fight there burns a short fus
   A(RULES.train.lines(dead).some((l) => /Minister Dravets — killed/.test(l.text)) && RULES.train.lines(alive).some((l) => /6 of 6 down/.test(l.text) && l.ok), 'the debrief lines');
 });
 T('the guard: trusts you once he has seen you take one of them down; "help me take this train back"; his sidearm only if you have no weapon; then he fights beside you (M6.18.8, Rhys)', () => {
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/if \(!H\.trust\) \{ speak\(n, HIJACK_TALK\.guardAsk\); return; \}/.test(rt) && /H\.asked = true; speak\(n, HIJACK_TALK\.guardTrust\);/.test(rt), 'trust first');
   A(/armed = !!\(lo && \(lo\.slots\.primary \|\| lo\.slots\.backup\)\);\s+if \(!armed\) \{\s+H\.gave = true; speak\(n, HIJACK_TALK\.guardGive\);\s+dropAt\(ARMS\.pistol\.item/.test(rt), 'the pistol to an armed man (Rhys: "no point him giving you a weapon if you\'ve just picked one up")');
   A(/joinGuard\(n\);/.test(rt) && /g\.escort = \{ lead: true, lag: 2\.2 \};/.test(rt), 'he does not come with you');
@@ -568,7 +568,7 @@ T('the guard: trusts you once he has seen you take one of them down; "help me ta
 T('the Minister talks; the buffet has its steward (tea, a sandwich) who hides once it starts (Rhys)', () => {
   const st = L.npcs.find((n) => n.kind === 'steward');
   A(st && inCoach(st.pos, 'B') && clear(L.world, st.pos), 'no steward');
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/speak\(n, !level\.hijacked \? HIJACK_TALK\.minPre : level\.hijack\.minister === 'alive' && holders\(\)\.length \? HIJACK_TALK\.minHeld : HIJACK_TALK\.minSaved\)/.test(rt), 'the Minister');
   A(/'A tea, please\.  \(' \+ PRICES\.tea/.test(rt) && /if \(level\.hijacked\) \{ speak\(n, HIJACK_TALK\.stewHide\); return; \}/.test(rt), 'the buffet');
 });
@@ -578,11 +578,11 @@ T('Belyagorsk in so many minutes counts down with the clock, minute for minute (
   let worst = 0;
   for (let i = 0; i < 30000 && r.state !== 'arrived'; i++) { r.step(0.1, true); r.events.length = 0; worst = Math.max(worst, Math.abs(r.t + r.eta() - arrive)); }
   A(r.state === 'arrived' && Math.abs(r.t - arrive) < 2 && worst < 3, 'the estimate wanders by ' + worst.toFixed(1) + ' s');
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/const mins = Math\.max\(1, Math\.ceil\(run\.eta\(\) \/ 60\)\);/.test(rt), 'the top line guesses');
 });
 T('the announcements fit the screen: long lines wrap, Severian over English (Rhys: "the subtitles run over the screen-edge")', () => {
-  const html = readFileSync(new URL('../src/index.html', import.meta.url), 'utf8'), rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const html = readFileSync(new URL('../src/index.html', import.meta.url), 'utf8'), rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(!/#bark \{[^}]*white-space: nowrap/.test(html) && /max-width: min\(900px, 88vw\)/.test(html), 'still one long line');
   A(/said = said\.replace\(' \\u2014 ', '<br>'\);/.test(rt), 'not two lines');
 });
@@ -601,7 +601,7 @@ T('the seats: a cushion just over a step high, nothing to climb - you walk the a
   A(w && w.noClimb, 'a seat to climb');
 });
 T('the buffet and the kiosk are paid for, from your own money; the steward\'s sandwiches run out; coffee, tea and food keep you going, they do not heal (Rhys)', () => {
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/const PRICES = \{ coffee: 15, tea: 12, sandwich: 30, paper: 40 \};/.test(rt) && /if \(rt\.grosh < n\) \{ showHint\('Not enough money on you\.'\); return false; \}/.test(rt), 'free');
   A(/rt\.sandwiches--; speak\(n, rt\.sandwiches \? HIJACK_TALK\.stewSandwichOne : HIJACK_TALK\.stewSandwich\);/.test(rt) && /if \(!rt\.sandwiches\) \{ speak\(n, HIJACK_TALK\.stewSoldOut\); return; \}/.test(rt), 'the last one, every time');
   A(!/player\.health = 100;/.test(rt), 'still healing');
@@ -615,13 +615,13 @@ T('the buffet and the kiosk are paid for, from your own money; the steward\'s sa
   for (const k of ['stewSandwichOne', 'stewSoldOut']) A(existsSync(new URL('../assets/voices/spoken_st6_' + SPOKEN[HIJACK_TALK[k]] + '.mp3', import.meta.url)), 'not recorded: ' + k);
 });
 T('the Minister: the fuse burns only for a fight in first class itself, and the two over him hold their ground (Rhys: "the Minister died before there was anything I could do")', () => {
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/fighting = hs\.some\(\(g\) => g\.state === 'alert' && \(g\.seeing \|\| inA\(player\.pos\) \|\| \(ally && !ally\.dormant && !ally\.dead && inA\(ally\.pos\)\)\)\);/.test(rt), 'any alarm on the train');
   A(L.hijackers.filter((g) => g.holds).every((g) => g.temper === 'steady'), 'they run to the shouting');
   A(HIJACK.fuse >= 15, 'the fuse');
 });
 T('the guard: yours to kill only by accident - not a takedown target - and his death by your hand is on the debrief, no clean success; no Yellows shouted on the train', () => {
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/if \(g\.side === 'ally' \|\| !g\.canBeTakenDown/.test(rt), 'the guard can be taken down');
   const o = RULES.train.outcome({ run: { state: 'arrived', boarded: true, dist: RUN.arrive }, hijack: { happened: true, down: 6, total: 6, minister: 'alive', guardKilled: true } });
   A(RULES.train.grade(o) === 'partial' && RULES.train.lines(o).some((l) => /guard \u2014 killed by you/.test(l.text) && !l.ok), 'no consequence');
@@ -639,7 +639,7 @@ T('the nose from its cab: the hood ahead laid again inside, its faces turned in 
   A(inner.some((p) => p.quads.some((q) => Math.abs(q.n[2]) > 0.8 && q.n[1] < 0.15 && (q.v[0][0] - L.nose.x0) / NOSE.len < NOSE.deckTo)), 'the sides seen through from the cab');
   const glass = L.pieces.find((p) => p.nosePart === 'glass');
   A(glass && glass.mat === 'paint' && glass.tint[0] < 0.1 && !L.pieces.some((p) => p.twoSided), 'the windscreen shows the hollow inside');
-  const rd = readFileSync(new URL('../src/game/render.js', import.meta.url), 'utf8');
+  const rd = readFileSync(new URL('../src/game/draw/render.js', import.meta.url), 'utf8');
   A(/const fwd = \(cr\[0\] \* n\[0\] \+ cr\[1\] \* n\[1\] \+ cr\[2\] \* n\[2\] >= 0\) !== !!q\.inward;/.test(rd), 'inward faces not wound inward');
 });
 
@@ -656,7 +656,7 @@ T('the six down, the rest of the journey passes: on at top speed to just short o
   for (let i = 0; i < 2000 && r.state !== 'arrived'; i++) { r.step(0.5, true); ev.push(...r.events.splice(0)); }
   A(r.state === 'arrived' && ev.some((e) => e.type === 'approach') && ev.some((e) => e.type === 'brake'), 'no arrival after it');
   const w = new TrainRun(); A(w.skipAhead() === 0 && w.dist === 0, 'skips at the platform');
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/if \(H\.done && !H\.skipped && !rt\.skip\) \{ H\.rest \+= dt; if \(H\.rest >= HIJACK\.rest\) startSkip\(\); \}/.test(rt), 'never passes unless you sit');
   A(/if \(level\.hijacked && startSkip\(\)\)/.test(rt) && /Take a seat \(E\): the rest of the journey can pass/.test(rt), 'sitting down does not pass it');
   A(/run\.skipAhead\(\);/.test(rt) && /getElementById\('fade'\)/.test(rt) && /if \(rt\.skip\) skipTick\(dt\);/.test(rt), 'no fade');
@@ -670,7 +670,7 @@ T('the guard calls for help on the tannoy from his van - and is cut off; the rad
   A(/comply/.test(HIJACK_TALK.guardPA) && /hero/.test(HIJACK_TALK.guardPA) && /Inspector Pesak please come to the guard's van/.test(HIJACK_TALK.guardPA) && !/got me|please -$/.test(HIJACK_TALK.guardPA), 'the line');
   A(HIJACK_VOICE.guardPA[0] === 'gpa' && setOfVoice('gpa') && SPOKEN_SETS[setOfVoice('gpa')].includes(SPOKEN[HIJACK_TALK.guardPA]), 'not in its set');
   A(existsSync(new URL('../assets/voices/spoken_gpa_' + SPOKEN[HIJACK_TALK.guardPA] + '.mp3', import.meta.url)), 'not recorded');
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/if \(!\(tg && !tg\.down && !H\.trust && !H\.joined && vanMan && !vanMan\.dead && !near\) \|\| H\.since > HIJACK\.call \+ 30\) H\.called = 'no';\s*else if \(speak\(guardPA, HIJACK_TALK\.guardPA\)\) \{/.test(rt), 'the call');
   A(/There is no Inspector Pesak - it is the railway\\'s call for help/.test(rt) && !/audio\.shot\(\{ family: 'pistol' \}, 0\.35\)/.test(rt), 'the code not explained, or still shot');
   A(/level\.hijack\.called === true && !level\.hijack\.joined && !level\.hijack\.done\) \{\s*const tg = npcs\.find\(\(n\) => n\.kind === 'trainguard' && !n\.down && !n\.gone\);\s*if \(tg\) return \[tg\.pos\[0\], tg\.pos\[2\]\];/.test(rt), 'the radar');
@@ -679,12 +679,12 @@ T('the guard calls for help on the tannoy from his van - and is cut off; the rad
 T('the van\'s crates are the railway\'s parcels for Belyagorsk, not Ghost Logistics (Rhys: "nothing to do with Ghost")', () => {
   const parcels = L.pieces.filter((p) => p.mat === 'parcel');
   A(parcels.length >= 2, 'no parcels');
-  const tx = readFileSync(new URL('../src/game/textures.js', import.meta.url), 'utf8');
+  const tx = readFileSync(new URL('../src/game/draw/textures.js', import.meta.url), 'utf8');
   const body = tx.slice(tx.indexOf('  parcel(g, w, h, r) {'), tx.indexOf('  barrel(g, w, h, r) {'));
   A(/\\u0411\\u0415\\u041b\\u042f\\u0413\\u041e\\u0420\\u0421\\u041a/.test(body) && !/GHOST/.test(body), 'the stencil');
-  const rd = readFileSync(new URL('../src/game/render.js', import.meta.url), 'utf8');
+  const rd = readFileSync(new URL('../src/game/draw/render.js', import.meta.url), 'utf8');
   A(/parcel: +\{ scale: 1\.2/.test(rd), 'no material');
-  const lt = readFileSync(new URL('../src/game/level_train.js', import.meta.url), 'utf8');
+  const lt = readFileSync(new URL('../src/game/levels/train.js', import.meta.url), 'utf8');
   const html = readFileSync(new URL('../src/index.html', import.meta.url), 'utf8'), mn = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8');
   A(/body\.offduty #zone::before \{ content: 'OFF DUTY  \/\/  '; \}/.test(html) && /if \(level\.offDuty\) document\.body\.classList\.add\('offduty'\);/.test(mn), 'GHOST TRAINING over the train');
   A(!/'crate'\)/.test(lt.slice(lt.indexOf("the guard's van: cages of parcels"), lt.indexOf("the guard's van: cages of parcels") + 600)), 'Ghost crates in the van');
@@ -692,7 +692,7 @@ T('the van\'s crates are the railway\'s parcels for Belyagorsk, not Ghost Logist
 
 console.log('\n-- M6.18.11 --');
 T('signs read the right way round from both sides - Belyagorsk\'s, seen from the train, were mirrored (Rhys: "printed backwards")', () => {
-  const rd = readFileSync(new URL('../src/game/render.js', import.meta.url), 'utf8');
+  const rd = readFileSync(new URL('../src/game/draw/render.js', import.meta.url), 'utf8');
   A(/m\.cull = pc\.CULLFACE_BACK;/.test(rd) && /for \(const turn of \[0, 180\]\) \{\s*const side = new pc\.Entity\(\);\s*side\.setLocalEulerAngles\(0, turn, 0\);/.test(rd) && !/m\.cull = pc\.CULLFACE_NONE;      \/\/ readable from both sides/.test(rd), 'one face, two-sided: mirrored from behind');
   const arr = L.signs.filter((q) => q.arrival && q.text === TERMINUS.sev);
   A(arr.length && arr.every((q) => q.yaw === Math.PI), 'Belyagorsk\'s names face the platform, not the train');
@@ -706,14 +706,14 @@ T('the departures board: every line within its lamps, the lamps within its housi
       A(w <= MATRIX.cols, 'a line runs over: ' + l + ' | ' + rt + ' (' + w + ')');
     }
   }
-  const lt = readFileSync(new URL('../src/game/level_train.js', import.meta.url), 'utf8');
+  const lt = readFileSync(new URL('../src/game/levels/train.js', import.meta.url), 'utf8');
   const sg = L.signs.find((q) => q.board), m = lt.match(/sbox\(\[CON\.x0 \+ 8\.05, ([\d.]+), ([\d.]+)\], \[CON\.x0 \+ 8\.3, ([\d.]+), ([\d.]+)\]/);
   A(sg && m && +m[1] < sg.pos[1] && +m[3] > sg.pos[1] + sg.h && +m[2] < sg.pos[2] - sg.w / 2 && +m[4] > sg.pos[2] + sg.w / 2, 'the board wider than its housing');
 });
 T('the Minister sits in his seat (Rhys): the sitting pose, alive; slumped in it, dead', () => {
   const mn = L.npcs.find((n) => n.kind === 'minister');
   A(mn.sitting && pickClip({ sitting: true, dead: false, mode: 'walk', stance: 0 }).clip === 'Driving_Loop' && pickClip({ sitting: true, seated: true, dead: true }).seated, 'standing');
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/sitting: !!o\.sitting, seated: !!\(o\.sitting && o\.down\)/.test(rt) && /if \(!n\.sitting\) n\.yaw = /.test(rt), 'not passed to his body');
   const A1 = carriages().find((c) => c.id === 'A');
   A(Math.abs(mn.pos[0] - (A1.x0 + 17.7 - 0.32)) < 1e-6 && mn.yaw === Math.PI / 2, 'not at his seat');
@@ -726,7 +726,7 @@ T('the nose from inside: the hood cut cleanly along the windscreen\'s foot, not 
     for (const v of q.v) { const t = (v[0] - x1) / NOSE.len; if (t >= NOSE.windscreen[0] && t <= NOSE.windscreen[1]) A(v[1] <= wsF(t) + 1e-6, 'a face over the glass at t ' + t.toFixed(3)); }
   }
   A(cut > 10, 'no faces cut: ' + cut);
-  const lt = readFileSync(new URL('../src/game/level_train.js', import.meta.url), 'utf8');
+  const lt = readFileSync(new URL('../src/game/levels/train.js', import.meta.url), 'utf8');
   A(/box\(\[c\.x1 - 2\.2, FLOOR, -H\], \[c\.x1 - 1\.4, FLOOR \+ 0\.85, H\], 'metal', \{ tint: \[[\d., ]+\], noClimb: true \}\);/.test(lt), 'the desk climbable');
 });
 

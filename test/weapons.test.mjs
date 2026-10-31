@@ -1,13 +1,13 @@
 // FRONTLINE - weapon tests (node, no browser).
-import { World } from '../src/sim/world.js';
-import { Player, P, blankInput, followEye, shotOrigin } from '../src/sim/player.js';
-import { Arsenal, WEAPONS, makeTarget, reachesHead, HEADSHOT_KILL, quickKey, QUICK } from '../src/sim/weapons.js';
-import { scopeSvg } from '../src/game/scope.js';
-import { ARMS } from '../src/sim/guard.js';
-import { SwingDoor } from '../src/sim/doors.js';
+import { World } from '../src/sim/world/world.js';
+import { Player, P, blankInput, followEye, shotOrigin } from '../src/sim/people/player.js';
+import { Arsenal, WEAPONS, makeTarget, reachesHead, HEADSHOT_KILL, quickKey, QUICK } from '../src/sim/arms/weapons.js';
+import { scopeSvg } from '../src/game/draw/scope.js';
+import { ARMS } from '../src/sim/people/guard.js';
+import { SwingDoor } from '../src/sim/world/doors.js';
 import { readFileSync } from 'fs';
-import { adsPlace, sightTop, attachmentsFor, scopeKind } from '../src/game/weapons_view.js';
-import { Loadout, Crate, ITEMS, MODS, statsOf, fits, defaultSlot, modFits, pickupSlot, holdAfterPickup, modTags, withTags, cratePrompt, loadEffect } from '../src/sim/loadout.js';
+import { adsPlace, sightTop, attachmentsFor, scopeKind } from '../src/game/draw/weapons_view.js';
+import { Loadout, Crate, ITEMS, MODS, statsOf, fits, defaultSlot, modFits, pickupSlot, holdAfterPickup, modTags, withTags, cratePrompt, loadEffect } from '../src/sim/arms/loadout.js';
 
 let pass = 0; const fails = [];
 const T = (n, f) => { try { f(); pass++; console.log('  PASS  ' + n); } catch (e) { fails.push(n + ' -> ' + e.message); console.log('  FAIL  ' + n + ' :: ' + e.message); } };
@@ -439,7 +439,7 @@ T('(M6.20.8, Rhys) weight: two snipers are legal, and heavy; a light kit costs n
   A(light.gearTrait('chute') === true && light.get('gear') === 'LENSES' && light.gearTrait('flashResist') === 0.85, 'the Special slot crowds the gear slot');
 });
 T('(M6.20.8) the weight slows you, tires you sooner and is heard', () => {
-  const src = readFileSync(new URL('../src/sim/player.js', import.meta.url), 'utf8');
+  const src = readFileSync(new URL('../src/sim/people/player.js', import.meta.url), 'utf8');
   A(/speed \*= this\.load\.speed/.test(src) && /this\.load\.drain/.test(src) && /this\.noise \*= this\.load\.noise/.test(src), 'the player ignores the load');
 });
 
@@ -953,9 +953,9 @@ T('the VX-40 Marksman: a semi-automatic marksman rifle, ten rounds, a press a ro
   const r = press(ar, 60, [0, 20, 40]);
   A(r.shots === 3, r.shots + ' rounds from three presses a third of a second apart');
   A(ARMS.dmr && ARMS.dmr.item === 'VX40' && ARMS.dmr.mag === 10, 'no VX-40 for guards');
-  const lvl = readFileSync(new URL('../src/game/level_casino.js', import.meta.url), 'utf8');
+  const lvl = readFileSync(new URL('../src/game/levels/casino.js', import.meta.url), 'utf8');
   A(/id: 'C12'[^\n]*arms: 'dmr'/.test(lvl), 'the casino\'s marksman does not carry the VX-40');
-  const view = readFileSync(new URL('../src/game/weapons_view.js', import.meta.url), 'utf8');
+  const view = readFileSync(new URL('../src/game/draw/weapons_view.js', import.meta.url), 'utf8');
   A(/\['VX40', 'SNIPER'\]/.test(view) && /\['V27C', 'PISTOL'\]/.test(view), 'no hold for the new weapons');
 });
 
@@ -980,7 +980,7 @@ T('a silencer on the muzzle, a sight on top, a grip under the front: drawn where
   const gr = attachmentsFor(['GRIP'], 0.72, 0.06, 'rifle');
   A(gr.length && gr[0].pos[1] < -0.06 && gr[0].pos[2] < 0, 'the grip is not under the front');
   A(!attachmentsFor([], 0.2, 0.03, 'pistol').length, 'something drawn on a bare gun');
-  const view = readFileSync(new URL('../src/game/weapons_view.js', import.meta.url), 'utf8');
+  const view = readFileSync(new URL('../src/game/draw/weapons_view.js', import.meta.url), 'utf8');
   A(/if \(e && a\.weapon\) this\.dress\(e, id, a\.weapon\.mods/.test(view) && /spawnModel\(id, modelName, mods\)/.test(view), 'the held and dropped weapons are not dressed');
 });
 T('a weapon put down keeps its mods, and comes back with them when taken again', () => {
@@ -989,7 +989,7 @@ T('a weapon put down keeps its mods, and comes back with them when taken again',
   A(out && out.id === 'V27C' && out.mods.includes('SILENCER'), 'the V-27C came out without its silencer');
   lo.put('backup', out.id, out.mods);
   A(lo.mods.backup.includes('SILENCER') && lo.statsFor('backup').quiet === MODS.SILENCER.quiet, 'taken back without it');
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/lo\.put\(slot, d\.item, d\.mods\)/.test(rt) && /dropAt\(out\.id, model, d\.pos, inMag, out\.mods\)/.test(rt), 'the mission does not carry mods with dropped weapons');
 });
 
@@ -1032,7 +1032,7 @@ T('Z / X with a medkit: used where you stand, the gun kept; Z and X bound out of
   runA(ar, 1);
   const me = { health: 40 };
   A(ar.quickUse('utility1', [0, 1.6, 0], N, { on: me }, 'tap') && me.health > 40 && ar.current === 'K7', 'the medkit was not used');
-  const inp = readFileSync(new URL('../src/game/input.js', import.meta.url), 'utf8');
+  const inp = readFileSync(new URL('../src/game/core/input.js', import.meta.url), 'utf8');
   A(/use1: \['KeyZ'\], use2: \['KeyX'\], detonate: \[\]/.test(inp), 'Z / X not bound');
   A(/out\.bindings\.detonate = out\.bindings\.detonate\.filter\(\(k\) => k !== 'KeyX'\)/.test(inp), 'an old saved X-to-detonate would fight X');
   const main = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8');
@@ -1067,7 +1067,7 @@ T('sights: the marksman rifles carry theirs; aiming through one shows its reticl
   A(/mask/.test(scopeSvg('cross')) && !/mask/.test(scopeSvg('dot')), 'a dot should not black out the view');
   const main = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8');
   A(/drawScope\(scoped \? sk : sk === 'dot' \? 'dot' : 'none'\)/.test(main) && /scoped,/.test(main), 'the game does not show the sight');
-  const view = readFileSync(new URL('../src/game/weapons_view.js', import.meta.url), 'utf8');
+  const view = readFileSync(new URL('../src/game/draw/weapons_view.js', import.meta.url), 'utf8');
   A(/if \(e && opts\.scoped\) e\.enabled = false;/.test(view), 'the gun stays in the way of the scope');
 });
 
@@ -1097,7 +1097,7 @@ T('the Revolver: loaded a round at a time - each heard - and a press mid-load fi
   for (let f = 0; f < 60 * 4 && rounds < 2; f++) { ar.step(DT); for (const e of ar.events) if (e.type === 'roundIn') rounds++; ar.events.length = 0; }
   ar.cool = 0;
   A(ar.fire([0, 1.5, 0], N, { fresh: true }) && ar.reloading === 0 && ar.ammoNow.mag === 1, 'firing did not stop the loading: mag ' + ar.ammoNow.mag + ', loading ' + ar.reloading);
-  const au = readFileSync(new URL('../src/game/audio.js', import.meta.url), 'utf8'), main = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8');
+  const au = readFileSync(new URL('../src/game/core/audio.js', import.meta.url), 'utf8'), main = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8');
   A(/w && w\.revolver &&/.test(au) && /roundIn\(\) \{/.test(au) && /ev\.type === 'roundIn'\) audio\.roundIn\(\)/.test(main), 'no revolver sounds');
   A(/wview\.onShot\(arsenal\.weapon && arsenal\.weapon\.recoil/.test(main), 'the kick is the same for every gun');
 });

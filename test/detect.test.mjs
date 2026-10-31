@@ -1,8 +1,8 @@
 // FRONTLINE - M6 stage 2: guards notice you. Run against the real Level 0.
-import { Player } from '../src/sim/player.js';
-import { buildMission0, FLOORS } from '../src/game/level_mission0.js';
-import { NavGrid } from '../src/sim/nav.js';
-import { SENSE } from '../src/sim/guard.js';
+import { Player } from '../src/sim/people/player.js';
+import { buildMission0, FLOORS } from '../src/game/levels/mission0.js';
+import { NavGrid } from '../src/sim/world/nav.js';
+import { SENSE } from '../src/sim/people/guard.js';
 
 let pass = 0; const fails = [];
 const T = (n, f) => { try { f(); pass++; console.log('  PASS  ' + n); } catch (e) { fails.push(n); console.log('  FAIL  ' + n + ' :: ' + e.message); } };

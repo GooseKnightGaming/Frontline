@@ -1,12 +1,12 @@
 // FRONTLINE - the level kit and the first-draft levels (M6.19.0). Plain node.
-import { buildKitLevel, carve, insideOf, doorsOf, KIT } from '../src/game/level_kit.js';
-import { DRAFTS } from '../src/game/levels/index.js';
-import { NavGrid } from '../src/sim/nav.js';
-import { RULES } from '../src/sim/story.js';
+import { buildKitLevel, carve, insideOf, doorsOf, KIT } from '../src/game/levels/kit.js';
+import { DRAFTS } from '../src/game/levels/drafts/index.js';
+import { NavGrid } from '../src/sim/world/nav.js';
+import { RULES } from '../src/sim/play/story.js';
 import { readFileSync } from 'fs';
-import { ARMS } from '../src/sim/guard.js';
-import { ITEMS } from '../src/sim/loadout.js';
-import { WEAPONS } from '../src/sim/weapons.js';
+import { ARMS } from '../src/sim/people/guard.js';
+import { ITEMS } from '../src/sim/arms/loadout.js';
+import { WEAPONS } from '../src/sim/arms/weapons.js';
 
 let pass = 0; const fails = [];
 const T = (n, f) => { try { f(); pass++; console.log('  PASS  ' + n); } catch (e) { fails.push(n + ' -> ' + e.message); console.log('  FAIL  ' + n + ' :: ' + e.message); } };
@@ -97,7 +97,7 @@ T('the Fortress\'s guns: light and heavy machine guns, rockets that burst where 
   A(ARMS.hmg && ARMS.hmg.burst[0] >= 10 && ARMS.rocket && ARMS.rocket.rocket && WEAPONS.ROCKET.blast > 4, 'no HMG or rocket');
   const F = DRAFTS.find((d) => d.id === 'fortress');
   A(['lmg', 'hmg', 'rocket'].every((a) => F.guards.some((g) => g.arms === a)), 'the Fortress has not all three');
-  const rt = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/arsenal\.detonate\(\{ id: 'ROCKET', pos: at \}, player\)/.test(rt) && /if \(!inHeli && g\.arms\.item\) dropAt/.test(rt), 'rockets do not burst, or an HMG man drops nothing gracefully');
 });
 T('the Drop: you start in the air, a parachute in your gear; the way out is the helicopter pad', () => {
@@ -114,7 +114,7 @@ T('the drafts are numbered in order from 5, on a title-screen list of their own'
   A(/const level = DRAFT \? buildKitLevel\(DRAFT\)/.test(mn), 'not built');
 });
 T('the drafts\' crates are plain freight, not Ghost Logistics; railings are bars, not the range fence', () => {
-  const kit = readFileSync(new URL('../src/game/level_kit.js', import.meta.url), 'utf8');
+  const kit = readFileSync(new URL('../src/game/levels/kit.js', import.meta.url), 'utf8');
   A(!/'crate'/.test(kit) && /'cargo'/.test(kit), 'Ghost crates');
   for (const d of DRAFTS) A(!buildKitLevel(d).pieces.some((p) => p.mat === 'fence' || p.mat === 'crate'), d.id + ': fence or crate');
 });

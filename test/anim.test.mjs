@@ -1,6 +1,6 @@
 // FRONTLINE - animation choice tests.
 import { readFileSync } from 'fs';
-import { pickClip, poseFor, CLIPS, MODEL_CLIPS, DERIVED, ONCE } from '../src/sim/anim.js';
+import { pickClip, poseFor, CLIPS, MODEL_CLIPS, DERIVED, ONCE } from '../src/sim/people/anim.js';
 let pass = 0; const fails = [];
 const T = (n, f) => { try { f(); pass++; console.log('  PASS  ' + n); } catch (e) { fails.push(n + ': ' + e.message); console.log('  FAIL  ' + n + ' :: ' + e.message); } };
 const A = (c, m) => { if (!c) throw new Error(m); };

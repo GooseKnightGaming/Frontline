@@ -1,7 +1,7 @@
 // FRONTLINE - radar knowledge tests: what you can sense, and what you remember.
-import { World } from '../src/sim/world.js';
-import { sense, Tracker, fade, MEMORY, RADAR_RANGES } from '../src/sim/contacts.js';
-import { buildTraining } from '../src/game/level_training.js';
+import { World } from '../src/sim/world/world.js';
+import { sense, Tracker, fade, MEMORY, RADAR_RANGES } from '../src/sim/people/contacts.js';
+import { buildTraining } from '../src/game/levels/yard7.js';
 
 let pass = 0; const fails = [];
 const T = (n, f) => { try { f(); pass++; console.log('  PASS  ' + n); } catch (e) { fails.push(n); console.log('  FAIL  ' + n + ' :: ' + e.message); } };

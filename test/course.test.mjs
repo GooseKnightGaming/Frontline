@@ -1,12 +1,12 @@
 // FRONTLINE - training course tests.
-import { Player, P, blankInput, forwardOf } from '../src/sim/player.js';
-import { buildTraining } from '../src/game/level_training.js';
-import { Course, movementSteps } from '../src/sim/course.js';
-import { World } from '../src/sim/world.js';
-import { Arsenal, makeTarget } from '../src/sim/weapons.js';
-import { Loadout } from '../src/sim/loadout.js';
-import * as W from '../src/sim/course.js';
-import { stepRanges } from '../src/game/level_weapons.js';
+import { Player, P, blankInput, forwardOf } from '../src/sim/people/player.js';
+import { buildTraining } from '../src/game/levels/yard7.js';
+import { Course, movementSteps } from '../src/sim/play/course.js';
+import { World } from '../src/sim/world/world.js';
+import { Arsenal, makeTarget } from '../src/sim/arms/weapons.js';
+import { Loadout } from '../src/sim/arms/loadout.js';
+import * as W from '../src/sim/play/course.js';
+import { stepRanges } from '../src/game/levels/ranges.js';
 import { readFileSync } from 'fs';
 let pass = 0; const fails = [];
 const T = (n, f) => { try { f(); pass++; console.log('  PASS  ' + n); } catch (e) { fails.push(n); console.log('  FAIL  ' + n + ' :: ' + e.message); } };

@@ -1,21 +1,21 @@
 // FRONTLINE - Level 1, the Riverside Hotel: built from Rhys's map (node).
-import { buildHotel, insideMask, rooms, doorways, furnitureKind, kitchenPlan, S, FLOORS, STAIR, LIFT_CELL, BUILT, STOREY, SEWER, MANHOLE, CELLAR_STAIR, slabPieces, slabHoles } from '../src/game/level_hotel.js';
-import MAP from '../src/game/maps/riverside.json' with { type: 'json' };
-import { skyColour, wrapU } from '../src/game/render.js';
-import { Player } from '../src/sim/player.js';
-import { Safe, cameraGlitch, glitchSpot } from '../src/sim/safe.js';
-import { Guard, ARMS, RANKS, TEMPER, DARK, raiseAlarm, groundBelow } from '../src/sim/guard.js';
-import { orderRoute, corners, hotelGuards } from '../src/sim/hotel_guards.js';
-import { NavGrid } from '../src/sim/nav.js';
-import { holdLiftFor, shove, Hostage, standable, inStreetZone } from '../src/sim/hostage.js';
-import { Mission, hotelTrophies, HOTEL_PAR } from '../src/sim/mission.js';
-import { hotelOutcome, hotelSettled, grade, outcomeLines, recordOutcome } from '../src/sim/story.js';
+import { buildHotel, insideMask, rooms, doorways, furnitureKind, kitchenPlan, S, FLOORS, STAIR, LIFT_CELL, BUILT, STOREY, SEWER, MANHOLE, CELLAR_STAIR, slabPieces, slabHoles } from '../src/game/levels/hotel.js';
+import MAP from '../src/game/levels/maps/riverside.json' with { type: 'json' };
+import { skyColour, wrapU } from '../src/game/draw/render.js';
+import { Player } from '../src/sim/people/player.js';
+import { Safe, cameraGlitch, glitchSpot } from '../src/sim/world/safe.js';
+import { Guard, ARMS, RANKS, TEMPER, DARK, raiseAlarm, groundBelow } from '../src/sim/people/guard.js';
+import { orderRoute, corners, hotelGuards } from '../src/sim/people/hotel_guards.js';
+import { NavGrid } from '../src/sim/world/nav.js';
+import { holdLiftFor, shove, Hostage, standable, inStreetZone } from '../src/sim/people/hostage.js';
+import { Mission, hotelTrophies, HOTEL_PAR } from '../src/sim/play/mission.js';
+import { hotelOutcome, hotelSettled, grade, outcomeLines, recordOutcome } from '../src/sim/play/story.js';
 import { readFileSync } from 'fs';
-import { World } from '../src/sim/world.js';
-import { DoorMove } from '../src/sim/doors.js';
-import { CaptainRun, HELI } from '../src/sim/captain.js';
-import { DrawCull, DRAW, inSight } from '../src/sim/drawcull.js';
-import { vehicleDef, vehicleBounds, VEHICLE_SIZE } from '../src/game/vehicle_models.js';
+import { World } from '../src/sim/world/world.js';
+import { DoorMove } from '../src/sim/world/doors.js';
+import { CaptainRun, HELI } from '../src/sim/people/captain.js';
+import { DrawCull, DRAW, inSight } from '../src/sim/world/drawcull.js';
+import { vehicleDef, vehicleBounds, VEHICLE_SIZE } from '../src/game/draw/vehicle_models.js';
 let pass = 0; const fails = [];
 const T = (n, f) => { try { f(); pass++; console.log('  PASS  ' + n); } catch (e) { fails.push(n); console.log('  FAIL  ' + n + ' :: ' + e.message); } };
 const A = (c, m) => { if (!c) throw new Error(m); };
@@ -1483,7 +1483,7 @@ T('objectives no longer decide whether the mission ends: outcomes, graded and re
   for (let i = 0; i < 25; i++) recordOutcome(save, all, 'success', 10 + i);
   A(save.story.missions.riverside.result === 'success' && save.story.log.length === 20, 'the latest outcome or the log length is wrong');
   // and the runtime no longer fails the mission on them
-  const src = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const src = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(!/rt\.fail\('A hostage was killed'\)/.test(src) && !/rt\.fail\('The captain escaped/.test(src), 'a hostage killed or the captain escaped still fails the mission');
   A(/endHotel\(now\)/.test(src) && /LEAVE_HOLD/.test(src), 'no way to end at the jeep, or to withdraw');
 });

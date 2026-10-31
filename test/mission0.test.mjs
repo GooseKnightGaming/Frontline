@@ -1,17 +1,17 @@
 // FRONTLINE - Level 0 tests: walk every way in, climb to the top, the doors,
 // the guards and the mission's rules. Plain node.
-import { Player, P, blankInput } from '../src/sim/player.js';
-import { buildMission0, FLOORS } from '../src/game/level_mission0.js';
-import { Mission, kickOpens, DOWNLOAD_TIME, awardsButton } from '../src/sim/mission.js';
+import { Player, P, blankInput } from '../src/sim/people/player.js';
+import { buildMission0, FLOORS } from '../src/game/levels/mission0.js';
+import { Mission, kickOpens, DOWNLOAD_TIME, awardsButton } from '../src/sim/play/mission.js';
 import { readFileSync } from 'fs';
-import { GUARD, Guard, raiseAlarm, FALL_CURVE } from '../src/sim/guard.js';
-import { World } from '../src/sim/world.js';
-import { Arsenal } from '../src/sim/weapons.js';
-import { NavGrid } from '../src/sim/nav.js';
-import { Loadout } from '../src/sim/loadout.js';
-import { buildTraining } from '../src/game/level_training.js';
-import { buildHotel } from '../src/game/level_hotel.js';
-import { chooseSwing, SwingDoor } from '../src/sim/doors.js';
+import { GUARD, Guard, raiseAlarm, FALL_CURVE } from '../src/sim/people/guard.js';
+import { World } from '../src/sim/world/world.js';
+import { Arsenal } from '../src/sim/arms/weapons.js';
+import { NavGrid } from '../src/sim/world/nav.js';
+import { Loadout } from '../src/sim/arms/loadout.js';
+import { buildTraining } from '../src/game/levels/yard7.js';
+import { buildHotel } from '../src/game/levels/hotel.js';
+import { chooseSwing, SwingDoor } from '../src/sim/world/doors.js';
 
 let pass = 0; const fails = [];
 const T = (n, f) => { try { f(); pass++; console.log('  PASS  ' + n); } catch (e) { fails.push(n); console.log('  FAIL  ' + n + ' :: ' + e.message); } };
@@ -613,7 +613,7 @@ T('the debrief: trophies and accolades are on a page 2, a button away - and no p
   const b = awardsButton(all, new Set(['b']));
   A(/\(3\)/.test(b) && /1 new/.test(b), 'the button reads ' + b);
   A(!/new/.test(awardsButton(all, new Set())), 'says new when nothing is');
-  const js = readFileSync(new URL('../src/game/mission_runtime.js', import.meta.url), 'utf8');
+  const js = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/awardsButton\(all, isNew\)/.test(js) && /mend-p2/.test(js), 'the debrief does not page');
 });
 console.log('\n' + '='.repeat(50));

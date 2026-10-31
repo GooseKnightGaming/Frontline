@@ -26,7 +26,7 @@ Version numbers are **M‹milestone›.‹feature›.‹patch›**.
 - **Night vision / thermal / UV**: toggleable, screen tint, people as
   silhouettes, thermal sees one wall deep; flashbangs worse, daylight dazzles.
   A setting turns the tint off. Rhys's vision-mode sheet is the spec.
-  **The radar is ready for it:** `sense()` in `src/sim/contacts.js` takes
+  **The radar is ready for it:** `sense()` in `src/sim/people/contacts.js` takes
   `{ thermal: true }` and reports `heat`, which the radar draws orange; the
   one-wall-deep rule goes in there. Rhys: what you see on thermal shows on the
   radar while you can see it, then fades to a last-known mark.
@@ -309,7 +309,7 @@ manifest, get out without being seen") will teach us more than any document.
 - **Player accounts / server saves**: codes cover cross-device for now.
 
 ## M8 — Vehicles
-**Started in M6.20.0.** `src/sim/drive.js`: `Drivable` (car, jeep, boat - arcade handling, a moving solid,
+**Started in M6.20.0.** `src/sim/vehicles/drive.js`: `Drivable` (car, jeep, boat - arcade handling, a moving solid,
 damage from knocks, rounds and blasts; a boat keeps to the water and settles when wrecked) and `Pilot` (an
 AI helmsman along a path, looping or not). Levels declare `vehicles: [...]` (kit: id, kind, at, yaw, model,
 paint, hp, path, speed, loop, crew, goal 'escape'); the objective kind `'stop'` is done when the vehicle is
@@ -571,7 +571,7 @@ The Riverside Hotel now ends at the Ghost jeep however it went; a hostage
 killed or the captain escaped is an outcome, not a failure. Graded: success
 (everything), complete with losses (something), failed (nothing achieved, or
 your own death). Each outcome - every hostage by name and fate, the captain's
-fate - goes into the slot's story (`src/sim/story.js`, `Saves.loadStory`),
+fate - goes into the slot's story (`src/sim/play/story.js`, `Saves.loadStory`),
 ready for later missions to read. Level 0 (training) still needs its file.
 
 ## The story (Rhys, after M6.13.7) - to be written, with its branches
@@ -841,7 +841,7 @@ armed guard may hand you his sidearm; it starts at the station.
   in the paper, the signs, the board and the announcement.
 
 ## The first drafts (Rhys, after M6.18.11: "ALL the other levels") - the plan and where it stands
-Built with the level kit (src/game/level_kit.js), a spec each in src/game/levels/. Order agreed:
+Built with the level kit (src/game/levels/kit.js), a spec each in src/game/levels/. Order agreed:
 1. Ready now, in threes: **Sewers (5), Bank (6), Cemetery and Crypt (7)** - M6.19.0; **Housing
    Estate (8), Manor House (9), Mineshaft (10)** - M6.19.1; **Research Facility (11),
    Assassination (12), the Ward (13)** - M6.19.2; **the Campus (14)** - M6.19.3; Research Facility (IR/UV/EMF + plant room),

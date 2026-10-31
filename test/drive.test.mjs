@@ -1,9 +1,9 @@
 // FRONTLINE - driving (M6.20.0, M8 begins): a car on the ground, a boat on the water, the AI at the helm;
 // what rounds and blasts do to them; Level 20, the Riverboat Pursuit, driven end to end. Plain node.
-import { World } from '../src/sim/world.js';
-import { Drivable, Pilot } from '../src/sim/drive.js';
-import { buildKitLevel } from '../src/game/level_kit.js';
-import { DRAFTS } from '../src/game/levels/index.js';
+import { World } from '../src/sim/world/world.js';
+import { Drivable, Pilot } from '../src/sim/vehicles/drive.js';
+import { buildKitLevel } from '../src/game/levels/kit.js';
+import { DRAFTS } from '../src/game/levels/drafts/index.js';
 
 let pass = 0; const fails = [];
 const T = (n, f) => { try { f(); pass++; console.log('  PASS  ' + n); } catch (e) { fails.push(n + ' -> ' + e.message); console.log('  FAIL  ' + n + ' :: ' + e.message); } };
