@@ -39,6 +39,11 @@ game into the repository's root.
 - **The hold-up**: come up behind a guard who has not made you out, your gun on him from within 5 m, and he freezes,
   hands up ("Don't shoot!"). E questions him: every one of his side on your radar for 25 s, and his keycard if he carries
   one. Take him down then, or walk off (10 m) or keep your gun off him for 7 s, and he raises the alarm.
+- **Level 41, the Barracks** (`drafts/barracks.js`; the boards' "training barracks"): Camp Dravik at first light - four
+  barrack huts round a parade ground, the mess, the maglocked armoury, the headquarters hut (its planning office
+  maglocked), the assault course and the range, a watchtower (a marksman, up its ladder), the guardroom at the gate (the
+  radio, the security console, a four-man reserve). Mostly in the open, two dogs. Objectives: photograph the training
+  plans, take the prototype rifle.
 - **The Snake Camera** (Q Branch, `QSNAKE`; the roadmap's "peeking under or through" a door): crouched at a shut door, E
   slides a camera under it - the other side, through the CCTV view (the mouse looks about); E or moving stops it.
 
