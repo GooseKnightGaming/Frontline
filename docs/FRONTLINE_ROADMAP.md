@@ -322,7 +322,7 @@ manifest, get out without being seen") will teach us more than any document.
 - One item per crate in the field; pre-modded weapons in crates.
 - **Breaching and hacking** mechanics and training.
 - **Parachutes** and training. **Diving gear** (rebreathers, closed-circuit).
-- **Bullet drop** for long shots (range falloff is already in).
+- **Bullet drop** for long shots (range falloff is already in). Done in M6.29.0.
 - **Skills tree.** (Started in M6.29.0: experience, points, eight skills of up to three ranks.)
 - **Player accounts / server saves**: codes cover cross-device for now.
 

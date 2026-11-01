@@ -44,6 +44,9 @@ game into the repository's root.
   (quieter), Shadow (guards slower to make you out), Steady Hands (less spread), Quick Hands (faster reloads), Hard to Kill
   (less damage), Second Wind (stamina back faster), Breacher (harder kicks). Per run (`Saves.loadSkills/addXp`).
   `test/skills.test.mjs`.
+- **Bullet drop** (M7's "bullet drop for long shots"; `Arsenal.traceDrop`): a round flies straight for its first 60 m,
+  then in 60 m stretches bent down by gravity for the time each takes at its family's muzzle speed (`MUZZLE`): a rifle
+  round falls about half a metre at 300 m - aim a little high. Beams fly straight. Range falloff counts from the muzzle.
 - **Weapons drawn in code** (`src/game/draw/gun_models.js`; "weapon models beyond the four Quaternius ones"): shotguns
   (barrel over tube magazine, pump forend, wooden stock), SMGs and machine pistols, light and heavy machine guns (heat
   shield, carry handle, ammunition box, folded bipod), rocket launchers (a tube with its bell and sight), grenade

@@ -43,6 +43,9 @@ export const WEAPONS = {
     blast: 9, damage: 0, blind: 4.5, model: 'Grenade_2' },
 };
 
+// (M6.29) bullet drop: muzzle speeds by family (m/s), gravity, and how long a stretch is traced straight
+export const MUZZLE = { pistol: 360, smg: 400, shotgun: 400, rifle: 850, sniper: 900 };
+export const DROP = { g: 9.81, stretch: 60 };
 // Deterministic random, so spread patterns can be tested.
 function rng(seed) {
   let a = (seed >>> 0) || 1;
@@ -346,7 +349,7 @@ export class Arsenal {
       this.events.push({ type: 'shot', id: this.current, dir: d, from: eye.slice(), hit: null, spread, noise: 1.2, rocket: true, locked: !!lock });
       return { rocket: true, dir: d };
     }
-    const hit = this.trace(eye, d, 400);
+    const hit = this.traceDrop(eye, d, 400);
     // a shotgun's pellets: the rest of the shell, each its own way
     if (w.pellets > 1) for (let k = 1; k < w.pellets; k++) {
       const pd = this.scatter(dir, Math.max(spread, w.adsSpread || 0.03));
@@ -365,6 +368,28 @@ export class Arsenal {
       if (h && h.solid.tag === 'hdoor') this.events.push({ type: 'breachShot', id: this.current, pos: [eye[0] + d[0] * h.t, eye[1] + d[1] * h.t, eye[2] + d[2] * h.t] });
     }
     return { hit, dir: d };
+  }
+
+  // (M6.29, M7's "bullet drop for long shots") a round falls as it goes: past the first stretch it is traced in
+  // stretches, each bent down by gravity for the time it takes at the weapon's muzzle speed - a long shot has to
+  // be aimed a little high. An energy beam flies straight.
+  traceDrop(o, d, max) {
+    const w = this.weapon;
+    const v = w && !w.energy && !w.beam ? (w.muzzle || MUZZLE[w.family] || 0) : 0;
+    if (!v || this.probing) return this.trace(o, d, max);
+    let from = o.slice(), dir = d.slice(), gone = 0;
+    while (gone < max) {
+      const len = Math.min(DROP.stretch, max - gone);
+      this.traceOffset = gone;
+      const h = this.trace(from, dir, len);
+      this.traceOffset = 0;
+      if (h) return h;                      // (its dist is from the muzzle already)
+      from = [from[0] + dir[0] * len, from[1] + dir[1] * len, from[2] + dir[2] * len];
+      gone += len;
+      const dt = len / v;
+      dir = norm([dir[0] * v, dir[1] * v - DROP.g * dt, dir[2] * v]);
+    }
+    return null;
   }
 
   scatter(dir, spread) {
@@ -408,7 +433,7 @@ export class Arsenal {
       r = null;
     }
     if (!r) return null;
-    const dist = travelled + r.t;
+    const dist = travelled + r.t + (this.traceOffset || 0);      // (from the muzzle, for a dropped round's falloff)
     const point = [from[0] + d[0] * r.t, from[1] + d[1] * r.t, from[2] + d[2] * r.t];
     const target = r.solid.target || null;
     this.passKeep = keep;

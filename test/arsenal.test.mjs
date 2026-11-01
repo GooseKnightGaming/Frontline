@@ -140,4 +140,23 @@ T('Logistics and the Quartermaster: only what this run has brought home; the deb
     A(/codedHolder\(id, 'weapon_'\)/.test(wv) && /codedHolder\(id, 'carry_'\)/.test(wv), 'not used');
   });
 }
+{
+  const { DROP, MUZZLE } = await import('../src/sim/arms/weapons.js');
+  T('bullet drop: a long shot falls - aim a little high; close in, it flies true; a beam never falls', () => {
+    const w = new World(), a = new Arsenal(w);
+    let held = statsOf('LR7');
+    Object.defineProperty(a, 'weapon', { get: () => held });
+    const near = makeTarget(w, [-0.5, 0.5, -20.3], [0.5, 2.5, -19.7], { hp: 999 });
+    const far = makeTarget(w, [9.5, -2, -300.3], [10.5, 5, -299.7], { hp: 999 });
+    const h1 = a.traceDrop([0, 1.5, 0], [0, 0, -1], 400);
+    A(h1 && h1.target === near && Math.abs(h1.point[1] - 1.5) < 0.01, 'close in, it fell');
+    const h2 = a.traceDrop([10, 1.5, 0], [0, 0, -1], 400);
+    const fall = 1.5 - h2.point[1];
+    A(h2 && h2.target === far && fall > 0.3 && fall < 1.2 && Math.abs(h2.dist - 300) < 1, 'at 300 m it fell ' + fall.toFixed(2) + ' (dist ' + (h2 && h2.dist.toFixed(1)) + ')');
+    held = statsOf('HASL1');
+    const h3 = a.traceDrop([10, 1.5, 0], [0, 0, -1], 400);
+    A(h3 && Math.abs(h3.point[1] - 1.5) < 0.01, 'a beam fell');
+    A(MUZZLE.sniper > MUZZLE.pistol && DROP.g > 9, 'figures');
+  });
+}
 console.log(fails.length ? '\nFAILURES (' + fails.length + '):\n' + fails.map((f) => '  * ' + f).join('\n') : '\nALL ' + pass + ' PASSED');
