@@ -1095,10 +1095,17 @@ export function setupMission(ctx) {
   // from a way off; close to, they look twice; a shot, or one of them seeing through it, ends it
   const bodyNear = () => guards.find((g) => g.dead && !g.stripped && !g.gone && (g.faction === 'red' || g.faction === 'yellow') && Math.abs(g.pos[1] - player.pos[1]) < 1.2 && Math.hypot(g.pos[0] - player.pos[0], g.pos[2] - player.pos[2]) < 1.6) || null;
   const takeUniform = (g) => {
-    g.stripped = true; rt.disguise = g.faction; audio.pickup();
+    g.stripped = true; rt.disguise = g.faction; audio.pickup(); disguiseTag();
     showHint('His uniform: from a way off, the ' + (g.faction === 'yellow' ? 'Yellows' : 'reds') + ' take you for one of them. Close to, they look twice - officers from further. Do not crouch or run; a shot gives you away.');
   };
-  const dropDisguise = (why) => { if (!rt.disguise) return; rt.disguise = null; if (why) showHint(why); };
+  const dropDisguise = (why) => { if (!rt.disguise) return; rt.disguise = null; if (why) showHint(why); disguiseTag(); };
+  // a small tag on the screen while you wear one
+  const disguiseTag = () => {
+    let el = document.getElementById('disguise-tag');
+    if (!el) { el = document.createElement('div'); el.id = 'disguise-tag'; el.style.cssText = 'position:fixed;right:18px;top:236px;padding:3px 10px;font:600 12px sans-serif;letter-spacing:2px;border-radius:3px;pointer-events:none;z-index:5;display:none'; document.body.appendChild(el); }
+    el.style.display = rt.disguise ? 'block' : 'none';
+    if (rt.disguise) { el.textContent = 'DISGUISED - ' + (rt.disguise === 'yellow' ? 'YELLOW' : 'RED') + ' UNIFORM'; el.style.background = rt.disguise === 'yellow' ? 'rgba(232,180,35,0.85)' : 'rgba(200,50,40,0.85)'; el.style.color = '#111'; }
+  };
   // keycards: dropped by the officers who carry them; taken, they open their network's maglocks (2 s, no trace)
   const cards = [], haveCard = new Set();
   const keyCardMat = (() => { const mt = new pc.StandardMaterial(); mt.diffuse = new pc.Color(0.9, 0.9, 0.92); mt.emissive = new pc.Color(0.25, 0.35, 0.5); mt.update(); return mt; })();
