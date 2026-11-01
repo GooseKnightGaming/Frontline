@@ -62,7 +62,7 @@ export default {
       ] },
     },
   },
-  stairs: [{ x: 30, y: 24, dir: 'N', len: 4, w: 1, from: 'G', to: '1' }],      // up to the catwalk, in the hall's south-east corner
+  stairs: [{ x: 30, y: 23, dir: 'N', len: 4, w: 1, from: 'G', to: '1' }],      // up to the catwalk, in the hall's south-east corner
   start: { x: 23, y: 33, floor: 'G', yaw: 0 },
   zones: [
     { id: 'hall', label: 'The Glasshouse - the hall', at: [6, 6, 30, 24] },

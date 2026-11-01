@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.41.0)
+# Frontline — Handover (M6.42.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,13 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.42.0 — Level 43, the Glasshouse
+- **Level 43, the Glasshouse** (`drafts/glasshouse.js`; built round breaking glass and grip): Varn's research
+  glasshouse at night, raining. The hall's walls nearly all windows (69 panes, every one breakable - a way through,
+  and a noise), a steel catwalk round its roof (wet: slippery), the lab (a laser across the growing room), the server
+  room (maglocked; the head of research's keycard), the office upstairs (the console, the radio), a dog on the grounds.
+  Take the sample; copy the research server - which turns out to be a crop blight, bred to order.
 
 ## M6.41.0 — contracts
 - **Contracts** (`src/sim/play/contracts.js`; on the case board at Ghost HQ, under the case): replay work, three at a
