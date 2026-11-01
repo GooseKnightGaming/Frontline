@@ -166,3 +166,39 @@ export function touchControls(input, opts) {
     letGo,
   };
 }
+
+// (M6.38) what the game says, said for a touch screen: the keys it names become the buttons you have. Only the
+// prompt, the hint and the step line are rewritten (core/touch.js `retext`), as they are drawn.
+export const TOUCH_WORDS = [
+  [/Walk with W A S D\. Look with the mouse\./g, 'Walk with the stick (your left thumb). Look by dragging on the right.'],
+  [/W\/S throttle, A\/D steer, SPACE brake/g, 'the stick drives, JUMP brakes'],
+  [/Climb the ladder: face it and press W\./g, 'Climb the ladder: face it and push the stick forward.'],
+  [/W\/S  Climb/g, 'Stick  Climb'],
+  [/Click to shoot\./g, 'FIRE to shoot.'],
+  [/hold ALT to aim/gi, 'AIM to aim'],
+  [/Sprint with SHIFT/gi, 'Sprint by pushing the stick to its edge'],
+  [/\bShift \+ Space\b/gi, 'sprint + JUMP'],
+  [/\bSHIFT\b|\bShift\b/g, 'SPRINT'],
+  [/\bSPACE\b|\bSpace\b/g, 'JUMP'],
+  [/Press C to crouch, and again to go prone/g, 'Press DUCK to crouch, and again to go prone'],
+  [/Press C again/g, 'Press DUCK again'],
+  [/(^|\s)C(\s\s|:)/g, '$1DUCK$2'],
+  [/\bP\/Esc\b|\bEsc\b/g, 'II'],
+  [/\bright-click\b|\bright click\b/gi, 'AIM'],
+  [/\bleft-click\b|\bleft click\b/gi, 'FIRE'],
+];
+export function touchWords(text) {
+  let t = String(text == null ? '' : text);
+  for (const [re, to] of TOUCH_WORDS) t = t.replace(re, to);
+  return t;
+}
+// watch these elements and say what they say for a touch screen
+export function retext(ids) {
+  for (const id of ids) {
+    const el = document.getElementById(id);
+    if (!el || !window.MutationObserver) continue;
+    const fix = () => { const t = el.textContent, w = touchWords(t); if (w !== t) el.textContent = w; };
+    new MutationObserver(fix).observe(el, { childList: true, characterData: true, subtree: true });
+    fix();
+  }
+}

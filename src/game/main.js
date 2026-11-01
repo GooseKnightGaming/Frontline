@@ -73,9 +73,9 @@ import { hqSecurity, takeIntrusion } from './levels/hq_security.js';
 import { effects as skillEffects, SKILLS, pointsLeft, train as trainSkill, XP } from '../sim/play/skills.js';
 import { CASE, CASE_NEEDS, FINAL, caseOpen } from '../sim/play/caseboard.js';
 import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './core/input.js';
-import { isTouchDevice, touchControls } from './core/touch.js';
+import { isTouchDevice, touchControls, retext } from './core/touch.js';
 
-const VERSION = 'M6.37.0';
+const VERSION = 'M6.38.0';
 const $ = (id) => document.getElementById(id);
 const TEST = /[?&]test\b/.test(location.search);
 // Level 0, the training mission, is its own page load: index.html?level=0
@@ -1180,6 +1180,7 @@ function boot() {
       swap: () => { const prim = loadout && loadout.keyOf('primary'); input.pressed.add(arsenal.current && arsenal.current === prim ? 'slot2' : 'slot1'); },
     });
     document.body.classList.add('touch');
+    retext(['prompt', 'hint', 'step']);           // (M6.38) the keys it names, as buttons
   }
   document.addEventListener('pointerlockerror', () => {
     // some browsers (or embedded pages) refuse mouse capture: fall back to drag-to-look

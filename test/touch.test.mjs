@@ -1,6 +1,6 @@
 // FRONTLINE - touch controls (src/game/core/touch.js, M6.34): the stick's arithmetic, and every button standing for
 // an action the keyboard has.
-import { stickMove, STICK, TOUCH_BUTTONS } from '../src/game/core/touch.js';
+import { stickMove, STICK, TOUCH_BUTTONS, touchWords } from '../src/game/core/touch.js';
 import { DEFAULT_BINDINGS } from '../src/game/core/input.js';
 import { readFileSync } from 'fs';
 let n = 0, bad = 0;
@@ -26,5 +26,15 @@ ok(/input\.settings\.touchLook/.test(tsrc) && /input\.lookFriction/.test(tsrc) &
 ok(/input\.lookFriction = fr/.test(main) && /settings\.touchAssist !== false/.test(main), 'aim assist set each frame');
 const html = readFileSync(new URL('../src/index.html', import.meta.url), 'utf8');
 for (const id of ['set-tlook', 'set-tsize', 'set-tassist']) ok(html.includes('id="' + id + '"') && main.includes("$('" + id + "')"), 'setting ' + id);
+// (M6.38) the words: keys become buttons, and nothing else changes
+const W = (a, b) => ok(touchWords(a) === b, JSON.stringify(a) + ' -> ' + JSON.stringify(touchWords(a)));
+W('SPACE  Vault', 'JUMP  Vault');
+W('W/S  Climb   SPACE  Step off   C  Let go', 'Stick  Climb   JUMP  Step off   DUCK  Let go');
+W('Sprint with SHIFT, and vault the railing with SPACE.', 'Sprint by pushing the stick to its edge, and vault the railing with JUMP.');
+W('The tunnel gets low. Press C to crouch, and again to go prone.', 'The tunnel gets low. Press DUCK to crouch, and again to go prone.');
+W('Click to shoot. Clear the pistol range - hold ALT to aim, it matters.', 'FIRE to shoot. Clear the pistol range - AIM to aim, it matters.');
+W('E  Open the door  (hold E: slip through and shut it)', 'E  Open the door  (hold E: slip through and shut it)');
+W('Cameras, Carbines and CCTV: a Clear Case', 'Cameras, Carbines and CCTV: a Clear Case');
+W('', '');
 console.log(bad ? `${bad} of ${n} FAILED` : `ALL ${n} PASSED`);
 if (bad) process.exit(1);

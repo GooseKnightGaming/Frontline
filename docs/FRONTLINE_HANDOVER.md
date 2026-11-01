@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.37.0)
+# Frontline — Handover (M6.38.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,11 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.38.0 — touch words
+- On a touch screen what the game says names the buttons, not the keys (`touchWords`, `TOUCH_WORDS`, `retext` in
+  touch.js): SPACE is JUMP, C is DUCK, SHIFT is a push of the stick to its edge, "Walk with W A S D" is the stick, and
+  so on - in the prompt, the hint and the step line (a MutationObserver rewrites them as they are drawn).
 
 ## M6.37.0 — surface grip
 - **Grip** (Rhys's "surface friction", Finishing M5): `GRIP`/`gripOf(tag, wet)` in player.js, by material - brick,
