@@ -12,7 +12,8 @@ game into the repository's root.
   disguise, in by the front door. The entrance hall (the security desk, its radio), the post room, the canteen (a
   medic), the back corridor; the open office and the laser-guarded records room on the first floor; up the back stair,
   the second floor - the conference room, the secretary's office, and the Deputy Minister's (maglocked, his keycard;
-  its only door is from his secretary's). Copy the supply records; take the order that bought the blight.
+  its only door is from his secretary's). Copy the supply records; take the order that bought the blight. The
+  blight's fourth step on the case board (HARVEST SAVED now wants all four).
 
 ## M6.47.0 — touch auto-fire
 - **Auto-fire** (touch only, Settings, off by default): the crosshair on a man of theirs who is already fighting you
