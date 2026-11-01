@@ -274,4 +274,14 @@ T('the marksman: a few rounds from one place, then he moves on to his next perch
   A(g.relocating && g.relocating[0] === 8, 'he never moved on');
 });
 
+T('falling back: a bold man badly hurt falls back, once, away from you', () => {
+  const w = new World(), g = new Guard(w, { id: 'fb', pos: [0, 0, 0] });
+  g.state = 'alert'; g.fightingYou = true; g.target.hp = g.target.maxHp * 0.3;
+  const ctx = { world: w, nav: { find: (a, b) => [b.slice()] }, you: { pos: [0, 0, -10], chest: [0, 1.2, -10], eye: [0, 1.6, -10], stance: 0, speed: 0, noise: 0 }, guards: [g], doors: [], noises: [] };
+  g.decide ? 0 : 0;
+  for (let i = 0; i < 90; i++) { g.clock = (g.clock || 0) + 1 / 60; try { g.step(1 / 60, ctx); } catch (e) { break; } }
+  A(g.fellBack, 'he did not fall back');
+  A(g.pos[2] > 1, 'he went the wrong way: ' + g.pos.map((v) => v.toFixed(1)));
+});
+
 console.log(fails.length ? '\nFAILURES (' + fails.length + '):\n' + fails.map((f) => '  * ' + f).join('\n') : '\nALL ' + pass + ' PASSED');

@@ -60,6 +60,8 @@ export const SENSE = {
   flankSpeed: 3.2,     // m/s, going round
   suppressFor: 3,      // seconds a steady man keeps firing where you went to ground
   perchShots: 5,       // rounds a marksman fires from one place before he moves to his next perch
+  fallBackAt: 0.4,     // a bold man under this much of his health falls back, once,
+  fallBack: 7,         // this far, away from you
   call: 20,            // metres a shout carries on the same floor (8 through a floor)
 };
 
@@ -147,6 +149,7 @@ export const LINES = {
   fixed: ['Security is back online.', 'There. The system is back up.'],
   medic: ['Man down - I am going to him!', 'Hold on - I am coming!'],
   relocate: ['Moving!', 'Changing position!'],
+  fallback: ['Falling back!', 'I am hit - falling back!'],
   revived: ['Easy. You are all right. Who did this?', 'Up you get. Slowly.'],
   coming: ['On my way!', 'Coming!'],
   flee: ['I\'m out of here!', 'No - no more!', 'Fall back! Fall back!'],
@@ -320,6 +323,7 @@ export class Guard {
     this.foe = null; this.lastFoe = null; this.foeDown = null; this.foeT = 0; this.hurtBy = null; this.takenDownBy = null;
     this.fightingYou = false; this.pursuit = false; this.holding = false; this.fumbleT = 0; this.wayOf = null; this.wayGen = -1;
     this.dropped = false; this.counted = false; this.deadT = 0;
+    this.fellBack = false; this.relocating = null; this.flank = null; this.shotsHere = 0;
     const t = this.target;
     t.down = false; t.hp = t.maxHp; t.lethalHit = false; t.lastBy = null; t.downBy = null; t.headshot = false; t.solid.disabled = false;
     this.lastHp = t.hp;
@@ -592,6 +596,13 @@ export class Guard {
         break;
       case 'alert':
         // (M6.29, "a marksman who relocates") a marksman who has given his place away moves on to his next perch
+        // (M6.29, "fall back") a bold man badly hurt in a fight with you falls back - once - away from you
+        if (!this.fellBack && this.fightingYou && this.temper === 'bold' && ctx.nav && ctx.you && this.target.hp < this.target.maxHp * SENSE.fallBackAt) {
+          this.fellBack = true;
+          const dx = this.pos[0] - ctx.you.pos[0], dz = this.pos[2] - ctx.you.pos[2], d = Math.hypot(dx, dz) || 1;
+          this.relocating = [this.pos[0] + dx / d * SENSE.fallBack, this.pos[1], this.pos[2] + dz / d * SENSE.fallBack]; this.path = null;
+          this.say(ctx, 'fallback');
+        }
         if (this.relocating) { if (this.goTo(this.relocating, SENSE.flankSpeed, dt, ctx)) { this.relocating = null; this.shotsHere = 0; this.path = null; } else break; }
         if (this.seeing) { this.fightingYou = !ctx.you.guard; this.turnTo(this.faceAngle(ctx.you.pos), dt * 2); this.stateT = 0; this.flank = null; this.fight(dt, ctx); }
         else {
