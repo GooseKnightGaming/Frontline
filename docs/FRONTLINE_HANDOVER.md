@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.47.0)
+# Frontline — Handover (M6.48.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,13 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.48.0 — Level 46, the Ministry of Supply
+- **Level 46, the Ministry of Supply** (`drafts/ministry.js`; where the Dalmar Star's radio log led): by day, in
+  disguise, in by the front door. The entrance hall (the security desk, its radio), the post room, the canteen (a
+  medic), the back corridor; the open office and the laser-guarded records room on the first floor; up the back stair,
+  the second floor - the conference room, the secretary's office, and the Deputy Minister's (maglocked, his keycard;
+  its only door is from his secretary's). Copy the supply records; take the order that bought the blight.
 
 ## M6.47.0 — touch auto-fire
 - **Auto-fire** (touch only, Settings, off by default): the crosshair on a man of theirs who is already fighting you
