@@ -326,4 +326,10 @@ T('the hold-up: from behind, unseen, a gun on him close by - he freezes; E quest
   A(/level\.revealT = Math\.max\(level\.revealT \|\| 0, 25\)/.test(rt) && /'E  Question him/.test(rt), 'no questioning');
 });
 
+T('weather: rain and wind, heard (duller indoors) and, rain, seen where open to the sky', () => {
+  A(buildKitLevel(DRAFTS.find((d) => d.id === 'archive')).weather === 'rain' && buildKitLevel(DRAFTS.find((d) => d.id === 'listening')).weather === 'wind', 'no weather');
+  const mn = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8'), au = readFileSync(new URL('../src/game/core/audio.js', import.meta.url), 'utf8');
+  A(/audio\.weather\(level\.weather/.test(mn) && /S\.wxOpen = !up/.test(mn) && /weather\(kind, gain, open\)/.test(au), 'not wired');
+});
+
 console.log(fails.length ? '\nFAILURES (' + fails.length + '):\n' + fails.map((f) => '  * ' + f).join('\n') : '\nALL ' + pass + ' PASSED');
