@@ -1458,13 +1458,14 @@ function boot() {
     const dx = Math.max(0, Math.abs(player.pos[0] - ox) - 2.6), dz = Math.max(0, Math.abs(player.pos[2] - oz) - 1.5);
     if (Math.hypot(dx, dz) < 1.3) return 'ops';
     if (Math.abs(player.pos[0] - tx) < 6 && player.pos[2] - tz < 2 && player.pos[2] > tz - 0.6) return 'trophies';   // (not through the wall, from the server room)
+    if (Math.hypot(player.pos[0] - hq.training[0], player.pos[2] - hq.training[1]) < 2.2) return 'skills';
     const [qx, qz] = hq.q;
     if (Math.max(0, Math.abs(player.pos[0] - qx) - 2.4) + Math.max(0, Math.abs(player.pos[2] - qz) - 0.6) < 1.2) return 'q';
     return null;
   }
   function hqTip() {
     const at = hqStation();
-    return at === 'ops' ? 'E  Assignments' : at === 'trophies' ? 'E  The trophy cabinet' : at === 'q' ? 'E  Q Branch' + (Saves.loadGadget(slotNo) && ITEMS[Saves.loadGadget(slotNo)] ? '  (signed out: ' + ITEMS[Saves.loadGadget(slotNo)].name + ')' : '') : null;
+    return at === 'ops' ? 'E  Assignments' : at === 'trophies' ? 'E  The trophy cabinet' : at === 'skills' ? 'E  Training: your skills' + (pointsLeft(Saves.loadSkills(slotNo)) > 0 ? '  (points to spend)' : '') : at === 'q' ? 'E  Q Branch' + (Saves.loadGadget(slotNo) && ITEMS[Saves.loadGadget(slotNo)] ? '  (signed out: ' + ITEMS[Saves.loadGadget(slotNo)].name + ')' : '') : null;
   }
   function hqUse() {
     const at = hqStation();
@@ -1473,6 +1474,7 @@ function boot() {
     audio.confirm();
     if (at === 'ops') openAssignments();
     else if (at === 'q') openQ();
+    else if (at === 'skills') { openMenu(); tab('skills'); }
     else { openMenu(); tab('trophies'); }
     return true;
   }

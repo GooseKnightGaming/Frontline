@@ -40,6 +40,7 @@ export const HQ = {
   trophies: [X(PLAN.trophies[0]), Z(PLAN.trophies[1])],
   logistics: [X(PLAN.logistics[0]), Z(PLAN.logistics[1])],
   q: [X(PLAN.q[0]), Z(PLAN.q[1])],
+  training: [X(PLAN.hall.x0) - 0.4, Z(48)],          // (M6.31) the training screen: your skills
   server: flip(PLAN.server),
   console: [X(PLAN.console[0]), Z(PLAN.console[1])],
   cctvDesk: [X(PLAN.cctvDesk[0]), Z(PLAN.cctvDesk[1])],
@@ -155,7 +156,7 @@ export function buildHQ(level) {
     sign(ox, F + 2.5, oz - 1.62, Math.PI, 'OPERATIONS', 'E at the table: your assignments', 2.6, '#7fd07f');
     sign(ox, F + 2.5, oz + 1.62, 0, 'OPERATIONS', 'E at the table: your assignments', 2.6, '#7fd07f');
     // screens along the west wall
-    for (const [z, t, sub] of [[42, 'THEATRE OF OPERATIONS', 'Severia and beyond'], [48, 'ASSIGNMENTS', 'at the operations table'], [54, 'GHOST', 'We were never here']]) {
+    for (const [z, t, sub] of [[42, 'THEATRE OF OPERATIONS', 'Severia and beyond'], [48, 'TRAINING', 'E here: your skills'], [54, 'GHOST', 'We were never here']]) {
       box([H.x0, F + 1.3, z - 2], [H.x0 + 0.12, F + 3.2, z + 2], 'metal');
       sign(H.x0 + 0.14, F + 2.25, z, Math.PI / 2, t, sub, 3.4, '#6cc4e8');
     }

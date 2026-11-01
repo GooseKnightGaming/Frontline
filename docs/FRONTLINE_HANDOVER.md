@@ -11,6 +11,7 @@ game into the repository's root.
 - **Weather** (the roadmap's "weather ambience"): a level's `weather: 'rain' | 'wind'` - its sound (synthesised: filtered
   noise; duller and quieter indoors - anything over your head within 40 m), and rain falling round you when you are open
   to the sky. Rain at the Archive and the Tower, wind on the Listening Station's cliffs.
+- **The training screen** in Ghost HQ's operations hall (its middle screen, now TRAINING): E there opens your skills.
 
 ## M6.30.0 — stealth tools, dogs, disguises, three more levels
 - **Lockpicking, properly** (Rhys, M6.9.13): with the Lockpicks (gear), hold E at an ordinary locked door - 4 s (Hacker
