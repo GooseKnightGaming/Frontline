@@ -959,11 +959,40 @@ const FURNISH = {
   B(k, x, y, f) { const [cx, cy, cz] = k.at(x, y, f); k.box([cx - 0.55, cy, cz - 0.3], [cx + 0.05, cy + 0.95, cz + 0.3], 'barrel'); k.box([cx + 0.05, cy, cz - 0.05], [cx + 0.6, cy + 0.95, cz + 0.55], 'barrel'); },
   T(k, x, y, f) { const [cx, cy, cz] = k.at(x, y, f); k.box([cx - 0.6, cy + 0.72, cz - 0.45], [cx + 0.6, cy + 0.78, cz + 0.45], 'wood'); for (const [a, b] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) k.box([cx + a * 0.52 - 0.04, cy, cz + b * 0.38 - 0.04], [cx + a * 0.52 + 0.04, cy + 0.72, cz + b * 0.38 + 0.04], 'wood', { solid: false }); k.box([cx - 0.55, cy, cz - 0.4], [cx + 0.55, cy + 0.72, cz + 0.4], 'wood', { render: false }); },
   K(k, x, y, f) { const [cx, cy, cz] = k.at(x, y, f), h = k.CELL / 2; k.box([cx - h, cy, cz - h + 0.15], [cx + h, cy + 1.05, cz + h - 0.15], 'wood'); k.box([cx - h, cy + 1.05, cz - h + 0.1], [cx + h, cy + 1.1, cz + h - 0.1], 'marble', { solid: false }); },
-  H(k, x, y, f) { const [cx, cy, cz] = k.at(x, y, f), h = k.CELL / 2; k.box([cx - h + 0.05, cy, cz - 0.3], [cx + h - 0.05, cy + 2.1, cz + 0.3], 'metal', { tint: [0.45, 0.47, 0.5] }); for (const yy of [0.5, 1.1, 1.7]) k.box([cx - h + 0.15, cy + yy, cz - 0.25], [cx + h - 0.15, cy + yy + 0.3, cz + 0.25], 'parcel', { solid: false }); },
+  // (M6.30) shelving: what is on each shelf in two lots, each its own colour and height (books, boxes, files)
+  H(k, x, y, f) {
+    const [cx, cy, cz] = k.at(x, y, f), h = k.CELL / 2;
+    k.box([cx - h + 0.05, cy, cz - 0.3], [cx + h - 0.05, cy + 2.1, cz + 0.3], 'metal', { tint: [0.45, 0.47, 0.5] });
+    const TINTS = [[0.55, 0.18, 0.15], [0.18, 0.3, 0.5], [0.6, 0.5, 0.3], [0.2, 0.4, 0.25], [0.75, 0.72, 0.65], [0.35, 0.25, 0.4]];
+    [0.5, 1.1, 1.7].forEach((yy, i) => {
+      const s0 = (x * 7 + y * 11 + i * 5) % TINTS.length, s1 = (s0 + 2 + i) % TINTS.length, split = -0.1 + ((x + y + i) % 3) * 0.12;
+      k.box([cx - h + 0.15, cy + yy, cz - 0.25], [cx + split, cy + yy + 0.26 + ((x + i) % 2) * 0.05, cz + 0.25], 'parcel', { solid: false, tint: TINTS[s0] });
+      k.box([cx + split + 0.04, cy + yy, cz - 0.25], [cx + h - 0.15, cy + yy + 0.22 + ((y + i) % 2) * 0.08, cz + 0.25], 'parcel', { solid: false, tint: TINTS[s1] });
+    });
+  },
   P(k, x, y, f) { const [cx, cy, cz] = k.at(x, y, f), F = k.floors[f]; k.box([cx - 0.3, cy, cz - 0.3], [cx + 0.3, cy + (F.wallH || k.S.wallH), cz + 0.3], F.pillar || 'concrete2'); },
-  M(k, x, y, f) { const [cx, cy, cz] = k.at(x, y, f); k.box([cx - 0.65, cy, cz - 0.65], [cx + 0.65, cy + 1.6, cz + 0.65], 'metal'); k.box([cx - 0.2, cy + 1.6, cz - 0.2], [cx + 0.2, cy + 2.2, cz + 0.2], 'metal', { tint: [0.5, 0.5, 0.5] }); },
-  Y(k, x, y, f) { const [cx, cy, cz] = k.at(x, y, f); k.box([cx - 0.5, cy, cz - 0.7], [cx + 0.5, cy + 0.5, cz + 0.7], 'fabric', { tint: [0.8, 0.8, 0.85] }); k.box([cx - 0.5, cy, cz - 0.75], [cx + 0.5, cy + 0.95, cz - 0.65], 'wood'); },
-  Z(k, x, y, f) { const [cx, cy, cz] = k.at(x, y, f); k.box([cx - 0.65, cy, cz - 0.4], [cx + 0.65, cy + 0.45, cz + 0.4], 'fabric', { tint: [0.55, 0.35, 0.3] }); k.box([cx - 0.65, cy + 0.45, cz + 0.2], [cx + 0.65, cy + 0.9, cz + 0.4], 'fabric', { tint: [0.5, 0.32, 0.28] }); },
+  // (M6.30) a machine: its panel - a screen and a lamp - on the face away from the nearer wall, a vent strip
+  M(k, x, y, f) {
+    const [cx, cy, cz] = k.at(x, y, f);
+    k.box([cx - 0.65, cy, cz - 0.65], [cx + 0.65, cy + 1.6, cz + 0.65], 'metal'); k.box([cx - 0.2, cy + 1.6, cz - 0.2], [cx + 0.2, cy + 2.2, cz + 0.2], 'metal', { tint: [0.5, 0.5, 0.5] });
+    const sz = (y % 2) ? 1 : -1;
+    k.box([cx - 0.4, cy + 0.95, cz + sz * 0.65 - 0.01], [cx + 0.15, cy + 1.35, cz + sz * 0.65 + 0.01], 'screen', { solid: false });
+    k.box([cx + 0.28, cy + 1.2, cz + sz * 0.65 - 0.015], [cx + 0.38, cy + 1.3, cz + sz * 0.65 + 0.015], 'lamp', { solid: false });
+    k.box([cx - 0.5, cy + 0.2, cz + sz * 0.65 - 0.01], [cx + 0.5, cy + 0.35, cz + sz * 0.65 + 0.01], 'metal', { solid: false, tint: [0.12, 0.12, 0.13] });
+  },
+  // (M6.30) a bed: the frame, the mattress, a pillow at the head, the blanket over the foot
+  Y(k, x, y, f) {
+    const [cx, cy, cz] = k.at(x, y, f), col = [[0.25, 0.32, 0.5], [0.5, 0.22, 0.2], [0.3, 0.42, 0.3], [0.55, 0.5, 0.42]][(x + y) % 4];
+    k.box([cx - 0.5, cy, cz - 0.7], [cx + 0.5, cy + 0.5, cz + 0.7], 'fabric', { tint: [0.8, 0.8, 0.85] }); k.box([cx - 0.5, cy, cz - 0.75], [cx + 0.5, cy + 0.95, cz - 0.65], 'wood');
+    k.box([cx - 0.38, cy + 0.5, cz - 0.62], [cx + 0.38, cy + 0.62, cz - 0.3], 'fabric', { solid: false, tint: [0.95, 0.95, 0.97] });
+    k.box([cx - 0.52, cy + 0.42, cz - 0.15], [cx + 0.52, cy + 0.56, cz + 0.72], 'fabric', { solid: false, tint: col });
+  },
+  // (M6.30) a sofa: seat, back, and an arm at each end
+  Z(k, x, y, f) {
+    const [cx, cy, cz] = k.at(x, y, f);
+    k.box([cx - 0.65, cy, cz - 0.4], [cx + 0.65, cy + 0.45, cz + 0.4], 'fabric', { tint: [0.55, 0.35, 0.3] }); k.box([cx - 0.65, cy + 0.45, cz + 0.2], [cx + 0.65, cy + 0.9, cz + 0.4], 'fabric', { tint: [0.5, 0.32, 0.28] });
+    for (const sx of [-1, 1]) k.box([cx + sx * 0.65 - 0.1, cy, cz - 0.4], [cx + sx * 0.65 + 0.1, cy + 0.62, cz + 0.4], 'fabric', { solid: false, tint: [0.47, 0.3, 0.26] });
+  },
   '='(k, x, y, f) { const [cx, cy, cz] = k.at(x, y, f), h = k.CELL / 2; k.box([cx - h, cy, cz - 0.04], [cx + h, cy + 1.0, cz + 0.04], 'metal', { tint: [0.5, 0.45, 0.2], shootThrough: true }); },
   '+'(k, x, y, f) { const [cx, cy, cz] = k.at(x, y, f), s = ((x * 31 + y * 17) % 5) / 10; k.box([cx - 0.35, cy, cz - 0.08], [cx + 0.35, cy + 0.8 + s, cz + 0.08], 'concrete2', { tint: [0.75, 0.75, 0.72] }); k.box([cx - 0.35, cy, cz + 0.08], [cx + 0.35, cy + 0.08, cz + 1.0], 'lawn', { solid: false, tint: [0.6, 0.75, 0.5] }); },
   X(k, x, y, f) { const [cx, cy, cz] = k.at(x, y, f); k.box([cx - 0.5, cy, cz - 0.6], [cx + 0.5, cy + 1.05, cz + 0.6], 'marble', { tint: [0.7, 0.7, 0.68] }); k.box([cx - 0.55, cy + 1.05, cz - 0.65], [cx + 0.55, cy + 1.15, cz + 0.65], 'marble', { tint: [0.6, 0.6, 0.58] }); },

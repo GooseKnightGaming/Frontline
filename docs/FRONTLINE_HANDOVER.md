@@ -10,6 +10,9 @@ game into the repository's root.
 ## M6.30.0 — (in progress)
 - **Lockpicking, properly** (Rhys, M6.9.13): with the Lockpicks (gear), hold E at an ordinary locked door - 4 s (Hacker
   speeds it), quiet, and it is unlocked. Not maglocks, vaults, blast doors or reinforced doors.
+- **Furniture with more to it** (kit.js `FURNISH`): shelves hold two lots a shelf in their own colours and heights; machines
+  have a screen, a lamp and a vent on one face; beds a pillow and a blanket; sofas their arms. (Seen, not solid: the
+  squares stand and stop as before.)
 - **The Snake Camera** (Q Branch, `QSNAKE`; the roadmap's "peeking under or through" a door): crouched at a shut door, E
   slides a camera under it - the other side, through the CCTV view (the mouse looks about); E or moving stops it.
 
