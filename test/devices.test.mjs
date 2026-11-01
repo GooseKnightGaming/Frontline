@@ -196,7 +196,7 @@ T('every level with a security system: a terminal on its network, its locks on d
     for (const n of nets) A(L.terminals.some((t) => t.net === n), spec.id + ': no terminal for ' + n);
     for (const d of L.devices.filter((q) => q.kind === 'lock')) A(d.doors.length && d.doors.every((q) => q.def.maglock), spec.id + ': ' + d.id + ' on no door');
     A(L.requires === 'HACKKIT', spec.id + ': no hacking kit');
-    A(spec.guards.some((g) => g.role === 'engineer') && spec.guards.some((g) => g.role === 'radio'), spec.id + ': no specialists');
+    A(L.guards.some((g) => g.role === 'engineer') && L.guards.some((g) => g.role === 'radio'), spec.id + ': no specialists (as built)');
   }
 });
 
@@ -212,6 +212,12 @@ T('a laser tripwire: walk through it and it trips; on your belly under it, or on
   const z = L.devices.find((d) => d.id === 'z-serv');
   A(z && Math.abs(Math.hypot(z.b[0] - z.a[0], z.b[2] - z.a[2]) - 4.5) < 0.01 && z.h === 0.75, 'the beam is not across the corridor: ' + JSON.stringify(z && [z.a, z.b]));
   A(/lasersWatch\(\)/.test(rt) && /breaks\(d, prevAt/.test(rt), 'not watched');
+});
+
+T('keycards: an officer who carries one drops it; taken, his network\'s maglocks open to it', () => {
+  const L = buildKitLevel(DRAFTS.find((d) => d.id === 'listening'));
+  A(L.guards.filter((g) => g.card).length >= 2, 'no one carries a card');
+  A(/if \(g\.card\) dropCard\(g/.test(rt) && /haveCard\.has\(d\.net\)/.test(rt) && /'E  Take his keycard'/.test(rt), 'not wired');
 });
 
 console.log(fails.length ? '\nFAILURES (' + fails.length + '):\n' + fails.map((f) => '  * ' + f).join('\n') : '\nALL ' + pass + ' PASSED');

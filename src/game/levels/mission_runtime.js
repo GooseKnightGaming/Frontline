@@ -864,13 +864,13 @@ export function setupMission(ctx) {
   // (M6.29) Q's Long-Arm Relay reaches further - in sight of it; his Skeleton Card opens a maglock's keypad
   const gear = (k) => arsenal && arsenal.loadout && arsenal.loadout.gearTrait(k);
   const deviceNear = () => {
-    const kit = gear('hackKit'), card = gear('maglockCard');
+    const kit = gear('hackKit'), card = gear('maglockCard') || haveCard.size > 0;
     if (!kit && !card) return null;
     const far = kit ? gear('hackReach') || HACK.reach : HACK.reach;
     let best = null, bd = far;
     for (const d of devices) {
       if (d.mode !== 'on' || d.broken || Math.abs(d.pos[1] - player.pos[1]) > (far > HACK.reach ? 5 : 3.5)) continue;
-      if (!kit && d.kind !== 'lock') continue;
+      if (!kit && (d.kind !== 'lock' || !(gear('maglockCard') || haveCard.has(d.net)))) continue;
       const h = Math.hypot(d.pos[0] - player.pos[0], d.pos[2] - player.pos[2]);
       if (h >= bd) continue;
       if (h > HACK.reach) {
@@ -883,7 +883,7 @@ export function setupMission(ctx) {
     return best;
   };
   // the card at a maglock: quick, quiet, no trace
-  const byCard = (d) => d && d.kind === 'lock' && gear('maglockCard') && Math.hypot(d.pos[0] - player.pos[0], d.pos[2] - player.pos[2]) < HACK.reach;
+  const byCard = (d) => d && d.kind === 'lock' && (gear('maglockCard') || haveCard.has(d.net)) && Math.hypot(d.pos[0] - player.pos[0], d.pos[2] - player.pos[2]) < HACK.reach;
   const deviceName = (d) => ({ camera: 'the camera', turret: 'the turret', lock: 'the maglock', lights: 'the lighting panel' + (d.name ? ' (' + d.name + ')' : ''), alarm: 'the alarm', laser: 'the laser\'s emitter' })[d.kind] || 'the device';
   level.deviceName = deviceName;
   // the trace: hacking a network long enough tells its owners where you are
@@ -1029,6 +1029,16 @@ export function setupMission(ctx) {
     drops.push(d);
     return d;
   };
+  // keycards: dropped by the officers who carry them; taken, they open their network's maglocks (2 s, no trace)
+  const cards = [], haveCard = new Set();
+  const keyCardMat = (() => { const mt = new pc.StandardMaterial(); mt.diffuse = new pc.Color(0.9, 0.9, 0.92); mt.emissive = new pc.Color(0.25, 0.35, 0.5); mt.update(); return mt; })();
+  const dropCard = (g, pos) => {
+    const e = new pc.Entity('keycard'); e.addComponent('render', { type: 'box', material: keyCardMat, castShadows: false });
+    e.setLocalScale(0.09, 0.01, 0.055); e.setPosition(pos[0], pos[1] + 0.02, pos[2]); e.setEulerAngles(0, Math.random() * 360, 0); app.root.addChild(e);
+    cards.push({ net: g.card, pos: pos.slice(), e, taken: false });
+  };
+  const cardNear = () => cards.find((c) => !c.taken && Math.abs(c.pos[1] - player.pos[1]) < 1.2 && Math.hypot(c.pos[0] - player.pos[0], c.pos[2] - player.pos[2]) < 1.4) || null;
+  const takeCard = (c) => { c.taken = true; c.e.enabled = false; haveCard.add(c.net); audio.pickup(); showHint('A keycard: his network\'s maglocks open to it now (hold E at a keypad) - quietly, and with no trace.'); };
   const dropNear = () => {
     let best = null, bd = 1.4;
     for (const d of drops) {
@@ -1397,11 +1407,11 @@ export function setupMission(ctx) {
       simDtNow = simDt;
       { const tn = terminalNear(); if (tn && !tn.done && input.held('interact') && player.mode !== 'dead' && !S.dialog) { rt.hackT = (rt.hackT || 0) + simDt * ((arsenal && arsenal.loadout && arsenal.loadout.gearTrait('hackSpeed')) || 1); if (tn.net) { traced(tn.net, tn.pos); if (Math.random() < simDt * 1.5) noises.push({ pos: tn.pos, loud: 0.35 }); } if (rt.hackT >= tn.time) { rt.hackT = 0; hacked(tn); } } else if (!tn) rt.hackT = 0; }
       // the hacking kit, at a camera or turret: slower, the same choice for that one
-      { const dn = !terminalNear() && deviceNear(); if (dn && input.held('interact') && player.mode !== 'dead' && !S.dialog) { if (rt.kitDev !== dn) { rt.kitDev = dn; rt.kitT = 0; } const card = byCard(dn); rt.kitT += simDt * ((arsenal.loadout.gearTrait('hackSpeed')) || 1); if (dn.net && !card) traced(dn.net, player.pos.slice()); if (card && rt.kitT >= 2) { rt.kitT = 0; rt.kitDev = null; setMode([dn], 'friendly'); syncLocks(devices); dn.known = true; audio.confirm(); showHint('Skeleton Card: the maglock lets go.'); } else if (!card && rt.kitT >= HACK.kit) { rt.kitT = 0; rt.kitDev = null; hackChoice([dn], (gear('hackReach') ? 'Long-Arm Relay: ' : 'Hacking kit: ') + deviceName(dn) + '.'); } } else if (!dn) { rt.kitT = 0; rt.kitDev = null; } }
+      { const dn = !terminalNear() && deviceNear(); if (dn && input.held('interact') && player.mode !== 'dead' && !S.dialog) { if (rt.kitDev !== dn) { rt.kitDev = dn; rt.kitT = 0; } const card = byCard(dn); rt.kitT += simDt * ((arsenal.loadout.gearTrait('hackSpeed')) || 1); if (dn.net && !card) traced(dn.net, player.pos.slice()); if (card && rt.kitT >= 2) { rt.kitT = 0; rt.kitDev = null; setMode([dn], 'friendly'); syncLocks(devices); dn.known = true; audio.confirm(); showHint((haveCard.has(dn.net) ? 'The keycard' : 'Skeleton Card') + ': the maglock lets go.'); } else if (!card && rt.kitT >= HACK.kit) { rt.kitT = 0; rt.kitDev = null; hackChoice([dn], (gear('hackReach') ? 'Long-Arm Relay: ' : 'Hacking kit: ') + deviceName(dn) + '.'); } } else if (!dn) { rt.kitT = 0; rt.kitDev = null; } }
       // cameras and turrets
       if (devices.length) {
         const you = { pos: player.pos, chest: [player.pos[0], player.pos[1] + 1.15, player.pos[2]], dead: player.mode === 'dead' };
-        const camSlow = gear('camSlow') || 1;
+        const camSlow = gear('camBlind') ? 1e9 : gear('camSlow') || 1;
         for (const d of devices) stepDevice(d, simDt, { world: level.world, rel, you, guards, alarm: deviceAlarm, shoot: deviceShot, camSlow });
         brokenWatch();
         specialists(simDt);
@@ -1463,6 +1473,8 @@ export function setupMission(ctx) {
           // dead in the helicopter's door, his gun goes with him; anywhere
           // else it falls to the floor under where it left his hand
           const inHeli = capRun && g === capRun.g && capRun.stage === 'aboard';
+          // (M6.28) his keycard, if he carries one: it opens his network's maglocks, quietly
+          if (g.card) dropCard(g, groundBelow(level.world, [g.pos[0] - side[0], g.pos[1], g.pos[2] - side[1]]));
           if (!inHeli && g.item) dropAt(g.item, (ITEMS[g.item] && ITEMS[g.item].model) || g.arms.model, groundBelow(level.world, [g.pos[0] + side[0], g.pos[1], g.pos[2] + side[1]]), Math.max(0, g.ammo || 0) + g.arms.mag);
         }
         if (g.dead && !g.counted) {
@@ -1809,6 +1821,7 @@ export function setupMission(ctx) {
       if (tdn && !npcNear()) return 'F  Knock him down';
       const hn = hostageNear();
       if (hn) { const tip = hostageTip(hn); if (tip) return tip; }
+      if (cardNear()) return 'E  Take his keycard';
       const dn = dropNear();
       if (dn) { const tip = dropTip(dn); if (tip) return tip; }
       if (ledgerNear()) return 'E  Take the ledger';
@@ -1824,7 +1837,7 @@ export function setupMission(ctx) {
       }
       if (player.seated) return 'Seated  -  move to stand up';
       const dk = !terminalNear() && deviceNear();
-      if (dk && byCard(dk)) return rt.kitT > 0 && rt.kitDev === dk ? 'Swiping the card...  ' + Math.round(rt.kitT / 2 * 100) + '%' : 'Hold E  Swipe the Skeleton Card';
+      if (dk && byCard(dk)) return rt.kitT > 0 && rt.kitDev === dk ? 'Swiping the card...  ' + Math.round(rt.kitT / 2 * 100) + '%' : 'Hold E  Swipe ' + (haveCard.has(dk.net) ? 'the keycard' : 'the Skeleton Card');
       if (dk) return rt.kitT > 0 && rt.kitDev === dk ? 'Hacking ' + deviceName(dk) + '...  ' + Math.round(rt.kitT / HACK.kit * 100) + '%' + (dk.net && trace.level(dk.net) > 0 ? '   (trace ' + Math.round(trace.level(dk.net) * 100) + '%)' : '') : 'Hold E  Hack ' + deviceName(dk) + (gear('hackReach') ? ' (Long-Arm Relay)' : ' (hacking kit)');
       const tn = terminalNear();
       if (tn && tn.net && !tn.done && rt.hackT > 0) return 'Hacking ' + (tn.label || 'the security terminal') + '...  ' + Math.round(rt.hackT / tn.time * 100) + '%' + (trace.level(tn.net) > 0 ? '   (trace ' + Math.round(trace.level(tn.net) * 100) + '%)' : '');
@@ -1920,6 +1933,7 @@ export function setupMission(ctx) {
         const hn = hostageNear();
         if (hn && hn.free) { hn.order(); audio.click(); return true; }
         if (hn && hn.state === 'held') return true;            // freeing is a hold: E held, in tick
+        { const cn = cardNear(); if (cn) { takeCard(cn); return true; } }
         const dn = dropNear(); if (dn && takeDrop(dn)) return true;
         // the reds' ledger, from the Cash Vault
         if (ledgerNear()) {

@@ -259,6 +259,7 @@ export class Guard {
     // terminal; 'radio': once he has seen you, calls the whole place in unless he is stopped first;
     // 'medic': goes to a man knocked out and brings him round (the dead stay dead)
     this.role = def.role || null;
+    this.card = def.card || null;               // (M6.28) the network whose maglocks his keycard opens (dropped when he goes down)
     this.sees = def.sees || null;               // 'nvg' | 'torch' | null: what he sees by in the dark
     this.fleeOn = def.fleeOn || 'hurt';         // a coward runs when hurt - or, some, at the first sign of trouble
     this.pos = def.pos.slice();

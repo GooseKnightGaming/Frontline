@@ -140,7 +140,7 @@ export default {
     { id: 'yard', label: 'HMP Greyhallow - the yard', at: [0, 0, W - 1, H - 1] },
   ],
   guards: [
-    { id: 'gov', at: [33, 43, '3'], arms: 'pistol', rank: 'officer', temper: 'cowardly', name: 'Governor Ashdown-Pryce', tint: [0.6, 0.62, 0.7] },
+    { id: 'gov', at: [33, 43, '3'], arms: 'pistol', rank: 'officer', temper: 'cowardly', name: 'Governor Ashdown-Pryce', tint: [0.6, 0.62, 0.7], card: 'awing' },
     { id: 'g3a', at: [18, 30, '3'], route: [[18, 19], [18, 38]], arms: 'carbine' },
     { id: 'g3b', at: [45, 20, '3'], route: [[45, 20], [45, 38]], arms: 'smg', temper: 'steady' },
     { id: 'g2a', at: [30, 25, '2'], route: [[21, 25], [42, 25]], arms: 'dmr', rank: 'specialist' },

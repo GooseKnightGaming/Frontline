@@ -224,6 +224,9 @@ export const ITEMS = {
   LOCKON:   { name: 'Vehicle Targeting', family: 'perk', lockOn: 45, note: 'Aim a launcher at a vehicle within 45 m: it locks on, and the rocket follows it.' },
   AUTOREPAIR: { name: 'Auto-Repair', family: 'perk', autoRepair: 0.02, note: 'A vehicle you are driving slowly mends itself.' },
   CUSHION:  { name: 'Cushioned Landing', family: 'perk', fallMul: 0.3, note: 'Falls hurt far less.' },
+  // (M6.28, the roadmap's "hacking suit") a suit woven with a mesh that scatters a camera's sensor: they
+  // cannot make you out at all (people can, as ever); heavy and warm
+  HACKSUIT: { name: 'Hacking Suit', kg: 2.4, family: 'gear', camBlind: true, note: 'Cameras cannot make you out at all - guards still can. Heavy.' },
   DEMOKIT:  { name: 'Demolition Kit', kg: 1.5, family: 'gear', blastBonus: 0.3, note: 'Your charges do more, and arm faster.' },
 };
 // Rhys's weapons sheet (sheet.js, written from docs/Frontline_Weapons.xlsx): every weapon on it
@@ -582,7 +585,7 @@ export const CLASSES = [
     kit: { primary: 'V19P', backup: 'V27C', utility1: 'LURE', utility2: 'NERVE', gear: 'GASMASK', mods: { primary: ['SILENCER'], backup: ['SILENCER'] } }, special: 'QID',
     guns: ['V19P', 'MP2', 'V27C', 'PX19', 'V99', 'PX9', 'KNIFE'],
     utility: ['LURE', 'NERVE', 'SMOKE', 'FLASH', 'CONCUSS', 'REMOTE', 'EMPGREN'],
-    gear: ['GASMASK', 'LOCKKIT', 'INTEL', 'EMFSCAN', 'UVGOGS', 'NVG', 'MULTIVIS'] },
+    gear: ['GASMASK', 'LOCKKIT', 'INTEL', 'EMFSCAN', 'UVGOGS', 'NVG', 'MULTIVIS', 'HACKSUIT'] },
   { id: 'PILOT', name: 'Pilot', role: 'Trained to fly and steer aircraft and watercraft - and to keep them going.', arms: 'smg',
     kit: { primary: 'MP2', backup: 'PX19', utility1: 'REPAIRKIT', utility2: 'SMOKE', gear: 'PARACHUTE' }, special: 'AUTOREPAIR',
     guns: ['MP2', 'V19P', 'K7', 'PX19', 'PX9', 'V99', 'KNIFE'],

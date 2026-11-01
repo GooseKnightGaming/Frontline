@@ -111,7 +111,7 @@ export default {
     { id: 'h5', at: [33, 9, 'G'], route: [[27, 5], [33, 5], [33, 10], [27, 10]], arms: 'carbine' },
     { id: 'h6', at: [7, 8, 'G'], arms: 'pistol' },
     { id: 'h7', at: [18, 8, 'G'], arms: 'carbine', rank: 'sergeant' },
-    { id: 'h8', at: [16, 21, 'G'], arms: 'pistol', rank: 'officer', temper: 'steady', role: 'radio' },      // the radio: stop him before he calls it in
+    { id: 'h8', at: [16, 21, 'G'], arms: 'pistol', rank: 'officer', temper: 'steady', role: 'radio', card: 'halden' },      // the radio: stop him before he calls it in
     { id: 'h9', at: [43, 7, 'G'], arms: 'shotgun', temper: 'steady' },
     { id: 'h10', at: [45, 21, 'G'], arms: 'smg' },
     { id: 'h11', at: [40, 30, 'B'], route: [[31, 29], [48, 29]], arms: 'carbine' },

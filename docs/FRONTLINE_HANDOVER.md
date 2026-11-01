@@ -54,6 +54,11 @@ game into the repository's root.
   the security office's console). Major Vass, an engineer, a radio operator; sixteen reds. Objectives: wipe Ghost's file
   (the archive), turn LANTERN round (the mainframe), take the intercept log, optionally stop Vass. **Turn LANTERN round
   and that run is never intruded on again** (`downLantern`).
+- **The Hacking Suit** (`HACKSUIT`, gear; the Spy may wear it): cameras cannot make you out at all (`camBlind`).
+- The how-to page (`controls.html`) has a SECURITY SYSTEMS section.
+- **Keycards**: a guard with `card: <net>` drops one when he goes down; take it (E) and that network's maglocks open
+  to it like the Skeleton Card (2 s, no trace). Officers carry them in the Facility, the Prison and the Listening Station.
+- Fixed: kit.js had not passed `role` (or `card`) on to the guards it builds.
 - **The EMP Grenade** (`EMPGREN`, a utility; the Spy may carry it; any run at Logistics): the EMP's pulse, thrown.
 - **The service record** (the roadmap's "per match and over time"): each run (`Saves.loadRecord/addRecord`) adds up every
   mission and battle - missions and how they went, battles won, **K/D in battle**, casualties, knockouts, takedowns,
