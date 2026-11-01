@@ -2,6 +2,7 @@
 // the terminal, breaching and bullet time, the hints, and the end.
 // main.js calls in at a handful of points; the rules live in src/sim/play/mission.js.
 
+import { diffOf, DIFFICULTY } from '../../sim/play/difficulty.js';
 import { Mission, kickOpens, SLOWMO, hotelTrophies, factoryTrophies, casinoTrophies, clearTrophies, hackTrophies, awardsButton } from '../../sim/play/mission.js';
 import { Operative } from '../draw/character.js';
 import { NavGrid } from '../../sim/world/nav.js';
@@ -86,6 +87,7 @@ export function setupMission(ctx) {
   const smokes = [];                  // clouds guards cannot see through, while they last
   let barkT = 0;
   const voices = new Voices(settings || {}, audio);
+  const diff = () => diffOf(settings && settings.difficulty);          // (M6.39) how hard they are on you
   // Guards take turns (Rhys: the chatter came thick and fast, and repeated).
   // Urgent calls (an alert, a hit, a man down) always go through; anything
   // else waits for a gap: 2.2 s between any two lines, 6 s before the same
@@ -199,7 +201,7 @@ export function setupMission(ctx) {
       }
       return;
     }
-    if (ev.hit) { player.damage(ev.damage, 'shot', ev.from); return; }
+    if (ev.hit) { player.damage(ev.damage * diff().damage, 'shot', ev.from); return; }
     if (!ev.blocked) audio.whizz();                 // a round stopped by the glass does not go past you
     // where the miss lands
     const dx = ev.to[0] - ev.from[0], dy = ev.to[1] - ev.from[1], dz = ev.to[2] - ev.from[2], l = Math.hypot(dx, dy, dz) || 1;
@@ -831,7 +833,7 @@ export function setupMission(ctx) {
     for (const d of dogs) {
       d.step(dt, { world: level.world, nav, you,
         alarm: (dog, pos) => { const came = raiseAlarm(guards, { pos: dog.pos, rank: 'guard', faction: dog.faction }, pos); siren(dog.faction, pos); if (!rt.dogHint) { rt.dogHint = true; showHint('A dog has your scent' + (came.length ? ' - ' + came.length + ' coming.' : '.') + ' It smells you in the dark and through camouflage; shoot it, or dart it.'); } },
-        bite: (dog, dmg) => { player.damage(dmg, 'bitten', dog.pos); } });
+        bite: (dog, dmg) => { player.damage(dmg * diff().damage, 'bitten', dog.pos); } });
       for (const ev of d.events.splice(0)) {
         const far = Math.max(0.1, Math.min(1, 1.2 - Math.hypot(ev.pos[0] - player.pos[0], ev.pos[2] - player.pos[2]) / 30));
         if (ev.type === 'bark') { audio.bark && audio.bark(far); noises.push({ pos: ev.pos, loud: 0.8 }); }
@@ -909,7 +911,7 @@ export function setupMission(ctx) {
       }
       return;
     }
-    if (ev.hit) player.damage(ev.damage, 'shot', from); else audio.whizz();
+    if (ev.hit) player.damage(ev.damage * diff().damage, 'shot', from); else audio.whizz();
   };
   // the hack's choice, for a network or one device: disable, reprogram, take control
   const hackChoice = (list, said, then) => {
@@ -1560,7 +1562,8 @@ export function setupMission(ctx) {
         alerted: m.spotted > 0 || m.shotsFired > 0 || m.breaches > 0 || m.kills > 0,
         lastLine,
         smokes: smokes.filter((c) => c.until > m.time),
-        you: { pos: player.pos, eye: player.eyePos, chest: [player.pos[0], player.pos[1] + h * 0.55, player.pos[2]],
+        diff: diff(),
+        you: { player: true, pos: player.pos, eye: player.eyePos, chest: [player.pos[0], player.pos[1] + h * 0.55, player.pos[2]],
           stance: player.stance, speed: Math.hypot(player.vel[0], player.vel[2]),
           // (M6.29) Shadow: guards slower to make you out, with or without the camouflage
           disguise: rt.disguise || null,
@@ -2339,6 +2342,7 @@ export function setupMission(ctx) {
       $('mend-stats').innerHTML =
         (epi ? '<div style="font-style:italic;line-height:1.5;margin:0 0 10px;color:#e8d9a8">' + epi + '</div>' : '') +
         row('Time', mm + ':' + ss) +
+        ((settings && settings.difficulty && settings.difficulty !== 'operative') ? row('Difficulty', diff().name) : '') +
         row('Enemy casualties', m.kills) +
         (B ? row('K/D', m.kills + ' / ' + (B.youDown || 0) + (B.youDown ? ' (' + (m.kills / B.youDown).toFixed(2) + ')' : '')) : '') +
         row('Knocked out', m.knockouts) +

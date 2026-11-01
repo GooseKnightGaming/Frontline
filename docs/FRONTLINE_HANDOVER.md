@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.38.0)
+# Frontline — Handover (M6.39.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,13 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.39.0 — difficulty
+- **Difficulty** (Settings; `src/sim/play/difficulty.js`): Recruit, Operative (as it was), Veteran. It changes only what
+  the other side does to you - the chance a round of theirs finds you (`hit`), what it does (`damage`, guns and dog
+  bites), how quickly they make you out (`notice`), how long they take to fire once they have (`react`). Their fights
+  with each other are untouched (`ctx.you.player`). Recruit 0.65 / 0.6 / 0.7 / 1.35; Veteran 1.25 / 1.35 / 1.25 / 0.8.
+  The debrief names it when it is not Operative. `test/detect.test.mjs`.
 
 ## M6.38.0 — touch words
 - On a touch screen what the game says names the buttons, not the keys (`touchWords`, `TOUCH_WORDS`, `retext` in

@@ -380,7 +380,7 @@ export class Guard {
       // (Rhys: "Yellows were very slow to react to a Red's presence") another
       // side's man in the open is no sneaking intruder: noticed three times as fast
       const rival = you && you.guard ? SENSE.rivalFill : 1;
-      this.awareness = Math.min(1, this.awareness + v * SENSE.fill * rival * dt);
+      this.awareness = Math.min(1, this.awareness + v * SENSE.fill * rival * dt * (ctx.you && ctx.you.player && ctx.diff ? ctx.diff.notice : 1));   // (M6.39) difficulty
       this.stim = you.pos.slice(); noticed = true;
     }
     // your footsteps
@@ -829,7 +829,7 @@ export class Guard {
     this.aimT += dt;
     if (this.reloading(dt, ctx)) return;
     const A = this.arms;
-    if (this.aimT < A.react) return;
+    if (this.aimT < A.react * (ctx.you && ctx.you.player && ctx.diff ? ctx.diff.react : 1)) return;
     this.fireT -= dt;
     if (this.fireT > 0) return;
     const rand = ctx.random || Math.random;
@@ -872,7 +872,7 @@ export class Guard {
       this.burstLeft = 0; this.fireT = 1.2 + rand() * 0.8;
       return 'blocked';
     }
-    const hit = rand() < hitChance(d, you, this.exposed || 0.5, this.aimT - this.arms.react, this.arms);
+    const hit = rand() < Math.min(0.97, hitChance(d, you, this.exposed || 0.5, this.aimT - this.arms.react, this.arms) * (you.player && ctx.diff ? ctx.diff.hit : 1));
     // a miss goes past you: up to a metre and a bit off, further the further he is
     const spread = hit ? 0 : 0.5 + Math.min(1.2, d * 0.04);
     const to = hit ? you.chest.slice() : [you.chest[0] + (rand() - 0.5) * 2 * spread, you.chest[1] + (rand() - 0.3) * spread, you.chest[2] + (rand() - 0.5) * 2 * spread];

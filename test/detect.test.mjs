@@ -3,6 +3,7 @@ import { Player } from '../src/sim/people/player.js';
 import { buildMission0, FLOORS } from '../src/game/levels/mission0.js';
 import { NavGrid } from '../src/sim/world/nav.js';
 import { SENSE } from '../src/sim/people/guard.js';
+import { DIFFICULTY, diffOf } from '../src/sim/play/difficulty.js';
 
 let pass = 0; const fails = [];
 const T = (n, f) => { try { f(); pass++; console.log('  PASS  ' + n); } catch (e) { fails.push(n); console.log('  FAIL  ' + n + ' :: ' + e.message); } };
@@ -36,6 +37,19 @@ T('stand in front of a guard and he sees you: an alert inside two seconds', () =
   run(S, g, youAt([16, 0, 8.3]), 2);
   A(g.state === 'alert', 'state ' + g.state + ' awareness ' + g.awareness.toFixed(2));
   A(S.barks.some((b) => /: alert: /.test(b)), 'no shout: ' + S.barks.join(' / '));
+});
+// (M6.39) difficulty: how quickly he makes you out
+T('difficulty: a recruit is seen later, a veteran sooner - and only you, not his own side', () => {
+  const time = (d) => {
+    const S = setup(); const g = S.L.guards.find((x) => x.id === 'security');
+    g.yaw = Math.PI; g.home.yaw = Math.PI;
+    const you = Object.assign(youAt([16, 0, 8.3]), { player: true });
+    for (let i = 0; i < 600; i++) { g.step(DT, Object.assign(S.ctx(you, []), { diff: diffOf(d) })); if (g.awareness >= 1) return i; }
+    return 600;
+  };
+  const r = time('recruit'), o = time('operative'), v = time('veteran');
+  A(r > o && o > v, 'frames to be seen: recruit ' + r + ', operative ' + o + ', veteran ' + v);
+  A(diffOf('nonsense') === DIFFICULTY.operative && Object.values(DIFFICULTY).every((x) => x.hit > 0 && x.damage > 0 && x.notice > 0 && x.react > 0), 'table');
 });
 T('behind him, still and quiet, he has no idea', () => {
   const S = setup(); const g = S.L.guards.find((x) => x.id === 'security');

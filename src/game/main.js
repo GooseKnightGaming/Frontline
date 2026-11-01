@@ -1258,6 +1258,7 @@ function boot() {
     $('set-sens').value = settings.sensitivity; $('set-sens-v').textContent = settings.sensitivity.toFixed(2);
     $('set-fov').value = settings.fov; $('set-fov-v').textContent = settings.fov;
     $('set-invert').checked = settings.invertY;
+    $('set-diff').value = settings.difficulty || 'operative';
     $('set-tlook').value = settings.touchLook; $('set-tlook-v').textContent = (+settings.touchLook).toFixed(2);
     $('set-tsize').value = String(settings.touchSize); $('set-tassist').checked = settings.touchAssist !== false;
 
@@ -1272,6 +1273,7 @@ function boot() {
     $('set-music').value = settings.music === undefined ? 0.35 : settings.music;
     $('set-music-v').textContent = Math.round((settings.music === undefined ? 0.35 : settings.music) * 100) + '%';
   }
+  $('set-diff').onchange = (e) => { settings.difficulty = e.target.value; saveSettings(settings); };      // (M6.39)
   // (M6.36) touch settings
   $('set-tlook').oninput = (e) => { settings.touchLook = +e.target.value; $('set-tlook-v').textContent = settings.touchLook.toFixed(2); saveSettings(settings); };
   $('set-tsize').onchange = (e) => { settings.touchSize = +e.target.value; saveSettings(settings); if (touch) touch.resize(); };
