@@ -7,7 +7,7 @@ GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
 
-## M6.30.0 — (in progress)
+## M6.30.0 — stealth tools, dogs, disguises, three more levels
 - **Lockpicking, properly** (Rhys, M6.9.13): with the Lockpicks (gear), hold E at an ordinary locked door - 4 s (Hacker
   speeds it), quiet, and it is unlocked. Not maglocks, vaults, blast doors or reinforced doors.
 - **Furniture with more to it** (kit.js `FURNISH`): shelves hold two lots a shelf in their own colours and heights; machines
