@@ -89,6 +89,7 @@ export function setupMission(ctx) {
   let barkT = 0;
   const voices = new Voices(settings || {}, audio);
   const diff = () => diffOf(settings && settings.difficulty);          // (M6.39) how hard they are on you
+  let rt_checkpoint = 0;                 // (M6.46) things done kept from a checkpoint
   // Guards take turns (Rhys: the chatter came thick and fast, and repeated).
   // Urgent calls (an alert, a hit, a man down) always go through; anything
   // else waits for a gap: 2.2 s between any two lines, 6 s before the same
@@ -295,6 +296,20 @@ export function setupMission(ctx) {
     const pm = new pc.StandardMaterial(); pm.diffuse = new pc.Color(p.colour[0], p.colour[1], p.colour[2]); pm.emissive = new pc.Color(p.colour[0] * 0.35, p.colour[1] * 0.35, p.colour[2] * 0.35); pm.update();
     const e = new pc.Entity('pickup_' + p.id); e.addComponent('render', { type: 'box', material: pm, castShadows: false });
     e.setLocalScale(0.32, 0.06, 0.24); e.setPosition(p.pos[0], p.pos[1] + 0.03, p.pos[2]); app.root.addChild(e); p.ent = e; p.mat = pm;
+  }
+  // (M6.46) a checkpoint: a first draft failed (you down, most often) can be tried again keeping what you had done -
+  // terminals done, things taken. Kept for the page's reload in sessionStorage, for half an hour.
+  const CP_KEY = 'frontline.checkpoint';
+  const cpDone = () => ({ terminals: (level.terminals || []).filter((t) => t.done).map((t) => t.id), pickups: (level.pickups || []).filter((p) => p.taken).map((p) => p.id) });
+  if (level.draft) {
+    let cp = null;
+    try { cp = JSON.parse(sessionStorage.getItem(CP_KEY) || 'null'); sessionStorage.removeItem(CP_KEY); } catch (e) { cp = null; }
+    if (cp && cp.level === level.draft && Date.now() - (cp.at || 0) < 30 * 60 * 1000) {
+      for (const t of level.terminals || []) if (cp.terminals.includes(t.id)) t.done = true;
+      for (const p of level.pickups || []) if (cp.pickups.includes(p.id)) { p.taken = true; if (p.ent) p.ent.enabled = false; }
+      rt_checkpoint = cp.terminals.length + cp.pickups.length;
+      setTimeout(() => { try { showHint('From your checkpoint: what you had done is still done (' + rt_checkpoint + (rt_checkpoint === 1 ? ' thing' : ' things') + ') - the rest is to do again.'); } catch (e) { /* not yet */ } }, 5000);
+    }
   }
   // a fixed gun that swivels (the Beachhead's artillery): E fires a shell where you are looking;
   // then it must be loaded again. level.cannons: [{ pos, reload }]
@@ -2397,6 +2412,12 @@ export function setupMission(ctx) {
       pager.style.display = label ? 'block' : 'none';
       page(1);
       $('mend-again').textContent = ok ? 'Play again' : 'Restart the mission';
+      // (M6.46) failed, with something done: try again from there
+      { const cd = level.draft && m.result === 'failed' ? cpDone() : null, b = $('mend-cp');
+        if (b) {
+          b.style.display = cd && (cd.terminals.length || cd.pickups.length) ? 'block' : 'none';
+          b.onclick = () => { try { sessionStorage.setItem(CP_KEY, JSON.stringify(Object.assign({ level: level.draft, at: Date.now() }, cd))); } catch (e) { /* private window */ } location.reload(); };
+        } }
       if (fresh.length) audio.stepDone();
       if (ok) voices.radio('done', control);
       ctx.endMission();

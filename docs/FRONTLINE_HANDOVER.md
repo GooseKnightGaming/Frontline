@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.45.0)
+# Frontline — Handover (M6.46.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,11 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.46.0 — checkpoints
+- **Retry from your checkpoint** (first drafts): a mission failed - you down, most often - with something done
+  (terminals hacked, things taken) offers it on the debrief. The page reloads and those stay done (sessionStorage
+  `frontline.checkpoint`, for half an hour); the guards and everything else start over. A hint says so.
 
 ## M6.45.0 — the blight on the board
 - The case board's second case, **THE BLIGHT** (`BLIGHT` in caseboard.js): the Glasshouse, the Grain Terminal, the
