@@ -2,6 +2,7 @@
 // targets on the range, grenades in the air, muzzle flashes and blasts.
 
 import { baseId, ITEMS } from '../../sim/arms/loadout.js';
+import { buildGun } from './gun_models.js';
 
 // Where each weapon sits in view: [x, y, z] at the hip, and aimed.
 const HOLD = {
@@ -159,8 +160,31 @@ export class WeaponView {
   }
 
   // Build (once loaded) the entity for a weapon and keep it parented to the camera.
+  // (M6.29) a weapon drawn in code (gun_models.js): built, placed and held as a loaded model is
+  codedHolder(id, name) {
+    const L = REAL_LENGTH[id] || REAL_LENGTH[baseId(id)] || 0.6;
+    const inner = buildGun(this.pc, id, L);
+    if (!inner) return null;
+    const holder = new this.pc.Entity(name + id);
+    holder.addChild(inner);
+    inner.setLocalPosition(0, 0, -L * 0.15);
+    const m = measure(inner);
+    const hold = HOLD[baseId(id)] || HOLD.RIFLE;
+    holder.setLocalEulerAngles(hold.rot[0], hold.rot[1], hold.rot[2]);
+    holder.modSig = '';
+    return { holder, m };
+  }
   entityFor(id, modelName) {
     if (this.held[id]) return this.held[id];
+    const coded = this.codedHolder(id, 'weapon_');
+    if (coded) {
+      const h = coded.holder;
+      h.enabled = false; this.cam.addChild(h);
+      this.scaleOf = this.scaleOf || {}; this.scaleOf[id] = 1;
+      this.topOf = this.topOf || {}; this.topOf[id] = sightTop(coded.m, 1);
+      this.held[id] = h;
+      return h;
+    }
     const asset = this.models[modelName];
     if (!asset) return null;
     const pc = this.pc;
@@ -217,6 +241,12 @@ export class WeaponView {
   }
 
   spawnModel(id, modelName, mods) {
+    const coded = this.codedHolder(id, 'carry_');
+    if (coded) {
+      const z0 = (ITEMS[baseId(id)] || {}).zoom;
+      if ((mods && mods.length) || z0 > 2) this.dress(coded.holder, id, mods, sightTop(coded.m, 1), z0);
+      return coded.holder;
+    }
     const asset = this.models[modelName];
     if (!asset) return null;
     const pc = this.pc;

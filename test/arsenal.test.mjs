@@ -129,4 +129,15 @@ T('Logistics and the Quartermaster: only what this run has brought home; the deb
     A(/q\.jammed > 0/.test(src('game/levels/ranges.js')) && /this\.stalled > 0/.test(src('sim/vehicles/drive.js')), 'turrets or engines ignore it');
   });
 }
+{
+  const { gunShape, _parts } = await import('../src/game/draw/gun_models.js');
+  T('the weapons drawn in code: shotguns, SMGs, machine guns, launchers and energy weapons each look like what they are', () => {
+    const want = { IM8S: 'shotgun', PA14: 'shotgun', MP2: 'smg', IM8: 'mpistol', KR90: 'lmg', NSHM2: 'hmg', NSR4: 'rocket', PA40GL: 'gl', AGL6: 'drum', HASL1: 'beam', HLP2: 'beampistol' };
+    for (const [id, shape] of Object.entries(want)) A(gunShape(id) === shape, id + ' is ' + gunShape(id));
+    for (const id of ['PX9', 'AR16', 'K7', 'LR7', 'PA95']) A(gunShape(id) === null, id + ' lost its model');
+    for (const sh of new Set(Object.values(want))) { const P = _parts(sh, 0.9); A(P && P.length >= 4 && P.every(([k, s]) => s.every((v) => v > 0)), sh); }
+    const wv = src('game/draw/weapons_view.js');
+    A(/codedHolder\(id, 'weapon_'\)/.test(wv) && /codedHolder\(id, 'carry_'\)/.test(wv), 'not used');
+  });
+}
 console.log(fails.length ? '\nFAILURES (' + fails.length + '):\n' + fails.map((f) => '  * ' + f).join('\n') : '\nALL ' + pass + ' PASSED');

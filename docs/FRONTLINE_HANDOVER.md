@@ -31,6 +31,12 @@ game into the repository's root.
   the Yellows in it and holding its security (devices with `owner: 'yellow'`). The reading room with its gallery (a marksman
   up there), the rare books vault (maglocked, a laser across its approach, a pinhole inside), the stacks below (a Yellow
   turret) and the microfilm room. Objectives: the Halloran Codex, copy the microfilm, optionally free the night librarian.
+- **Weapons drawn in code** (`src/game/draw/gun_models.js`; "weapon models beyond the four Quaternius ones"): shotguns
+  (barrel over tube magazine, pump forend, wooden stock), SMGs and machine pistols, light and heavy machine guns (heat
+  shield, carry handle, ammunition box, folded bipod), rocket launchers (a tube with its bell and sight), grenade
+  launchers single-shot and revolving, and the energy weapons (white housing, a lens, glowing coils) - built from simple
+  parts in the same flat low-poly look, at each weapon's own length, held and dropped as a loaded model is. Pistols,
+  assault and battle rifles, carbines and sniper rifles keep their models.
 - Tests: `devices.test.mjs`.
 
 ## M6.28.0 — hacking and control, the rest (Rhys: "keep building - use your imagination")
