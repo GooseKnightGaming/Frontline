@@ -28,6 +28,7 @@ Made from each file's opening comment by `python3 tools/code_map.py`. The rules 
 |---|---|---|
 | `character.js` | 261 | the people you see: you in third person, every guard, hostage and passer-by. Drawn in code (Rhys: "I'd actually prefer the characters code-drawn rather than from asset-packs"): a low-poly body on a skeleton of joints (draw/puppet.… |
 | `devices_view.js` | 66 | how the defence systems look (sim/world/devices.js): a camera body on its bracket, a turret head on its pedestal (or hung from a frame), a maglock's keypad through the door's jamb, a breaker panel, an alarm bell - each with a ligh… |
+| `gun_models.js` | 157 | weapons drawn in code (M6.29; the "weapon models beyond the four Quaternius ones" still to do): until now every gun on Rhys's sheet borrowed one of four models - a pistol, an assault rifle, a sniper rifle, a grenade launcher - so … |
 | `ladders.js` | 42 | a ladder you can see the rungs of. |
 | `matrix_font.js` | 118 | a dot-matrix font (Rhys: the departures board "is a bit blurry - certain letters don't quite render properly"). Each letter drawn lamp by lamp, 5 wide and 7 high, capitals only (as such boards are): Latin, Cyrillic, and Severian's… |
 | `minimap.js` | 165 | the minimap. |
@@ -37,7 +38,7 @@ Made from each file's opening comment by `python3 tools/code_map.py`. The rules 
 | `scope.js` | 39 | what you see through a sight (Rhys: "including when alt-aiming, if the scope has iron-sight or a reticule, that'd be nice to look through too"). Pure: a string of SVG for each kind (weapons_view.js scopeKind), drawn over the view;… |
 | `textures.js` | 760 | textures, painted in code at start-up. No image files: every surface is drawn here, so it all belongs to the game. |
 | `vehicle_models.js` | 669 | vehicles, built in code. |
-| `weapons_view.js` | 650 | the visible side of weapons: the thing in your hands, the targets on the range, grenades in the air, muzzle flashes and blasts. |
+| `weapons_view.js` | 680 | the visible side of weapons: the thing in your hands, the targets on the range, grenades in the air, muzzle flashes and blasts. |
 
 ## `src/game/levels/` - The levels and what runs them
 
@@ -53,7 +54,7 @@ Made from each file's opening comment by `python3 tools/code_map.py`. The rules 
 | `hq_security.js` | 138 | Yard 7's own security, and the day someone else takes it (Rhys's roadmap, "Hacking and control": "it works both ways - an enemy hack can turn Yard 7's own turrets on you, which is the first proper reason for a terminal room under … |
 | `kit.js` | 1007 | the level kit (Rhys: "put together ALL the other levels I've asked for, so that I can play through the game and give pointers on each individual level"). |
 | `mission0.js` | 473 | Level 0: the training mission. |
-| `mission_runtime.js` | 2173 | running Level 0 in the game: the guards' bodies, the keycard, the terminal, breaching and bullet time, the hints, and the end. main.js calls in at a handful of points; the rules live in src/sim/play/mission.js. |
+| `mission_runtime.js` | 2174 | running Level 0 in the game: the guards' bodies, the keycard, the terminal, breaching and bullet time, the hints, and the end. main.js calls in at a handful of points; the rules live in src/sim/play/mission.js. |
 | `ranges.js` | 501 | the weapons half of the training course. |
 | `train.js` | 1115 | Level 4, the Night Train (Rhys: "An intercity train that has underground sections. It travels between two fictional cities in a fictional country 'somewhere near the former USSR'... You're off duty, enjoying yourself... [it] defin… |
 | `yard7.js` | 609 | Ghost Training Facility, "Yard 7". A grey-boxed container yard for learning to move: vault lane, climb wall, crouch duct, stairs and catwalk, a dive tower over a deep pool, drop platforms; the training course and the ranges beneat… |
@@ -77,7 +78,7 @@ Made from each file's opening comment by `python3 tools/code_map.py`. The rules 
 | `facility.js` | 158 | Level 11, the Research Facility (first draft). Rhys: "maps/scenarios that justify the other Visions [IR, UV, EMF]" - and of a research facility, "a fantastic idea for all 3": thermal through the cold store's mist, UV for the lab's… |
 | `factory_battle.js` | 75 | Level 19, the Factory: Battle (first draft). Rhys's factory sheet was always a battle map (maps/Frontline_Battle_Map_Factory.xlsx: "Valid Spawn Point for Ghost / for Yellow" in the corner rooms) - Level 2 played it as a mission un… |
 | `fortress.js` | 115 | Level 16, the Fortress (first draft). Rhys: "a fortified compound bristling with automatic weapons and rockets - machine guns of every weight (SMGs, LMGs, mounted HMGs) and rocket launchers... walls, towers, gates and a yard to cr… |
-| `index.js` | 37 | the first-draft levels, in play order. Each is a spec for level_kit.js; index.html?level=<id> plays one. Rhys may reorder them: their numbers are only labels. |
+| `index.js` | 38 | the first-draft levels, in play order. Each is a spec for level_kit.js; index.html?level=<id> plays one. Rhys may reorder them: their numbers are only labels. |
 | `listening.js` | 155 | Level 35, the Listening Station (first draft, M6.28: a level built round hacking and control). Skarvik signals station, on the cliffs: the reds' ears. Its program, LANTERN, is what traced Ghost's hacks back to Yard 7 - and the arc… |
 | `manor.js` | 183 | Level 9, the Manor House and its estate (first draft). Rhys (after M6.17.8): "the full estate - the house with its servants' quarters (back stairs, the servants' corridors... the kitchens below stairs), the family's rooms above, a… |
 | `mine.js` | 135 | Level 10, the Mineshaft and the open pit (first draft). Rhys (after M6.17.8): "a working or abandoned mine - timbered tunnels, a cage lift down the shaft, ore carts on rails, a pumping station, and the open pit where it has been b… |
@@ -92,6 +93,7 @@ Made from each file's opening comment by `python3 tools/code_map.py`. The rules 
 | `subway.js` | 129 | Level 34, the Subway (first draft). From Rhys's location boards (part 2): "Subway / Underground station - exteriors, interiors, props and furniture". Holm Street station, after the last train: the street with its two entrances, th… |
 | `temple.js` | 145 | Level 26, the Ancient Temple (first draft). From Rhys's location boards: "Abandoned Ancient Temple - ruins and statues, archaeological props". The temple of Ix Tolun, in the jungle: a stepped pyramid - its Hall of Pillars inside, … |
 | `theatre.js` | 149 | Level 24, the Theatre (first draft). From Rhys's location boards: "Theatre - seating, stage / backstage, props and decor". The Grand, on Varnholm's Opera Street: the foyer with its box office and bar; the auditorium, two storeys h… |
+| `tower.js` | 139 | Level 38, the Tower (first draft, M6.29). From Rhys's environment-pack concept sheet: "Office (modular)". Varn Dynamics' headquarters, three floors round a stair core: a front company for the reds' arms money. The lobby, the cafe,… |
 | `vantage.js` | 112 | Level 12, the Assassination (first draft). Rhys: "work your way to a vantage point in one building and take aim at a senior Red/Yellow from there" - a target who keeps a routine, a second building in sight of the first, a marksman… |
 | `ward.js` | 132 | Level 13, the drugged level (first draft; M6.19.6, Rhys: "The Ward is trippy - that's good. But it needs to be much better - I need MORE non-Euclidean Geometry!"). Rhys (after M6.17.8): "you have been drugged or poisoned, and the … |
 | `wasteland.js` | 167 | Level 23, the Nuclear Wasteland (first draft). Rhys (after M6.13.7): "Post-Apocalyptic Nuclear Wasteland". The Vell valley, downwind of the Hesk power station: grey dust, dead trees, the old highway full of wrecks, a village nobod… |

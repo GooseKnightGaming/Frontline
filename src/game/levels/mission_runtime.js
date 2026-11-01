@@ -1773,7 +1773,8 @@ export function setupMission(ctx) {
       // their guns, once the models have loaded: the same carbine you carry
       if (!armed && wview && wview.ready) {
         armed = true;
-        bodies.forEach((b, i) => { const A = guards[i].arms; const w = wview.spawnModel(A.item, A.model); if (w) { app.root.addChild(w); b.carry = w; } });
+        bodies.forEach((b, i) => { const A = guards[i].arms, id = guards[i].item || A.item; const w = wview.spawnModel(id, (ITEMS[id] && ITEMS[id].model) || A.model);   // (M6.29) the weapon he actually carries (and drops)
+          if (w) { app.root.addChild(w); b.carry = w; } });
       }
       for (const f of fx) if (f.t > 0) { f.t -= dt; if (f.t <= 0) f.e.enabled = false; }
       // (Rhys: on the cameras, guards blinked out partway round)

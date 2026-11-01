@@ -31,6 +31,10 @@ game into the repository's root.
   the Yellows in it and holding its security (devices with `owner: 'yellow'`). The reading room with its gallery (a marksman
   up there), the rare books vault (maglocked, a laser across its approach, a pinhole inside), the stacks below (a Yellow
   turret) and the microfilm room. Objectives: the Halloran Codex, copy the microfilm, optionally free the night librarian.
+- **Level 38, the Tower** (`drafts/tower.js`; the concept sheet's "Office (modular)"): Varn Dynamics, three floors round a
+  stair core - the lobby, cafe, post room, loading dock and maglocked security office; open-plan offices; the boardroom,
+  the maglocked server room (a turret) and Varn's maglocked office. Objectives: bug the boardroom, copy Varn's mail, take
+  the prototype, optionally stop Varn (who carries the keycard).
 - **Weapons drawn in code** (`src/game/draw/gun_models.js`; "weapon models beyond the four Quaternius ones"): shotguns
   (barrel over tube magazine, pump forend, wooden stock), SMGs and machine pistols, light and heavy machine guns (heat
   shield, carry handle, ammunition box, folded bipod), rocket launchers (a tube with its bell and sight), grenade
