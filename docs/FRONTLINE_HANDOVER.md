@@ -15,6 +15,9 @@ game into the repository's root.
   cover (impact sounds) or past you (the whizz), never a hit.
 - **Falling back**: a bold guard under 40% of his health in a fight with you falls back 7 m away from you, once ("Falling
   back!"), and fights on from there.
+- **The Tracker** (`TRACKER`, a utility; Rhys's "trackers and remote cameras"): thrown and sticky - on a man, he is on your
+  radar wherever he goes (`guard.tracked`); on the ground or a wall, anyone within 12 m of it is, for two minutes. The Spy
+  may carry it; any run at Logistics.
 - **The marksman** (`perches: [[x, y, floor], ...]` on a guard): after five rounds from one place he moves on to his next
   perch ("Moving!"), and fights from there. One each in the Facility, the Prison and the Listening Station.
 - Tests: `devices.test.mjs`.

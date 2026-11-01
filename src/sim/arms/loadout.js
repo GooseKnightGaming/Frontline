@@ -137,6 +137,11 @@ export const ITEMS = {
   // (M6.28, the roadmap's "EMP grenade") the pulse in a grenade: electronics out a while - no one hurt
   EMPGREN:  { name: 'EMP Grenade', family: 'grenade', kg: 0.5, count: 2, fuse: 2.0, throw: 17, blast: 6, damage: 0, emp: true, model: 'Grenade',
               note: 'A pulse, not a blast: cameras, turrets, lights, alarms, night vision and engines in its reach go out a while; a maglock burns open for good. Hurts no one.' },
+  // (M6.29, Rhys: "trackers and remote cameras - placed, they report the enemies in that area; or stuck to one
+  // person, his exact whereabouts") thrown: stuck to a man, he is on your radar wherever he goes; on the
+  // ground, anyone within 12 m of it is
+  TRACKER:  { name: 'Tracker', family: 'grenade', kg: 0.2, count: 3, fuse: 0.4, throw: 15, blast: 0, damage: 0, sticky: true, tracker: true, model: 'Grenade',
+              note: 'Throw it: stuck to a man, he shows on your radar wherever he goes; on the ground or a wall, anyone within 12 m of it does (for two minutes).' },
   FLASH:    { name: 'Flashbang', family: 'grenade', count: 2, fuse: 1.8, throw: 17, blast: 9, damage: 0, blind: 4.5, model: 'Grenade' },
   SMOKE:    { name: 'Smoke Grenade', family: 'grenade', count: 2, fuse: 1.4, throw: 16, blast: 8, damage: 0, smoke: 18, model: 'Grenade' },
   // (Rhys's classes: "Standard Issue Grenades, NOT Frags") a smaller blast than a frag
@@ -584,7 +589,7 @@ export const CLASSES = [
   { id: 'SPY', name: 'Spy', role: 'Infiltrates enemy lines - ideally without being detected. Retrieves information from hard-to-reach, heavily fortified places.', arms: 'v19p',
     kit: { primary: 'V19P', backup: 'V27C', utility1: 'LURE', utility2: 'NERVE', gear: 'GASMASK', mods: { primary: ['SILENCER'], backup: ['SILENCER'] } }, special: 'QID',
     guns: ['V19P', 'MP2', 'V27C', 'PX19', 'V99', 'PX9', 'KNIFE'],
-    utility: ['LURE', 'NERVE', 'SMOKE', 'FLASH', 'CONCUSS', 'REMOTE', 'EMPGREN'],
+    utility: ['LURE', 'NERVE', 'SMOKE', 'FLASH', 'CONCUSS', 'REMOTE', 'EMPGREN', 'TRACKER'],
     gear: ['GASMASK', 'LOCKKIT', 'INTEL', 'EMFSCAN', 'UVGOGS', 'NVG', 'MULTIVIS', 'HACKSUIT'] },
   { id: 'PILOT', name: 'Pilot', role: 'Trained to fly and steer aircraft and watercraft - and to keep them going.', arms: 'smg',
     kit: { primary: 'MP2', backup: 'PX19', utility1: 'REPAIRKIT', utility2: 'SMOKE', gear: 'PARACHUTE' }, special: 'AUTOREPAIR',

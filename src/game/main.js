@@ -2155,6 +2155,13 @@ function boot() {
       if (ev.type === 'breachShot') { const b = { breach: true, pos: ev.pos }; if (missionRt && MISSION) missionRt.onBlast(b); else blastDoors(b); }
       if (missionRt && (ev.type === 'shot' || ev.type === 'blast' || ev.type === 'bash' || ev.type === 'lure')) missionRt.hear(ev);
       // a lure chirps where it lies; glassware a round passes through shatters and rings
+      // (M6.29) a tracker: on a man, he is on your radar for good; on the ground, all round it for two minutes
+      if (ev.type === 'tracker') {
+        const who = ev.on && ev.on.guard;
+        if (who) { who.tracked = true; S.noteText = 'Tracker on him: he is on your radar wherever he goes'; }
+        else { (level.trackers = level.trackers || []).push({ pos: ev.pos.slice(), until: S.time + 120 }); S.noteText = 'Tracker placed: anyone within 12 m of it shows on your radar'; }
+        S.noteT = 3; audio.confirm();
+      }
       if (ev.type === 'lure') audio.lure(Math.hypot(ev.pos[0] - player.pos[0], ev.pos[1] - player.pos[1], ev.pos[2] - player.pos[2]));
       if (ev.type === 'pierce' && ev.solid && ev.solid.glassware) audio.glassware(Math.hypot(ev.point[0] - player.pos[0], ev.point[2] - player.pos[2]));
       if (missionRt && ev.type === 'shot') missionRt.fired(ev);
@@ -2257,7 +2264,8 @@ function boot() {
         if (t.device) return;          // a camera or turret: on the radar as a device, below
         if (t.down || (t.guard && t.guard.dormant) || (t.hostage && (t.hostage.state === 'dead' || t.hostage.state === 'rescued'))) { tracker.forget('t' + i); return; }
         // the guard rota from a hacked terminal: every red on the radar while it lasts
-        const how = sense(level.world, me, { pos: t.centre, solid: t.solid, loud: t.turret && t.turret.firing ? 1 : 0 }) ||
+        const tracked = t.guard && !t.guard.dead && (t.guard.tracked || (level.trackers || []).some((k) => k.until > S.time && Math.hypot(k.pos[0] - t.centre[0], k.pos[1] - t.centre[1], k.pos[2] - t.centre[2]) < 12));
+        const how = sense(level.world, me, { pos: t.centre, solid: t.solid, loud: t.turret && t.turret.firing ? 1 : 0 }) || (tracked ? 'intel' : null) ||
           (level.revealT > 0 && t.guard && t.guard.faction === 'red' && !t.guard.dead ? 'intel' : null);
         // a hostage is a friend on the radar, not an enemy
         if (how) found.push({ id: 't' + i, kind: t.hostage || (t.guard && t.guard.side === 'ally') ? 'ally' : t.guard && t.guard.neutral ? 'neutral' : 'enemy', pos: t.centre, how, state: t.guard ? t.guard.state : null });
@@ -2273,6 +2281,8 @@ function boot() {
           const d = Math.hypot(c.pos[0] - player.pos[0], c.pos[2] - player.pos[2]);
           if (d < range) contacts.push({ kind: 'interest', pos: c.pos, live: true });
         }
+        // (M6.29) your trackers on the ground
+        for (const k of level.trackers || []) if (k.until > S.time && Math.hypot(k.pos[0] - player.pos[0], k.pos[2] - player.pos[2]) < range) contacts.push({ kind: 'interest', pos: k.pos, live: true });
         // (M6.28) the defence systems you know of: their colour whose they are, their shape what
         for (const d of level.liveDevices || []) {
           if (!d.known || Math.hypot(d.pos[0] - player.pos[0], d.pos[2] - player.pos[2]) >= range) continue;

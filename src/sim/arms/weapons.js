@@ -909,6 +909,8 @@ export class Arsenal {
     if (w.flare) this.events.push({ type: 'flare', id: p.id, pos: p.pos.slice(), until: this.time + w.flare, secs: w.flare });
     // a lure goes off as a noise, not a blast
     if (w.lure) { this.events.push({ type: 'lure', id: p.id, pos: p.pos.slice(), noise: w.noise || 1.3 }); return; }
+    // a tracker: no bang - it reports (the game puts what it sees on your radar)
+    if (w.tracker) { this.events.push({ type: 'tracker', id: p.id, pos: p.pos.slice(), on: p.stuck || null }); return; }
     this.lastNoise = 1.6;
     this.events.push({ type: 'blast', id: p.id, pos: p.pos.slice(), radius: w.blast, noise: 1.6,
       flash: !!w.blind, blind: w.blind || 0, smoke: w.smoke || (w.gas === 'fire' ? w.burn || 6 : 0), gas: w.gas || null, damage: w.damage || 0, breach: !!w.breach, emp: !!w.emp });

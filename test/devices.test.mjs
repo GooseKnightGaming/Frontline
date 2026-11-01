@@ -8,6 +8,7 @@ import { World } from '../src/sim/world/world.js';
 import { pulse } from '../src/sim/arms/emp.js';
 import { ITEMS } from '../src/sim/arms/loadout.js';
 import { readFileSync } from 'fs';
+import { Arsenal } from '../src/sim/arms/weapons.js';
 import { hackTrophies } from '../src/sim/play/mission.js';
 let pass = 0; const fails = [];
 const T = (n, f) => { try { f(); pass++; console.log('  PASS  ' + n); } catch (e) { fails.push(n); console.log('  FAIL  ' + n + ' :: ' + e.message); } };
@@ -282,6 +283,16 @@ T('falling back: a bold man badly hurt falls back, once, away from you', () => {
   for (let i = 0; i < 90; i++) { g.clock = (g.clock || 0) + 1 / 60; try { g.step(1 / 60, ctx); } catch (e) { break; } }
   A(g.fellBack, 'he did not fall back');
   A(g.pos[2] > 1, 'he went the wrong way: ' + g.pos.map((v) => v.toFixed(1)));
+});
+
+T('the tracker: no bang - it reports where it is, or whom it is stuck to; the radar uses it', () => {
+  A(ITEMS.TRACKER && ITEMS.TRACKER.tracker && ITEMS.TRACKER.sticky && ITEMS.TRACKER.damage === 0, 'no tracker');
+  const w = new World(), a = new Arsenal(w);
+  a.detonate({ id: 'TRACKER', pos: [1, 0, 2], stuck: null }, null);
+  const ev = a.events.find((e) => e.type === 'tracker');
+  A(ev && ev.pos[0] === 1 && !a.events.some((e) => e.type === 'blast'), JSON.stringify(a.events));
+  const mn = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8');
+  A(/who\.tracked = true/.test(mn) && /tracked \? 'intel' : null/.test(mn), 'not on the radar');
 });
 
 console.log(fails.length ? '\nFAILURES (' + fails.length + '):\n' + fails.map((f) => '  * ' + f).join('\n') : '\nALL ' + pass + ' PASSED');
