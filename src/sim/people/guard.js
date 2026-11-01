@@ -32,7 +32,7 @@ import { makeTarget } from '../arms/weapons.js';
 export const ESCORT = { walk: 2.4, run: 5.4, gain: 1.2, drift: 2.5, replan: 1.2, out: 3.4 };
 // (M6.30) a disguise: how much of you a man of that side makes out - from a way off, close to, and how much
 // worse it is for you crouching or running (no one in uniform does); within `sees` metres (an officer's further) he looks twice
-export const DISGUISE = { far: 0.12, close: 0.55, odd: 2.5, sees: 4, officerSees: 8 };
+export const DISGUISE = { far: 0.12, close: 0.4, odd: 2.5, sees: 3.5, officerSees: 7 };
 export const GUARD = {
   walk: 1.5,           // m/s on patrol: an unhurried walk
   search: 2.2,         // m/s going to look

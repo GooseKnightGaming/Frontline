@@ -23,7 +23,7 @@ game into the repository's root.
   threw it; with nothing else at hand, E looks through your cameras in turn (the CCTV view; E on to the next, move to stop).
   The Spy may carry it.
 - **Disguises**: at a downed red's (or Yellow's) body, E takes his uniform. His side then barely make you out from a way
-  off (`DISGUISE` in guard.js: 0.12 of what they would); within 4 m (an officer, 8) they look twice; crouching or running
+  off (`DISGUISE` in guard.js: 0.12 of what they would); within 3.5 m (an officer, 7) they look twice; crouching or running
   makes it worse; cameras of his side take four times as long. A shot (a suppressed one only if it hits someone), or one
   of them going for you, ends it.
 - **Level 40, the Embassy** (`drafts/embassy.js`, built round the disguise): the reds' embassy on its reception night; you

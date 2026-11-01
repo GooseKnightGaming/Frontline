@@ -7,7 +7,7 @@ export default {
   id: 'embassy', no: 40, title: 'The Embassy', place: 'the embassy on Linden Row',
   where: 'The embassy on Linden Row. 21:15, the autumn reception in full swing.',
   brief: [
-    ['The way in', 'You go in <b>disguised</b>, in a red officer\'s uniform: from a way off the reds take you for one of their own. Close to (four metres; an officer, eight) they look twice. Do not crouch, do not run, and do not fire - a shot gives you away. If it goes, it goes: a downed red\'s uniform will do as well (E at him).'],
+    ['The way in', 'You go in <b>disguised</b>, in a red officer\'s uniform: from a way off the reds take you for one of their own. Close to (three or four metres; an officer, seven) they look twice. Do not crouch, do not run, and do not fire - a shot gives you away. If it goes, it goes: a downed red\'s uniform will do as well (E at him).'],
     ['The place', 'Ground floor: the <b>reception hall</b> (the party), the cloakroom and the lobby, the kitchen and the service corridor behind. Up the grand stair: the <b>first-floor offices</b>, the <b>cipher room</b> (maglocked), the <b>ambassador\'s office</b> (maglocked). Down the service stair: the basement - the security room and the archive.'],
     ['Security', 'Cameras over the hall, the stair and the first-floor corridor (they look longer at a uniform, but they look), a laser across the archive, the two maglocks, the alarm - run from the <b>security room</b> in the basement. The ambassador carries a <b>keycard</b>; there is a <b>dog</b> with the man on the back gate, a <b>radio</b> in the security room, an <b>engineer</b> in the basement.'],
     ['Objectives', 'Copy the <b>cipher keys</b> at the cipher room\'s terminal. Take the <b>ledger</b> from the ambassador\'s office. There is a trophy for doing it with no one seeing through your disguise.'],
@@ -90,7 +90,7 @@ export default {
     { id: 'h1', at: [10, 12, 'G'], arms: 'pistol', temper: 'steady' },
     { id: 'h2', at: [18, 15, 'G'], route: [[6, 15], [26, 15]], arms: 'pistol' },
     { id: 'h3', at: [26, 6, 'G'], arms: 'smg', rank: 'officer', temper: 'steady' },
-    { id: 'door', at: [23, 28, 'G'], arms: 'carbine', temper: 'steady' },
+    { id: 'door', at: [27, 30, 'G'], arms: 'carbine', temper: 'steady' },
     { id: 'k1', at: [35, 7, 'G'], arms: 'pistol', temper: 'cowardly', role: 'medic' },
     { id: 'gate', at: [42, 22, 'G'], route: [[42, 14], [42, 30]], arms: 'carbine', dog: true },
     { id: 'c1', at: [22, 15, '1'], route: [[6, 15], [39, 15]], arms: 'smg' },
