@@ -27,6 +27,7 @@ import { makeDog, DOG } from '../../sim/people/dog.js';
 import { markIntrusion, downLantern } from './hq_security.js';
 import { xpFor, pointsAt } from '../../sim/play/skills.js';
 import { CASE, cluesFrom, caseOpen, FINAL, CLOSED } from '../../sim/play/caseboard.js';
+import { settle as settleContracts, TERMS as CONTRACT_TERMS, describe as contractText } from '../../sim/play/contracts.js';
 import { Device, stepDevice, setMode, Trace, HACK, MODES, SIREN, darkAt, sirenFor, syncLocks, modeSays, lightsOut, breaks } from '../../sim/world/devices.js';
 
 
@@ -2326,6 +2327,17 @@ export function setupMission(ctx) {
           // (M6.40) the last of it: the case closed
           if (level.draft === FINAL && m.result === 'success') Saves.addCase(Saves.currentSlot(), [CLOSED]);
         }
+        // (M6.41) the contracts board: any open one this mission pays
+        if (level.draft) {
+          const cst = Saves.loadContracts(Saves.currentSlot());
+          if (cst && cst.levels) {
+            const out = settleContracts(cst, cst.levels, level.draft, m.result, m);
+            out.state.levels = cst.levels; Saves.saveContracts(Saves.currentSlot(), out.state);
+            rt.contractsPaid = out.paid;
+            const xp = out.paid.reduce((a, c) => a + c.xp, 0);
+            if (xp) { const b4 = pointsAt(Saves.loadSkills(Saves.currentSlot()).xp); rt.newPoints = (rt.newPoints || 0) + pointsAt(Saves.addXp(Saves.currentSlot(), xp).xp) - b4; rt.xpGained = (rt.xpGained || 0) + xp; }
+          }
+        }
       }
       $('mend-title').textContent = 'DEBRIEF';
       { const w = document.querySelector('#mend .brief-where'); if (w) w.innerHTML = L0 ? 'Level 0 &middot; Training Mission' : level.draft ? 'Level ' + level.spec.no + ' &middot; ' + level.title + ' (first draft)' : level.factory ? 'Level 2 &middot; Derelict Factory' : level.casino ? 'Level 3 &middot; Casino' : level.trainRun ? 'Level 4 &middot; The Night Train' : 'Level 1 &middot; Riverside Hotel'; }   // (the train's said the hotel)   // (it said Level 0 at the hotel)
@@ -2355,6 +2367,7 @@ export function setupMission(ctx) {
         row('Favourite weapon', favName) +
         row('Doors breached', m.breaches) +
         (rt.newClues && rt.newClues.length ? row('The case', rt.newClues.map((id) => (CASE.find((c) => c.id === id) || {}).title).join(', ') + ' &mdash; on the board at Ghost HQ' + (rt.caseMade ? '. <b>Ghost knows where the council meets: Kaldberg.</b>' : '')) : '') +
+        (rt.contractsPaid && rt.contractsPaid.length ? row('Contract' + (rt.contractsPaid.length > 1 ? 's' : ''), rt.contractsPaid.map((c) => CONTRACT_TERMS[c.term].name + ' (' + contractText(c) + ') +' + c.xp).join('; ')) : '') +
         (rt.xpGained ? row('Experience', '+' + rt.xpGained + (rt.newPoints ? ' &mdash; ' + (rt.newPoints === 1 ? 'a skill point' : rt.newPoints + ' skill points') + ' to spend at Ghost HQ' : '')) : '') +
         (devices.length ? row('Security hacked', (m.hacked || 0) + (m.hacked === 1 ? ' time' : ' times') + (m.traced ? ' &mdash; <span class="no">traced</span>: they know where Yard 7 is' : m.hacked ? ' &mdash; never traced' : '')) : '') +
         (m.turretKills ? row('Downed by their own turrets', m.turretKills) : '') +

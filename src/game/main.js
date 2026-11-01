@@ -72,10 +72,11 @@ import { kickOpens } from '../sim/play/mission.js';
 import { hqSecurity, takeIntrusion } from './levels/hq_security.js';
 import { effects as skillEffects, SKILLS, pointsLeft, train as trainSkill, XP } from '../sim/play/skills.js';
 import { CASE, CASE_NEEDS, FINAL, caseOpen, caseClosed } from '../sim/play/caseboard.js';
+import { boardOf, describe as contractText, TERMS } from '../sim/play/contracts.js';
 import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './core/input.js';
 import { isTouchDevice, touchControls, retext } from './core/touch.js';
 
-const VERSION = 'M6.40.0';
+const VERSION = 'M6.41.0';
 const $ = (id) => document.getElementById(id);
 const TEST = /[?&]test\b/.test(location.search);
 // Level 0, the training mission, is its own page load: index.html?level=0
@@ -782,6 +783,13 @@ function boot() {
       : '<div class="rec-row" style="display:block;opacity:0.45">? ? ?  <span>(something at Level ' + lvl(c.level).no + ', ' + lvl(c.level).title + ')</span></div>').join('')
       + (caseClosed(have) ? '<div style="margin:14px auto 4px;width:max-content;padding:6px 18px;border:4px double #c0392b;color:#c0392b;font:700 26px/1 \'Courier New\',monospace;letter-spacing:6px;transform:rotate(-6deg)">CASE CLOSED</div><p style="text-align:center;opacity:0.8">The council at Kaldberg is finished. Ghost thanks you.</p>' : '')
       + '<p style="margin-top:10px">' + (caseClosed(have) ? '' : caseOpen(have) ? '<b>The case is made: the council meets at Kaldberg. Level 42 is on the operations table.</b>' : 'Find ' + (CASE_NEEDS - have.length) + ' more, and Ghost will know where the council meets.') + '</p>';
+    // (M6.41) and the contracts: replay work, three at a time
+    const levels = DRAFTS.filter((d) => !d.battle && d.id !== FINAL && d.objectives && d.objectives.length).map((d) => d.id);
+    const b = boardOf(Saves.loadContracts(slotNo), levels);
+    b.state.levels = levels; Saves.saveContracts(slotNo, b.state);
+    $('case-list').innerHTML += '<h3 style="margin:18px 0 6px;letter-spacing:3px;color:var(--amber);font-size:13px">CONTRACTS</h3>'
+      + '<p style="opacity:0.75;margin:0 0 8px">Replay work. Do one - the mission a success, and done the way it asks - and it pays experience; another takes its place.</p>'
+      + b.contracts.map((c) => '<div class="rec-row" style="display:block"><b>' + TERMS[c.term].name + '</b> &middot; Level ' + lvl(c.level).no + ', ' + lvl(c.level).title + '<br>' + contractText(c) + ' <span style="color:var(--amber)">(+' + c.xp + ' experience)</span></div>').join('');
     show('casebd', true);
   }
   $('case-back').onclick = () => { show('casebd', false); deploy(); };
@@ -1517,7 +1525,7 @@ function boot() {
   }
   function hqTip() {
     const at = hqStation();
-    return at === 'ops' ? 'E  Assignments' : at === 'trophies' ? 'E  The trophy cabinet' : at === 'case' ? 'E  The case board  (' + Saves.loadCase(slotNo).length + ' clues)' : at === 'skills' ? 'E  Training: your skills' + (pointsLeft(Saves.loadSkills(slotNo)) > 0 ? '  (points to spend)' : '') : at === 'q' ? 'E  Q Branch' + (Saves.loadGadget(slotNo) && ITEMS[Saves.loadGadget(slotNo)] ? '  (signed out: ' + ITEMS[Saves.loadGadget(slotNo)].name + ')' : '') : null;
+    return at === 'ops' ? 'E  Assignments' : at === 'trophies' ? 'E  The trophy cabinet' : at === 'case' ? 'E  The case board  (' + Saves.loadCase(slotNo).filter((id) => CASE.some((c) => c.id === id)).length + ' clues; contracts)' : at === 'skills' ? 'E  Training: your skills' + (pointsLeft(Saves.loadSkills(slotNo)) > 0 ? '  (points to spend)' : '') : at === 'q' ? 'E  Q Branch' + (Saves.loadGadget(slotNo) && ITEMS[Saves.loadGadget(slotNo)] ? '  (signed out: ' + ITEMS[Saves.loadGadget(slotNo)].name + ')' : '') : null;
   }
   function hqUse() {
     const at = hqStation();

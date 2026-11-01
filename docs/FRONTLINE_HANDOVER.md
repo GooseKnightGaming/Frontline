@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.40.0)
+# Frontline — Handover (M6.41.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,14 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.41.0 — contracts
+- **Contracts** (`src/sim/play/contracts.js`; on the case board at Ghost HQ, under the case): replay work, three at a
+  time - a mission (any non-battle draft with objectives, not Kaldberg) and a way of doing it: Unseen, No kills,
+  Against the clock (6-12 minutes), Headhunter (5 headshots), Hands on (3 takedowns), Sharpshooter (60%, 10+ rounds).
+  Done - the mission a success, and done that way - it pays its experience (to the skills) and another takes its
+  place. Seeded from the slot's count (`{ next, open, levels }` in `frontline.contracts.N`, cleared with the slot),
+  so the board does not change until you act. The debrief lists what was paid. `test/contracts.test.mjs`.
 
 ## M6.40.0 — case closed; turning with the stick
 - **Turn with the stick** (touch only, Settings, on by default; the roadmap's "camera follows movement"): walking
