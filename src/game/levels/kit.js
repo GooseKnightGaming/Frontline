@@ -266,7 +266,8 @@ export function buildKitLevel(spec) {
   const pieces = [], signs = [], lamps = [], water = [], lights = [], crates = [], props = [], vehicles = [];
   const level = { world, pieces, signs, lamps, water, lights, crates, props, vehicles, securityTurrets: [], surfaces: [],
     swingDoors: [], guards: [], zones: {}, rules: 'draft', draft: spec.id, title: spec.title, spec,
-    requires: spec.requires || null,         // a Special the mission issues (the hacking kit, for its cameras and turrets)
+    requires: spec.requires || null,
+    weather: spec.weather || null,           // (M6.30) 'rain' | 'wind': its sound, and rain falling where it is open to the sky         // a Special the mission issues (the hacking kit, for its cameras and turrets)
     atmos: spec.atmos || null, missionTime: spec.time || { date: [1, 8, 2026], hour: 14, minute: 0 }, startGear: spec.startGear || null,
     night: !!spec.night, dark: !!spec.dark, bake: spec.bake !== false, lampCap: spec.lampCap || 6,
     navFloors: [], navLinks: [], navCap: spec.navCap || 120000, testNavCap: spec.testNavCap || 0, chaseMax: spec.chaseMax || 0, objectives: [], pickups: [], terminals: [], hostages: [], reach: [] };

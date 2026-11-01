@@ -73,7 +73,7 @@ import { hqSecurity, takeIntrusion } from './levels/hq_security.js';
 import { effects as skillEffects, SKILLS, pointsLeft, train as trainSkill, XP } from '../sim/play/skills.js';
 import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './core/input.js';
 
-const VERSION = 'M6.30.0';
+const VERSION = 'M6.31.0';
 const $ = (id) => document.getElementById(id);
 const TEST = /[?&]test\b/.test(location.search);
 // Level 0, the training mission, is its own page load: index.html?level=0
@@ -2378,6 +2378,32 @@ function boot() {
     S.doorMsg = Math.max(0, (S.doorMsg || 0) - dt);
     if (missionRt) missionRt.draw(dt);
     wview.tickTargets(dt, player.eyePos);
+    // (M6.30) weather: rain or wind - its sound, duller indoors; rain falling about you where you are open to the sky
+    if (level.weather && S.playing) {
+      S.wxT = (S.wxT || 0) - dt;
+      if (S.wxT <= 0) {
+        S.wxT = 0.3;
+        const up = level.world.raycast(player.eyePos, [0, 1, 0], 40, (q) => q.person || q.target);
+        S.wxOpen = !up;
+      }
+      audio.weather && audio.weather(level.weather, level.weather === 'wind' ? 0.1 : 0.13, S.wxOpen);
+      if (level.weather === 'rain') {
+        if (!S.rain) {
+          const m = new pc.StandardMaterial(); m.diffuse = new pc.Color(0.7, 0.75, 0.82); m.emissive = new pc.Color(0.25, 0.27, 0.3); m.opacity = 0.35; m.blendType = pc.BLEND_NORMAL; m.depthWrite = false; m.update();
+          S.rain = [];
+          for (let i = 0; i < 70; i++) {
+            const e = new pc.Entity('rain'); e.addComponent('render', { type: 'box', material: m, castShadows: false }); e.setLocalScale(0.012, 0.5, 0.012);
+            app.root.addChild(e); S.rain.push({ e, x: (Math.random() - 0.5) * 16, y: Math.random() * 12, z: (Math.random() - 0.5) * 16 });
+          }
+        }
+        const c = player.eyePos;
+        for (const r of S.rain) {
+          r.y -= dt * 11; if (r.y < -3) { r.y = 9 + Math.random() * 3; r.x = (Math.random() - 0.5) * 16; r.z = (Math.random() - 0.5) * 16; }
+          if (r.e.enabled !== !!S.wxOpen) r.e.enabled = !!S.wxOpen;
+          if (S.wxOpen) r.e.setPosition(c[0] + r.x, c[1] + r.y, c[2] + r.z);
+        }
+      }
+    } else if (S.rain || (audio.wx && !level.weather)) { audio.weather && audio.weather(null); }
     // (M6.30) the grappling line, from your hands to where it holds, while it takes you up
     {
       const tr = player.traverse;

@@ -13,7 +13,7 @@ export default {
     ['Security', 'Cameras in the lobby, on every floor\'s landing and in the server room; a turret guarding the servers; a <b>laser</b> across the top floor\'s corridor; three <b>maglocks</b>; the first floor\'s lights; the alarm - all run from the <b>security office</b>. You carry a <b>hacking kit</b>. Varn carries a <b>keycard</b>. The security chief has the <b>radio</b>; there is an <b>engineer</b> on the first floor, and a man with a <b>ballistic shield</b> on the top floor\'s landing.'],
     ['Objectives', '<b>Plant a bug</b> in the boardroom. <b>Copy Varn\'s mail</b> at his desk. Take the <b>prototype</b> from the server room. Optionally, stop <b>Mr Varn</b>.'],
   ],
-  time: { date: [24, 11, 2026], hour: 22, minute: 30 }, night: true, faction: 'red', requires: 'HACKKIT',
+  time: { date: [24, 11, 2026], hour: 22, minute: 30 }, night: true, faction: 'red', requires: 'HACKKIT', weather: 'rain',
   extractName: 'the van in the yard',
   outside: { backdrop: 'city', mat: 'asphalt', margin: 16 },
   floors: {

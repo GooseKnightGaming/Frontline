@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.30.0)
+# Frontline — Handover (M6.31.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,11 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.31.0 — (in progress)
+- **Weather** (the roadmap's "weather ambience"): a level's `weather: 'rain' | 'wind'` - its sound (synthesised: filtered
+  noise; duller and quieter indoors - anything over your head within 40 m), and rain falling round you when you are open
+  to the sky. Rain at the Archive and the Tower, wind on the Listening Station's cliffs.
 
 ## M6.30.0 — stealth tools, dogs, disguises, three more levels
 - **Lockpicking, properly** (Rhys, M6.9.13): with the Lockpicks (gear), hold E at an ordinary locked door - 4 s (Hacker

@@ -315,6 +315,25 @@ export class Audio {
     e.gn.gain.setTargetAtTime(boat ? 0.05 + 0.25 * r : 0.02, t, 0.2);
     e.g.gain.setTargetAtTime(gain * (0.55 + 0.45 * r), t, 0.1);
   }
+  // (M6.30, "weather ambience") rain or wind, as a bed under everything: filtered noise, its loudness and its
+  // brightness set each frame (indoors: quieter and duller). kind null stops it.
+  weather(kind, gain, open) {
+    if (!this.ready) return;
+    const c = this.ctx, t = c.currentTime;
+    let w = this.wx;
+    if (!kind || gain <= 0.001) { if (w) { w.g.gain.setTargetAtTime(0.0001, t, 0.3); } return; }
+    if (!w || w.kind !== kind) {
+      if (w) { try { w.n.stop(t + 0.5); } catch (e) { /* stopped */ } }
+      const n = c.createBufferSource(); n.buffer = this.noise(3); n.loop = true;
+      const f = c.createBiquadFilter(); f.type = kind === 'wind' ? 'bandpass' : 'lowpass'; f.frequency.value = kind === 'wind' ? 500 : 3200; f.Q.value = kind === 'wind' ? 0.7 : 0.4;
+      const g = c.createGain(); g.gain.value = 0.0001;
+      n.connect(f); f.connect(g); g.connect(this.master); n.start();
+      w = this.wx = { kind, n, f, g, t0: t };
+    }
+    const sway = kind === 'wind' ? 0.6 + 0.4 * Math.sin(t * 0.37) * Math.sin(t * 0.13 + 1) : 1;
+    w.g.gain.setTargetAtTime(gain * sway * (open ? 1 : 0.35), t, 0.4);
+    w.f.frequency.setTargetAtTime(kind === 'wind' ? 350 + 400 * sway : (open ? 3200 : 900), t, 0.4);
+  }
   // getting in: a thump as you drop into the seat, the starter, the engine catching
   board(boat) {
     this.burst({ length: 0.14, from: 260, to: 90, gain: 0.25, q: 0.9 });
