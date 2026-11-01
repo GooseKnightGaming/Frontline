@@ -770,7 +770,7 @@ export class Arsenal {
     const speed = w.throw * (opts.short ? 0.45 : 1);
     this.projectiles.push({
       id: this.current, pos: [eye[0] + dir[0] * 0.4, eye[1] + dir[1] * 0.4, eye[2] + dir[2] * 0.4],
-      vel: [dir[0] * speed, dir[1] * speed + 1.5, dir[2] * speed], fuse: w.fuse, spin: 0,
+      vel: [dir[0] * speed, dir[1] * speed + 1.5, dir[2] * speed], fuse: w.fuse, spin: 0, aim: dir.slice(),
     });
     this.events.push({ type: 'throw', id: this.current, noise: 0.3 });
     this.lastNoise = 0.3;
@@ -937,6 +937,8 @@ export class Arsenal {
     if (w.lure) { this.events.push({ type: 'lure', id: p.id, pos: p.pos.slice(), noise: w.noise || 1.3 }); return; }
     // a tracker: no bang - it reports (the game puts what it sees on your radar)
     if (w.tracker) { this.events.push({ type: 'tracker', id: p.id, pos: p.pos.slice(), on: p.stuck || null }); return; }
+    // (M6.30) a remote camera: where it came to rest, looking the way it was thrown
+    if (w.remoteCam) { this.events.push({ type: 'rcam', id: p.id, pos: p.pos.slice(), aim: (p.aim || [0, 0, -1]).slice() }); return; }
     this.lastNoise = 1.6;
     this.events.push({ type: 'blast', id: p.id, pos: p.pos.slice(), radius: w.blast, noise: 1.6,
       flash: !!w.blind, blind: w.blind || 0, smoke: w.smoke || (w.gas === 'fire' ? w.burn || 6 : 0), gas: w.gas || null, damage: w.damage || 0, breach: !!w.breach, emp: !!w.emp });

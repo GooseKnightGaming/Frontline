@@ -2012,7 +2012,17 @@ function boot() {
         if (S.cctvHome) { input.yaw = S.cctvHome.yaw; input.pitch = S.cctvHome.pitch; player.yaw = input.yaw; S.cctvHome = null; }
       };
       if ((S.cctv != null || S.snakeCam) && (inp.moveX || inp.moveZ || inp.jumpPressed || inp.fire)) stopCctv();
-      if (inp.interactPressed && S.snakeCam) { stopCctv(); audio.confirm(); }
+      // (M6.30) the remote cameras: E steps on to the next, and past the last back to your own eyes
+      const viewRemote = (i) => {
+        const cams = level.remoteCams || [];
+        if (i >= cams.length) { stopCctv(); return; }
+        if (!S.snakeCam) { S.cctvHome = { yaw: input.yaw, pitch: input.pitch }; S.cctvRef = { yaw: input.yaw, pitch: input.pitch }; }
+        S.snakeCam = cams[i]; S.remoteI = i;
+        $('cctv').style.display = 'block'; $('cctv-label').textContent = cams[i].label.toUpperCase() + '   (' + (i + 1) + ' / ' + cams.length + ')   E next, move to stop';
+        audio.confirm();
+      };
+      if (inp.interactPressed && S.snakeCam && S.snakeCam.label && /^Remote/.test(S.snakeCam.label)) viewRemote((S.remoteI || 0) + 1);
+      else if (inp.interactPressed && S.snakeCam) { stopCctv(); audio.confirm(); }
       else if (inp.interactPressed && cctv && cctv.cameras.length && (S.cctv != null ||
           atAConsole(cctv))) {
         if (S.cctv == null) S.cctvHome = { yaw: input.yaw, pitch: input.pitch };
@@ -2076,7 +2086,7 @@ function boot() {
         } else if (d) {
           for (const s of level.world.solids) if (s.tag === d || s.tag === d + '_top') s.disabled = true;
           syncDoors(); audio.confirm();
-        } else { const c = crateNear(); if (c) showCrate(c); }
+        } else { const c = crateNear(); if (c) showCrate(c); else if ((level.remoteCams || []).length) viewRemote(0); }
       }
       if (inp.reloadPressed) arsenal.reload();
       // firing: a single press for everything except the rifle, which holds
@@ -2204,6 +2214,12 @@ function boot() {
       if (ev.type === 'breachShot') { const b = { breach: true, pos: ev.pos }; if (missionRt && MISSION) missionRt.onBlast(b); else blastDoors(b); }
       if (missionRt && (ev.type === 'shot' || ev.type === 'blast' || ev.type === 'bash' || ev.type === 'lure')) missionRt.hear(ev);
       // a lure chirps where it lies; glassware a round passes through shatters and rings
+      // (M6.30) a remote camera, come to rest: one more to look through
+      if (ev.type === 'rcam') {
+        const a = ev.aim, l = Math.hypot(a[0], a[2]) || 1, pos = [ev.pos[0], ev.pos[1] + 0.15, ev.pos[2]];
+        (level.remoteCams = level.remoteCams || []).push({ pos, look: [pos[0] + a[0] / l * 8, pos[1] - 0.4, pos[2] + a[2] / l * 8], label: 'Remote camera ' + (level.remoteCams.length + 1) });
+        S.noteText = 'Remote camera placed - E (with nothing else at hand) looks through it'; S.noteT = 3; audio.confirm();
+      }
       // (M6.29) a tracker: on a man, he is on your radar for good; on the ground, all round it for two minutes
       if (ev.type === 'tracker') {
         const who = ev.on && ev.on.guard;

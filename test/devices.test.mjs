@@ -295,4 +295,13 @@ T('the tracker: no bang - it reports where it is, or whom it is stuck to; the ra
   A(/who\.tracked = true/.test(mn) && /tracked \? 'intel' : null/.test(mn), 'not on the radar');
 });
 
+T('the remote camera: it reports where it came to rest and which way it looks; E looks through it', () => {
+  const w = new World(), a = new Arsenal(w);
+  a.detonate({ id: 'RCAM', pos: [3, 0, 4], aim: [1, 0, 0] }, null);
+  const ev = a.events.find((e) => e.type === 'rcam');
+  A(ev && ev.pos[0] === 3 && ev.aim[0] === 1 && !a.events.some((e) => e.type === 'blast'), JSON.stringify(a.events));
+  const mn = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8');
+  A(/ev\.type === 'rcam'/.test(mn) && /viewRemote\(0\)/.test(mn), 'not looked through');
+});
+
 console.log(fails.length ? '\nFAILURES (' + fails.length + '):\n' + fails.map((f) => '  * ' + f).join('\n') : '\nALL ' + pass + ' PASSED');

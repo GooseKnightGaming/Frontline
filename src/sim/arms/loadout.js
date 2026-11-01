@@ -140,6 +140,10 @@ export const ITEMS = {
   // (M6.29, Rhys: "trackers and remote cameras - placed, they report the enemies in that area; or stuck to one
   // person, his exact whereabouts") thrown: stuck to a man, he is on your radar wherever he goes; on the
   // ground, anyone within 12 m of it is
+  // (M6.30, Rhys's "remote cameras") a camera you throw: it sticks where it lands, looking the way you threw it; with
+  // nothing else at hand, E looks through your cameras one after another (move, or E past the last, to stop)
+  RCAM:     { name: 'Remote Camera', family: 'grenade', kg: 0.25, count: 2, fuse: 0.3, throw: 14, blast: 0, damage: 0, sticky: true, remoteCam: true, model: 'Grenade',
+              note: 'Throw it: it sticks where it lands, looking the way you threw it. E (with nothing else at hand) looks through your cameras.' },
   TRACKER:  { name: 'Tracker', family: 'grenade', kg: 0.2, count: 3, fuse: 0.4, throw: 15, blast: 0, damage: 0, sticky: true, tracker: true, model: 'Grenade',
               note: 'Throw it: stuck to a man, he shows on your radar wherever he goes; on the ground or a wall, anyone within 12 m of it does (for two minutes).' },
   FLASH:    { name: 'Flashbang', family: 'grenade', count: 2, fuse: 1.8, throw: 17, blast: 9, damage: 0, blind: 4.5, model: 'Grenade' },
@@ -593,7 +597,7 @@ export const CLASSES = [
   { id: 'SPY', name: 'Spy', role: 'Infiltrates enemy lines - ideally without being detected. Retrieves information from hard-to-reach, heavily fortified places.', arms: 'v19p',
     kit: { primary: 'V19P', backup: 'V27C', utility1: 'LURE', utility2: 'NERVE', gear: 'GASMASK', mods: { primary: ['SILENCER'], backup: ['SILENCER'] } }, special: 'QID',
     guns: ['V19P', 'MP2', 'V27C', 'PX19', 'V99', 'PX9', 'KNIFE'],
-    utility: ['LURE', 'NERVE', 'SMOKE', 'FLASH', 'CONCUSS', 'REMOTE', 'EMPGREN', 'TRACKER'],
+    utility: ['LURE', 'NERVE', 'SMOKE', 'FLASH', 'CONCUSS', 'REMOTE', 'EMPGREN', 'TRACKER', 'RCAM'],
     gear: ['GASMASK', 'LOCKKIT', 'INTEL', 'EMFSCAN', 'UVGOGS', 'NVG', 'MULTIVIS', 'HACKSUIT'] },
   { id: 'PILOT', name: 'Pilot', role: 'Trained to fly and steer aircraft and watercraft - and to keep them going.', arms: 'smg',
     kit: { primary: 'MP2', backup: 'PX19', utility1: 'REPAIRKIT', utility2: 'SMOKE', gear: 'PARACHUTE' }, special: 'AUTOREPAIR',

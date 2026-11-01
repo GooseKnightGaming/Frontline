@@ -19,6 +19,9 @@ game into the repository's root.
   dart it to sleep; a dog whose handler is down stays by him. Drawn in code (a body of boxes, legs going as it runs,
   its tail); barks and bites are synthesised. In the Prison's yard, the Listening Station's fence and the Megayacht's
   pier. `test/dog.test.mjs`.
+- **The Remote Camera** (`RCAM`, a utility; Rhys's "remote cameras"): thrown, it sticks where it lands, looking the way you
+  threw it; with nothing else at hand, E looks through your cameras in turn (the CCTV view; E on to the next, move to stop).
+  The Spy may carry it.
 - **The Snake Camera** (Q Branch, `QSNAKE`; the roadmap's "peeking under or through" a door): crouched at a shut door, E
   slides a camera under it - the other side, through the CCTV view (the mouse looks about); E or moving stops it.
 
