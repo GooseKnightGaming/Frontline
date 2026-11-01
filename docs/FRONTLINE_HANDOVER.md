@@ -36,6 +36,9 @@ game into the repository's root.
 - **Reserves** (`reserve: true` on a guard): not there at the start; the radio operator getting through, or the siren,
   calls them in - they come from where they are placed (the gate, the dock) straight for you. Four at the Listening
   Station's gate, two at the Tower's dock. (Not counted for "clear the place".)
+- **The hold-up**: come up behind a guard who has not made you out, your gun on him from within 5 m, and he freezes,
+  hands up ("Don't shoot!"). E questions him: every one of his side on your radar for 25 s, and his keycard if he carries
+  one. Take him down then, or walk off (10 m) or keep your gun off him for 7 s, and he raises the alarm.
 - **The Snake Camera** (Q Branch, `QSNAKE`; the roadmap's "peeking under or through" a door): crouched at a shut door, E
   slides a camera under it - the other side, through the CCTV view (the mouse looks about); E or moving stops it.
 

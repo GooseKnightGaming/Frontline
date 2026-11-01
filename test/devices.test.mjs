@@ -321,4 +321,9 @@ T('reserves: not there until the radio or the siren calls them in', () => {
   A(/callReserves\(g\.faction, player\.pos\.slice\(\)\)/.test(rt) && /callReserves\(bell\.owner, pos\)/.test(rt), 'never called');
 });
 
+T('the hold-up: from behind, unseen, a gun on him close by - he freezes; E questions him; leave him and he calls it in', () => {
+  A(/const holdUps = \(dt\) =>/.test(rt) && /off < HOLD\.behind/.test(rt) && /g\.heldUp\) \{ g\.speed = 0; continue; \}/.test(rt), 'no hold-up');
+  A(/level\.revealT = Math\.max\(level\.revealT \|\| 0, 25\)/.test(rt) && /'E  Question him/.test(rt), 'no questioning');
+});
+
 console.log(fails.length ? '\nFAILURES (' + fails.length + '):\n' + fails.map((f) => '  * ' + f).join('\n') : '\nALL ' + pass + ' PASSED');

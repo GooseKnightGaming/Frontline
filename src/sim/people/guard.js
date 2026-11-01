@@ -152,6 +152,7 @@ export const LINES = {
   fixed: ['Security is back online.', 'There. The system is back up.'],
   medic: ['Man down - I am going to him!', 'Hold on - I am coming!'],
   relocate: ['Moving!', 'Changing position!'],
+  surrender: ['All right, all right - don\'t shoot!', 'Easy... I\'m not armed. Easy.'],
   fallback: ['Falling back!', 'I am hit - falling back!'],
   revived: ['Easy. You are all right. Who did this?', 'Up you get. Slowly.'],
   coming: ['On my way!', 'Coming!'],

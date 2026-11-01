@@ -1116,6 +1116,48 @@ export function setupMission(ctx) {
     el.style.display = rt.disguise ? 'block' : 'none';
     if (rt.disguise) { el.textContent = 'DISGUISED - ' + (rt.disguise === 'yellow' ? 'YELLOW' : 'RED') + ' UNIFORM'; el.style.background = rt.disguise === 'yellow' ? 'rgba(232,180,35,0.85)' : 'rgba(200,50,40,0.85)'; el.style.color = '#111'; }
   };
+  // (M6.30) the hold-up: come up behind a man who has not seen you, your gun on him from close by, and he
+  // freezes, hands up. E questions him: where every one of his side is (your radar, a while), and his keycard if
+  // he has one. Leave him - walk off, or keep your gun off him too long - and he raises the alarm.
+  const HOLD = { reach: 5, behind: 1.9, keep: 7, leave: 10 };
+  const holdUps = (dt) => {
+    const aim = S.aimNow;
+    for (const g of guards) {
+      if (!g.heldUp) continue;
+      if (g.dead || (g.target && g.target.down)) { g.heldUp = false; continue; }
+      const d = Math.hypot(g.pos[0] - player.pos[0], g.pos[2] - player.pos[2]);
+      g.heldT = (aimingAt(g) ? 0 : (g.heldT || 0) + dt);
+      if (d > HOLD.leave || g.heldT > HOLD.keep || player.mode === 'dead') {
+        g.heldUp = false; g.awareness = 1; g.stim = player.pos.slice(); g.since = 0; g.state = 'alert'; g.stateT = 0;
+        alarm(g, player.pos.slice());
+        showHint('He has his nerve back - and he is calling it in.');
+      }
+    }
+    if (!aim || !aim.aim || player.mode === 'dead') return;
+    const g = aimedGuard();
+    if (!g || g.heldUp || g.questioned || g.dead || g.faction === 'staff' || g.neutral || g.state === 'alert' || g.awareness > 0.5) return;
+    const dx = player.pos[0] - g.pos[0], dz = player.pos[2] - g.pos[2], d = Math.hypot(dx, dz);
+    if (d > HOLD.reach) return;
+    const off = Math.abs(((Math.atan2(-dx, -dz) - g.yaw + Math.PI * 3) % (Math.PI * 2)) - Math.PI);
+    if (off < HOLD.behind) return;                                // he would have to be facing away from you
+    g.heldUp = true; g.heldT = 0; g.path = null; g.speed = 0;
+    bark(g, lineFor('surrender'), 'surrender');
+    showHint('Hands up - he freezes. E: question him. Keep your gun on him, and stay close.');
+  };
+  const aimedGuard = () => {
+    const aim = S.aimNow; if (!aim || !aim.dir) return null;
+    const h = level.world.raycast(player.eyePos, aim.dir, 12, (q) => q.glass || q.shootThrough);
+    return (h && h.solid && h.solid.target && h.solid.target.guard) || null;
+  };
+  const aimingAt = (g) => S.aimNow && S.aimNow.aim && aimedGuard() === g;
+  const heldNear = () => guards.find((g) => g.heldUp && !g.questioned && Math.hypot(g.pos[0] - player.pos[0], g.pos[2] - player.pos[2]) < 2.2) || null;
+  const question = (g) => {
+    g.questioned = true; level.revealT = Math.max(level.revealT || 0, 25);
+    let got = '';
+    if (g.card) { haveCard.add(g.card); got = ' He hands over his keycard, too.'; g.card = null; }
+    audio.confirm();
+    showHint('He talks: every one of his side is on your radar for 25 seconds.' + got + ' (Take him down now, or he will raise the alarm when you go.)');
+  };
   // keycards: dropped by the officers who carry them; taken, they open their network's maglocks (2 s, no trace)
   const cards = [], haveCard = new Set();
   const keyCardMat = (() => { const mt = new pc.StandardMaterial(); mt.diffuse = new pc.Color(0.9, 0.9, 0.92); mt.emissive = new pc.Color(0.25, 0.35, 0.5); mt.update(); return mt; })();
@@ -1535,8 +1577,10 @@ export function setupMission(ctx) {
           if (e.type === 'gone') showHint(job.gaveUp ? 'The Yellows are gone - without their locket.' : 'The Yellows are gone, the locket with them.');
         }
       }
+      holdUps(simDt);
       for (const g of guards) {
         if (g.dormant) continue;                     // the train's hijackers, before the hijack
+        if (g.heldUp) { g.speed = 0; continue; }     // (M6.30) hands up: he does nothing
         const was = g.state;
         g.neutral = neutral(g);
         if (rel) {
@@ -1921,6 +1965,7 @@ export function setupMission(ctx) {
       const hn = hostageNear();
       if (hn) { const tip = hostageTip(hn); if (tip) return tip; }
       if (cardNear()) return 'E  Take his keycard';
+      if (heldNear()) return 'E  Question him   (F  Take him down)';
       { const bn = bodyNear(); if (bn && !rt.disguise && !dropNear()) return 'E  Take his uniform (a disguise)'; }
       const dn = dropNear();
       if (dn) { const tip = dropTip(dn); if (tip) return tip; }
@@ -2036,6 +2081,7 @@ export function setupMission(ctx) {
         if (hn && hn.free) { hn.order(); audio.click(); return true; }
         if (hn && hn.state === 'held') return true;            // freeing is a hold: E held, in tick
         { const cn = cardNear(); if (cn) { takeCard(cn); return true; } }
+        { const hn = heldNear(); if (hn) { question(hn); return true; } }
         { const bn = !rt.disguise && !dropNear() && bodyNear(); if (bn) { takeUniform(bn); return true; } }
         const dn = dropNear(); if (dn && takeDrop(dn)) return true;
         // the reds' ledger, from the Cash Vault

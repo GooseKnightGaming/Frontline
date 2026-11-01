@@ -58,7 +58,7 @@ export const INTERCEPT = {
 };
 
 // how much a line matters: a more important one cuts across a lesser one
-export const PRIORITY = { alert: 3, hit: 3, manDown: 3, wake: 3, shotAt: 2, lost: 2, reload: 2, backup: 2, coming: 1, hold: 1, alertRival: 3, y_alert: 3, y_alertYou: 3, y_hit: 3, y_manDown: 3, y_shotAt: 2, y_reload: 2, y_lost: 2, talk: 3, down: 2, y_down: 2, radio: 3, fixing: 2, fixed: 2, medic: 2, revived: 2, relocate: 1, fallback: 2 };
+export const PRIORITY = { alert: 3, hit: 3, manDown: 3, wake: 3, shotAt: 2, lost: 2, reload: 2, backup: 2, coming: 1, hold: 1, alertRival: 3, y_alert: 3, y_alertYou: 3, y_hit: 3, y_manDown: 3, y_shotAt: 2, y_reload: 2, y_lost: 2, talk: 3, down: 2, y_down: 2, radio: 3, fixing: 2, fixed: 2, medic: 2, revived: 2, relocate: 1, fallback: 2, surrender: 3 };
 
 function hash(s) {
   let h = 2166136261;
