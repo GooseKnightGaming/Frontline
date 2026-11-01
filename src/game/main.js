@@ -70,6 +70,7 @@ import { holdLiftFor } from '../sim/people/hostage.js';
 import { DoorMove } from '../sim/world/doors.js';
 import { kickOpens } from '../sim/play/mission.js';
 import { hqSecurity, takeIntrusion } from './levels/hq_security.js';
+import { effects as skillEffects, SKILLS, pointsLeft, train as trainSkill, XP } from '../sim/play/skills.js';
 import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './core/input.js';
 
 const VERSION = 'M6.29.0';
@@ -232,6 +233,9 @@ function boot() {
   };
   let missionRt = null;
   const arsenal = new Arsenal(level.world, { loadout });
+  // (M6.29) the run's skills (sim/play/skills.js): their multipliers, on you and your weapons
+  const applySkills = (n) => { const fx = skillEffects(Saves.loadSkills(n)); player.skills = fx; arsenal.skills = fx; };
+  applySkills(Saves.currentSlot());
   applyLoad();
   const wview = new WeaponView(pc, app, cam, arsenal);
   wview.buildTargets(level.world, view.tex);
@@ -354,7 +358,7 @@ function boot() {
     S.kickText = 'It held';
     audio.bash();
     player.noise = Math.max(player.noise || 0, 0.8);
-    if (kickOpens(d, Math.random())) { d.breachWith(level.swingDoors, player.pos, 'kick'); audio.door(false); S.kickMsg = 0; }   // no stale 'It held' once it gives
+    if (kickOpens(d, Math.random() / ((player.skills && player.skills.breacher) || 1))) { d.breachWith(level.swingDoors, player.pos, 'kick'); audio.door(false); S.kickMsg = 0; }   // no stale 'It held' once it gives
     else { S.kickMsg = 1.2; audio.hitHard(1); }
     return true;
   }
@@ -594,6 +598,7 @@ function boot() {
     course: course && !course.done ? { part: course.part || 'full', at: course.at } : null });
   function applySave(s) {
     if (!s) return false;
+    applySkills(slotNo);
     // a save (or a transfer code) brings its story with it
     if (s.story && !Saves.loadStory(slotNo)) Saves.saveStory(slotNo, s.story);
     if (s.trophies && !Trophies.earned(slotNo).length) Trophies.restore(slotNo, s.trophies);
@@ -881,6 +886,24 @@ function boot() {
   $('mend-yard').onclick = goYard;
   $('mend-again').onclick = () => location.reload();
   $('btn-trophies').onclick = () => tab('trophies');
+  $('btn-skills').onclick = () => tab('skills');
+  // (M6.29) the skills tree: experience from missions buys ranks - trained between missions, not on one
+  function drawSkills() {
+    const st = Saves.loadSkills(slotNo), left = pointsLeft(st), canTrain = !ON_MISSION;
+    const toNext = XP.perPoint - ((st.xp || 0) % XP.perPoint);
+    $('skill-sum').innerHTML = 'Experience <b>' + (st.xp || 0) + '</b> &middot; skill points to spend: <b>' + left + '</b> &middot; the next in ' + toNext
+      + (canTrain ? '' : '<br><i>Train between missions - at Ghost HQ, or in Yard 7.</i>');
+    const list = $('skill-list'); list.innerHTML = '';
+    for (const [id, s] of Object.entries(SKILLS)) {
+      const r = (st.ranks || {})[id] || 0, row = document.createElement('div');
+      row.className = 'skill-row';
+      row.innerHTML = '<span class="sk"><b>' + s.name + '</b><i>' + s.about + '</i></span><span class="pips">' + '\u25cf'.repeat(r) + '\u25cb'.repeat(s.ranks - r) + '</span>';
+      const b = document.createElement('button'); b.className = 'btn'; b.textContent = r >= s.ranks ? 'Full' : 'Train';
+      b.disabled = !canTrain || r >= s.ranks || left <= 0;
+      b.onclick = () => { const next = trainSkill(Saves.loadSkills(slotNo), id); if (!next) return; Saves.saveSkills(slotNo, next); applySkills(slotNo); audio.confirm(); drawSkills(); };
+      row.appendChild(b); list.appendChild(row);
+    }
+  }
   $('btn-gear').onclick = () => tab('gear');
   // (Rhys: "choose your New Class upon every death") down in a battle: 1-7 (or a click) picks
   // the class you go back in as; nothing pressed, you go back in as you were
@@ -1144,8 +1167,9 @@ function boot() {
     show('menu', true);
   }
   function tab(name) {
-    for (const t of ['main', 'controls', 'settings', 'howto', 'trophies', 'gear']) $('tab-' + t).style.display = t === name ? 'block' : 'none';
+    for (const t of ['main', 'controls', 'settings', 'howto', 'trophies', 'gear', 'skills']) $('tab-' + t).style.display = t === name ? 'block' : 'none';
     if (name === 'trophies') drawTrophies();
+    if (name === 'skills') drawSkills();
     if (name === 'gear') drawGear();
     if (name === 'controls') drawBindings();
     if (name === 'settings') drawSettings();

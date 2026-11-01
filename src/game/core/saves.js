@@ -45,7 +45,7 @@ export function saveSlot(n, data) {
 export function loadSlot(n) { return listSlots()[n]; }
 // erasing a slot ends its run: the save, its story and its trophies
 export function clearSlot(n) {
-  try { for (const k of [KEY(n), STORY(n), TROPHIES(n), ARMOURY(n), GADGET(n), RECORD(n), 'frontline.lantern.' + n]) localStorage.removeItem(k); return true; } catch (e) { return false; }
+  try { for (const k of [KEY(n), STORY(n), TROPHIES(n), ARMOURY(n), GADGET(n), RECORD(n), SKILLS(n), 'frontline.lantern.' + n]) localStorage.removeItem(k); return true; } catch (e) { return false; }
 }
 // the first slot with no run in it, or -1
 export function freeSlot() {
@@ -169,6 +169,11 @@ export function recordSummary(rec) {
     fav: fav ? fav[0] : null,
   };
 }
+// (M6.29) the run's skills: experience earned, and the ranks bought with it (sim/play/skills.js)
+const SKILLS = (n) => 'frontline.skills.' + n;
+export function loadSkills(n) { try { return JSON.parse(localStorage.getItem(SKILLS(n)) || 'null') || { xp: 0, ranks: {} }; } catch (e) { return { xp: 0, ranks: {} }; } }
+export function saveSkills(n, s) { try { localStorage.setItem(SKILLS(n), JSON.stringify(s)); return true; } catch (e) { return false; } }
+export function addXp(n, xp) { const s = loadSkills(n); s.xp = (s.xp || 0) + (xp || 0); saveSkills(n, s); return s; }
 const ARMOURY = (n) => 'frontline.armoury.' + n;
 export function loadArmoury(n) { try { return JSON.parse(localStorage.getItem(ARMOURY(n)) || '[]') || []; } catch (e) { return []; } }
 export function saveArmoury(n, ids) { try { localStorage.setItem(ARMOURY(n), JSON.stringify(ids || [])); return true; } catch (e) { return false; } }

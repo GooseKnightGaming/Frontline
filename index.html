@@ -220,6 +220,10 @@
   #q-list .btn.on { background: #e8b423; color: #111; }
   .rec-row { display: flex; justify-content: space-between; gap: 12px; padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 14px; }
   .rec-row b { color: #e8b423; text-align: right; }
+  .skill-row { display: flex; align-items: center; gap: 10px; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.08); text-align: left; }
+  .skill-row .sk { flex: 1; font-size: 14px; } .skill-row .sk i { display: block; font-size: 12px; opacity: 0.75; font-style: normal; }
+  .skill-row .pips { color: #e8b423; letter-spacing: 3px; min-width: 52px; }
+  .skill-row .btn { width: auto; margin: 0; padding: 4px 12px; }
 </style>
 </head>
 <body>
@@ -430,12 +434,19 @@
       <button class="btn" id="btn-skip-weap" style="display:none">Skip weapons training</button>
       <button class="btn" id="btn-skip-all" style="display:none">Skip the whole course</button>
       <button class="btn" id="btn-trophies">Trophies</button>
+      <button class="btn" id="btn-skills">Skills</button>
       <button class="btn" id="btn-save">Save game</button>
       <button class="btn" id="btn-title">Title screen</button>
     </div>
     <div class="tab" id="tab-gear">
       <h2>YOUR GEAR</h2>
       <div id="gear-list" style="text-align:left;font-size:14px;line-height:1.5"></div>
+      <button class="btn btn-back">Back</button>
+    </div>
+    <div class="tab" id="tab-skills">
+      <h2>SKILLS</h2>
+      <p id="skill-sum" style="font-size:14px"></p>
+      <div id="skill-list"></div>
       <button class="btn btn-back">Back</button>
     </div>
     <div class="tab" id="tab-trophies">

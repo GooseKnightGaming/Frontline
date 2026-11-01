@@ -23,6 +23,7 @@ import { rewardFor } from '../../sim/play/rewards.js';
 import { deviceView } from '../draw/devices_view.js';
 import { makeTarget } from '../../sim/arms/weapons.js';
 import { markIntrusion, downLantern } from './hq_security.js';
+import { xpFor, pointsAt } from '../../sim/play/skills.js';
 import { Device, stepDevice, setMode, Trace, HACK, MODES, SIREN, darkAt, sirenFor, syncLocks, modeSays, lightsOut, breaks } from '../../sim/world/devices.js';
 
 
@@ -1393,7 +1394,8 @@ export function setupMission(ctx) {
         smokes: smokes.filter((c) => c.until > m.time),
         you: { pos: player.pos, eye: player.eyePos, chest: [player.pos[0], player.pos[1] + h * 0.55, player.pos[2]],
           stance: player.stance, speed: Math.hypot(player.vel[0], player.vel[2]),
-          camo: (arsenal && arsenal.loadout && arsenal.loadout.gearTrait('camo')) || 0,
+          // (M6.29) Shadow: guards slower to make you out, with or without the camouflage
+          camo: (() => { const c = (arsenal && arsenal.loadout && arsenal.loadout.gearTrait('camo')) || 0, sh = (player.skills && player.skills.shadow) || 1; return c ? c * sh : sh < 1 ? sh : 0; })(),
           noise: player.mode === 'dead' ? 0 : player.noise || 0, box: player.box() },
       };
       if (player.mode === 'dead' || m.done) ctxG.you = null;
@@ -1417,9 +1419,9 @@ export function setupMission(ctx) {
       }
       // a terminal: progress while E is held, nothing lost if you let go - but walk away and it starts again
       simDtNow = simDt;
-      { const tn = terminalNear(); if (tn && !tn.done && input.held('interact') && player.mode !== 'dead' && !S.dialog) { rt.hackT = (rt.hackT || 0) + simDt * ((arsenal && arsenal.loadout && arsenal.loadout.gearTrait('hackSpeed')) || 1); if (tn.net) { traced(tn.net, tn.pos); if (Math.random() < simDt * 1.5) noises.push({ pos: tn.pos, loud: 0.35 }); } if (rt.hackT >= tn.time) { rt.hackT = 0; hacked(tn); } } else if (!tn) rt.hackT = 0; }
+      { const tn = terminalNear(); if (tn && !tn.done && input.held('interact') && player.mode !== 'dead' && !S.dialog) { rt.hackT = (rt.hackT || 0) + simDt * ((arsenal && arsenal.loadout && arsenal.loadout.gearTrait('hackSpeed')) || 1) * ((player.skills && player.skills.hacker) || 1); if (tn.net) { traced(tn.net, tn.pos); if (Math.random() < simDt * 1.5) noises.push({ pos: tn.pos, loud: 0.35 }); } if (rt.hackT >= tn.time) { rt.hackT = 0; hacked(tn); } } else if (!tn) rt.hackT = 0; }
       // the hacking kit, at a camera or turret: slower, the same choice for that one
-      { const dn = !terminalNear() && deviceNear(); if (dn && input.held('interact') && player.mode !== 'dead' && !S.dialog) { if (rt.kitDev !== dn) { rt.kitDev = dn; rt.kitT = 0; } const card = byCard(dn); rt.kitT += simDt * ((arsenal.loadout.gearTrait('hackSpeed')) || 1); if (dn.net && !card) traced(dn.net, player.pos.slice()); if (card && rt.kitT >= 2) { rt.kitT = 0; rt.kitDev = null; setMode([dn], 'friendly'); syncLocks(devices); dn.known = true; audio.confirm(); showHint((haveCard.has(dn.net) ? 'The keycard' : 'Skeleton Card') + ': the maglock lets go.'); } else if (!card && rt.kitT >= HACK.kit) { rt.kitT = 0; rt.kitDev = null; hackChoice([dn], (gear('hackReach') ? 'Long-Arm Relay: ' : 'Hacking kit: ') + deviceName(dn) + '.'); } } else if (!dn) { rt.kitT = 0; rt.kitDev = null; } }
+      { const dn = !terminalNear() && deviceNear(); if (dn && input.held('interact') && player.mode !== 'dead' && !S.dialog) { if (rt.kitDev !== dn) { rt.kitDev = dn; rt.kitT = 0; } const card = byCard(dn); rt.kitT += simDt * ((arsenal.loadout.gearTrait('hackSpeed')) || 1) * ((player.skills && player.skills.hacker) || 1); if (dn.net && !card) traced(dn.net, player.pos.slice()); if (card && rt.kitT >= 2) { rt.kitT = 0; rt.kitDev = null; setMode([dn], 'friendly'); syncLocks(devices); dn.known = true; audio.confirm(); showHint((haveCard.has(dn.net) ? 'The keycard' : 'Skeleton Card') + ': the maglock lets go.'); } else if (!card && rt.kitT >= HACK.kit) { rt.kitT = 0; rt.kitDev = null; hackChoice([dn], (gear('hackReach') ? 'Long-Arm Relay: ' : 'Hacking kit: ') + deviceName(dn) + '.'); } } else if (!dn) { rt.kitT = 0; rt.kitDev = null; } }
       // cameras and turrets
       if (devices.length) {
         const you = { pos: player.pos, chest: [player.pos[0], player.pos[1] + 1.15, player.pos[2]], dead: player.mode === 'dead' };
@@ -2024,7 +2026,7 @@ export function setupMission(ctx) {
       audio.bash();
       player.noise = Math.max(player.noise || 0, 0.8);
       noises.push({ pos: player.pos.slice(), loud: 0.6 });     // a kick is heard
-      if (kickOpens(d, Math.random())) {
+      if (kickOpens(d, Math.random() / ((player.skills && player.skills.breacher) || 1))) {
         d.breachWith(level.swingDoors, player.pos, 'kick');
         audio.door(false);
         S.kickMsg = 0;                           // no stale 'It held' once it gives
@@ -2119,6 +2121,13 @@ export function setupMission(ctx) {
         rt.recorded = true;
         Saves.addRecord(Saves.currentSlot(), B ? { battles: 1, battlesWon: ok ? 1 : 0, battleKills: m.kills, kills: m.kills, knockouts: m.knockouts, deaths: B.youDown || 0, shotsFired: m.shotsFired, shotsHit: m.shotsHit, headshots: m.headshots, secs: m.time, fav: fav && fav !== 'hands' ? fav : null }
           : { missions: 1, won: ok ? 1 : 0, partial: m.result === 'partial' ? 1 : 0, failed: m.result === 'failed' ? 1 : 0, kills: m.kills, knockouts: m.knockouts, takedowns: m.takedowns, shotsFired: m.shotsFired, shotsHit: m.shotsHit, headshots: m.headshots, spotted: m.spotted, secs: m.time, hacked: m.hacked || 0, traced: m.traced ? 1 : 0, rescued: hostages.length ? rescued() : 0, fav: fav && fav !== 'hands' ? fav : null });
+        // (M6.29) experience, for the skills tree
+        let done = 0;
+        try { done = L0 ? (m.fileDone ? 1 : 0) + (ok ? 1 : 0) : rules.lines(rt.outcome || outcome()).filter((l) => l.ok && !l.neutral).length; } catch (e) { done = 0; }
+        const before = pointsAt(Saves.loadSkills(Saves.currentSlot()).xp);
+        rt.xpGained = xpFor({ battle: !!B, won: ok, result: m.result, objectives: done, trophies: fresh.length });
+        const after = pointsAt(Saves.addXp(Saves.currentSlot(), rt.xpGained).xp);
+        rt.newPoints = after - before;
       }
       $('mend-title').textContent = 'DEBRIEF';
       { const w = document.querySelector('#mend .brief-where'); if (w) w.innerHTML = L0 ? 'Level 0 &middot; Training Mission' : level.draft ? 'Level ' + level.spec.no + ' &middot; ' + level.title + ' (first draft)' : level.factory ? 'Level 2 &middot; Derelict Factory' : level.casino ? 'Level 3 &middot; Casino' : level.trainRun ? 'Level 4 &middot; The Night Train' : 'Level 1 &middot; Riverside Hotel'; }   // (the train's said the hotel)   // (it said Level 0 at the hotel)
@@ -2143,6 +2152,7 @@ export function setupMission(ctx) {
         (m.kills ? row('Headshots', m.headshots + ' of ' + m.kills) : '') +
         row('Favourite weapon', favName) +
         row('Doors breached', m.breaches) +
+        (rt.xpGained ? row('Experience', '+' + rt.xpGained + (rt.newPoints ? ' &mdash; ' + (rt.newPoints === 1 ? 'a skill point' : rt.newPoints + ' skill points') + ' to spend at Ghost HQ' : '')) : '') +
         (devices.length ? row('Security hacked', (m.hacked || 0) + (m.hacked === 1 ? ' time' : ' times') + (m.traced ? ' &mdash; <span class="no">traced</span>: they know where Yard 7 is' : m.hacked ? ' &mdash; never traced' : '')) : '') +
         (m.turretKills ? row('Downed by their own turrets', m.turretKills) : '') +
         (earned.length ? row('Weapon earned', ITEMS[earned[0]].name + ' &mdash; at Logistics in Ghost HQ') : '') +

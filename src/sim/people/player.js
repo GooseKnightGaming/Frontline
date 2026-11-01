@@ -237,6 +237,7 @@ export class Player {
 
   damage(n, why, from) {
     if (this.mode === 'dead' || n <= 0) return;
+    if (this.skills && this.skills.tough && why !== 'fall') n *= this.skills.tough;     // (M6.29) Hard to Kill
     this.health = Math.max(0, this.health - n);
     this.sinceDamage = 0;
     this.events.push({ type: 'hurt', amount: n, why });
@@ -358,7 +359,7 @@ export class Player {
       else if (this.stamina < 0) this.exhausted = true;
     } else {
       this.sinceStamina += dt;
-      if (this.sinceStamina > P.staminaDelay) this.stamina = Math.min(P.staminaMax, this.stamina + P.staminaRegen * (this.buffs && this.buffs.awake > 0 ? 1.5 : 1) * dt);
+      if (this.sinceStamina > P.staminaDelay) this.stamina = Math.min(P.staminaMax, this.stamina + P.staminaRegen * (this.buffs && this.buffs.awake > 0 ? 1.5 : 1) * ((this.skills && this.skills.wind) || 1) * dt);
     }
     if (this.stamina < 0) this.exhausted = true;                        // whatever spent it
     if (this.exhausted && this.stamina >= 0) this.exhausted = false;   // back to zero and you may go again
@@ -371,6 +372,7 @@ export class Player {
       : this.stance === 1 ? (sprinting ? P.noise.crouchSprint : P.noise.crouch)
       : sprinting ? P.noise.sprint : P.noise.walk;
     if (moving && this.load) this.noise *= this.load.noise;   // a heavy kit rattles
+    if (moving && this.skills) this.noise *= this.skills.ghost || 1;     // (M6.29) Light Feet
 
     // a sideways dash: tap sprint while stepping left or right
     this.dashCd = Math.max(0, this.dashCd - dt);

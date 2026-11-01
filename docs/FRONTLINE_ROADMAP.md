@@ -323,7 +323,7 @@ manifest, get out without being seen") will teach us more than any document.
 - **Breaching and hacking** mechanics and training.
 - **Parachutes** and training. **Diving gear** (rebreathers, closed-circuit).
 - **Bullet drop** for long shots (range falloff is already in).
-- **Skills tree.**
+- **Skills tree.** (Started in M6.29.0: experience, points, eight skills of up to three ranks.)
 - **Player accounts / server saves**: codes cover cross-device for now.
 
 ## M8 — Vehicles

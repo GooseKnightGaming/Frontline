@@ -38,6 +38,12 @@ game into the repository's root.
 - **Level 39, Q's Test Range** (`drafts/testrange.js`; the roadmap's "hacking mechanics and training"): five rooms in a
   row, one system each - a camera, a laser, two maglocks (a keycard on the man between them), a lighting panel, a turret
   and its terminal - each with a sign saying how to beat it, and the briefing walking through them. Three reds.
+- **The skills tree** (`src/sim/play/skills.js`; M7's "Skills tree"): every mission and battle gives the run experience
+  (more for success, for each objective done and each new trophy; the debrief says how much); every 300 is a skill point,
+  spent in the menu's **Skills** tab between missions on ranks in eight skills - Hacker (hacking faster), Light Feet
+  (quieter), Shadow (guards slower to make you out), Steady Hands (less spread), Quick Hands (faster reloads), Hard to Kill
+  (less damage), Second Wind (stamina back faster), Breacher (harder kicks). Per run (`Saves.loadSkills/addXp`).
+  `test/skills.test.mjs`.
 - **Weapons drawn in code** (`src/game/draw/gun_models.js`; "weapon models beyond the four Quaternius ones"): shotguns
   (barrel over tube magazine, pump forend, wooden stock), SMGs and machine pistols, light and heavy machine guns (heat
   shield, carry handle, ammunition box, folded bipod), rocket launchers (a tube with its bell and sight), grenade

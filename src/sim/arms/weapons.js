@@ -268,7 +268,7 @@ export class Arsenal {
     if (w.energy) { if (a.mag >= w.mag) return false; this.reloading = w.reload; this.burstLeft = 0; this.events.push({ type: 'vent', id: this.current }); return true; }
     if (a.mag >= w.mag || a.reserve <= 0) return false;
     // (Rhys: the Revolver not "revolvery") one round at a time into the cylinder
-    this.reloading = w.reloadEach ? (w.reloadOpen || 0) + w.reloadEach : w.reload;
+    this.reloading = (w.reloadEach ? (w.reloadOpen || 0) + w.reloadEach : w.reload) * ((this.skills && this.skills.reload) || 1);   // (M6.29) Quick Hands
     this.burstLeft = 0;
     this.events.push({ type: 'reload', id: this.current });
     return true;
@@ -332,6 +332,7 @@ export class Arsenal {
     let spread = opts.aim ? w.adsSpread : w.spread;
     // a shaky hand from rapid fire counts much less when you are aiming
     spread += this.spreadBloom * (opts.aim ? 0.3 : 1) + (opts.moving ? w.moveSpread * (opts.aim ? 0.4 : 1) : 0);
+    if (this.skills && this.skills.steady) spread *= this.skills.steady;          // (M6.29) Steady Hands
     this.spreadBloom = Math.min(w.spread * 3, this.spreadBloom + w.spread * 0.7 * (w.bloom || 1));
     this.recoil += w.recoil * (opts.aim ? 0.75 : 1);
     const d = this.scatter(dir, spread);
