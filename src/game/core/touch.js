@@ -78,6 +78,16 @@ export function touchControls(input, opts) {
   const down = (e) => {
     if (e.pointerType === 'mouse' && !opts.mouseToo) return;
     e.preventDefault();
+    // (M6.35) the first touch in play asks for the whole screen, on its side (Android allows it; iPhones ignore it)
+    if (!S.askedFull) {
+      S.askedFull = true;
+      try {
+        const el = document.documentElement, rq = el.requestFullscreen || el.webkitRequestFullscreen;
+        const p = rq && rq.call(el, { navigationUI: 'hide' });
+        const lock = () => { try { const o = screen.orientation; if (o && o.lock) o.lock('landscape').catch(() => {}); } catch (err) { /* no */ } };
+        if (p && p.then) p.then(lock).catch(() => {}); else lock();
+      } catch (err) { /* not offered */ }
+    }
     const id = e.pointerId, btn = e.target.closest && e.target.closest('.tbtn');
     try { root.setPointerCapture(id); } catch (err) { /* ok */ }
     if (btn) {

@@ -106,6 +106,9 @@ function boot() {
   // ── the engine, the level, the light bake ───────────────────────────────────
   const canvas = $('app');
   const settings = loadSettings();
+  // (M6.35) a phone or tablet starts on low quality (until you choose otherwise): its graphics are a fraction of a
+  // laptop's, and a smooth game matters more than a pretty one
+  try { if (isTouchDevice() && !TEST && !/"quality"/.test(localStorage.getItem('frontline.settings.v1') || '')) settings.quality = 'low'; } catch (e) { /* private mode */ }
   const app = new pc.Application(canvas, {
     graphicsDeviceOptions: { antialias: true, alpha: false, powerPreference: 'high-performance', preserveDrawingBuffer: TEST },
   });
