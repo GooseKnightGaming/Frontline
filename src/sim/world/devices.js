@@ -101,7 +101,8 @@ export function stepDevice(dev, dt, ctx) {
     dev.look = Math.sin(dev.t * CAMERA.sweepRate) * CAMERA.sweep;
     const watching = you && !you.dead && dev.againstYou(ctx.rel) && sees(dev, you.chest, CAMERA.range, CAMERA.half, ctx.world);
     dev.seenT = watching ? dev.seenT + dt : Math.max(0, dev.seenT - dt * 0.5);
-    if (watching && dev.seenT >= CAMERA.notice * (ctx.camSlow || 1) && dev.cool <= 0) {
+    // (a disguise in its owners' uniform: it takes far longer to pick you out)
+    if (watching && dev.seenT >= CAMERA.notice * (ctx.camSlow || 1) * (ctx.disguise && ctx.disguise === dev.owner ? 4 : 1) && dev.cool <= 0) {
       dev.cool = CAMERA.again; dev.spotted = true;
       if (ctx.alarm) ctx.alarm(dev, you.pos.slice());
     }

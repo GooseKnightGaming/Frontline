@@ -22,6 +22,10 @@ game into the repository's root.
 - **The Remote Camera** (`RCAM`, a utility; Rhys's "remote cameras"): thrown, it sticks where it lands, looking the way you
   threw it; with nothing else at hand, E looks through your cameras in turn (the CCTV view; E on to the next, move to stop).
   The Spy may carry it.
+- **Disguises**: at a downed red's (or Yellow's) body, E takes his uniform. His side then barely make you out from a way
+  off (`DISGUISE` in guard.js: 0.12 of what they would); within 4 m (an officer, 8) they look twice; crouching or running
+  makes it worse; cameras of his side take four times as long. A shot (a suppressed one only if it hits someone), or one
+  of them going for you, ends it.
 - **The Snake Camera** (Q Branch, `QSNAKE`; the roadmap's "peeking under or through" a door): crouched at a shut door, E
   slides a camera under it - the other side, through the CCTV view (the mouse looks about); E or moving stops it.
 

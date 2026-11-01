@@ -1091,6 +1091,14 @@ export function setupMission(ctx) {
     drops.push(d);
     return d;
   };
+  // (M6.30) disguises: a downed red's (or Yellow's) uniform, taken from him - his side take you for one of them
+  // from a way off; close to, they look twice; a shot, or one of them seeing through it, ends it
+  const bodyNear = () => guards.find((g) => g.dead && !g.stripped && !g.gone && (g.faction === 'red' || g.faction === 'yellow') && Math.abs(g.pos[1] - player.pos[1]) < 1.2 && Math.hypot(g.pos[0] - player.pos[0], g.pos[2] - player.pos[2]) < 1.6) || null;
+  const takeUniform = (g) => {
+    g.stripped = true; rt.disguise = g.faction; audio.pickup();
+    showHint('His uniform: from a way off, the ' + (g.faction === 'yellow' ? 'Yellows' : 'reds') + ' take you for one of them. Close to, they look twice - officers from further. Do not crouch or run; a shot gives you away.');
+  };
+  const dropDisguise = (why) => { if (!rt.disguise) return; rt.disguise = null; if (why) showHint(why); };
   // keycards: dropped by the officers who carry them; taken, they open their network's maglocks (2 s, no trace)
   const cards = [], haveCard = new Set();
   const keyCardMat = (() => { const mt = new pc.StandardMaterial(); mt.diffuse = new pc.Color(0.9, 0.9, 0.92); mt.emissive = new pc.Color(0.25, 0.35, 0.5); mt.update(); return mt; })();
@@ -1444,6 +1452,7 @@ export function setupMission(ctx) {
         you: { pos: player.pos, eye: player.eyePos, chest: [player.pos[0], player.pos[1] + h * 0.55, player.pos[2]],
           stance: player.stance, speed: Math.hypot(player.vel[0], player.vel[2]),
           // (M6.29) Shadow: guards slower to make you out, with or without the camouflage
+          disguise: rt.disguise || null,
           camo: (() => { const c = (arsenal && arsenal.loadout && arsenal.loadout.gearTrait('camo')) || 0, sh = (player.skills && player.skills.shadow) || 1; return c ? c * sh : sh < 1 ? sh : 0; })(),
           noise: player.mode === 'dead' ? 0 : player.noise || 0, box: player.box() },
       };
@@ -1476,7 +1485,7 @@ export function setupMission(ctx) {
       if (devices.length) {
         const you = { pos: player.pos, chest: [player.pos[0], player.pos[1] + 1.15, player.pos[2]], dead: player.mode === 'dead' };
         const camSlow = gear('camBlind') ? 1e9 : gear('camSlow') || 1;
-        for (const d of devices) stepDevice(d, simDt, { world: level.world, rel, you, guards, alarm: deviceAlarm, shoot: deviceShot, camSlow });
+        for (const d of devices) stepDevice(d, simDt, { world: level.world, rel, you, guards, alarm: deviceAlarm, shoot: deviceShot, camSlow, disguise: rt.disguise || null });
         brokenWatch();
         specialists(simDt);
         lasersWatch();
@@ -1527,6 +1536,8 @@ export function setupMission(ctx) {
         }
         g.events.length = 0;
         if (g.state === 'alert' && was !== 'alert' && (!rel || g.foe === 'you')) { m.spotted++; audio.deny(); radio(m.spotted === 1 ? 'moving' : 'six', m.spotted > 2); }
+        // (M6.30) one of them has seen through it: the disguise is done
+        if (rt.disguise && g.state === 'alert' && was !== 'alert' && g.foe === 'you' || (rt.disguise && g.state === 'alert' && was !== 'alert' && !rel && g.faction === rt.disguise)) dropDisguise('They have seen through your disguise.');
         if (g.dead && !g.dropped) {
           g.dropped = true;
           // (Rhys: a corpse "half hanging out of the sealed train doors") on the train he falls
@@ -1893,6 +1904,7 @@ export function setupMission(ctx) {
       const hn = hostageNear();
       if (hn) { const tip = hostageTip(hn); if (tip) return tip; }
       if (cardNear()) return 'E  Take his keycard';
+      { const bn = bodyNear(); if (bn && !rt.disguise && !dropNear()) return 'E  Take his uniform (a disguise)'; }
       const dn = dropNear();
       if (dn) { const tip = dropTip(dn); if (tip) return tip; }
       if (ledgerNear()) return 'E  Take the ledger';
@@ -1940,6 +1952,8 @@ export function setupMission(ctx) {
     // one of your rounds: counted for the debrief (a hit is a hit on a person)
     fired(ev) {
       const tg = ev.hit && ev.hit.target, g = tg && tg.guard;
+      // (M6.30) a shot gives you away: no one in his uniform fires on his own side (a suppressed round only if it hits someone)
+      if (rt.disguise && (!(arsenal.weapon && arsenal.weapon.quiet < 0.5) || g)) dropDisguise('Your shot gave you away - the disguise is no good now.');
       if (tg) tg.lastBy = 'you';
       m.shot(baseId(ev.id), !!(g && g.objective !== false));
       if (g && g.faction === 'yellow') yellowHit(g);
@@ -2005,6 +2019,7 @@ export function setupMission(ctx) {
         if (hn && hn.free) { hn.order(); audio.click(); return true; }
         if (hn && hn.state === 'held') return true;            // freeing is a hold: E held, in tick
         { const cn = cardNear(); if (cn) { takeCard(cn); return true; } }
+        { const bn = !rt.disguise && !dropNear() && bodyNear(); if (bn) { takeUniform(bn); return true; } }
         const dn = dropNear(); if (dn && takeDrop(dn)) return true;
         // the reds' ledger, from the Cash Vault
         if (ledgerNear()) {

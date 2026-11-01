@@ -30,6 +30,9 @@ import { makeTarget } from '../arms/weapons.js';
 // you at a walk) his pace rises with how far behind he is: your walking pace
 // about 1.5 m back from his place, up to a run
 export const ESCORT = { walk: 2.4, run: 5.4, gain: 1.2, drift: 2.5, replan: 1.2, out: 3.4 };
+// (M6.30) a disguise: how much of you a man of that side makes out - from a way off, close to, and how much
+// worse it is for you crouching or running (no one in uniform does); within `sees` metres (an officer's further) he looks twice
+export const DISGUISE = { far: 0.12, close: 0.55, odd: 2.5, sees: 4, officerSees: 8 };
 export const GUARD = {
   walk: 1.5,           // m/s on patrol: an unhurried walk
   search: 2.2,         // m/s going to look
@@ -440,7 +443,14 @@ export class Guard {
       const move = you.speed > 5 ? 1.3 : you.speed < 0.3 ? 0.75 : 1;
       // Special Camouflage: harder to make out with the naked eye, all the more prone
       const camo = you.camo ? (you.stance === 2 ? you.camo * 0.75 : you.camo) : 1;
-      best = Math.max(best, cone * far * stance * move * camo);
+      // (M6.30) in one of his own side's uniforms: from any way off you are one of them - close to, he looks
+      // twice (an officer from further); crouching or running gives you away sooner
+      let disguise = 1;
+      if (you.disguise && you.disguise === this.faction) {
+        const close = d < (this.rank === 'officer' ? DISGUISE.officerSees : DISGUISE.sees);
+        disguise = (close ? DISGUISE.close : DISGUISE.far) * (you.stance > 0 || you.speed > 5 ? DISGUISE.odd : 1);
+      }
+      best = Math.max(best, cone * far * stance * move * camo * disguise);
       seen++;
     }
     this.exposed = seen >= 2 ? 1 : seen === 1 ? 0.5 : 0;

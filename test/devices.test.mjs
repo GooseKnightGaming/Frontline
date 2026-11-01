@@ -304,4 +304,14 @@ T('the remote camera: it reports where it came to rest and which way it looks; E
   A(/ev\.type === 'rcam'/.test(mn) && /viewRemote\(0\)/.test(mn), 'not looked through');
 });
 
+T('disguises: in a red\'s uniform the reds barely make you out from a way off; close to, they look twice', () => {
+  const w = new World(), g = new Guard(w, { id: 'g', pos: [0, 0, 0], faction: 'red' }); g.yaw = 0;
+  const at = (z, disguise, extra) => Object.assign({ eye: [0, 1.6, z], chest: [0, 1.1, z], pos: [0, 0, z], stance: 0, speed: 1, noise: 0, disguise }, extra || {});
+  const plain = g.visibility({ you: at(-12), world: w }), far = g.visibility({ you: at(-12, 'red'), world: w }), near = g.visibility({ you: at(-3, 'red'), world: w });
+  A(far < plain * 0.2 && near > far, 'plain ' + plain.toFixed(2) + ' far ' + far.toFixed(2) + ' near ' + near.toFixed(2));
+  A(g.visibility({ you: at(-12, 'yellow'), world: w }) === plain, 'a Yellow uniform fooled a red');
+  A(g.visibility({ you: at(-12, 'red', { speed: 6 }), world: w }) > far, 'running in uniform passed unremarked');
+  A(/takeUniform/.test(rt) && /dropDisguise\('Your shot gave you away/.test(rt) && /disguise: rt\.disguise/.test(rt), 'not wired');
+});
+
 console.log(fails.length ? '\nFAILURES (' + fails.length + '):\n' + fails.map((f) => '  * ' + f).join('\n') : '\nALL ' + pass + ' PASSED');
