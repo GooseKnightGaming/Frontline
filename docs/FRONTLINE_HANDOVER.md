@@ -56,6 +56,9 @@ game into the repository's root.
   and that run is never intruded on again** (`downLantern`).
 - **The Hacking Suit** (`HACKSUIT`, gear; the Spy may wear it): cameras cannot make you out at all (`camBlind`).
 - The how-to page (`controls.html`) has a SECURITY SYSTEMS section.
+- **The shield-bearer** (`shield: true` on a guard; the roadmap's "heavy with a shield"): a ballistic shield in front of
+  him (a moving, shot-only solid, `Guard.placeShield`) stops rounds from the front - not his head over it, nor from the side
+  or behind; drawn as a dark slab with a viewing slit. One in the Prison's hall, one in the Listening Station.
 - **Keycards**: a guard with `card: <net>` drops one when he goes down; take it (E) and that network's maglocks open
   to it like the Skeleton Card (2 s, no trace). Officers carry them in the Facility, the Prison and the Listening Station.
 - Fixed: kit.js had not passed `role` (or `card`) on to the guards it builds.

@@ -732,7 +732,7 @@ export function buildKitLevel(spec) {
       if (route && route.length > 1) yaw = Math.atan2(-(route[1][0] - pos[0]), -(route[1][1] - pos[2]));
       else { let bd = -1; yaw = 0; for (let i = 0; i < 8; i++) { const y = i * Math.PI / 4, cd = clearDist(pos, y); if (cd > bd) { bd = cd; yaw = y; } } }
     }
-    const g = new Guard(world, { id: gd.id, pos, yaw, route, faction: gd.faction || spec.faction || 'red', rank: RANKS[gd.rank] ? gd.rank : 'guard', arms: ARMS[gd.arms] ? gd.arms : 'carbine', temper: TEMPER[gd.temper] ? gd.temper : 'bold', sees: gd.sees || (spec.dark ? (gd.rank === 'officer' || gd.rank === 'specialist' ? 'nvg' : 'torch') : null), fleeOn: gd.fleeOn, role: gd.role, card: gd.card });
+    const g = new Guard(world, { id: gd.id, pos, yaw, route, faction: gd.faction || spec.faction || 'red', rank: RANKS[gd.rank] ? gd.rank : 'guard', arms: ARMS[gd.arms] ? gd.arms : 'carbine', temper: TEMPER[gd.temper] ? gd.temper : 'bold', sees: gd.sees || (spec.dark ? (gd.rank === 'officer' || gd.rank === 'specialist' ? 'nvg' : 'torch') : null), fleeOn: gd.fleeOn, role: gd.role, card: gd.card, shield: gd.shield });
     g.floorKey = gf || K0;
     if (gd.name) g.name = gd.name;
     if (gd.tint) g.tint = gd.tint;          // a man who should stand out: his own colours

@@ -220,4 +220,20 @@ T('keycards: an officer who carries one drops it; taken, his network\'s maglocks
   A(/if \(g\.card\) dropCard\(g/.test(rt) && /haveCard\.has\(d\.net\)/.test(rt) && /'E  Take his keycard'/.test(rt), 'not wired');
 });
 
+const L0Specs = () => ['listening', 'prison'].every((id) => buildKitLevel(DRAFTS.find((d) => d.id === id)).guards.some((g) => g.shield));
+T('the shield-bearer: his shield stops a round from the front, not from the side; down, it drops', () => {
+  const w = new World();
+  const g = new Guard(w, { id: 's', pos: [0, 0, 0], yaw: 0, shield: true, arms: 'pistol' });
+  g.moveBody();
+  const front = w.raycast([0, 1.0, -5], [0, 0, 1], 10, (q) => q.shootThrough);
+  A(front && front.solid === g.shield, 'a round from the front got past: ' + (front && front.solid.tag));
+  const side = w.raycast([-5, 1.0, 0], [1, 0, 0], 10, (q) => q.shootThrough);
+  A(side && side.solid === g.target.solid, 'a round from the side hit ' + (side && side.solid.tag));
+  const head = w.raycast([0, 1.7, -5], [0, 0, 1], 10, (q) => q.shootThrough);
+  A(head && head.solid === g.target.solid, 'his head is behind it');
+  A(!w.hit([-0.3, 0, -0.3], [0.3, 1.8, 0.3], g.target.solid), 'his own shield blocks him');
+  g.dead = true; g.moveBody(); A(g.shield.disabled, 'down, it still stands');
+  A(L0Specs(), 'not in the levels');
+});
+
 console.log(fails.length ? '\nFAILURES (' + fails.length + '):\n' + fails.map((f) => '  * ' + f).join('\n') : '\nALL ' + pass + ' PASSED');

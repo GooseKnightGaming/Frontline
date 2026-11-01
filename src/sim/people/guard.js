@@ -260,6 +260,12 @@ export class Guard {
     // 'medic': goes to a man knocked out and brings him round (the dead stay dead)
     this.role = def.role || null;
     this.card = def.card || null;               // (M6.28) the network whose maglocks his keycard opens (dropped when he goes down)
+    // (M6.28, the roadmap's "a heavy with a shield") a ballistic shield carried in front of him: it stops
+    // rounds from the front (not his head over it, nor anything from the side or behind); bodies pass it
+    if (def.shield) {
+      this.shield = world.addSolid([0, -999, 0], [0.1, -998.9, 0.1], 'shield', { shotOnly: true });
+      this.shield.mobile = true; this.shield.person = true; this.shield.shieldOf = this;
+    }
     this.sees = def.sees || null;               // 'nvg' | 'torch' | null: what he sees by in the dark
     this.fleeOn = def.fleeOn || 'hurt';         // a coward runs when hurt - or, some, at the first sign of trouble
     this.pos = def.pos.slice();
@@ -1037,6 +1043,18 @@ export class Guard {
     t.min = lo.slice(); t.max = hi.slice();
     t.centre = [this.pos[0], this.pos[1] + GUARD.height / 2, this.pos[2]];
     t.headY = this.pos[1] + GUARD.height - GUARD.head;      // above this is his head
+    if (this.shield) this.placeShield();
+  }
+  // the shield: 0.45 m in front of him, 0.7 wide, from his knees to his chin - as a box square to the world
+  // (the world's solids do not turn), so a little wider than the shield when he faces a diagonal
+  placeShield() {
+    const s = this.shield;
+    if (this.dead) { s.disabled = true; return; }
+    s.disabled = false;
+    const f = [-Math.sin(this.yaw), -Math.cos(this.yaw)], r = [Math.cos(this.yaw), -Math.sin(this.yaw)];
+    const cx = this.pos[0] + f[0] * 0.45, cz = this.pos[2] + f[1] * 0.45;
+    const hx = Math.abs(r[0]) * 0.35 + Math.abs(f[0]) * 0.04, hz = Math.abs(r[1]) * 0.35 + Math.abs(f[1]) * 0.04;
+    s.min = [cx - hx, this.pos[1] + 0.3, cz - hz]; s.max = [cx + hx, this.pos[1] + 1.5, cz + hz];
   }
 
   // Down, one way or the other: knocked out if nothing that kills (a round, a

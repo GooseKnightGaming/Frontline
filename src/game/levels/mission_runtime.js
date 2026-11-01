@@ -898,6 +898,16 @@ export function setupMission(ctx) {
   // how they look (draw/devices_view.js): each with a light that says whose it is
   const devView = deviceView(pc, app, devices);
   const drawDevices = () => devView.draw(S.playing ? S.vision : 'normal');
+  // (M6.28) the shield-bearers' shields: a dark slab with a viewing slit
+  const shieldMat = (() => { const mt = new pc.StandardMaterial(); mt.diffuse = new pc.Color(0.12, 0.13, 0.15); mt.useMetalness = true; mt.metalness = 0.4; mt.gloss = 0.45; mt.update(); return mt; })();
+  const slitMat = (() => { const mt = new pc.StandardMaterial(); mt.diffuse = new pc.Color(0.3, 0.4, 0.45); mt.opacity = 0.6; mt.blendType = pc.BLEND_NORMAL; mt.update(); return mt; })();
+  const shields = guards.map((g) => {
+    if (!g.shield) return null;
+    const e = new pc.Entity('shield');
+    const slab = new pc.Entity(); slab.addComponent('render', { type: 'box', material: shieldMat, castShadows: true }); slab.setLocalScale(0.7, 1.2, 0.06); e.addChild(slab);
+    const slit = new pc.Entity(); slit.addComponent('render', { type: 'box', material: slitMat, castShadows: false }); slit.setLocalScale(0.34, 0.08, 0.07); slit.setLocalPosition(0, 0.42, 0); e.addChild(slit);
+    app.root.addChild(e); return e;
+  });
   const detect = $('detect').getContext('2d');
   // one uniform for the side; the officer's a shade darker; rank in the hat
   const bodies = guards.map((g) => new Operative(pc, app, null,
@@ -1779,6 +1789,12 @@ export function setupMission(ctx) {
         if (bodies[i].enabled !== visible) bodies[i].enabled = visible;
         if (!visible && bodies[i].carry) bodies[i].carry.enabled = false;
         if (visible) bodies[i].update(dt, g.animState(), g.pos, g.yaw);
+        // (M6.28) his shield, carried in front of him
+        if (shields[i]) {
+          const sh = shields[i], on = visible && !g.dead;
+          if (sh.enabled !== on) sh.enabled = on;
+          if (on) { sh.setPosition(g.pos[0] - Math.sin(g.yaw) * 0.45, g.pos[1] + 0.9, g.pos[2] - Math.cos(g.yaw) * 0.45); sh.setEulerAngles(0, g.yaw * 180 / Math.PI, 0); }
+        }
         // his torch, under the barrel of his gun, pointing where it points
         const t = torches[i];
         if (t) {
