@@ -4,6 +4,7 @@
 // ignoring you, green yours, dark when off. Used by the missions and by Ghost HQ.
 export function deviceView(pc, app, devices) {
   const devMat = (r, g, b, glow) => { const mt = new pc.StandardMaterial(); mt.diffuse = new pc.Color(r, g, b); mt.useMetalness = true; mt.metalness = glow ? 0 : 0.5; mt.gloss = 0.5; if (glow) { mt.emissive = new pc.Color(r, g, b); mt.emissiveIntensity = 2.5; } mt.update(); return mt; };
+  const BEAM = (() => { const m = new pc.StandardMaterial(); m.diffuse = new pc.Color(0, 0, 0); m.emissive = new pc.Color(1, 0.05, 0.05); m.emissiveIntensity = 3; m.useLighting = false; m.update(); return m; })();
   const DEV_BODY = devMat(0.18, 0.19, 0.21), DEV_LIGHT = { on: devMat(1, 0.12, 0.08, true), friendly: devMat(1, 0.7, 0.1, true), ours: devMat(0.2, 1, 0.35, true), off: devMat(0.05, 0.05, 0.05) };
   const devPart = (parent, sx, sy, sz, x, y, z, m) => {
     const e = new pc.Entity(); e.addComponent('render', { type: 'box', material: m || DEV_BODY, castShadows: false });
@@ -13,7 +14,15 @@ export function deviceView(pc, app, devices) {
     const e = new pc.Entity('device-' + d.id); e.setPosition(d.pos[0], d.pos[1], d.pos[2]); app.root.addChild(e);
     d.ent = e;
     const head = new pc.Entity(); e.addChild(head);
-    if (d.kind === 'lock') {
+    if (d.kind === 'laser') {
+      // an emitter at each end, on the wall; the beam between them (drawn only where night vision or UV shows it)
+      const len = Math.hypot(d.b[0] - d.a[0], d.b[2] - d.a[2]), yaw = Math.atan2(d.b[0] - d.a[0], d.b[2] - d.a[2]);
+      e.setPosition((d.a[0] + d.b[0]) / 2, d.pos[1], (d.a[2] + d.b[2]) / 2);
+      head.setLocalEulerAngles(0, yaw * 180 / Math.PI, 0);
+      for (const s of [-1, 1]) devPart(head, 0.1, 0.1, 0.08, 0, 0, s * (len / 2 - 0.05));
+      d.light = devPart(head, 0.04, 0.04, 0.02, 0, 0.07, len / 2 - 0.1, DEV_LIGHT.on);
+      d.beam = devPart(head, 0.012, 0.012, len, 0, 0, 0, BEAM);
+    } else if (d.kind === 'lock') {
       // a keypad, through the jamb: the same face on both sides, its light showing through
       head.setLocalEulerAngles(0, d.yaw * 180 / Math.PI, 0);
       const across = d.plane === 'x';            // the door's wall runs along z: the pad's thickness along x
@@ -45,9 +54,10 @@ export function deviceView(pc, app, devices) {
     for (const d of devices) {
       if (!d.head) continue;
       if (d.hidden) { const show = vision === 'emf'; if (d.ent.enabled !== show) d.ent.enabled = show; }
+      if (d.beam) { const show = (vision === 'night' || vision === 'uv') && d.mode === 'on' && d.live; if (d.beam.enabled !== show) d.beam.enabled = show; }
       if (d.broken) { if (!d.slumped) { d.slumped = true; d.head.setLocalEulerAngles(48, d.facing * 180 / Math.PI, 14); d.light.render.material = DEV_LIGHT.off; } continue; }
       if (d.kind === 'camera' || d.kind === 'turret') d.head.setLocalEulerAngles(d.kind === 'camera' ? -22 : 0, d.facing * 180 / Math.PI, 0);
-      else if (d.kind !== 'lock') d.head.setLocalEulerAngles(0, d.yaw * 180 / Math.PI, 0);
+      else if (d.kind !== 'lock' && d.kind !== 'laser') d.head.setLocalEulerAngles(0, d.yaw * 180 / Math.PI, 0);
       const want = d.live ? DEV_LIGHT[d.mode] || DEV_LIGHT.on : DEV_LIGHT.off;
       if (d.light.render.material !== want) d.light.render.material = want;
     }

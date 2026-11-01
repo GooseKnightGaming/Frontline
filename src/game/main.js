@@ -2396,7 +2396,7 @@ function boot() {
       const saved = Saves.listSlots()[slotNo];
       if (saved) applySave(saved);
       // (M6.29) an intrusion waiting: at the foot of the stairs, out of the hall turrets' sight
-      const why = hqSec ? takeIntrusion() : null;
+      const why = hqSec ? takeIntrusion(undefined, slotNo) : null;
       const at = why ? level.hq.arriveSafe : level.hq.arrive;
       player.pos = at.pos.slice(); player.vel = [0, 0, 0];
       input.yaw = player.yaw = at.yaw; input.pitch = 0;

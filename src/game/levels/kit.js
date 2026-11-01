@@ -790,7 +790,8 @@ export function buildKitLevel(spec) {
   }
   // ── defence systems (sim/world/devices.js): cameras high on a wall, turrets on a pedestal ──
   //   spec.devices: [{ id, kind: 'camera' | 'turret', at: [x, y, floor], face: [dx, dy] (the way it looks), net, owner }]
-  //   M6.28: kind 'lock' (at: the door's square), 'lights' (at: the panel's square, face: away from its
+  //   M6.28: kind 'laser' (at, to: the squares at either end of the beam, across a passage; h: its height),
+  //   kind 'lock' (at: the door's square), 'lights' (at: the panel's square, face: away from its
   //   wall, area: [x0, y0, x1, y1] the squares it lights, name: where), 'alarm' (at, face: as a camera's)
   level.devices = [];
   for (const d of spec.devices || []) {
@@ -809,6 +810,13 @@ export function buildKitLevel(spec) {
         pos = q0.def.plane === 'x' ? [q0.def.at, F.y + 1.3, along] : [along, F.y + 1.3, q0.def.at];
       } else pos = [c[0], F.y + 1.3, c[2]];
       extra = { doors: leaves, plane: q0 ? q0.def.plane : 'z' };
+    } else if (d.kind === 'laser') {
+      // a tripwire (M6.28): from the far side of one square to the far side of the other, across the passage
+      const b0 = at(d.to[0], d.to[1], d.at[2]), dx = Math.sign(b0[0] - base[0]), dz = Math.sign(b0[2] - base[2]);
+      const a = [base[0] - dx * CELL / 2, F.y, base[2] - dz * CELL / 2], b = [b0[0] + dx * CELL / 2, F.y, b0[2] + dz * CELL / 2];
+      const h = d.h || 0.75;
+      pos = [a[0], F.y + h, a[2]];
+      extra = { a, b, h, floorY: F.y };
     } else if (d.kind === 'lights' || d.kind === 'alarm') {
       // a breaker panel at chest height, or the alarm's bell high up: on the wall behind the square
       const back = CELL * 0.45, y = d.kind === 'alarm' ? F.y + (F.wallH || S.wallH) - 0.5 : F.y + 1.45;

@@ -41,7 +41,18 @@ game into the repository's root.
   (cameras over the halls, the VIP lounge maglocked with Rourke's turret inside, the lounge's lights, the alarm, the
   security office's console). Both issue the kit and have an engineer and a radio operator.
 - **Pinhole cameras** (`hidden: true`): no bracket, not drawn, not known - until EMF shows them. Two in the Facility.
+- **Laser tripwires** (`kind: 'laser'`, `at`/`to` the squares at either end, `h` its height, 0.75 m): break the beam
+  (`breaks` in devices.js: your body spans its height as you cross its line) and the alarm goes up where you are - and
+  the siren, if the alarm is live. Prone under it, or over it, is safe. The beam is drawn only to night vision or UV;
+  its emitters always. Two in the Facility, one in the Prison's lobby, one in the Space Port's back room.
 - During an intrusion the radar's objective diamond points at the security console.
+- **Level 35, the Listening Station** (`drafts/listening.js`, a new level built round all of this): Skarvik signals
+  station, where LANTERN - the program that traces Ghost's hacks to Yard 7 - runs. Two networks: the **perimeter** (gate
+  turrets, front cameras; the gatehouse console) and the **core** (cameras, two pinholes, three laser tripwires, the
+  security office and the archive maglocked, two server-hall turrets, the corridor's and the hall's lights, the alarm;
+  the security office's console). Major Vass, an engineer, a radio operator; sixteen reds. Objectives: wipe Ghost's file
+  (the archive), turn LANTERN round (the mainframe), take the intercept log, optionally stop Vass. **Turn LANTERN round
+  and that run is never intruded on again** (`downLantern`).
 - **The service record** (the roadmap's "per match and over time"): each run (`Saves.loadRecord/addRecord`) adds up every
   mission and battle - missions and how they went, battles won, **K/D in battle**, casualties, knockouts, takedowns,
   accuracy, headshots, times spotted, security hacked, hostages rescued, favourite weapon, time in the field - shown

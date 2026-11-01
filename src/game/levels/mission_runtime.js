@@ -22,8 +22,8 @@ import * as Saves from '../core/saves.js';
 import { rewardFor } from '../../sim/play/rewards.js';
 import { deviceView } from '../draw/devices_view.js';
 import { makeTarget } from '../../sim/arms/weapons.js';
-import { markIntrusion } from './hq_security.js';
-import { Device, stepDevice, setMode, Trace, HACK, MODES, SIREN, darkAt, sirenFor, syncLocks, modeSays, lightsOut } from '../../sim/world/devices.js';
+import { markIntrusion, downLantern } from './hq_security.js';
+import { Device, stepDevice, setMode, Trace, HACK, MODES, SIREN, darkAt, sirenFor, syncLocks, modeSays, lightsOut, breaks } from '../../sim/world/devices.js';
 
 
 const RED = [1.9, 0.72, 0.66];          // the reds' uniform: the field kit, tinted
@@ -741,6 +741,22 @@ export function setupMission(ctx) {
       }
     }
   };
+  // (M6.28) the laser tripwires: break one and they know where you are
+  let prevAt = null;
+  const lasersWatch = () => {
+    const here = player.pos.slice();
+    if (prevAt && player.mode !== 'dead') for (const d of devices) {
+      if (d.kind !== 'laser' || (d.tripT || 0) > m.time) continue;
+      if (!breaks(d, prevAt, { pos: here, h: player.stanceHeight || 1.8 })) continue;
+      d.tripT = m.time + 8; d.known = true;
+      m.spotted++;
+      const came = raiseAlarm(guards, { pos: d.pos, rank: 'officer', faction: d.owner }, here);
+      audio.deny && audio.deny();
+      showHint('You broke a laser tripwire' + (came.length ? ' - ' + came.length + ' on the way.' : '.') + ' (Night vision or UV shows the beams; go under on your belly, or over.)');
+      siren(d.owner, here);
+    }
+    prevAt = here;
+  };
   const brokenWatch = () => {
     for (const d of devices) if (d.shot && d.shot.down && !d.broken) {
       d.broken = true; d.mode = 'off';
@@ -840,7 +856,7 @@ export function setupMission(ctx) {
   };
   // the card at a maglock: quick, quiet, no trace
   const byCard = (d) => d && d.kind === 'lock' && gear('maglockCard') && Math.hypot(d.pos[0] - player.pos[0], d.pos[2] - player.pos[2]) < HACK.reach;
-  const deviceName = (d) => ({ camera: 'the camera', turret: 'the turret', lock: 'the maglock', lights: 'the lighting panel' + (d.name ? ' (' + d.name + ')' : ''), alarm: 'the alarm' })[d.kind] || 'the device';
+  const deviceName = (d) => ({ camera: 'the camera', turret: 'the turret', lock: 'the maglock', lights: 'the lighting panel' + (d.name ? ' (' + d.name + ')' : ''), alarm: 'the alarm', laser: 'the laser\'s emitter' })[d.kind] || 'the device';
   level.deviceName = deviceName;
   // the trace: hacking a network long enough tells its owners where you are
   const traced = (net, where) => {
@@ -1361,6 +1377,7 @@ export function setupMission(ctx) {
         for (const d of devices) stepDevice(d, simDt, { world: level.world, rel, you, guards, alarm: deviceAlarm, shoot: deviceShot, camSlow });
         brokenWatch();
         specialists(simDt);
+        lasersWatch();
         if (syncLocks(devices)) nav.syncDoors(level.swingDoors);
         lightsWatch();
         if (sir.cool > 0) sir.cool -= simDt;
@@ -2021,6 +2038,8 @@ export function setupMission(ctx) {
       // (Rhys: the train makes you wait for its events - "no accolade for quick completion"; none yet)
       const all = L0 ? m.trophies() : B ? [] : level.trainRun ? [] : level.draft ? clearTrophies(m, targets, level.draft, level.title, level.spec.place || 'the ' + level.title, 'enemy') : level.factory ? factoryTrophies(m, guards) : level.casino ? casinoTrophies(m, targets) : hotelTrophies(m, hostages, guards.length);
       if (devices.length && level.draft) all.push(...hackTrophies(m, level.draft, level.title));
+      // (Level 35) LANTERN turned round: no trace finds Yard 7 again, this run
+      if (level.draft === 'listening' && m.result !== 'failed' && (level.terminals || []).some((q) => q.id === 'mainframe' && q.done)) downLantern(Saves.currentSlot());
       const fresh = Trophies.earn(all);
       const isNew = new Set(fresh.map((x) => x.id));
       // the enemy's weapons you took and brought out (not when it failed): yours from now on, at Logistics

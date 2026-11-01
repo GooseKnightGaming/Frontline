@@ -13,7 +13,7 @@ export default {
     ['The reds', 'Fourteen, all over the station - two of them in the cold store, where the refrigeration has filled the room with mist.'],
     ['Security', 'Cameras watch the corridors and the lobby - one that sees you raises the alarm - and turrets guard decontamination and the data room. They all run from the <b>security terminal</b> in the west office: hack it (hold E) to disable them, have them ignore you, or turn the turrets on the reds. Hack for too long and they trace you. Your <b>hacking kit</b> (this mission\'s Special) takes them one at a time, up close - more slowly.'],
     ['The specialists', 'The officer in the security office carries the <b>radio</b>: if he sees you, a few seconds and every red in the station is coming - drop him first. And the station\'s <b>engineer</b> (in the staff room) goes to the security terminal to put a hacked system back on: stop him, or hack it again.'],
-    ['The building', 'Decontamination\'s two doors are <b>maglocked</b>: no kick opens them - hack the system, use the kit on a keypad, or blow them. The corridors\' <b>lights</b> are on the same system: put them out and the reds see only what is close (night vision sees it all). And while the <b>alarm</b> is live, one shout sets off the siren and the whole station comes. And not every camera is where you can see it: there are <b>pinhole cameras</b> in the walls - EMF shows them.'],
+    ['The building', 'Decontamination\'s two doors are <b>maglocked</b>: no kick opens them - hack the system, use the kit on a keypad, or blow them. The corridors\' <b>lights</b> are on the same system: put them out and the reds see only what is close (night vision sees it all). And while the <b>alarm</b> is live, one shout sets off the siren and the whole station comes. And not every camera is where you can see it: there are <b>pinhole cameras</b> in the walls - EMF shows them; and <b>laser tripwires</b> across the corridors, which night vision or UV show - go under them on your belly (or over).'],
     ['Objectives', 'Find <b>Dr Ilse Brandt</b>: she cut her hand in the chemistry lab as she ran - under UV, the spill trail shows the way. Bring her out. Take the <b>sample case</b> from the cold store. Find the shielded data room - EMF shows where its wiring goes - and hack its <b>data terminal</b>.'],
   ],
   time: { date: [11, 8, 2026], hour: 3, minute: 40 }, night: true, startGear: 'MULTIVIS', faction: 'red', requires: 'HACKKIT',
@@ -139,6 +139,9 @@ export default {
     { id: 'l-main', kind: 'lights', at: [3, 28, 'G'], face: [0, -1], area: [2, 26, 49, 28], name: 'the main corridor', net: 'halden' },
     { id: 'l-serv', kind: 'lights', at: [48, 14, 'G'], face: [0, 1], area: [2, 14, 49, 16], name: 'the service corridor', net: 'halden' },
     { id: 'a-bell', kind: 'alarm', at: [26, 26, 'G'], face: [0, 1], net: 'halden' },
+    // laser tripwires: across the service corridor before the shielded room, and the main corridor by decontamination
+    { id: 'z-serv', kind: 'laser', at: [40, 14, 'G'], to: [40, 16], net: 'halden' },
+    { id: 'z-main', kind: 'laser', at: [38, 26, 'G'], to: [38, 28], net: 'halden' },
     // and two pinhole cameras, in the walls - EMF finds them
     { id: 'c-pin-cave', kind: 'camera', at: [13, 2, 'G'], face: [1, 1], net: 'halden', hidden: true },
     { id: 'c-pin-staff', kind: 'camera', at: [29, 18, 'G'], face: [-1, 1], net: 'halden', hidden: true },

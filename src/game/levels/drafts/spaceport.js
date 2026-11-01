@@ -165,6 +165,7 @@ export default {
     { id: 'm-office-s', kind: 'lock', at: [21, 15, 'G'], net: 'teskel' },
     { id: 'l-mc', kind: 'lights', at: [17, 10, 'G'], face: [-1, 0], area: [7, 9, 17, 21], name: 'mission control', net: 'teskel' },
     { id: 'a-mc', kind: 'alarm', at: [12, 21, 'G'], face: [0, -1], net: 'teskel' },
+    { id: 'z-back', kind: 'laser', at: [20, 16, 'G'], to: [20, 21], net: 'teskel' },    // a tripwire across the back room, before the console
   ],
   pickups: [{ id: 'program', name: 'The flight program', what: 'the program', at: [22, 11, 'G'], h: 0.9, colour: [0.3, 0.9, 0.7] }],
   terminals: [{ id: 'sec', name: 'the range-safety console', at: [22, 17, 'G'], face: [0, 1], time: 6, net: 'teskel' },

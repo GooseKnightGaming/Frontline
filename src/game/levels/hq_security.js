@@ -27,10 +27,15 @@ export const INTRUSION = {
 export function markIntrusion(why) {
   try { sessionStorage.setItem(INTRUSION.key, why || 'traced'); } catch (e) { /* private window */ }
 }
+// (Level 35, the Listening Station) once LANTERN is turned round, no trace finds Yard 7 again - for that run
+const LANTERN = (slot) => 'frontline.lantern.' + slot;
+export function lanternDown(slot) { try { return localStorage.getItem(LANTERN(slot)) === 'down'; } catch (e) { return false; } }
+export function downLantern(slot) { try { localStorage.setItem(LANTERN(slot), 'down'); } catch (e) { /* private window */ } }
 // on the way home: is one waiting? (taken: it happens once)
-export function takeIntrusion(rand) {
+export function takeIntrusion(rand, slot) {
   let why = null;
   try { why = sessionStorage.getItem(INTRUSION.key); sessionStorage.removeItem(INTRUSION.key); } catch (e) { /* private window */ }
+  if (slot !== undefined && lanternDown(slot)) return null;
   if (!why && (rand === undefined ? Math.random() : rand) < INTRUSION.chance) why = 'random';
   return why;
 }

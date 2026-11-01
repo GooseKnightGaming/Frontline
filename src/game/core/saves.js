@@ -45,7 +45,7 @@ export function saveSlot(n, data) {
 export function loadSlot(n) { return listSlots()[n]; }
 // erasing a slot ends its run: the save, its story and its trophies
 export function clearSlot(n) {
-  try { for (const k of [KEY(n), STORY(n), TROPHIES(n), ARMOURY(n), GADGET(n), RECORD(n)]) localStorage.removeItem(k); return true; } catch (e) { return false; }
+  try { for (const k of [KEY(n), STORY(n), TROPHIES(n), ARMOURY(n), GADGET(n), RECORD(n), 'frontline.lantern.' + n]) localStorage.removeItem(k); return true; } catch (e) { return false; }
 }
 // the first slot with no run in it, or -1
 export function freeSlot() {

@@ -159,6 +159,7 @@ export function deviceBlip(ctx, p, kind, colour) {
   else if (kind === 'turret') { ctx.beginPath(); ctx.moveTo(-3.5, -3.5); ctx.lineTo(3.5, 3.5); ctx.moveTo(3.5, -3.5); ctx.lineTo(-3.5, 3.5); ctx.stroke(); }
   else if (kind === 'lock') ctx.fillRect(-1.5, -3.5, 3, 7);
   else if (kind === 'lights') { ctx.beginPath(); ctx.arc(0, 0, 3, 0, Math.PI * 2); ctx.stroke(); }
+  else if (kind === 'laser') { ctx.beginPath(); ctx.moveTo(-4, 0); ctx.lineTo(4, 0); ctx.stroke(); }
   else { ctx.beginPath(); ctx.arc(0, 0, 2.2, 0, Math.PI * 2); ctx.fill(); }
   ctx.restore();
 }

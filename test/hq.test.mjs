@@ -3,7 +3,7 @@ import { Player, blankInput } from '../src/sim/people/player.js';
 import { buildTraining } from '../src/game/levels/yard7.js';
 import { HQ } from '../src/game/levels/hq.js';
 import { readFileSync } from 'fs';
-import { hqDevices, hijack, lockOut, boardRows, takeIntrusion, INTRUSION } from '../src/game/levels/hq_security.js';
+import { hqDevices, hijack, lockOut, boardRows, takeIntrusion, INTRUSION, downLantern } from '../src/game/levels/hq_security.js';
 import { stepDevice } from '../src/sim/world/devices.js';
 let pass = 0; const fails = [];
 const T = (n, f) => { try { f(); pass++; console.log('  PASS  ' + n); } catch (e) { fails.push(n); console.log('  FAIL  ' + n + ' :: ' + e.message); } };
@@ -113,6 +113,16 @@ T('an intrusion follows a traced mission home - once; otherwise only now and the
   const rt = src('game/levels/mission_runtime.js'), mn = src('game/main.js');
   A(/markIntrusion\('traced'\)/.test(rt), 'a trace does not follow you home');
   A(/hqSec && hqSec\.active\) \{ audio\.deny/.test(mn) && /hqSec\.tip\(\)/.test(mn), 'the table still sends you out');
+});
+
+T('the Listening Station: once LANTERN is turned round, no intrusion finds Yard 7 again (that run)', () => {
+  const store = {}; global.localStorage = { getItem: (k) => (k in store ? store[k] : null), setItem: (k, v) => { store[k] = String(v); }, removeItem: (k) => { delete store[k]; } };
+  downLantern(2);
+  sessionStorage.setItem(INTRUSION.key, 'traced');
+  A(takeIntrusion(0.01, 2) === null, 'still came');
+  sessionStorage.setItem(INTRUSION.key, 'traced');
+  A(takeIntrusion(0.99, 1) === 'traced', 'another run was spared too');
+  A(/downLantern\(Saves\.currentSlot\(\)\)/.test(src('game/levels/mission_runtime.js')), 'never turned');
 });
 
 console.log(fails.length ? '\nFAILURES (' + fails.length + '):\n' + fails.map((f) => '  * ' + f).join('\n') : '\nALL ' + pass + ' PASSED');

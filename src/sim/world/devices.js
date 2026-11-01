@@ -19,6 +19,9 @@
 //             close (or what his night vision or torch shows him) - and your own screen goes dark too.
 //   'alarm'   the alarm: while one is on, a shout or a camera that sees you sets off the siren,
 //             and every guard of its side comes. Disabled, reprogrammed or taken, it stays quiet.
+//   'laser'   a tripwire beam across a passage (`a` to `b`, `h` above the floor): break it and the
+//             alarm goes up where you are. Unseen by the naked eye - night vision and UV show it;
+//             under it on your belly, or over it, and it never knows. Hacked in any way, it is off.
 // Pure: no drawing. The runtime steps them and turns what they ask for into alarms and shots.
 
 import { hostileToYou } from '../people/factions.js';
@@ -52,6 +55,8 @@ export class Device {
     this.name = def.name || null;           // what it is called in the hints (the lights: where)
     this.fried = false;                     // a lock an EMP has burnt out: open for good
     this.hidden = !!def.hidden;             // (M6.28) a pinhole camera: seen only by EMF
+    this.a = def.a || null; this.b = def.b || null; this.h = def.h || 0.75;   // a laser: its ends (world, on the floor) and height
+    this.floorY = def.floorY === undefined ? null : def.floorY;
     this.mode = 'on'; this.jammed = 0;
     this.look = 0;                 // where it points now, off its base yaw
     this.t = Math.random() * 10;   // its own clock, for the idle sweep
@@ -194,5 +199,26 @@ export function modeSays(devices, mode) {
   if (has('lock')) bits.push('doors unlocked');
   if (has('lights')) bits.push(mode === 'friendly' ? 'lights stay on' : 'lights out');
   if (has('alarm')) bits.push('the alarm silent');
+  if (has('laser')) bits.push('the lasers off');
   return bits.filter(Boolean).join(', ');
+}
+
+// ── a laser tripwire: is it armed, and did you just break it? ──
+export const armed = (dev) => dev.kind === 'laser' && dev.mode === 'on' && dev.live;
+// you: { pos, h (how tall you stand now) }; prev: where you were a moment ago. True if your body crosses
+// the beam's line: near enough to it across the ground, and the beam between your feet and your head
+export function breaks(dev, prev, you) {
+  if (!armed(dev) || !dev.a || !dev.b) return false;
+  const y = (dev.floorY === null ? dev.a[1] : dev.floorY) + dev.h;
+  if (you.pos[1] > y || you.pos[1] + you.h < y) return false;
+  // the segment a-b, against the path prev-pos (both across the ground): do they cross, or are you on it?
+  const near = (p) => {
+    const ax = dev.b[0] - dev.a[0], az = dev.b[2] - dev.a[2], l2 = ax * ax + az * az || 1;
+    const t = Math.max(0, Math.min(1, ((p[0] - dev.a[0]) * ax + (p[2] - dev.a[2]) * az) / l2));
+    return Math.hypot(p[0] - (dev.a[0] + ax * t), p[2] - (dev.a[2] + az * t));
+  };
+  if (near(you.pos) < 0.28) return true;
+  const side = (p) => (dev.b[0] - dev.a[0]) * (p[2] - dev.a[2]) - (dev.b[2] - dev.a[2]) * (p[0] - dev.a[0]);
+  const s0 = side(prev), s1 = side(you.pos);
+  return s0 * s1 < 0 && near(prev) < 1.2 && near(you.pos) < 1.2;
 }

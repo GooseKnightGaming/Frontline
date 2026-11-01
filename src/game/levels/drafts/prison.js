@@ -171,6 +171,7 @@ export default {
     { id: 'm-control', kind: 'lock', at: [31, 41, '1'], net: 'awing' },
     { id: 'l-hall', kind: 'lights', at: [21, 40, 'G'], face: [0, -1], area: [20, 13, 43, 38], name: 'the hall', net: 'awing' },
     { id: 'a-bell', kind: 'alarm', at: [33, 40, 'G'], face: [0, -1], net: 'awing' },
+    { id: 'z-lobby', kind: 'laser', at: [28, 42, 'G'], to: [28, 44], net: 'awing' },     // a tripwire across the lobby
   ],
   terminals: [{ id: 'sec', name: 'the security terminal', at: [40, 43, '1'], face: [0, -1], time: 6, net: 'awing' },
     { id: 'control', name: 'the control desk', at: [33, 42, '1'], face: [0, -1], time: 7, reveal: 30,

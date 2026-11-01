@@ -1,7 +1,7 @@
 // FRONTLINE - hacking and control: cameras, turrets, terminals, the hacking kit, the trace.
 import { buildKitLevel } from '../src/game/levels/kit.js';
 import { DRAFTS } from '../src/game/levels/drafts/index.js';
-import { Device, stepDevice, setMode, Trace, HACK, CAMERA, TURRET, darkAt, sirenFor, syncLocks, modeSays } from '../src/sim/world/devices.js';
+import { Device, stepDevice, setMode, Trace, HACK, CAMERA, TURRET, darkAt, sirenFor, syncLocks, modeSays, breaks } from '../src/sim/world/devices.js';
 import { raiseAlarm, darkFor } from '../src/sim/people/guard.js';
 import { Guard } from '../src/sim/people/guard.js';
 import { World } from '../src/sim/world/world.js';
@@ -192,6 +192,20 @@ T('every level with a security system: a terminal on its network, its locks on d
     A(L.requires === 'HACKKIT', spec.id + ': no hacking kit');
     A(spec.guards.some((g) => g.role === 'engineer') && spec.guards.some((g) => g.role === 'radio'), spec.id + ': no specialists');
   }
+});
+
+T('a laser tripwire: walk through it and it trips; on your belly under it, or once it is hacked, it does not', () => {
+  const lz = new Device({ id: 'z', kind: 'laser', pos: [0, 0.75, 0], a: [0, 0, 0], b: [3, 0, 0], h: 0.75, floorY: 0 });
+  A(breaks(lz, [1.5, 0, -0.8], { pos: [1.5, 0, 0.8], h: 1.8 }), 'walked through, not tripped');
+  A(breaks(lz, [1.5, 0, -0.8], { pos: [1.5, 0, -0.1], h: 1.2 }), 'crouched on it, not tripped');
+  A(!breaks(lz, [1.5, 0, -0.8], { pos: [1.5, 0, 0.8], h: 0.5 }), 'prone, it tripped');
+  A(!breaks(lz, [1.5, 0.9, -0.8], { pos: [1.5, 0.9, 0.8], h: 1.8 }), 'over it, it tripped');
+  A(!breaks(lz, [6, 0, -0.8], { pos: [6, 0, 0.8], h: 1.8 }), 'past its end, it tripped');
+  setMode([lz], 'friendly'); A(!breaks(lz, [1.5, 0, -0.8], { pos: [1.5, 0, 0.8], h: 1.8 }), 'hacked, it tripped');
+  const L = buildKitLevel(DRAFTS.find((d) => d.id === 'facility'));
+  const z = L.devices.find((d) => d.id === 'z-serv');
+  A(z && Math.abs(Math.hypot(z.b[0] - z.a[0], z.b[2] - z.a[2]) - 4.5) < 0.01 && z.h === 0.75, 'the beam is not across the corridor: ' + JSON.stringify(z && [z.a, z.b]));
+  A(/lasersWatch\(\)/.test(rt) && /breaks\(d, prevAt/.test(rt), 'not watched');
 });
 
 console.log(fails.length ? '\nFAILURES (' + fails.length + '):\n' + fails.map((f) => '  * ' + f).join('\n') : '\nALL ' + pass + ' PASSED');
