@@ -197,7 +197,7 @@ T('every level with a security system: a terminal on its network, its locks on d
     for (const n of nets) A(L.terminals.some((t) => t.net === n), spec.id + ': no terminal for ' + n);
     for (const d of L.devices.filter((q) => q.kind === 'lock')) A(d.doors.length && d.doors.every((q) => q.def.maglock), spec.id + ': ' + d.id + ' on no door');
     A(L.requires === 'HACKKIT', spec.id + ': no hacking kit');
-    A(L.guards.some((g) => g.role === 'engineer') && L.guards.some((g) => g.role === 'radio'), spec.id + ': no specialists (as built)');
+    if (spec.id !== 'testrange') A(L.guards.some((g) => g.role === 'engineer') && L.guards.some((g) => g.role === 'radio'), spec.id + ': no specialists (as built)');
   }
 });
 

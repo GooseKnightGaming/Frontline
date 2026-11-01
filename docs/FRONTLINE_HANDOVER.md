@@ -35,6 +35,9 @@ game into the repository's root.
   stair core - the lobby, cafe, post room, loading dock and maglocked security office; open-plan offices; the boardroom,
   the maglocked server room (a turret) and Varn's maglocked office. Objectives: bug the boardroom, copy Varn's mail, take
   the prototype, optionally stop Varn (who carries the keycard).
+- **Level 39, Q's Test Range** (`drafts/testrange.js`; the roadmap's "hacking mechanics and training"): five rooms in a
+  row, one system each - a camera, a laser, two maglocks (a keycard on the man between them), a lighting panel, a turret
+  and its terminal - each with a sign saying how to beat it, and the briefing walking through them. Three reds.
 - **Weapons drawn in code** (`src/game/draw/gun_models.js`; "weapon models beyond the four Quaternius ones"): shotguns
   (barrel over tube magazine, pump forend, wooden stock), SMGs and machine pistols, light and heavy machine guns (heat
   shield, carry handle, ammunition box, folded bipod), rocket launchers (a tube with its bell and sight), grenade
