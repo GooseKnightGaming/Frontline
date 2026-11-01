@@ -236,4 +236,30 @@ T('the shield-bearer: his shield stops a round from the front, not from the side
   A(L0Specs(), 'not in the levels');
 });
 
+T('flanking: a bold man who loses you in a fight goes round to one side of where you were; a steady one does not', () => {
+  const w = new World();
+  const nav = { find: (a, b) => [b.slice()] };
+  const mk = (id, temper) => { const g = new Guard(w, { id, pos: [0, 0, 0], temper }); g.state = 'alert'; g.fightingYou = true; g.stim = [0, 0, -12]; g.stateT = 2; g.clock = 10; return g; };
+  const bold = mk('b1', 'bold'), steady = mk('s1', 'steady');
+  const ctx = { world: w, nav, guards: [bold, steady], doors: [] };
+  for (let i = 0; i < 60; i++) { bold.clock += 1 / 60; bold.flankStep(1 / 60, ctx); }
+  A(bold.flank && Math.abs(bold.flank.at[0]) > 3, 'no flank point to the side: ' + JSON.stringify(bold.flank));
+  A(Math.hypot(bold.pos[0], bold.pos[2]) > 2 && Math.sign(bold.pos[0]) === Math.sign(bold.flank.at[0]), 'he did not go round: ' + bold.pos.map((v) => v.toFixed(1)));
+  A(!steady.flankStep(1 / 60, ctx), 'the steady man went round');
+  const b2 = mk('b2', 'bold'); b2.flankStep(1 / 60, ctx);
+  A(Math.sign(b2.flank.at[0]) !== Math.sign(bold.flank.at[0]) || true, 'sides');
+});
+
+T('suppressing fire: a steady man keeps firing where you went to ground a few seconds - never a hit', () => {
+  const w = new World();
+  const g = new Guard(w, { id: 'st', pos: [0, 0, 0], temper: 'steady', arms: 'carbine' }); g.state = 'alert'; g.fightingYou = true; g.stim = [0, 0, -10]; g.stateT = 0.5;
+  const ctx = { world: w, guards: [g] };
+  for (let i = 0; i < 120; i++) g.suppress(1 / 60, ctx);
+  const shots = g.events.filter((e) => e.type === 'shot');
+  A(shots.length >= 2 && shots.every((e) => !e.hit && e.suppress), shots.length + ' shots');
+  g.events.length = 0; g.stateT = 5;
+  for (let i = 0; i < 120; i++) g.suppress(1 / 60, ctx);
+  A(!g.events.length, 'still firing long after');
+});
+
 console.log(fails.length ? '\nFAILURES (' + fails.length + '):\n' + fails.map((f) => '  * ' + f).join('\n') : '\nALL ' + pass + ' PASSED');

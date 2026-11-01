@@ -55,6 +55,10 @@ export const SENSE = {
   shots: 30,           // metres at which a shot (loud 1) is heard
   lookAbout: 6,        // seconds spent looking round where he searched
   lost: 4,             // seconds after losing sight of you before he goes looking
+  flankAfter: 1.2,     // (M6.29) a bold man who has lost sight of you in a fight waits this long, then goes round
+  flankWide: 5,        // how far to the side of where you were he goes
+  flankSpeed: 3.2,     // m/s, going round
+  suppressFor: 3,      // seconds a steady man keeps firing where you went to ground
   call: 20,            // metres a shout carries on the same floor (8 through a floor)
 };
 
@@ -585,10 +589,16 @@ export class Guard {
         else if (this.cowering && ctx.you) this.turnTo(this.faceAngle(ctx.you.pos), dt);
         break;
       case 'alert':
-        if (this.seeing) { this.fightingYou = !ctx.you.guard; this.turnTo(this.faceAngle(ctx.you.pos), dt * 2); this.stateT = 0; this.fight(dt, ctx); }
+        if (this.seeing) { this.fightingYou = !ctx.you.guard; this.turnTo(this.faceAngle(ctx.you.pos), dt * 2); this.stateT = 0; this.flank = null; this.fight(dt, ctx); }
         else {
           this.aimT = 0;
           this.reloading(dt, ctx);
+          // (M6.29, the roadmap's "guards that flank") a bold man fighting you, who has lost you behind
+          // something, does not stand and wait: he goes round - to one side of where you were (each man
+          // his own side), then on to where you were
+          if (this.flankStep(dt, ctx)) break;
+          // (M6.29, "suppress") a steady man keeps firing where you went to ground, a few seconds, to pin you there
+          this.suppress(dt, ctx);
           // (Rhys: when a red was killed the Yellows said "Lost him" / "Where
           // did he go?") the one he was fighting is down, not gone: he says so, and stands
           // down - back to the escort, or back to his post - with no searching for a dead man
@@ -837,6 +847,46 @@ export class Guard {
     const spread = hit ? 0 : 0.5 + Math.min(1.2, d * 0.04);
     const to = hit ? you.chest.slice() : [you.chest[0] + (rand() - 0.5) * 2 * spread, you.chest[1] + (rand() - 0.3) * spread, you.chest[2] + (rand() - 0.5) * 2 * spread];
     this.events.push({ type: 'shot', from, to, hit, damage: hit ? this.arms.damage : 0, noise: 1, arms: this.armsName, at: you.guard || null });
+  }
+
+  suppress(dt, ctx) {
+    if (ctx.flank === false || this.temper !== 'steady' || !this.fightingYou || this.foeDown || !this.stim || this.stateT > SENSE.suppressFor) return;
+    if (this.reloadT > 0 || this.ammo <= 0) return;
+    this.fireT -= dt;
+    if (this.fireT > 0) return;
+    const A = this.arms, rand = ctx.random || Math.random;
+    if (this.burstLeft <= 0) this.burstLeft = A.burst[0] + Math.floor(rand() * (A.burst[1] - A.burst[0] + 1));
+    this.turnTo(this.faceAngle(this.stim), dt * 2);
+    const from = [this.pos[0] - Math.sin(this.yaw) * 0.45, this.pos[1] + 1.4, this.pos[2] - Math.cos(this.yaw) * 0.45];
+    const to = [this.stim[0] + (rand() - 0.5) * 1.6, this.stim[1] + 0.6 + rand() * 0.9, this.stim[2] + (rand() - 0.5) * 1.6];
+    // into whatever you went behind: the round stops there
+    const dir = [to[0] - from[0], to[1] - from[1], to[2] - from[2]], len = Math.hypot(...dir) || 1;
+    const block = ctx.world.raycast(from, dir.map((v) => v / len), len, (s) => s.person || s.shootThrough || s === (this.target && this.target.solid) || s.target);
+    const at = block ? [from[0] + dir[0] / len * block.t, from[1] + dir[1] / len * block.t, from[2] + dir[2] / len * block.t] : to;
+    this.events.push({ type: 'shot', from, to: at, hit: false, blocked: !!block, solid: block ? block.solid : null, damage: 0, noise: 1, arms: this.armsName, at: null, suppress: true });
+    this.ammo--; this.burstLeft--;
+    if (this.ammo <= 0) { this.reloadT = A.reload; this.say(ctx, 'reload'); this.burstLeft = 0; return; }
+    this.fireT = this.burstLeft > 0 ? A.gap : A.pause[0] + rand() * (A.pause[1] - A.pause[0]);
+  }
+  flankStep(dt, ctx) {
+    if (ctx.flank === false || this.temper !== 'bold' || !this.fightingYou || this.foeDown || !this.stim || !ctx.nav || this.escort || this.holdFloor) return false;
+    if (this.stateT < SENSE.flankAfter) return false;
+    if (!this.flank) {
+      // which side: his own, by his name (so two men go two ways)
+      let h = 0; for (let i = 0; i < this.id.length; i++) h = (h * 31 + this.id.charCodeAt(i)) | 0;
+      const side = h & 1 ? 1 : -1;
+      const dx = this.stim[0] - this.pos[0], dz = this.stim[2] - this.pos[2], d = Math.hypot(dx, dz) || 1;
+      const px = -dz / d * side, pz = dx / d * side;
+      const at = [this.stim[0] + px * SENSE.flankWide - dx / d * 1.5, this.stim[1], this.stim[2] + pz * SENSE.flankWide - dz / d * 1.5];
+      this.flank = { at, done: false, side };
+      this.path = null;
+    }
+    const goal = this.flank.done ? this.stim : this.flank.at;
+    const there = this.goTo(goal, SENSE.flankSpeed, dt, ctx);
+    if (there) { if (!this.flank.done) { this.flank.done = true; this.path = null; } else return false; }
+    // a way round that cannot be found: give it up, and wait as before
+    if (!this.path && this.repathAt > this.clock + 1.5 && !this.flank.done) { this.flank.done = true; }
+    return true;
   }
 
   searchStep(dt, ctx) {

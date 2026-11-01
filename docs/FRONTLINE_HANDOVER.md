@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.28.0)
+# Frontline — Handover (M6.29.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,14 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.29.0 — smarter enemies: flanking and suppressing fire (the roadmap's "guards that flank ... suppress")
+- **Flanking** (`Guard.flankStep`): a bold guard in a fight with you who loses sight of you waits 1.2 s, then goes round -
+  to a point 5 m to one side of where you were (each man his own side, by his name), then on to where you were. No way
+  round: he waits as before. Steady and cowardly men, rivals' fights, escorts and floor-holders do not.
+- **Suppressing fire** (`Guard.suppress`): a steady guard keeps firing where you went to ground for 3 s - rounds into your
+  cover (impact sounds) or past you (the whizz), never a hit.
+- Tests: `devices.test.mjs`.
 
 ## M6.28.0 — hacking and control, the rest (Rhys: "keep building - use your imagination")
 - **Three more devices** (`devices.js`): `lock` (a **maglock** on a door - its leaves become security doors no kick
