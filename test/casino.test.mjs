@@ -898,7 +898,7 @@ T('words on screen when they are heard: a recording from where its sound starts;
   A(/u\.onstart = begin;/.test(v) && /setTimeout\(begin, SPEECH_WAIT \* 1000\)/.test(v), 'speech: words shown before it is said');
   A(/src\.start\(t, Math\.max\(0, \(\(this\.leads && this\.leads\[name\]\) \|\| 0\) - 0\.02\)\)/.test(a) && /this\.leads\[name\] = leadingSilence\(buf\)/.test(a), 'recordings: their silence first');
   const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
-  A(/voices\.say\(g\.id, text, key, Math\.max\(0\.15, Math\.min\(1, 1\.25 - d \/ 20\)\), \(said\) => subtitle\(g, said, 2\.8\), spokenVoice\(g, key\.startsWith\('y_'\)\)\)/.test(rt), 'barks shown before they are heard');
+  A(/voices\.say\(g\.id, text, key, Math\.max\(0\.15, Math\.min\(1, 1\.25 - d \/ 20\)\), \(said\) => subtitle\(g, said, 2\.8\), spokenVoice\(g, yv\)\)/.test(rt), 'barks shown before they are heard');
 });
 
 console.log('\n-- M6.17.7 --');
