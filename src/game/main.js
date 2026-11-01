@@ -74,7 +74,7 @@ import { effects as skillEffects, SKILLS, pointsLeft, train as trainSkill, XP } 
 import { CASE, CASE_NEEDS, FINAL, caseOpen } from '../sim/play/caseboard.js';
 import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './core/input.js';
 
-const VERSION = 'M6.31.0';
+const VERSION = 'M6.32.0';
 const $ = (id) => document.getElementById(id);
 const TEST = /[?&]test\b/.test(location.search);
 // Level 0, the training mission, is its own page load: index.html?level=0
@@ -698,6 +698,7 @@ function boot() {
   $('t-load').onclick = () => { show('title', false); show('slots', true); drawSlots(); };
   $('t-settings').onclick = () => { show('title', false); openMenu(); tab('settings'); };
   $('t-howto').onclick = () => window.open('controls.html?v=' + VERSION, '_blank');
+  $('t-arms').onclick = () => window.open('weapons.html?v=' + VERSION, '_blank');
   $('t-kofi').onclick = () => window.open('https://ko-fi.com/gooseknight', '_blank');
   document.querySelectorAll('.btn-title').forEach((b) => { b.onclick = () => { show('slots', false); showTitle(); }; });
   $('slot-copy').onclick = () => {
@@ -1200,6 +1201,7 @@ function boot() {
   }
   for (const t of ['controls', 'settings']) $('btn-' + t).onclick = () => tab(t);
   $('btn-howto').onclick = () => window.open('controls.html?v=' + VERSION, '_blank');
+  $('btn-arms').onclick = () => window.open('weapons.html?v=' + VERSION, '_blank');
   document.querySelectorAll('.btn-back').forEach((b) => { b.onclick = () => tab('main'); });
 
   function drawBindings() {

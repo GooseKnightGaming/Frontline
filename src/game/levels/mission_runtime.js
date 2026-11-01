@@ -740,7 +740,7 @@ export function setupMission(ctx) {
       if (!md.patient) {
         let best = null, bd = 30;
         for (const g of guards) {
-          if (g === md || !g.dead || !g.knockedOut || g.faction !== md.faction || g.gone || g.carried || guards.some((o) => o !== md && o.patient === g)) continue;
+          if (g === md || !g.dead || !g.knockedOut || g.tied || g.faction !== md.faction || g.gone || g.carried || guards.some((o) => o !== md && o.patient === g)) continue;
           const d = Math.hypot(g.pos[0] - md.pos[0], g.pos[2] - md.pos[2]) + Math.abs(g.pos[1] - md.pos[1]) * 4;
           if (d < bd) { bd = d; best = g; }
         }
@@ -1152,12 +1152,63 @@ export function setupMission(ctx) {
   };
   const aimingAt = (g) => S.aimNow && S.aimNow.aim && aimedGuard() === g;
   const heldNear = () => guards.find((g) => g.heldUp && !g.questioned && Math.hypot(g.pos[0] - player.pos[0], g.pos[2] - player.pos[2]) < 2.2) || null;
+  // (M6.32; the roadmap's "dialogue: 2-4 options an exchange") questioned, he answers what you ask - as much as his
+  // nerve allows: a coward three things, most men two, a steady man one. Ask where his side are (the radar, 25 s),
+  // where the thing you came for is (the radar's diamond, 45 s), what security is live (every device of theirs on
+  // your radar, pinholes and all), or for his keycard. Then put him on the floor, hands behind his head (tied: out of
+  // it, quietly, for good - no medic brings him round), or leave him (and he calls it in once you go).
+  const ASKS = { cowardly: 3, steady: 1 };
+  const OPENS = { cowardly: 'Don\'t shoot! Please - I\'ll tell you whatever you want!', steady: 'You won\'t get much out of me.' };
+  const toldWhereOf = () => {
+    for (const o of level.objectives || []) {
+      if (o.optional) continue;
+      const r = draftObjectives().find((q) => q.id === o.id);
+      if (!r || r.done) continue;
+      const t = o.kind === 'hack' ? level.terminals.find((q) => q.id === o.ref) : o.kind === 'take' ? level.pickups.find((q) => q.id === o.ref)
+        : o.kind === 'kill' ? guards.find((q) => q.id === o.ref && !q.dead) : o.kind === 'rescue' ? hostages.find((h) => (!o.ref || h.id === o.ref) && h.state !== 'rescued' && h.state !== 'dead') : null;
+      if (t && t.pos) return { pos: t.pos, what: t.what || (t.name && t.name !== 'the terminal' ? t.name : null) || (o.kind === 'kill' ? (t.name || 'the man you want') : o.kind === 'rescue' ? 'the prisoner' : 'what you came for') };
+    }
+    return null;
+  };
+  const tieUp = (g) => {
+    g.heldUp = false; g.tied = true; g.takenDown(false); g.target.lastBy = 'you'; m.takedowns++; audio.confirm();
+    if (standing && g.faction === 'yellow') { const was = standing.state; if (standing.takenDown(false) === 'hostile' && was !== 'hostile') turnYellows(); }
+    showHint('He gets down, hands behind his head - and you tie him. He is out of it, quietly, and no one will bring him round.');
+  };
   const question = (g) => {
-    g.questioned = true; level.revealT = Math.max(level.revealT || 0, 25);
-    let got = '';
-    if (g.card) { haveCard.add(g.card); got = ' He hands over his keycard, too.'; g.card = null; }
-    audio.confirm();
-    showHint('He talks: every one of his side is on your radar for 25 seconds.' + got + ' (Take him down now, or he will raise the alarm when you go.)');
+    g.questioned = true; g.heldT = 0;
+    let left = ASKS[g.temper] !== undefined ? ASKS[g.temper] : 2;
+    const asked = new Set();
+    const who = g.name || (g.rank === 'officer' ? 'The officer' : g.role ? 'The ' + g.role + (g.role === 'radio' ? ' operator' : '') : 'The guard');
+    const ask = (said) => {
+      if (g.dead || !g.heldUp) return;
+      const opts = [];
+      if (left > 0) {
+        if (!asked.has('where')) opts.push(['Where are the rest of you?', () => {
+          asked.add('where'); left--; level.revealT = Math.max(level.revealT || 0, 25);
+          ask('All right - all right. Here, and here, and the rest of them over there.  (Every one of his side on your radar for 25 seconds.)');
+        }]);
+        const tw = toldWhereOf();
+        if (tw && !asked.has('obj')) opts.push(['Where is ' + tw.what + '?', () => {
+          asked.add('obj'); left--; rt.toldWhere = { pos: tw.pos, until: S.time + 45 };
+          ask('That way. You can\'t miss it.  (On your radar for 45 seconds.)');
+        }]);
+        const devs = (level.liveDevices || []).filter((d) => !d.known);
+        if (devs.length && !asked.has('sec')) opts.push(['What security is live?', () => {
+          asked.add('sec'); left--; for (const d of level.liveDevices || []) d.known = true;
+          ask('Cameras, the locks, all of it - and the little ones you won\'t see.  (Every device of theirs on your radar.)');
+        }]);
+        if (g.card && !asked.has('card')) opts.push(['Your keycard. Slowly.', () => {
+          asked.add('card'); left--; haveCard.add(g.card); g.card = null; audio.pickup();
+          ask('Here. Take it.  (His network\'s maglocks open to it now.)');
+        }]);
+      }
+      opts.push(['On the floor. Hands behind your head.', () => tieUp(g)]);
+      opts.push(['(Leave him)', () => showHint('You leave him with his hands up. He will call it in the moment you are gone - or take him down now.')]);
+      const text = (said || OPENS[g.temper] || 'Easy - easy. What do you want?') + (left > 0 || !said ? '' : '  ...And that\'s all you\'re getting.');
+      rt.choose(who, text, opts, true);
+    };
+    ask(null);
   };
   // keycards: dropped by the officers who carry them; taken, they open their network's maglocks (2 s, no trace)
   const cards = [], haveCard = new Set();
@@ -2188,6 +2239,7 @@ export function setupMission(ctx) {
         const tg = npcs.find((n) => n.kind === 'trainguard' && !n.down && !n.gone);
         if (tg) return [tg.pos[0], tg.pos[2]];
       }
+      if (rt.toldWhere && rt.toldWhere.until > S.time && !m.done) return [rt.toldWhere.pos[0], rt.toldWhere.pos[2]];
       if (m.done || !L0) return null;
       if (m.fileDone) return [level.van.pos[0], level.van.pos[2]];
       return [level.terminal.pos[0], level.terminal.pos[2]];

@@ -12,11 +12,14 @@ await esbuild.build({
 const ver = (readFileSync('src/game/main.js', 'utf8').match(/const VERSION = '([^']+)'/) || [, 'dev'])[1];
 let html = readFileSync('src/index.html', 'utf8');
 html = html.replace('<script src="game.js"></script>', `<script src="game.js?v=${ver}"></script>`)
-           .replace(/controls\.html/g, `controls.html?v=${ver}`)
+           .replace(/controls\.html/g, `controls.html?v=${ver}`).replace(/weapons\.html/g, `weapons.html?v=${ver}`)
            .replace('<meta charset="utf-8">', '<meta charset="utf-8">\n<meta http-equiv="Cache-Control" content="no-cache">');
 writeFileSync('index.html', html);
 let ctl = readFileSync('src/controls.html', 'utf8').replace(/\{\{VER\}\}/g, ver);
 writeFileSync('controls.html', ctl);
+// (M6.32) the weapon stats sheet, from the catalogue itself
+const { weaponsSheet } = await import('./tools/weapons_sheet.mjs');
+writeFileSync('weapons.html', weaponsSheet(ver));
 // the bake check: a standalone page to test this machine's lightmap baking
 await esbuild.build({ entryPoints: ['tools/bake_check/check.js'], bundle: true, minify: true, format: 'iife', target: ['es2020'], outfile: 'bakecheck.js', logLevel: 'warning', external: ['node:worker_threads'] });
 copyFileSync('tools/bake_check/bakecheck.html', 'bakecheck.html');

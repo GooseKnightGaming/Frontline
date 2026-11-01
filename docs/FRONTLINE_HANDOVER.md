@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.31.0)
+# Frontline — Handover (M6.32.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,18 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.32.0 — questioning, the weapons sheet
+- **Questioning** (the roadmap's "dialogue: 2-4 options an exchange"): a held-up man, E, is now an exchange (the `choose`
+  overlay). Ask where his side are (radar, 25 s), where the thing you came for is (the radar's diamond on it, 45 s - the
+  first undone objective's terminal, pickup, man or prisoner; `rt.toldWhere`), what security is live (every device of
+  theirs marked known, pinholes too), or for his keycard. A coward answers three, most men two, a steady man one. Then
+  "On the floor" ties him (a quiet non-lethal takedown, `g.tied`: the medic leaves him be), or leave him (he calls it in).
+- **The weapons sheet** (`weapons.html`, the roadmap's "weapon stats sheet, as a side document like the controls page"):
+  written by build.mjs from the catalogue itself (`tools/weapons_sheet.mjs`), so it never disagrees with the game. Every
+  weapon a card - damage a shot and a second, reach, aimed and hip accuracy, steadiness as bars; magazine, reload, weight,
+  trait, who carries it - with a search box and sorting; then attachments, grenades/charges/aid, gear and specials. From
+  the title screen and the menu (Weapons sheet), and the controls page's foot. `test/weapons_sheet.test.mjs`.
 
 ## M6.31.0 — the case, Kaldberg, snow
 - **The case** (`src/sim/play/caseboard.js`): eight clues, each from one thing done on one of the newer missions (Halden's
