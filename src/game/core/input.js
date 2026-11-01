@@ -30,7 +30,7 @@ export const FORBIDDEN = new Set(['Tab', 'ControlLeft', 'ControlRight', 'MetaLef
 export const DEFAULT_SETTINGS = {
   sensitivity: 1.0, invertY: false, fov: 75, crouchToggle: false,
   difficulty: 'operative',                              // (M6.39) sim/play/difficulty.js
-  touchLook: 1, touchSize: 1, touchAssist: true, touchTurn: true,     // (M6.36) touch screens only
+  touchLook: 1, touchSize: 1, touchAssist: true, touchTurn: true, touchAutoFire: false,     // (M6.36) touch screens only
   quality: 'medium', showFps: false, glitchHints: false, autoVault: 'waist', map: true, mapZoom: 1, bindings: DEFAULT_BINDINGS,
 };
 const KEY = 'frontline.settings.v1';

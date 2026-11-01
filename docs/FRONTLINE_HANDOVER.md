@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.46.0)
+# Frontline — Handover (M6.47.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,11 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.47.0 — touch auto-fire
+- **Auto-fire** (touch only, Settings, off by default): the crosshair on a man of theirs who is already fighting you
+  (`state === 'alert'`), and your gun fires - never at one who has not seen you (it would give you away), a Yellow,
+  staff, or a man with his hands up. Let go of him and it stops (unless you are holding FIRE yourself).
 
 ## M6.46.0 — checkpoints
 - **Retry from your checkpoint** (first drafts): a mission failed - you down, most often - with something done

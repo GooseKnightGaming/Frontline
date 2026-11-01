@@ -25,7 +25,7 @@ const tsrc = readFileSync(new URL('../src/game/core/touch.js', import.meta.url),
 ok(/input\.settings\.touchLook/.test(tsrc) && /input\.lookFriction/.test(tsrc) && /touchSize/.test(tsrc), 'touch reads its settings');
 ok(/input\.lookFriction = fr/.test(main) && /settings\.touchAssist !== false/.test(main), 'aim assist set each frame');
 const html = readFileSync(new URL('../src/index.html', import.meta.url), 'utf8');
-for (const id of ['set-tlook', 'set-tsize', 'set-tassist', 'set-tturn']) ok(html.includes('id="' + id + '"') && main.includes("$('" + id + "')"), 'setting ' + id);
+for (const id of ['set-tlook', 'set-tsize', 'set-tassist', 'set-tturn', 'set-tauto']) ok(html.includes('id="' + id + '"') && main.includes("$('" + id + "')"), 'setting ' + id);
 // (M6.38) the words: keys become buttons, and nothing else changes
 const W = (a, b) => ok(touchWords(a) === b, JSON.stringify(a) + ' -> ' + JSON.stringify(touchWords(a)));
 W('SPACE  Vault', 'JUMP  Vault');
@@ -36,5 +36,6 @@ W('Click to shoot. Clear the pistol range - hold ALT to aim, it matters.', 'FIRE
 W('E  Open the door  (hold E: slip through and shut it)', 'E  Open the door  (hold E: slip through and shut it)');
 W('Cameras, Carbines and CCTV: a Clear Case', 'Cameras, Carbines and CCTV: a Clear Case');
 W('', '');
+ok(/g\.state === 'alert' && g\.faction !== 'yellow'/.test(main), 'auto-fire only at a man already fighting you, never a Yellow');
 console.log(bad ? `${bad} of ${n} FAILED` : `ALL ${n} PASSED`);
 if (bad) process.exit(1);

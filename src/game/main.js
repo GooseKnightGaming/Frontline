@@ -1278,6 +1278,7 @@ function boot() {
     $('set-diff').value = settings.difficulty || 'operative';
     $('set-tlook').value = settings.touchLook; $('set-tlook-v').textContent = (+settings.touchLook).toFixed(2);
     if ($('set-tturn')) $('set-tturn').checked = settings.touchTurn !== false;
+    if ($('set-tauto')) $('set-tauto').checked = !!settings.touchAutoFire;
     $('set-tsize').value = String(settings.touchSize); $('set-tassist').checked = settings.touchAssist !== false;
 
     $('set-quality').value = settings.quality;
@@ -1295,6 +1296,7 @@ function boot() {
   // (M6.36) touch settings
   $('set-tlook').oninput = (e) => { settings.touchLook = +e.target.value; $('set-tlook-v').textContent = settings.touchLook.toFixed(2); saveSettings(settings); };
   $('set-tsize').onchange = (e) => { settings.touchSize = +e.target.value; saveSettings(settings); if (touch) touch.resize(); };
+  $('set-tauto').onchange = (e) => { settings.touchAutoFire = e.target.checked; saveSettings(settings); };
   $('set-tturn').onchange = (e) => { settings.touchTurn = e.target.checked; saveSettings(settings); };
   $('set-tassist').onchange = (e) => { settings.touchAssist = e.target.checked; saveSettings(settings); };
   $('set-sens').oninput = (e) => { settings.sensitivity = +e.target.value; $('set-sens-v').textContent = settings.sensitivity.toFixed(2); saveSettings(settings); };
@@ -2464,13 +2466,19 @@ function boot() {
     if (touch) {
       touch.tick();
       // (M6.36) aim assist: over an enemy, the view slows (a look straight out from the eye, 60 m)
-      let fr = 1;
-      if (settings.touchAssist !== false && S.playing && !S.menu) {
+      let fr = 1, autoAt = false;
+      if ((settings.touchAssist !== false || settings.touchAutoFire) && S.playing && !S.menu && !S.dialog) {
         const h = level.world.raycast(player.eyePos, aimDir(), 60, (q) => q.glass || q.shootThrough);
         const tg = h && h.solid && h.solid.target;
-        if (tg && !tg.down && (tg.guard ? !tg.guard.dead && tg.guard.faction !== 'staff' && !tg.guard.neutral : true)) fr = 0.45;
+        if (settings.touchAssist !== false && tg && !tg.down && (tg.guard ? !tg.guard.dead && tg.guard.faction !== 'staff' && !tg.guard.neutral : true)) fr = 0.45;
+        // (M6.47) auto-fire (Settings, off by default): only at a man of theirs already fighting you - never one who
+        // has not seen you (it would give you away), never a Yellow, never staff
+        const g = tg && tg.guard;
+        autoAt = !!(settings.touchAutoFire && g && !g.dead && !tg.down && g.state === 'alert' && g.faction !== 'yellow' && g.faction !== 'staff' && !g.neutral && !g.heldUp);
       }
       input.lookFriction = fr;
+      if (autoAt && arsenal.weapon && arsenal.weapon.kind === 'gun') { if (!S.autoFiring) input.mouse.firePressed = true; input.mouse.fire = true; S.autoFiring = true; }
+      else if (S.autoFiring) { S.autoFiring = false; if (!touch.state.held.size || ![...touch.state.held.values()].some((q) => q.action === 'fire')) input.mouse.fire = false; }
     }
     if (level.lift) level.lift.alpha = S.alpha;     // drawn in step with you
     if (level.helicopter) level.helicopter.t += dt;   // its rotor turns, it bobs
