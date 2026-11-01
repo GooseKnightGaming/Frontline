@@ -800,10 +800,11 @@ export function setupMission(ctx) {
     const e = new pc.Entity('dog-' + d.id); app.root.addChild(e);
     dogBits(e, 0.26, 0.26, 0.72, 0, 0.52, 0, DOG_COAT);                    // the body
     dogBits(e, 0.22, 0.2, 0.3, 0, 0.58, 0.05, DOG_DARK);                   // the saddle
-    dogBits(e, 0.2, 0.22, 0.24, 0, 0.72, -0.44, DOG_COAT);                 // the head
-    dogBits(e, 0.12, 0.1, 0.16, 0, 0.66, -0.6, DOG_TAN);                   // the muzzle
-    dogBits(e, 0.05, 0.05, 0.03, 0, 0.69, -0.69, DOG_DARK);                // the nose
-    for (const sx of [-0.07, 0.07]) dogBits(e, 0.05, 0.12, 0.04, sx, 0.88, -0.42, DOG_DARK);   // the ears
+    dogBits(e, 0.17, 0.2, 0.2, 0, 0.66, -0.36, DOG_COAT);                  // the neck
+    dogBits(e, 0.22, 0.22, 0.26, 0, 0.8, -0.48, DOG_COAT);                 // the head
+    dogBits(e, 0.13, 0.11, 0.2, 0, 0.75, -0.68, DOG_TAN);                  // the muzzle
+    dogBits(e, 0.06, 0.05, 0.03, 0, 0.79, -0.79, DOG_DARK);                // the nose
+    for (const sx of [-0.07, 0.07]) dogBits(e, 0.05, 0.13, 0.04, sx, 0.97, -0.45, DOG_DARK);   // the ears
     d.tail = dogBits(e, 0.05, 0.05, 0.3, 0, 0.62, 0.48, DOG_COAT);
     d.legs = [[-0.09, -0.25], [0.09, -0.25], [-0.09, 0.25], [0.09, 0.25]].map(([lx, lz]) => {
       const hip = new pc.Entity(); hip.setLocalPosition(lx, 0.42, lz); e.addChild(hip);
