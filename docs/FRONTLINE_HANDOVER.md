@@ -14,6 +14,8 @@ game into the repository's root.
   the second floor - the conference room, the secretary's office, and the Deputy Minister's (maglocked, his keycard;
   its only door is from his secretary's). Copy the supply records; take the order that bought the blight. The
   blight's fourth step on the case board (HARVEST SAVED now wants all four).
+- **The mission list's ticks**: each first draft's best result this run (`loadDone`/`markDone`, `frontline.done.N`,
+  cleared with the slot) - a tick for a success, a half for a partial.
 
 ## M6.47.0 — touch auto-fire
 - **Auto-fire** (touch only, Settings, off by default): the crosshair on a man of theirs who is already fighting you

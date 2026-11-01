@@ -737,8 +737,11 @@ function boot() {
     // (M6.31) the last of them, Kaldberg, only once the case is made (the board at Ghost HQ)
     const drawDrafts = () => {
       const open = caseOpen(Saves.loadCase(slotNo)) || TEST;
-      list.innerHTML = DRAFTS.map((d) => d.id === FINAL && !open ? '<button class="btn" disabled>Level ' + d.no + ': ? ? ?  (the case is not made yet - ' + Saves.loadCase(slotNo).length + ' of ' + CASE_NEEDS + ' clues)</button>'
-        : '<button class="btn" data-id="' + d.id + '">Level ' + d.no + ': ' + d.title + '</button>').join('');
+      // (M6.48) how each has gone so far: a tick for a success, a half for less
+      const done = Saves.loadDone(slotNo), clues = Saves.loadCase(slotNo).filter((id) => CASE.some((c) => c.id === id)).length;
+      const mark = (id) => done[id] === 'success' ? '  \u2713' : done[id] === 'partial' ? '  \u00bd' : '';
+      list.innerHTML = DRAFTS.map((d) => d.id === FINAL && !open ? '<button class="btn" disabled>Level ' + d.no + ': ? ? ?  (the case is not made yet - ' + clues + ' of ' + CASE_NEEDS + ' clues)</button>'
+        : '<button class="btn" data-id="' + d.id + '">Level ' + d.no + ': ' + d.title + mark(d.id) + '</button>').join('');
       list.querySelectorAll('button[data-id]').forEach((b) => { b.onclick = () => { saveNow(); goDraft(b.dataset.id); }; });
     };
     drawDrafts();

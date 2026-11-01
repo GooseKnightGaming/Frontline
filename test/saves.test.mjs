@@ -104,6 +104,15 @@ T('the service record adds every mission and battle up, per run; erased with the
   S.clearSlot(3); A(!S.loadRecord(3).missions, 'not erased');
   S.saveGadget(3, 'QRELAY'); A(S.loadGadget(3) === 'QRELAY', 'gadget'); S.clearSlot(3); A(S.loadGadget(3) === null, 'gadget not erased');
 });
+// (M6.48) each first draft's best result
+T('the mission list remembers your best result at each first draft, a run at a time', () => {
+  S.clearSlot(3); S.clearSlot(4);
+  S.markDone(3, 'embassy', 'partial'); S.markDone(3, 'embassy', 'failed');
+  A(S.loadDone(3).embassy === 'partial', 'a failure does not undo a partial');
+  S.markDone(3, 'embassy', 'success'); A(S.loadDone(3).embassy === 'success', 'a success betters it');
+  A(!S.loadDone(4).embassy, 'leaked into another run');
+  S.clearSlot(3); A(!S.loadDone(3).embassy, 'not erased');
+});
 console.log('\n' + '='.repeat(50));
 console.log(fails.length ? 'FAILURES (' + fails.length + ')' : 'ALL ' + pass + ' PASSED');
 process.exit(fails.length ? 1 : 0);

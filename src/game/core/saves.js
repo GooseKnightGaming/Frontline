@@ -45,7 +45,7 @@ export function saveSlot(n, data) {
 export function loadSlot(n) { return listSlots()[n]; }
 // erasing a slot ends its run: the save, its story and its trophies
 export function clearSlot(n) {
-  try { for (const k of [KEY(n), STORY(n), TROPHIES(n), ARMOURY(n), GADGET(n), RECORD(n), SKILLS(n), CASEB(n), CONTRACTS(n), 'frontline.lantern.' + n]) localStorage.removeItem(k); return true; } catch (e) { return false; }
+  try { for (const k of [KEY(n), STORY(n), TROPHIES(n), ARMOURY(n), GADGET(n), RECORD(n), SKILLS(n), CASEB(n), CONTRACTS(n), DONE(n), 'frontline.lantern.' + n]) localStorage.removeItem(k); return true; } catch (e) { return false; }
 }
 // the first slot with no run in it, or -1
 export function freeSlot() {
@@ -181,6 +181,15 @@ export function addCase(n, ids) {
 const CONTRACTS = (n) => 'frontline.contracts.' + n;
 export function loadContracts(n) { try { return JSON.parse(localStorage.getItem(CONTRACTS(n)) || 'null') || null; } catch (e) { return null; } }
 export function saveContracts(n, st) { try { localStorage.setItem(CONTRACTS(n), JSON.stringify(st)); } catch (e) { /* private window */ } }
+// (M6.48) each first draft's best result this run: { id: 'success' | 'partial' | 'failed' }
+const DONE = (n) => 'frontline.done.' + n;
+const RANK = { failed: 1, partial: 2, success: 3 };
+export function loadDone(n) { try { return JSON.parse(localStorage.getItem(DONE(n)) || '{}') || {}; } catch (e) { return {}; } }
+export function markDone(n, id, result) {
+  const d = loadDone(n);
+  if ((RANK[result] || 0) > (RANK[d[id]] || 0)) { d[id] = result; try { localStorage.setItem(DONE(n), JSON.stringify(d)); } catch (e) { /* private window */ } }
+  return d;
+}
 // (M6.29) the run's skills: experience earned, and the ranks bought with it (sim/play/skills.js)
 const SKILLS = (n) => 'frontline.skills.' + n;
 export function loadSkills(n) { try { return JSON.parse(localStorage.getItem(SKILLS(n)) || 'null') || { xp: 0, ranks: {} }; } catch (e) { return { xp: 0, ranks: {} }; } }

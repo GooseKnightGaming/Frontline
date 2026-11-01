@@ -2346,6 +2346,8 @@ export function setupMission(ctx) {
           // (M6.45) the blight's trail, a step at a time
           if (blightStep(level.draft)) Saves.addCase(Saves.currentSlot(), [blightStep(level.draft)]);
         }
+        // (M6.48) the mission list's tick: this draft's best result
+        if (level.draft) Saves.markDone(Saves.currentSlot(), level.draft, m.result);
         // (M6.41) the contracts board: any open one this mission pays
         if (level.draft) {
           const cst = Saves.loadContracts(Saves.currentSlot());
