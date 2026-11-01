@@ -140,6 +140,8 @@ export const LINES = {
   radio: ['Control, contact! All units, converge on my position!', 'Control, we have an intruder - send everyone!'],
   fixing: ['Someone has been in the security system. Resetting it.', 'The system is down - I will get it back up.'],
   fixed: ['Security is back online.', 'There. The system is back up.'],
+  medic: ['Man down - I am going to him!', 'Hold on - I am coming!'],
+  revived: ['Easy. You are all right. Who did this?', 'Up you get. Slowly.'],
   coming: ['On my way!', 'Coming!'],
   flee: ['I\'m out of here!', 'No - no more!', 'Fall back! Fall back!'],
   // once the building is on alert, the easy-going lines give way to these
@@ -254,7 +256,8 @@ export class Guard {
     this.item = def.item !== undefined ? def.item : (issued(this.faction, this.armsName, this.id) || (this.arms && this.arms.item) || null);
     this.temper = def.temper || 'bold';
     // (M6.29, the roadmap's specialists) 'engineer': puts a hacked security system back on, at its
-    // terminal; 'radio': once he has seen you, calls the whole place in unless he is stopped first
+    // terminal; 'radio': once he has seen you, calls the whole place in unless he is stopped first;
+    // 'medic': goes to a man knocked out and brings him round (the dead stay dead)
     this.role = def.role || null;
     this.sees = def.sees || null;               // 'nvg' | 'torch' | null: what he sees by in the dark
     this.fleeOn = def.fleeOn || 'hurt';         // a coward runs when hurt - or, some, at the first sign of trouble

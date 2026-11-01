@@ -111,7 +111,9 @@ Facility and the Prison. **M6.28.0: the rest** - maglocks, lights, the alarm's
 siren, devices on the radar, shooting them out, the engineer and the radio
 operator, Q Branch's gadgets, and the server room under Yard 7 with its intrusions
 (traced on a mission? they come for Yard 7). Still open: a hacking range in the
-training course; the hacking suit; UV/thermal goggles finding hidden devices.
+training course; the hacking suit. (Done since: pinhole cameras for EMF, laser
+tripwires for night vision and UV, the EMP grenade, the medic, Level 35 the
+Listening Station.)
 
 ## Debrief and statistics (Rhys, M6.5.0)
 The mission debrief exists (result, objectives, time, casualties, knockouts,
@@ -123,7 +125,8 @@ other mission-specific outcomes, and for **battle maps**: **K/D ratio**,
 
 ## Smarter enemies, specialised roles (Rhys, M6.5.0 — eventually)
 Guards that flank, use cover properly, suppress, fall back, and
-coordinate; occasional **specialists** — a marksman who relocates, a medic
+coordinate; occasional **specialists** (M6.28: the engineer, the radio operator
+and the medic are in) — a marksman who relocates, a medic
 who revives knocked-out men, a heavy with a shield, a dog handler, an
 engineer who re-locks doors or re-arms turrets, a radio operator who calls in
 reinforcements (stop him first).

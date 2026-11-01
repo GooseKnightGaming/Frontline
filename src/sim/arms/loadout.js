@@ -134,6 +134,9 @@ export const ITEMS = {
   // NB: the pack's "Grenade_1/2/3" are grenade LAUNCHERS (1.8 m long); only
   // "Grenade" is a grenade. Kept for later: they will do for the launchers.
   FRAG:     { name: 'Frag Grenade', family: 'grenade', count: 3, fuse: 3.0, throw: 17, blast: 7.5, damage: 110, model: 'Grenade' },
+  // (M6.28, the roadmap's "EMP grenade") the pulse in a grenade: electronics out a while - no one hurt
+  EMPGREN:  { name: 'EMP Grenade', family: 'grenade', kg: 0.5, count: 2, fuse: 2.0, throw: 17, blast: 6, damage: 0, emp: true, model: 'Grenade',
+              note: 'A pulse, not a blast: cameras, turrets, lights, alarms, night vision and engines in its reach go out a while; a maglock burns open for good. Hurts no one.' },
   FLASH:    { name: 'Flashbang', family: 'grenade', count: 2, fuse: 1.8, throw: 17, blast: 9, damage: 0, blind: 4.5, model: 'Grenade' },
   SMOKE:    { name: 'Smoke Grenade', family: 'grenade', count: 2, fuse: 1.4, throw: 16, blast: 8, damage: 0, smoke: 18, model: 'Grenade' },
   // (Rhys's classes: "Standard Issue Grenades, NOT Frags") a smaller blast than a frag
@@ -578,7 +581,7 @@ export const CLASSES = [
   { id: 'SPY', name: 'Spy', role: 'Infiltrates enemy lines - ideally without being detected. Retrieves information from hard-to-reach, heavily fortified places.', arms: 'v19p',
     kit: { primary: 'V19P', backup: 'V27C', utility1: 'LURE', utility2: 'NERVE', gear: 'GASMASK', mods: { primary: ['SILENCER'], backup: ['SILENCER'] } }, special: 'QID',
     guns: ['V19P', 'MP2', 'V27C', 'PX19', 'V99', 'PX9', 'KNIFE'],
-    utility: ['LURE', 'NERVE', 'SMOKE', 'FLASH', 'CONCUSS', 'REMOTE'],
+    utility: ['LURE', 'NERVE', 'SMOKE', 'FLASH', 'CONCUSS', 'REMOTE', 'EMPGREN'],
     gear: ['GASMASK', 'LOCKKIT', 'INTEL', 'EMFSCAN', 'UVGOGS', 'NVG', 'MULTIVIS'] },
   { id: 'PILOT', name: 'Pilot', role: 'Trained to fly and steer aircraft and watercraft - and to keep them going.', arms: 'smg',
     kit: { primary: 'MP2', backup: 'PX19', utility1: 'REPAIRKIT', utility2: 'SMOKE', gear: 'PARACHUTE' }, special: 'AUTOREPAIR',

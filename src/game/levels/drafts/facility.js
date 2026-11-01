@@ -115,7 +115,7 @@ export default {
     { id: 'h9', at: [43, 7, 'G'], arms: 'shotgun', temper: 'steady' },
     { id: 'h10', at: [45, 21, 'G'], arms: 'smg' },
     { id: 'h11', at: [40, 30, 'B'], route: [[31, 29], [48, 29]], arms: 'carbine' },
-    { id: 'h12', at: [38, 23, 'B'], arms: 'pistol', temper: 'cowardly' },
+    { id: 'h12', at: [38, 23, 'B'], arms: 'pistol', temper: 'cowardly', role: 'medic' },                   // the station's medic: he brings knocked-out men round
     { id: 'h13', at: [5, 21, 'G'], arms: 'dmr', rank: 'specialist', temper: 'steady' },
     { id: 'h14', at: [27, 22, 'G'], arms: 'pistol', temper: 'cowardly', role: 'engineer' },                  // the station's engineer: he puts a hacked system back on
   ],

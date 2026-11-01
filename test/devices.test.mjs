@@ -171,6 +171,12 @@ T('the engineer puts a hacked system back on; the radio operator calls the place
     A(spec.guards.some((g) => g.role === 'engineer') && spec.guards.some((g) => g.role === 'radio'), id + ': no specialists');
   }
   A(/specialists\(simDt\)/.test(rt) && /g\.role === 'engineer'/.test(rt) && /g\.role !== 'radio'/.test(rt) && /everywhere: true/.test(rt), 'not in the runtime');
+  A(/md\.role !== 'medic'/.test(rt) && /pt\.revive\(pt\.pos, pt\.yaw\)/.test(rt) && /g\.knockedOut/.test(rt), 'no medic');
+  // a knocked-out man, revived, is up again and looking
+  const g = new Guard(w, { id: 'k', pos: [0, 0, 0] });
+  g.target.lethalHit = false; g.dead = true; g.knockedOut = true; g.target.down = true;
+  g.revive(g.pos, 0);
+  A(!g.dead && !g.target.down && g.target.hp > 0, 'not revived');
 });
 
 T('the debrief: how often you hacked, whether they traced you; and two trophies for it', () => {

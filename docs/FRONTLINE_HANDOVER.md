@@ -21,7 +21,8 @@ game into the repository's root.
   amber / green / grey (`minimap.js deviceBlip`).
 - **The specialists** (the roadmap's): a guard with `role: 'engineer'` walks to a hacked network's terminal and puts it
   all back on after 6 s there; `role: 'radio'`, once he has seen you, calls every man of his side in after 6 s unless
-  he is dropped first. One of each in the Facility and the Prison.
+  he is dropped first. One of each in the Facility and the Prison. A `role: 'medic'` goes to the nearest man knocked out (not killed) and
+  brings him round after 5 s there (`Guard.revive`); one in the Facility and one in the Listening Station.
 - **Q Branch** (Ghost HQ, E at his bench): sign out one gadget per run (`Saves.loadGadget/saveGadget`), carried on every
   mission as a Special: the Hacking Kit; the new **Long-Arm Relay** (hack from 10 m, in sight), **Loop Spoofer** (cameras
   take 3x as long), **Trace Scrambler** (traces 2.5x slower), **Skeleton Card** (a maglock's keypad, 2 s, no trace); the
@@ -53,6 +54,7 @@ game into the repository's root.
   the security office's console). Major Vass, an engineer, a radio operator; sixteen reds. Objectives: wipe Ghost's file
   (the archive), turn LANTERN round (the mainframe), take the intercept log, optionally stop Vass. **Turn LANTERN round
   and that run is never intruded on again** (`downLantern`).
+- **The EMP Grenade** (`EMPGREN`, a utility; the Spy may carry it; any run at Logistics): the EMP's pulse, thrown.
 - **The service record** (the roadmap's "per match and over time"): each run (`Saves.loadRecord/addRecord`) adds up every
   mission and battle - missions and how they went, battles won, **K/D in battle**, casualties, knockouts, takedowns,
   accuracy, headshots, times spotted, security hacked, hostages rescued, favourite weapon, time in the field - shown

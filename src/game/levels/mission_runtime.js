@@ -695,7 +695,7 @@ export function setupMission(ctx) {
   }
   // (M6.29) the specialists: an engineer puts a hacked network back on at its terminal; a radio
   // operator, once he has seen you, calls the whole place in - unless he is stopped first
-  const SPEC = { fix: 6, radio: 6, order: 3 };
+  const SPEC = { fix: 6, radio: 6, order: 3, heal: 5 };
   const specials = { fixT: {}, sentT: 0, radioed: false };
   const live = (g) => g && !g.dead && !g.dormant && !(g.target && g.target.down) && g.state !== 'flee';
   const specialists = (dt) => {
@@ -726,6 +726,34 @@ export function setupMission(ctx) {
         t.done = false; eng.fixing = false;
         bark(eng, lineFor('fixed'), 'fixed');
         showHint('The engineer has put the security system back on - cameras, turrets' + (net.some((d) => d.kind === 'lock') ? ', locks' : '') + ' and all.');
+      }
+    }
+    // the medic: to the nearest man knocked out (not killed), and in a few seconds he is up again
+    for (const md of guards) {
+      if (md.role !== 'medic' || !live(md) || md.state === 'alert') continue;
+      if (md.patient && (!md.patient.dead || !md.patient.knockedOut)) md.patient = null;
+      if (!md.patient) {
+        let best = null, bd = 30;
+        for (const g of guards) {
+          if (g === md || !g.dead || !g.knockedOut || g.faction !== md.faction || g.gone || g.carried || guards.some((o) => o !== md && o.patient === g)) continue;
+          const d = Math.hypot(g.pos[0] - md.pos[0], g.pos[2] - md.pos[2]) + Math.abs(g.pos[1] - md.pos[1]) * 4;
+          if (d < bd) { bd = d; best = g; }
+        }
+        if (!best) continue;
+        md.patient = best; md.healT = 0; bark(md, lineFor('medic'), 'medic');
+      }
+      const pt = md.patient, near = Math.hypot(pt.pos[0] - md.pos[0], pt.pos[2] - md.pos[2]) < 1.7 && Math.abs(pt.pos[1] - md.pos[1]) < 1.2;
+      if (!near) {
+        if ((md.orderT = (md.orderT || 0) - dt) <= 0) { md.orderT = SPEC.order; md.stim = pt.pos.slice(); md.since = 0; md.state = 'search'; md.stateT = 0; md.path = null; md.pursuit = false; }
+        md.healT = 0; continue;
+      }
+      md.healT = (md.healT || 0) + dt;
+      if (md.healT >= SPEC.heal) {
+        pt.revive(pt.pos, pt.yaw);
+        pt.awareness = 0.8; pt.state = 'search'; pt.stim = pt.pos.slice(); pt.since = 0; pt.stateT = 0;
+        md.patient = null; md.healT = 0;
+        bark(md, lineFor('revived'), 'revived');
+        showHint('A medic has brought one of them round. Drop the medic first.');
       }
     }
     // the radio operator: seen you, and still standing - a few seconds and he has called it in
