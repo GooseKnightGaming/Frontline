@@ -11,7 +11,9 @@ const L = buildKitLevel(DRAFTS.find((d) => d.id === 'embassy'));
 ok(L.panes.length > 4, 'the embassy has panes: ' + L.panes.length);
 const pn = L.panes[0];
 ok(pn.solid && pn.solid.glass && pn.solid.pane === pn && L[('pane0')] === pn, 'a pane knows its solid');
-ok(L.pieces.some((p) => p.prop === 'pane0'), 'and is drawn as a piece of its own');
+ok(L.pieces.some((p) => p.pane === 'pane0') && !L.pieces.some((p) => p.prop === 'pane0'), 'and is drawn with the panes (one mesh, rebuilt as they break)');
+const rsrc = readFileSync(new URL('../src/game/draw/render.js', import.meta.url), 'utf8');
+ok(/const panePieces = level\.pieces\.filter\(\(p\) => p\.pane/.test(rsrc) && /drawPanes\(\)/.test(rsrc), 'render draws them together');
 ok(pn.takes === 1, 'ordinary glass breaks at the first round');
 // a round straight through it, from a metre and a half off, square on
 const s = pn.solid, c = [(s.min[0] + s.max[0]) / 2, (s.min[1] + s.max[1]) / 2, (s.min[2] + s.max[2]) / 2];

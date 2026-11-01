@@ -11,6 +11,8 @@ game into the repository's root.
 - The case board's second case, **THE BLIGHT** (`BLIGHT` in caseboard.js): the Glasshouse, the Grain Terminal, the
   Dalmar Star, each kept as a mark ('blight:<level>') when its mission is done (not failed); shown once begun, steps
   not yet done as ? ? ?; HARVEST SAVED stamped when all three are. The marks never count as the first case's clues.
+- **Panes drawn together** (for phones): a level's breakable panes were an entity each (the Glasshouse: 69 draw
+  calls); now one merged mesh (`drawPanes` in render.js, pieces marked `pane`), rebuilt without a pane when it breaks.
 
 ## M6.44.0 — Level 45, the Dalmar Star
 - **Level 45, the Dalmar Star** (`drafts/dalmar.js`; the blight's end, after the Grain Terminal): a bulk freighter

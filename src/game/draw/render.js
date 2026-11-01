@@ -351,7 +351,9 @@ export function buildScene(pc, app, level, settings) {
   // (Rhys: "Locket and ledger need to disappear once they're
   // acquired") so are the things you can take: one entity each, hidden once taken
   const propPieces = level.pieces.filter((p) => p.prop && !doorTag(p));
-  const staticPieces = level.pieces.filter((p) => !doorTag(p) && !p.prop);
+  // (M6.45) window panes that can break: drawn together, one mesh, rebuilt without a pane when it goes
+  const panePieces = level.pieces.filter((p) => p.pane && !doorTag(p));
+  const staticPieces = level.pieces.filter((p) => !doorTag(p) && !p.prop && !p.pane);
   const doorEntities = {};
   // these two need making before the meshes, or they are built with a default
   const lampMat = mats.lamp = new pc.StandardMaterial();
@@ -673,10 +675,27 @@ export function buildScene(pc, app, level, settings) {
     if (a.sun) { sun.light.color = new pc.Color(a.sun[0], a.sun[1], a.sun[2]); if (a.sun[3] !== undefined) sun.light.intensity = a.sun[3]; if (a.sun[4] !== undefined) sun.setEulerAngles(a.sun[4], a.sun[5] || 35, 0); }
   }
 
+  let paneEntity = null, panesShown = -1;
+  const drawPanes = () => {
+    const live = panePieces.filter((p) => !(level[p.pane] && level[p.pane].hidden));
+    if (live.length === panesShown) return;
+    panesShown = live.length;
+    if (paneEntity) { paneEntity.destroy(); paneEntity = null; }
+    if (!live.length) return;
+    paneEntity = new pc.Entity('panes');
+    for (const [mname, mesh] of Object.entries(buildMergedMeshes(pc, device, live))) {
+      const child = new pc.Entity();
+      child.addComponent('render', { meshInstances: [new pc.MeshInstance(mesh, matFor(mname))], castShadows: false, receiveShadows: true });
+      paneEntity.addChild(child);
+    }
+    root.addChild(paneEntity);
+  };
+  drawPanes();
+
   const view = {
     root, sky, sun, waters, waterMat, tex, doorEntities, swingDoors, propEntities,
     // a thing taken (the locket, the ledger) is no longer there
-    tickProps() { for (const [name, e] of Object.entries(propEntities)) { const gone = !!(level[name] && (level[name].taken || level[name].hidden)); if (e.enabled === gone) e.enabled = !gone; } },
+    tickProps() { if (panePieces.length) drawPanes(); for (const [name, e] of Object.entries(propEntities)) { const gone = !!(level[name] && (level[name].taken || level[name].hidden)); if (e.enabled === gone) e.enabled = !gone; } },
     // turn each door's leaf to where its swing has got to
     // (a door blown off its hinges is gone)
     tickSwingDoors() {

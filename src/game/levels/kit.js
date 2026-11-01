@@ -394,7 +394,7 @@ export function buildKitLevel(spec) {
         const pg = box([min[0], y0 + 1.0, min[2]], [max[0], y0 + 2.3, max[2]], tg >= 3 ? 'glassB' : tg >= 1 ? 'glassT' : 'glass', { glass: true, tough: tg, wantSolid: true });
         if (tg < 3 && pg) {
           const name = 'pane' + panes.length, pane = { solid: pg, takes: tg >= 1 ? 3 : 1, hits: 0, hidden: false, pos: [(min[0] + max[0]) / 2, y0 + 1.65, (min[2] + max[2]) / 2] };
-          pg.pane = pane; panes.push(pane); level[name] = pane; pieces[pieces.length - 1].prop = name;
+          pg.pane = pane; panes.push(pane); level[name] = pane; pieces[pieces.length - 1].pane = name;
         }
         // bulletproof glass sits in a heavy steel frame
         if (tg >= 3) { const along = max[0] - min[0] > max[2] - min[2]; for (const yy of [y0 + 1.0, y0 + 2.22]) box([min[0] - (along ? 0 : 0.03), yy, min[2] - (along ? 0.03 : 0)], [max[0] + (along ? 0 : 0.03), yy + 0.08, max[2] + (along ? 0.03 : 0)], 'metal', { tint: [0.25, 0.27, 0.28], solid: false }); }
