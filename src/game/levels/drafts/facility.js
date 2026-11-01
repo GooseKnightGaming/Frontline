@@ -11,10 +11,10 @@ export default {
     ['The place', 'One storey and a plant room under it. Labs along the north side (the chemistry lab, the CAVE lab, the cold store), the service corridor in front of them, offices, the staff room and decontamination in the middle, the main corridor, the lobby. The stair down to the plant room is in decontamination.'],
     ['Your kit', 'The <b>multi-spectrum visor</b>: V steps through night vision, <b>thermal</b> (warm bodies and hot pipes, through mist and smoke), <b>UV</b> (traces people leave) and <b>EMF</b> (wiring and hidden electronics, through walls).'],
     ['The reds', 'Thirteen, all over the station - two of them in the cold store, where the refrigeration has filled the room with mist.'],
-    ['Security', 'Cameras watch the corridors and the lobby - one that sees you raises the alarm - and turrets guard decontamination and the data room. They all run from the <b>security terminal</b> in the west office: hack it (hold E) to disable them, have them ignore you, or turn the turrets on the reds. Hack for too long and they trace you. A <b>hacking kit</b> (a Special) does one at a time, up close.'],
+    ['Security', 'Cameras watch the corridors and the lobby - one that sees you raises the alarm - and turrets guard decontamination and the data room. They all run from the <b>security terminal</b> in the west office: hack it (hold E) to disable them, have them ignore you, or turn the turrets on the reds. Hack for too long and they trace you. Your <b>hacking kit</b> (this mission\'s Special) takes them one at a time, up close - more slowly.'],
     ['Objectives', 'Find <b>Dr Ilse Brandt</b>: she cut her hand in the chemistry lab as she ran - under UV, the spill trail shows the way. Bring her out. Take the <b>sample case</b> from the cold store. Find the shielded data room - EMF shows where its wiring goes - and hack its <b>data terminal</b>.'],
   ],
-  time: { date: [11, 8, 2026], hour: 3, minute: 40 }, night: true, startGear: 'MULTIVIS', faction: 'red',
+  time: { date: [11, 8, 2026], hour: 3, minute: 40 }, night: true, startGear: 'MULTIVIS', faction: 'red', requires: 'HACKKIT',
   extractName: 'the van in the car park',
   outside: { backdrop: 'woods', mat: 'asphalt', margin: 16 },
   // the shielded room's door looks like the wall it is set in

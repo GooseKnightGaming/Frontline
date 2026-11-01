@@ -1380,7 +1380,7 @@ T('the security post\'s terminal: hold E to hack it - the Cash Vault\'s steel do
   A(r - COIL.clear[1] < 1.4, 'out of reach from the walkway: ' + (r - COIL.clear[1]).toFixed(2));
   A(L.signs.some((s) => s.coil === 'post' && /staff & VIPs/.test(s.sub)), 'the sign');
   const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8'), main = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8');
-  A(/'Hold E  ' \+ \(tn\.verb \|\| 'Hack'\) \+ ' ' \+ tnm/.test(rt) && /tn\.label \|\| 'the security terminal'/.test(rt) && /input\.held\('interact'\) && player\.mode !== 'dead'\) \{ rt\.hackT = \(rt\.hackT \|\| 0\) \+ simDt/.test(rt), 'no hacking');
+  A(/'Hold E  ' \+ \(tn\.verb \|\| 'Hack'\) \+ ' ' \+ tnm/.test(rt) && /tn\.label \|\| 'the security terminal'/.test(rt) && /input\.held\('interact'\) && player\.mode !== 'dead' && !S\.dialog\) \{ rt\.hackT = \(rt\.hackT \|\| 0\) \+ simDt/.test(rt), 'no hacking');
   A(/if \(d\.locked && d\.def\.vault\) d\.unlock\(\);/.test(rt) && /level\.revealT = t\.reveal/.test(rt), 'hacking does nothing');
   A(/level\.revealT > 0 && t\.guard && t\.guard\.faction === 'red'/.test(main), 'the reds are not shown on the radar');
 });

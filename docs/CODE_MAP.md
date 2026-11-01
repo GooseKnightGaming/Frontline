@@ -49,9 +49,9 @@ Made from each file's opening comment by `python3 tools/code_map.py`. The rules 
 | `hotel.js` | 2179 | Level 1: the Riverside Hotel, built from Rhys's map (maps/Frontline_Map_Riverside_Hotel.xlsx -> tools/map_to_json.py -> src/game/levels/maps/riverside.json). Built a floor at a time (the ground floor), the new systems added step b… |
 | `hotel_intel.js` | 87 | the Riverside Hotel's intel (Rhys: "I would like some LORE in the rooms please"). Papers left lying about: not needed to finish, but each one says something about who is here and why - and some of it will matter later (the captain… |
 | `hq.js` | 197 | Ghost HQ, under Yard 7 (Rhys: "Yard 7 is Ghost HQ - an underground laboratory and command centre (the briefing room, the trophy cabinet), a helipad, a van or chopper out to a level"). |
-| `kit.js` | 955 | the level kit (Rhys: "put together ALL the other levels I've asked for, so that I can play through the game and give pointers on each individual level"). |
+| `kit.js` | 975 | the level kit (Rhys: "put together ALL the other levels I've asked for, so that I can play through the game and give pointers on each individual level"). |
 | `mission0.js` | 473 | Level 0: the training mission. |
-| `mission_runtime.js` | 1873 | running Level 0 in the game: the guards' bodies, the keycard, the terminal, breaching and bullet time, the hints, and the end. main.js calls in at a handful of points; the rules live in src/sim/play/mission.js. |
+| `mission_runtime.js` | 1976 | running Level 0 in the game: the guards' bodies, the keycard, the terminal, breaching and bullet time, the hints, and the end. main.js calls in at a handful of points; the rules live in src/sim/play/mission.js. |
 | `ranges.js` | 501 | the weapons half of the training course. |
 | `train.js` | 1115 | Level 4, the Night Train (Rhys: "An intercity train that has underground sections. It travels between two fictional cities in a fictional country 'somewhere near the former USSR'... You're off duty, enjoying yourself... [it] defin… |
 | `yard7.js` | 609 | Ghost Training Facility, "Yard 7". A grey-boxed container yard for learning to move: vault lane, climb wall, crouch duct, stairs and catwalk, a dive tower over a deep pool, drop platforms; the training course and the ranges beneat… |
@@ -71,7 +71,7 @@ Made from each file's opening comment by `python3 tools/code_map.py`. The rules 
 | `city.js` | 247 | Level 21, the Busy City (first draft). Rhys (after M6.13.7): "Busy City; Desolated City; Post-Apocalyptic Nuclear Wasteland" - and (M8) vehicle missions. Varnholm's commercial district at midday: a grid of blocks, towers on them, … |
 | `drop.js` | 106 | Level 17, the Drop (first draft). Rhys: "a sky-dive / paratrooper mission - or at least a mission that starts with a jump from a plane, a helicopter or the like". You start in the hold of a transport over the sea, its ramp down: w… |
 | `estate.js` | 130 | Level 8, the Housing Estate (first draft). Rhys: "several houses, tightly packed - terraced, detached and semis; ordinary houses and bungalows; a corner shop, garages... one an 'upside-down' house - bedrooms on the ground floor, k… |
-| `facility.js` | 128 | Level 11, the Research Facility (first draft). Rhys: "maps/scenarios that justify the other Visions [IR, UV, EMF]" - and of a research facility, "a fantastic idea for all 3": thermal through the cold store's mist, UV for the lab's… |
+| `facility.js` | 142 | Level 11, the Research Facility (first draft). Rhys: "maps/scenarios that justify the other Visions [IR, UV, EMF]" - and of a research facility, "a fantastic idea for all 3": thermal through the cold store's mist, UV for the lab's… |
 | `factory_battle.js` | 75 | Level 19, the Factory: Battle (first draft). Rhys's factory sheet was always a battle map (maps/Frontline_Battle_Map_Factory.xlsx: "Valid Spawn Point for Ghost / for Yellow" in the corner rooms) - Level 2 played it as a mission un… |
 | `fortress.js` | 115 | Level 16, the Fortress (first draft). Rhys: "a fortified compound bristling with automatic weapons and rockets - machine guns of every weight (SMGs, LMGs, mounted HMGs) and rocket launchers... walls, towers, gates and a yard to cr… |
 | `index.js` | 34 | the first-draft levels, in play order. Each is a spec for level_kit.js; index.html?level=<id> plays one. Rhys may reorder them: their numbers are only labels. |
@@ -79,7 +79,7 @@ Made from each file's opening comment by `python3 tools/code_map.py`. The rules 
 | `mine.js` | 135 | Level 10, the Mineshaft and the open pit (first draft). Rhys (after M6.17.8): "a working or abandoned mine - timbered tunnels, a cage lift down the shaft, ore carts on rails, a pumping station, and the open pit where it has been b… |
 | `nightclub.js` | 132 | Level 30, the Neon Nightclub (first draft). From Rhys's location boards (part 2): "Neon Nightclub - exteriors, interiors, props and furniture, VIP". Club VELVET on the waterfront strip: the queue under its neon, the door; the danc… |
 | `outpost.js` | 149 | Level 32, the Desert Outpost (first draft). From Rhys's location boards (part 2): "Desert Outpost - exteriors, interiors, props and equipment". Outpost Kharun, in a canyon in the Shael: a ring of sand-filled barriers round a compo… |
-| `prison.js` | 165 | Level 27, the Mega-Prison (first draft). From Rhys's location boards: "Mega-Prison - cells and blocks, security". HMP Greyhallow: A Wing - four tiers of cells round a hall open to the roof, the galleries along the cell fronts, two… |
+| `prison.js` | 177 | Level 27, the Mega-Prison (first draft). From Rhys's location boards: "Mega-Prison - cells and blocks, security". HMP Greyhallow: A Wing - four tiers of cells round a hall open to the roof, the galleries along the cell fronts, two… |
 | `riverboat.js` | 147 | Level 20, the Riverboat Pursuit (the first vehicle mission; M8 begins). From Rhys's Riverside Hotel notes: the reds' leader "flees ... at the first sign of danger; the mission runs straight on into a Riverboat Pursuit (no extracti… |
 | `ruins.js` | 217 | Level 22, the Desolated City (first draft). Rhys (after M6.13.7): "Desolated City". Drosk, two winters after the fighting moved on: nine blocks of a city nobody lives in - towers broken off at different heights, rubble down the st… |
 | `sewers.js` | 84 | Level 5, the Sewers (first draft). Rhys: "a proper, full map set in the sewers, not just a partial of a different map". The reds have been moving guns under the city; a water engineer who found their depot has not come back up. |
@@ -112,6 +112,7 @@ Made from each file's opening comment by `python3 tools/code_map.py`. The rules 
 |---|---|---|
 | `bake.js` | 164 | planning the light bake (pure logic, no engine: tested in node). |
 | `curves.js` | 268 | curved building (Rhys: "the Casino next please - including the smooth/circular walls"). The collision world is boxes, which keeps it exact and cheap; a curve is drawn as a true curve (quads, see render.js) and stood on or walked i… |
+| `devices.js` | 146 | defence systems: cameras and turrets, and hacking them (Rhys's roadmap, "Hacking and control": "Defence systems - turrets, cameras, door locks, lights, alarms - can be taken over at a terminal or with a hacking kit: take control (… |
 | `doors.js` | 330 | ordinary doors: a leaf on a hinge, opened and shut with E. |
 | `drawcull.js` | 71 | who gets drawn (Rhys: "an enemy spawn in behind me from absolutely nowhere"). Nobody spawns mid-mission: the guard was there all along, just not drawn. Bodies were drawn only within 8 m, or within 42 m on your own floor - so a gua… |
 | `earcut.js` | 687 | earcut 3.0.2 (https://github.com/mapbox/earcut), vendored for the casino's floors. ISC License - Copyright (c) 2024, Mapbox. Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is h… |
@@ -126,9 +127,9 @@ Made from each file's opening comment by `python3 tools/code_map.py`. The rules 
 
 | File | Lines | What it is |
 |---|---|---|
-| `emp.js` | 16 | an electromagnetic pulse (the sheet's VD-EMP "Blackout" launcher): it hurts no one, but for a while, within its reach, electronics stop - a guard's night vision or torch goes dark, a turret goes blind and quiet, an engine dies. Pu… |
+| `emp.js` | 18 | an electromagnetic pulse (the sheet's VD-EMP "Blackout" launcher): it hurts no one, but for a while, within its reach, electronics stop - a guard's night vision or torch goes dark, a turret goes blind and quiet, an engine dies. Pu… |
 | `issue.js` | 45 | what each side's guards carry, from Rhys's weapons sheet (sheet.js). |
-| `loadout.js` | 596 | what you carry. |
+| `loadout.js` | 598 | what you carry. |
 | `sheet.js` | 116 | Rhys's weapons sheet (docs/Frontline_Weapons.xlsx), in the game's terms. WRITTEN BY tools/import_weapons.py - change the sheet and run that, not this file. (How the sheet's columns become these figures: the top of tools/import_wea… |
 | `weapons.js` | 992 | weapons (simulation only: no graphics, fully testable). Five basic weapons for training: knife, pistol, assault rifle, sniper, grenades and flashbangs. Everything here is deliberately simple; the feel gets tuned later. |
 

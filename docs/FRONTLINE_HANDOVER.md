@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.26.0)
+# Frontline — Handover (M6.27.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,24 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.27.0 — hacking and control, first slice (Rhys chose it next; the roadmap's "Hacking and control")
+- **Cameras and turrets** (`src/sim/world/devices.js`, pure): each belongs to a side (`owner`) and a network (`net`).
+  A camera sweeps; seeing you for 1.1 s it calls the alarm (`raiseAlarm` from its place, an officer's reach: the
+  guards near come to where you were), then not again for 9 s. A turret turns to the nearest it may fire on within
+  its arc and fires bursts (hit chance falls with distance). Modes: `on` (for its owner), `off`, `friendly`
+  (reprogrammed: ignores you), `ours` (taken over: fires on its owners). Lights show it: red, amber, green, dark.
+- **Hacking**: a **security terminal** (`terminals[].net`) hacks its whole network (6 s); a **Hacking Kit** (a new
+  Special, `HACKKIT`) hacks one device up close (9 s). Either ends in a choice: *Disable / Reprogram: ignore me /
+  Take control*. A hack makes noise, and **the trace**: 8 s of hacking a network and its owners know where you are
+  (the alarm, at the terminal or at you) - a terminal's 6 s is safe; two devices by kit are not.
+- **The EMP** puts cameras and turrets out too.
+- **Where**: the Research Facility (5 cameras, 2 turrets, the security terminal in the west office) and the Prison
+  (5 cameras, a lobby turret, the security terminal in the control room); both issue the Hacking Kit
+  (`spec.requires`, now passed by kit.js). Level specs: `devices: [{ id, kind, at: [x, y, floor], face, net }]`.
+- Still to come from the roadmap's list: door locks, lights and alarms as devices; enemy hacks (Yard 7's own
+  turrets turned on you, and a console under Yard 7 to lock them out); devices on the radar.
+- `test/devices.test.mjs`.
 
 ## M6.26.0 — mission rewards, and the EMP (Rhys: the field/mission split "Seems right to me!")
 - **Each of the sheet's 21 earnable Unlock weapons comes from completing one mission** (`src/sim/play/rewards.js`:

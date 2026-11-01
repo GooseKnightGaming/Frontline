@@ -1263,7 +1263,7 @@ export function setupMission(ctx) {
       }
       // a terminal: progress while E is held, nothing lost if you let go - but walk away and it starts again
       simDtNow = simDt;
-      { const tn = terminalNear(); if (tn && !tn.done && input.held('interact') && player.mode !== 'dead') { rt.hackT = (rt.hackT || 0) + simDt * ((arsenal && arsenal.loadout && arsenal.loadout.gearTrait('hackSpeed')) || 1); if (tn.net) { traced(tn.net, tn.pos); if (Math.random() < simDt * 1.5) noises.push({ pos: tn.pos, loud: 0.35 }); } if (rt.hackT >= tn.time) { rt.hackT = 0; hacked(tn); } } else if (!tn) rt.hackT = 0; }
+      { const tn = terminalNear(); if (tn && !tn.done && input.held('interact') && player.mode !== 'dead' && !S.dialog) { rt.hackT = (rt.hackT || 0) + simDt * ((arsenal && arsenal.loadout && arsenal.loadout.gearTrait('hackSpeed')) || 1); if (tn.net) { traced(tn.net, tn.pos); if (Math.random() < simDt * 1.5) noises.push({ pos: tn.pos, loud: 0.35 }); } if (rt.hackT >= tn.time) { rt.hackT = 0; hacked(tn); } } else if (!tn) rt.hackT = 0; }
       // the hacking kit, at a camera or turret: slower, the same choice for that one
       { const dn = !terminalNear() && deviceNear(); if (dn && input.held('interact') && player.mode !== 'dead' && !S.dialog) { if (rt.kitDev !== dn) { rt.kitDev = dn; rt.kitT = 0; } rt.kitT += simDt * ((arsenal.loadout.gearTrait('hackSpeed')) || 1); if (dn.net) traced(dn.net, player.pos.slice()); if (rt.kitT >= HACK.kit) { rt.kitT = 0; rt.kitDev = null; hackChoice([dn], 'Hacking kit: ' + deviceName(dn) + '.'); } } else if (!dn) { rt.kitT = 0; rt.kitDev = null; } }
       // cameras and turrets

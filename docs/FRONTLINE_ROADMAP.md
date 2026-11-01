@@ -104,6 +104,11 @@ lights, alarms — can be taken over at a terminal or with a hacking kit:
   feeds and turret status, and a console that can lock the systems out again.
 This also gives the EMP weapons, the hacking suit and Q's gadgets a purpose,
 and gives the UV/thermal goggles something to look for.
+**Started in M6.27.0**: cameras and turrets with owners and networks; security
+terminals and the Hacking Kit; disable / reprogram / take control; noise and the
+trace; the EMP puts them out (`src/sim/world/devices.js`). In the Research
+Facility and the Prison. Still to do: door locks, lights and alarms; enemy hacks
+and the console under Yard 7.
 
 ## Debrief and statistics (Rhys, M6.5.0)
 The mission debrief exists (result, objectives, time, casualties, knockouts,

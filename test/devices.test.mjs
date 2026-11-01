@@ -65,6 +65,7 @@ T('the Research Facility: cameras and turrets on one network, and its security t
   A(cams.length === 5 && turs.length === 2 && L.devices.every((d) => d.net === 'halden' && d.owner === 'red'), 'devices: ' + L.devices.length);
   const sec = L.terminals.find((t) => t.id === 'sec');
   A(sec && sec.net === 'halden', 'no security terminal');
+  A(L.requires === 'HACKKIT', 'no hacking kit issued');
   // each camera has room in front of it: not facing straight into a wall
   for (const c of cams) {
     const dir = [-Math.sin(c.yaw), -0.15, -Math.cos(c.yaw)], l = Math.hypot(...dir);
