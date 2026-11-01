@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.42.0)
+# Frontline — Handover (M6.43.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,13 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.43.0 — Level 44, the Grain Terminal
+- **Level 44, the Grain Terminal** (`drafts/grain.js`; after the Glasshouse): the blight leaves tonight in a van from
+  the grain terminal on the river. The van waits two minutes at the warehouse's loading door (sooner if its crew is
+  shot at), then runs down to the quay road and east out of the gate (a `stop` objective; it takes about six seconds
+  once it goes - be ready). Copy the manifest in the shipping office. The warehouse's stacks, four tall silos (a
+  skyline you cannot see over), floodlights on the quay, a dog on the quay road, the wind off the river.
 
 ## M6.42.0 — Level 43, the Glasshouse
 - **Level 43, the Glasshouse** (`drafts/glasshouse.js`; built round breaking glass and grip): Varn's research

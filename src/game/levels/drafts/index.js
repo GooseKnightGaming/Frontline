@@ -39,5 +39,6 @@ import embassy from './embassy.js';
 import barracks from './barracks.js';
 import kaldberg from './kaldberg.js';
 import glasshouse from './glasshouse.js';
+import grain from './grain.js';
 
-export const DRAFTS = [sewers, bank, cemetery, estate, manor, mine, facility, vantage, ward, campus, shipyard, fortress, drop, beachhead, factoryBattle, riverboat, city, ruins, wasteland, theatre, baths, temple, prison, bunkers, arena, nightclub, airport, outpost, spaceport, subway, listening, yacht, archive, tower, testrange, embassy, barracks, kaldberg, glasshouse];
+export const DRAFTS = [sewers, bank, cemetery, estate, manor, mine, facility, vantage, ward, campus, shipyard, fortress, drop, beachhead, factoryBattle, riverboat, city, ruins, wasteland, theatre, baths, temple, prison, bunkers, arena, nightclub, airport, outpost, spaceport, subway, listening, yacht, archive, tower, testrange, embassy, barracks, kaldberg, glasshouse, grain];
