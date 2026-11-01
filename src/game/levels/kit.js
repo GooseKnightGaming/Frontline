@@ -738,6 +738,8 @@ export function buildKitLevel(spec) {
     if (gd.tint) g.tint = gd.tint;          // a man who should stand out: his own colours
     if (gd.objective === false) g.objective = false;
     if (gd.target) g.isTarget = true;
+    // (M6.29) a marksman's perches: where he moves to, one after another, once he has given his place away
+    if (gd.perches) g.perches = gd.perches.map(([px, py, pf]) => free([mid(px), floors[pf || gf || K0].y, mid(py)]));
     level.guards.push(g);
   }
   // a patrol walks straight from point to point: each leg laid along the guards' own way round (the

@@ -13,6 +13,8 @@ game into the repository's root.
   round: he waits as before. Steady and cowardly men, rivals' fights, escorts and floor-holders do not.
 - **Suppressing fire** (`Guard.suppress`): a steady guard keeps firing where you went to ground for 3 s - rounds into your
   cover (impact sounds) or past you (the whizz), never a hit.
+- **The marksman** (`perches: [[x, y, floor], ...]` on a guard): after five rounds from one place he moves on to his next
+  perch ("Moving!"), and fights from there. One each in the Facility, the Prison and the Listening Station.
 - Tests: `devices.test.mjs`.
 
 ## M6.28.0 — hacking and control, the rest (Rhys: "keep building - use your imagination")

@@ -143,7 +143,7 @@ export default {
     { id: 'gov', at: [33, 43, '3'], arms: 'pistol', rank: 'officer', temper: 'cowardly', name: 'Governor Ashdown-Pryce', tint: [0.6, 0.62, 0.7], card: 'awing' },
     { id: 'g3a', at: [18, 30, '3'], route: [[18, 19], [18, 38]], arms: 'carbine' },
     { id: 'g3b', at: [45, 20, '3'], route: [[45, 20], [45, 38]], arms: 'smg', temper: 'steady' },
-    { id: 'g2a', at: [30, 25, '2'], route: [[21, 25], [42, 25]], arms: 'dmr', rank: 'specialist' },
+    { id: 'g2a', at: [30, 25, '2'], route: [[21, 25], [42, 25]], arms: 'dmr', rank: 'specialist', perches: [[30, 25, '2'], [21, 26, '2'], [42, 26, '2']] },
     { id: 'g2b', at: [18, 36, '2'], arms: 'carbine' },
     { id: 'g1a', at: [45, 30, '1'], route: [[45, 20], [45, 38]], arms: 'carbine' },
     { id: 'c1', at: [27, 42, '1'], arms: 'smg', temper: 'steady' },

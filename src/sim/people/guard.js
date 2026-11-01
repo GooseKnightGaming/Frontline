@@ -59,6 +59,7 @@ export const SENSE = {
   flankWide: 5,        // how far to the side of where you were he goes
   flankSpeed: 3.2,     // m/s, going round
   suppressFor: 3,      // seconds a steady man keeps firing where you went to ground
+  perchShots: 5,       // rounds a marksman fires from one place before he moves to his next perch
   call: 20,            // metres a shout carries on the same floor (8 through a floor)
 };
 
@@ -145,6 +146,7 @@ export const LINES = {
   fixing: ['Someone has been in the security system. Resetting it.', 'The system is down - I will get it back up.'],
   fixed: ['Security is back online.', 'There. The system is back up.'],
   medic: ['Man down - I am going to him!', 'Hold on - I am coming!'],
+  relocate: ['Moving!', 'Changing position!'],
   revived: ['Easy. You are all right. Who did this?', 'Up you get. Slowly.'],
   coming: ['On my way!', 'Coming!'],
   flee: ['I\'m out of here!', 'No - no more!', 'Fall back! Fall back!'],
@@ -589,6 +591,8 @@ export class Guard {
         else if (this.cowering && ctx.you) this.turnTo(this.faceAngle(ctx.you.pos), dt);
         break;
       case 'alert':
+        // (M6.29, "a marksman who relocates") a marksman who has given his place away moves on to his next perch
+        if (this.relocating) { if (this.goTo(this.relocating, SENSE.flankSpeed, dt, ctx)) { this.relocating = null; this.shotsHere = 0; this.path = null; } else break; }
         if (this.seeing) { this.fightingYou = !ctx.you.guard; this.turnTo(this.faceAngle(ctx.you.pos), dt * 2); this.stateT = 0; this.flank = null; this.fight(dt, ctx); }
         else {
           this.aimT = 0;
@@ -812,6 +816,10 @@ export class Guard {
     this.ammo--;
     if (shot === 'blocked') return;
     this.burstLeft--;
+    if (this.perches && this.perches.length && (this.shotsHere = (this.shotsHere || 0) + 1) >= SENSE.perchShots && this.burstLeft <= 0) {
+      this.perchI = ((this.perchI || 0) + 1) % this.perches.length;
+      this.relocating = this.perches[this.perchI].slice(); this.path = null; this.say(ctx, 'relocate');
+    }
     if (this.ammo <= 0) { this.reloadT = A.reload; this.say(ctx, 'reload'); this.burstLeft = 0; return; }
     this.fireT = this.burstLeft > 0 ? A.gap : A.pause[0] + rand() * (A.pause[1] - A.pause[0]);
   }

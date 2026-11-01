@@ -262,4 +262,16 @@ T('suppressing fire: a steady man keeps firing where you went to ground a few se
   A(!g.events.length, 'still firing long after');
 });
 
+T('the marksman: a few rounds from one place, then he moves on to his next perch', () => {
+  const L = buildKitLevel(DRAFTS.find((d) => d.id === 'listening'));
+  const mk = L.guards.find((g) => g.perches);
+  A(mk && mk.perches.length === 3 && mk.perches.every((p) => Math.abs(p[1] - -4.2) < 0.01), 'no perches');
+  const w = new World(), g = new Guard(w, { id: 'mk', pos: [0, 0, 0], arms: 'dmr' });
+  g.perches = [[0, 0, 0], [8, 0, 0]];
+  const ctx = { world: w, you: { chest: [0, 1.2, -15], pos: [0, 0, -15], stance: 0, speed: 0 }, guards: [g], random: () => 0.5 };
+  g.aimT = 5;
+  for (let i = 0; i < 600 && !g.relocating; i++) g.fight(1 / 60, ctx);
+  A(g.relocating && g.relocating[0] === 8, 'he never moved on');
+});
+
 console.log(fails.length ? '\nFAILURES (' + fails.length + '):\n' + fails.map((f) => '  * ' + f).join('\n') : '\nALL ' + pass + ' PASSED');

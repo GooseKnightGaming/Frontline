@@ -108,7 +108,7 @@ export default {
     { id: 'gh', at: [28, 37, 'G'], arms: 'carbine', temper: 'steady', card: 'fence' },
     { id: 'v1', at: [38, 12, 'B'], route: [[38, 9], [38, 28]], arms: 'smg' },
     { id: 'v2', at: [45, 20, 'B'], arms: 'carbine', rank: 'sergeant', temper: 'steady' },
-    { id: 'v3', at: [31, 15, 'B'], arms: 'dmr', rank: 'specialist', temper: 'steady' },
+    { id: 'v3', at: [31, 15, 'B'], arms: 'dmr', rank: 'specialist', temper: 'steady', perches: [[31, 15, 'B'], [46, 27, 'B'], [38, 9, 'B']] },   // a marksman: he moves once he has given his place away
     { id: 'a1', at: [14, 14, 'B'], arms: 'carbine' },
     { id: 'eng', at: [20, 25, 'B'], arms: 'pistol', temper: 'cowardly', role: 'engineer' },
   ],
