@@ -18,7 +18,7 @@ What is done lives in FRONTLINE_HANDOVER.md.*
 Version numbers are **M‹milestone›.‹feature›.‹patch›**.
 
 ## Finishing M5 (small)
-- **Surface friction** (Rhys): dry brick, wet brick, smooth glass and metal
+- **Surface friction** (Rhys) (done, M6.37.0): dry brick, wet brick, smooth glass and metal
   should differ — how fast you can run up to something, whether a ledge can be
   caught at all, and how much you slide when you land. Materials already carry
   a name per surface, so each needs a grip figure and the movement code needs

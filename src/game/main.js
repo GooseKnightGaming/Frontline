@@ -75,7 +75,7 @@ import { CASE, CASE_NEEDS, FINAL, caseOpen } from '../sim/play/caseboard.js';
 import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './core/input.js';
 import { isTouchDevice, touchControls } from './core/touch.js';
 
-const VERSION = 'M6.36.0';
+const VERSION = 'M6.37.0';
 const $ = (id) => document.getElementById(id);
 const TEST = /[?&]test\b/.test(location.search);
 // Level 0, the training mission, is its own page load: index.html?level=0
@@ -2469,6 +2469,7 @@ function boot() {
         S.wxT = 0.3;
         const up = level.world.raycast(player.eyePos, [0, 1, 0], 40, (q) => q.person || q.target);
         S.wxOpen = !up;
+        player.wet = (level.weather === 'rain' || level.weather === 'snow') && S.wxOpen;      // (M6.36) wet underfoot
       }
       audio.weather && audio.weather(level.weather === 'snow' ? 'wind' : level.weather, level.weather === 'rain' ? 0.13 : level.weather === 'snow' ? 0.06 : 0.1, S.wxOpen);
       if (level.weather === 'rain' || level.weather === 'snow') {

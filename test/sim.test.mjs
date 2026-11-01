@@ -1,6 +1,6 @@
 // FRONTLINE - movement tests. Plain node, no browser.
 import { World } from '../src/sim/world/world.js';
-import { Player, P, blankInput, forwardOf } from '../src/sim/people/player.js';
+import { Player, P, blankInput, forwardOf, gripOf, GRIP_NEED } from '../src/sim/people/player.js';
 import { Arsenal, makeTarget } from '../src/sim/arms/weapons.js';
 import { Loadout } from '../src/sim/arms/loadout.js';
 import { buildTraining, CONTAINER } from '../src/game/levels/yard7.js';
@@ -337,7 +337,7 @@ console.log('\n-- PARKOUR --');
 function parkour(solids, opts) {
   opts = opts || {};
   const w = flat();
-  for (const [a, b] of solids) w.addSolid(a, b, 'wall');
+  for (const [a, b] of solids) w.addSolid(a, b, opts.tag || 'wall');
   const p = new Player(w);
   at(p, [0, 0, opts.from || 7], YAW.N);
   const seen = [];
@@ -376,6 +376,28 @@ T('a run-up gets you onto a 3.0 m block and a 3.3 m block', () => {
     const { p, seen } = parkour([[[-3, 0, -3], [3, h, 0]]]);
     A(seen.includes('wallkick') && near(p.pos[1], h, 0.02), h + ' m: y=' + p.pos[1].toFixed(2) + ' ' + seen.join(','));
   }
+});
+// (M6.36; Rhys) surfaces hold you differently
+T('grip: brick holds, wet brick less, steel less again, glass hardly at all', () => {
+  A(gripOf('brick') === 1 && gripOf('brick', true) < 1 && gripOf('metal') < gripOf('brick', true) && gripOf('glass') < gripOf('metal'), 'order');
+  A(gripOf('glass') < GRIP_NEED.runUp && gripOf('metal') >= GRIP_NEED.runUp && gripOf('glass') < GRIP_NEED.airCatch, 'thresholds');
+});
+T('a glass wall cannot be run up; a steel one can, a brick one as before', () => {
+  const g = parkour([[[-3, 0, -3], [3, 3.0, 0]]], { tag: 'glassT' });
+  A(!g.seen.includes('wallkick') && g.p.pos[1] < 0.5, 'glass: ' + g.seen.join(','));
+  const m = parkour([[[-3, 0, -3], [3, 3.0, 0]]], { tag: 'metal' });
+  A(m.seen.includes('wallkick') && near(m.p.pos[1], 3.0, 0.02), 'steel: ' + m.seen.join(',') + ' y=' + m.p.pos[1].toFixed(2));
+});
+T('you slide further stopping on steel than on concrete, and further still on wet steel', () => {
+  const stop = (tag, wet) => {
+    const w = new World(); w.addSolid([-100, -1, -100], [100, 0, 100], tag); w.spawn = { pos: [0, 0, 0], yaw: 0 };
+    const p = new Player(w); at(p, [0, 0, 0], YAW.N); p.wet = !!wet;
+    run(p, 1.5, { moveZ: 1, sprint: true, yaw: YAW.N });
+    const z0 = p.pos[2]; run(p, 2, { yaw: YAW.N });
+    return z0 - p.pos[2];
+  };
+  const c = stop('concrete'), m = stop('metal'), mw = stop('metal', true);
+  A(m > c * 1.3 && mw > m, 'slides: concrete ' + c.toFixed(2) + ', steel ' + m.toFixed(2) + ', wet steel ' + mw.toFixed(2));
 });
 T('a 4.0 m wall is beyond even a run-up', () => {
   const { p, seen } = parkour([[[-3, 0, -3], [3, 4.0, 0]]]);

@@ -83,6 +83,19 @@ export const P = {
   overDropMax: 3.3,                    // ... if the far side is no further down than this
 };
 
+// (M6.36; Rhys: "dry brick, wet brick, smooth glass and metal should differ") how well a surface holds you, by its
+// material: how quickly you get going and stop on it (you slide on glass and steel), whether you can run up it, and
+// whether a ledge of it can be caught in mid-air. Wet (rain or snow, under the open sky): less again.
+export const GRIP = [[/ice/, 0.2], [/glass/, 0.3], [/metal|steel|hazard|chrome/, 0.55], [/marble|tile|polish/, 0.7], [/wood/, 0.9]];
+export const WET = 0.7;
+export function gripOf(tag, wet) {
+  let g = 1;
+  const t = String(tag || '');
+  for (const [re, v] of GRIP) if (re.test(t)) { g = v; break; }
+  return wet ? g * WET : g;
+}
+export const GRIP_NEED = { runUp: 0.5, airCatch: 0.45 };
+
 const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
 
 export function forwardOf(yaw) { return [-Math.sin(yaw), 0, -Math.cos(yaw)]; }
@@ -426,11 +439,13 @@ export class Player {
     if (water) speed *= 0.6;                      // wading
     const wx = (f[0] * mz + r[0] * mx) * speed;
     const wz = (f[2] * mz + r[2] * mx) * speed;
-    const accel = this.onGround ? P.accelGround : P.accelAir;
+    // (M6.36) the grip underfoot
+    const grip = this.onGround ? this.gripHere() : 1;
+    const accel = this.onGround ? P.accelGround * (0.35 + 0.65 * grip) : P.accelAir;
     this.vel[0] = approach(this.vel[0], wx, accel * dt);
     this.vel[2] = approach(this.vel[2], wz, accel * dt);
     if (this.onGround && !moving) {
-      const k = Math.max(0, 1 - P.friction * dt);
+      const k = Math.max(0, 1 - P.friction * grip * dt);
       this.vel[0] *= k; this.vel[2] *= k;
     }
 
@@ -443,7 +458,7 @@ export class Player {
     // too high to reach from the ground, but you are running at it: run up it
     // it needs the breath to finish: a kick you cannot follow with a grab is wasted
     const canKick = !ledge && this.onGround && running && sprinting && this.runFor >= P.runUpTime &&
-      this.stamina > P.wallKickCost && this.wallAhead();
+      this.stamina > P.wallKickCost && this.wallAhead() && this.wallGrip >= GRIP_NEED.runUp;
     if (canKick) this.prompt = 'SPACE  Run up';
     if (canKick && input.jumpPressed) {
       const fk = forwardOf(this.yaw);
@@ -473,7 +488,7 @@ export class Player {
           this.events.push({ type: 'jump' });
         }
       }
-    } else if (!this.onGround && ledge && input.moveZ > 0.1 && this.vel[1] < 2.2 && this.stamina > 0) {
+    } else if (!this.onGround && ledge && input.moveZ > 0.1 && this.vel[1] < 2.2 && this.stamina > 0 && (ledge.grip === undefined || ledge.grip >= GRIP_NEED.airCatch)) {
       // Jump and grab: reach a ledge in mid-air and haul yourself up. You do
       // not have to hold SPACE - coming at it while moving forward is enough,
       // the way you would put your hands out.
@@ -646,7 +661,8 @@ export class Player {
     if (!hits.length) {
       // still standing? probe a hair below
       const pb = this.box([this.pos[0], this.pos[1] - 0.02, this.pos[2]]);
-      this.onGround = d <= 0 && !!this.world.hit(pb[0], pb[1]);
+      const ug = d <= 0 ? this.world.hit(pb[0], pb[1]) : null;
+      this.onGround = !!ug; if (ug && !ug.person) this.underfoot = ug;
       if (this.onGround) this.vel[1] = Math.max(0, this.vel[1]);
       return !was && this.onGround;
     }
@@ -667,6 +683,7 @@ export class Player {
         this.pos[1] = top;
         this.vel[1] = 0;
         this.onGround = true;
+        this.underfoot = hits.find((q) => !q.person && q.max[1] === top) || this.underfoot;
         return !was;
       }
       const pb = this.box([this.pos[0], this.pos[1] - 0.02, this.pos[2]]);
@@ -707,8 +724,11 @@ export class Player {
     const bx = X + f[0] * (r + 0.45), bz = Z + f[2] * (r + 0.45);
     const hits = this.world.hits([Math.min(ax, bx) - 0.1, Y + 0.6, Math.min(az, bz) - 0.1],
       [Math.max(ax, bx) + 0.1, Y + 1.7, Math.max(az, bz) + 0.1]);
+    // (M6.36) and what it is: glass or steel cannot be run up
+    this.wallGrip = hits.length ? Math.min(...hits.map((q) => gripOf(q.tag, this.wet))) : 1;
     return hits.length > 0 && !hits.some((s) => s.noClimb);
   }
+  gripHere() { return this.underfoot ? gripOf(this.underfoot.tag, this.wet) : 1; }
 
   // Looks straight ahead for something to vault over or climb onto.
   // opts.over: running, so a thin wall is gone over rather than stood on.
@@ -726,13 +746,15 @@ export class Player {
     // The ledge is the top of what stands in front of you, stacked from the
     // bottom up; something higher, above a gap (the wall over a window), is
     // not part of it - the check for room above the ledge deals with it.
-    let top = -Infinity;
+    let top = -Infinity, topSolid = null;
     const stack = hits.slice().sort((p, q) => p.min[1] - q.min[1]);
     for (const s of stack) {
       if (top > -Infinity && s.min[1] > top + 0.05) break;
       if (s.noClimb) return null;      // wire: nothing to get hold of
+      if (s.max[1] >= top) topSolid = s;
       top = Math.max(top, s.max[1]);
     }
+    const grip = topSolid ? gripOf(topSolid.tag, this.wet) : 1;      // (M6.36) a glass edge slips from your fingers
     const rise = top - Y;
     if (rise <= P.stepUp || rise > reach) return null;
     // where along the facing direction the top surface starts and ends
@@ -755,7 +777,7 @@ export class Player {
       const [lx, lz] = at(end + 0.04 + r + 0.12);
       const land = [lx, Y, lz];
       if (this.free(land, P.height) && !W.hit([Math.min(X, lx) - r, top + 0.05, Math.min(Z, lz) - r], [Math.max(X, lx) + r, top + 0.9, Math.max(Z, lz) + r])) {
-        return { kind: 'vault', top, land, rise, depth };
+        return { kind: 'vault', top, land, rise, depth, grip };
       }
     }
     // over: taller than a vault but still thin - hands on top, swing the legs
@@ -766,7 +788,7 @@ export class Player {
       const clear = !W.hit([Math.min(X, lx) - r, top + 0.05, Math.min(Z, lz) - r], [Math.max(X, lx) + r, top + 1.0, Math.max(Z, lz) + r]);
       if (g > -Infinity && top - g <= P.overDropMax && clear && this.free([lx, g, lz], P.height)) {
         const [cx, cz] = at((start + end) / 2);
-        return { kind: 'over', top, land: [lx, g, lz], crest: [cx, top + 0.02, cz], rise, depth, drop: top - g };
+        return { kind: 'over', top, land: [lx, g, lz], crest: [cx, top + 0.02, cz], rise, depth, drop: top - g, grip };
       }
     }
     // climb onto it, standing if there is room, crouched if not
@@ -774,8 +796,8 @@ export class Player {
       const [tx, tz] = at(start + r + push - 0.1);
       const t = [tx, top + 1e-4, tz];
       if (!solidAt(start + r + push - 0.1) && !solidAt(start + push)) continue;
-      if (this.free(t, P.height)) return { kind: 'climb', top, land: t, rise, crouch: false };
-      if (this.free(t, P.crouchHeight)) return { kind: 'climb', top, land: t, rise, crouch: true };
+      if (this.free(t, P.height)) return { kind: 'climb', top, land: t, rise, crouch: false, grip };
+      if (this.free(t, P.crouchHeight)) return { kind: 'climb', top, land: t, rise, crouch: true, grip };
     }
     return null;
   }

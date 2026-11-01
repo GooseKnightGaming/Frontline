@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.36.0)
+# Frontline — Handover (M6.37.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,14 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.37.0 — surface grip
+- **Grip** (Rhys's "surface friction", Finishing M5): `GRIP`/`gripOf(tag, wet)` in player.js, by material - brick,
+  concrete, rock 1; wood 0.9; marble and tile 0.7; steel 0.55; glass 0.3; ice 0.2; wet (rain or snow, under the open
+  sky - `player.wet`, set from the weather's look upward) 0.7 of that. Underfoot (`player.underfoot`): you get going
+  more slowly and stop less quickly (a sprint pulls up in 0.17 m on concrete, 0.30 on steel, 0.40 on wet steel). A wall
+  you run at (`wallGrip`): under 0.5 (glass), no run-up. A ledge caught in mid-air: under 0.45 (glass, wet steel just
+  holds), it slips from your fingers - you can still climb it from the ground.
 
 ## M6.36.0 — touch settings, aim assist
 - **Touch settings** (shown only on a touch screen, `.touch-only`): look speed (`touchLook`), button size
