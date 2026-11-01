@@ -302,7 +302,7 @@ export class Player {
     // breath
     if (this.mode !== 'dead') {
       if (this.underwater) {
-        this.breath -= dt;
+        this.breath -= dt * (this.breathMul === undefined ? 1 : this.breathMul);     // (M6.29) a rebreather: slowly, or not at all
         if (this.breath <= 0) { this.breath = 0; this.damage(P.drownDmg * dt, 'drowned'); }
       } else this.breath = Math.min(P.breathMax, this.breath + P.breathRegen * dt);
     }

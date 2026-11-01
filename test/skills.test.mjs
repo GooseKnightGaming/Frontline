@@ -46,4 +46,12 @@ T('wired in: the debrief gives experience; the menu trains; the hacks, the kicks
   A(/function drawSkills/.test(mn) && /trainSkill\(/.test(mn) && /applySkills\(Saves\.currentSlot\(\)\)/.test(mn), 'no Skills tab');
   A(/this\.skills\.steady/.test(wp) && /this\.skills\.reload/.test(wp), 'not in the arsenal');
 });
+T('the rebreather: under water, no breath lost', () => {
+  const w = new World(); w.addSolid([-10, -6, -10], [10, -5, 10], 'floor'); w.addWater([-10, -5, -10], [10, 0, 10]);
+  for (const mul of [1, 0]) {
+    const p = new Player(w); p.pos = [0, -5, 0]; p.mode = 'swim'; p.breathMul = mul;
+    for (let i = 0; i < 120; i++) p.step(1 / 60, Object.assign(blankInput(), { yaw: 0, pitch: -1 }));
+    A(mul ? p.breath < 24.5 : p.breath >= 24.99, 'breath ' + p.breath.toFixed(2) + ' with ' + mul);
+  }
+});
 console.log(fails.length ? '\nFAILURES (' + fails.length + '):\n' + fails.map((f) => '  * ' + f).join('\n') : '\nALL ' + pass + ' PASSED');

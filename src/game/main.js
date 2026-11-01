@@ -230,6 +230,7 @@ function boot() {
     player.load = loadEffect(loadout.weight(arsenal));
     player.jetPack = !!loadout.gearTrait('jet');
     player.fallMul = loadout.gearTrait('fallMul');
+    { const b = loadout.gearTrait('breathMul'); player.breathMul = b === undefined ? 1 : b; }
   };
   let missionRt = null;
   const arsenal = new Arsenal(level.world, { loadout });

@@ -229,6 +229,9 @@ export const ITEMS = {
   LOCKON:   { name: 'Vehicle Targeting', family: 'perk', lockOn: 45, note: 'Aim a launcher at a vehicle within 45 m: it locks on, and the rocket follows it.' },
   AUTOREPAIR: { name: 'Auto-Repair', family: 'perk', autoRepair: 0.02, note: 'A vehicle you are driving slowly mends itself.' },
   CUSHION:  { name: 'Cushioned Landing', family: 'perk', fallMul: 0.3, note: 'Falls hurt far less.' },
+  // (M6.29, M7's "diving gear (rebreathers, closed-circuit)") a closed-circuit rebreather: no bubbles, and air
+  // for as long as you like under water
+  REBREATHER: { name: 'Rebreather', kg: 2.8, family: 'gear', breathMul: 0, note: 'Closed-circuit diving set: under water as long as you like, and no bubbles to give you away.' },
   // (M6.28, the roadmap's "hacking suit") a suit woven with a mesh that scatters a camera's sensor: they
   // cannot make you out at all (people can, as ever); heavy and warm
   HACKSUIT: { name: 'Hacking Suit', kg: 2.4, family: 'gear', camBlind: true, note: 'Cameras cannot make you out at all - guards still can. Heavy.' },
@@ -595,7 +598,7 @@ export const CLASSES = [
     kit: { primary: 'MP2', backup: 'PX19', utility1: 'REPAIRKIT', utility2: 'SMOKE', gear: 'PARACHUTE' }, special: 'AUTOREPAIR',
     guns: ['MP2', 'V19P', 'K7', 'PX19', 'PX9', 'V99', 'KNIFE'],
     utility: ['REPAIRKIT', 'SMOKE', 'FLASH', 'MEDKIT', 'SERVICE'],
-    gear: ['PARACHUTE', 'NVG', 'SHADES', 'LENSES'] },
+    gear: ['PARACHUTE', 'NVG', 'SHADES', 'LENSES', 'REBREATHER'] },
   { id: 'JUMP', name: 'Jump Trooper', tag: 'Experimental', role: 'Shock troops who drop in from above - and leave as quickly as they came.', arms: 'hasl3',
     kit: { primary: 'HASL3', backup: 'HLP2', utility1: 'AIRINC', utility2: 'AIRFLARE', gear: 'JUMPPACK' }, special: 'CUSHION',
     guns: ['HASL3', 'IM8S', 'BR12', 'HLP2', 'PX19', 'DE50', 'KNIFE'],
