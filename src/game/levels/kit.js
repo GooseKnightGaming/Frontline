@@ -784,7 +784,26 @@ export function buildKitLevel(spec) {
       box([base[0] - 0.6, base[1], base[2] - 0.35], [base[0] + 0.6, base[1] + 0.76, base[2] + 0.35], 'metal', { tint: [0.35, 0.37, 0.4] });
       box([base[0] - 0.3 - f[0] * 0.1, base[1] + 0.76, base[2] - 0.05 - f[1] * 0.1], [base[0] + 0.3 - f[0] * 0.1, base[1] + 1.2, base[2] + 0.05 - f[1] * 0.1], 'screen', { solid: false });
     }
-    level.terminals.push({ id: t.id, name: t.name || 'the terminal', label: t.name || 'the terminal', said: t.said, pos: [base[0], base[1], base[2]], time: t.time || 6, reveal: t.reveal || 30, done: false, verb: t.verb || null, doing: t.doing || null });
+    level.terminals.push({ id: t.id, name: t.name || 'the terminal', label: t.name || 'the terminal', said: t.said, pos: [base[0], base[1], base[2]], time: t.time || 6, reveal: t.reveal || 30, done: false, verb: t.verb || null, doing: t.doing || null,
+      net: t.net || null });             // a security terminal: hacking it hacks its network's cameras and turrets
+  }
+  // ── defence systems (sim/world/devices.js): cameras high on a wall, turrets on a pedestal ──
+  //   spec.devices: [{ id, kind: 'camera' | 'turret', at: [x, y, floor], face: [dx, dy] (the way it looks), net, owner }]
+  level.devices = [];
+  for (const d of spec.devices || []) {
+    const F = floors[d.at[2] || K0], base = at(d.at[0], d.at[1], d.at[2]), f = d.face || [0, 1], fl = Math.hypot(f[0], f[1]) || 1;
+    const yaw = Math.atan2(-f[0] / fl, -f[1] / fl);
+    let pos;
+    if (d.kind === 'camera') {
+      // on the wall behind it, just under the ceiling
+      const back = CELL * 0.42, y = F.y + (F.wallH || S.wallH) - 0.35;
+      pos = [base[0] - f[0] / fl * back, y, base[2] - f[1] / fl * back];
+      box([pos[0] - 0.06, y + 0.05, pos[2] - 0.06], [pos[0] + 0.06, y + 0.35, pos[2] + 0.06], 'metal', { solid: false });   // its bracket
+    } else {
+      pos = [base[0], F.y + 1.35, base[2]];
+      box([base[0] - 0.28, F.y, base[2] - 0.28], [base[0] + 0.28, F.y + 1.05, base[2] + 0.28], 'metal', { tint: [0.4, 0.42, 0.45] });   // its pedestal
+    }
+    level.devices.push({ id: d.id, kind: d.kind, pos, yaw, net: d.net || null, owner: d.owner || spec.faction || 'red' });
   }
   // ── places to reach ──
   for (const r of spec.reach || []) {

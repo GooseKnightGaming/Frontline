@@ -20,6 +20,7 @@ import { inTrain, inCoach, nearestSeat, FLOOR as FLOOR_Y, HIJACK, HIJACK_TALK, S
 import * as Trophies from '../core/trophies.js';
 import * as Saves from '../core/saves.js';
 import { rewardFor } from '../../sim/play/rewards.js';
+import { Device, stepDevice, setMode, Trace, HACK, MODES } from '../../sim/world/devices.js';
 
 
 const RED = [1.9, 0.72, 0.66];          // the reds' uniform: the field kit, tinted
@@ -614,6 +615,8 @@ export function setupMission(ctx) {
   // Cash Vault's steel doors unlock, and the guard rota puts every red on your radar a while
   const terminalNear = () => (level.terminals || []).find((t) => Math.hypot(t.pos[0] - player.pos[0], t.pos[2] - player.pos[2]) < 1.6 && Math.abs(t.pos[1] - player.pos[1] - 0.9) < 1.0) || null;
   const hacked = (t) => {
+    // a security terminal: its network's cameras and turrets - yours to set (devices.js)
+    if (t.net) { hackChoice(netDevices(t.net), 'Security terminal: ' + netDevices(t.net).length + ' cameras and turrets on its network.', () => { t.done = true; }); return; }
     t.done = true;
     // the vault's own doors only: the Tournament Room's stay locked - breach them
     for (const d of level.swingDoors) if (d.locked && d.def.vault) d.unlock();
@@ -675,6 +678,93 @@ export function setupMission(ctx) {
       later.push({ t: 2.6, fn: () => bark(first, lineFor('coming'), 'coming') });
     }
     return answered;
+  };
+  // ── defence systems: cameras and turrets (sim/world/devices.js) ─────────────────────────────
+  const devices = (level.devices || []).map((d) => new Device(d));
+  level.liveDevices = devices;                             // (the EMP finds them here)
+  const trace = new Trace();
+  const netDevices = (net) => devices.filter((d) => d.net === net);
+  // a camera that sees you calls it in: the guards near it come to where you were
+  const deviceAlarm = (dev, pos) => {
+    const answered = raiseAlarm(guards, { pos: dev.pos, rank: 'officer', faction: dev.owner }, pos);
+    audio.deny && audio.deny();
+    showHint('A camera has seen you' + (answered.length ? ' - ' + answered.length + (answered.length === 1 ? ' guard is' : ' guards are') + ' on the way.' : '.'));
+  };
+  // a turret's round: at you, or (taken over) at a guard
+  const deviceShot = (dev, ev) => {
+    const d = Math.hypot(dev.pos[0] - player.pos[0], dev.pos[1] - player.pos[1], dev.pos[2] - player.pos[2]);
+    const f = dev.facing, from = [dev.pos[0] - Math.sin(f) * 0.55, dev.pos[1], dev.pos[2] - Math.cos(f) * 0.55];
+    audio.shot({ family: 'rifle' }, Math.max(0.12, Math.min(1, 1.1 - d / 45)));
+    show('flash', from); show('tracer', from, ev.to);
+    noises.push({ pos: from, loud: 1 });
+    if (ev.at) {
+      const o = ev.at;
+      if (ev.hit && !o.dead && !o.target.down) {
+        o.target.hp -= ev.damage * GUNFIGHT;
+        o.awareness = 1;
+        if (o.target.hp <= 0) { o.target.hp = 0; o.target.down = true; o.target.lethalHit = true; o.target.downBy = 'shot'; }
+      }
+      return;
+    }
+    if (ev.hit) player.damage(ev.damage, 'shot', from); else audio.whizz();
+  };
+  // the hack's choice, for a network or one device: disable, reprogram, take control
+  const hackChoice = (list, said, then) => {
+    audio.confirm();
+    rt.choose('HACKED', said + ' What do you want them to do?', Object.entries(MODES).map(([mode, label]) => [label, () => {
+      const n = setMode(list, mode);
+      if (then) then(mode);
+      showHint(mode === 'off' ? n + ' disabled.' : mode === 'friendly' ? n + ' reprogrammed: they ignore you now.' : n + ' taken over: the turrets fire on their owners.');
+    }]), true);
+  };
+  // the hacking kit: a camera or turret within reach, not already yours
+  const deviceNear = () => {
+    if (!(arsenal && arsenal.loadout && arsenal.loadout.gearTrait('hackKit'))) return null;
+    let best = null, bd = HACK.reach;
+    for (const d of devices) {
+      if (d.mode !== 'on' || Math.abs(d.pos[1] - player.pos[1]) > 3.5) continue;
+      const h = Math.hypot(d.pos[0] - player.pos[0], d.pos[2] - player.pos[2]);
+      if (h < bd) { bd = h; best = d; }
+    }
+    return best;
+  };
+  const deviceName = (d) => d.kind === 'camera' ? 'the camera' : 'the turret';
+  // the trace: hacking a network long enough tells its owners where you are
+  const traced = (net, where) => {
+    if (!trace.add(net, simDtNow)) return;
+    const answered = raiseAlarm(guards, { pos: where, rank: 'officer', faction: (netDevices(net)[0] || {}).owner || 'red' }, where);
+    showHint('Traced! They know where the hack is coming from' + (answered.length ? ' - ' + answered.length + ' on the way.' : '.'));
+  };
+  let simDtNow = 0;
+  // how they look: a camera body on its bracket, a turret head on its pedestal, each with a light
+  // that says whose it is - red working for them, amber ignoring you, green yours, dark when off
+  const devMat = (r, g, b, glow) => { const mt = new pc.StandardMaterial(); mt.diffuse = new pc.Color(r, g, b); mt.useMetalness = true; mt.metalness = glow ? 0 : 0.5; mt.gloss = 0.5; if (glow) { mt.emissive = new pc.Color(r, g, b); mt.emissiveIntensity = 2.5; } mt.update(); return mt; };
+  const DEV_BODY = devMat(0.18, 0.19, 0.21), DEV_LIGHT = { on: devMat(1, 0.12, 0.08, true), friendly: devMat(1, 0.7, 0.1, true), ours: devMat(0.2, 1, 0.35, true), off: devMat(0.05, 0.05, 0.05) };
+  const devPart = (parent, sx, sy, sz, x, y, z, m) => {
+    const e = new pc.Entity(); e.addComponent('render', { type: 'box', material: m || DEV_BODY, castShadows: false });
+    e.setLocalScale(sx, sy, sz); e.setLocalPosition(x, y, z); parent.addChild(e); return e;
+  };
+  for (const d of devices) {
+    const e = new pc.Entity('device-' + d.id); e.setPosition(d.pos[0], d.pos[1], d.pos[2]); app.root.addChild(e);
+    const head = new pc.Entity(); e.addChild(head);
+    if (d.kind === 'camera') {
+      devPart(head, 0.16, 0.14, 0.34, 0, 0, -0.05);
+      devPart(head, 0.1, 0.1, 0.04, 0, 0, -0.23, devMat(0.05, 0.08, 0.12));
+      d.light = devPart(head, 0.035, 0.035, 0.02, 0.05, 0.05, -0.23, DEV_LIGHT.on);
+    } else {
+      devPart(head, 0.5, 0.32, 0.55, 0, 0, 0);
+      devPart(head, 0.07, 0.07, 0.55, -0.1, -0.02, -0.5); devPart(head, 0.07, 0.07, 0.55, 0.1, -0.02, -0.5);
+      d.light = devPart(head, 0.14, 0.06, 0.02, 0, 0.1, -0.28, DEV_LIGHT.on);
+    }
+    d.head = head;
+  }
+  const drawDevices = () => {
+    for (const d of devices) {
+      if (!d.head) continue;
+      d.head.setLocalEulerAngles(d.kind === 'camera' ? -22 : 0, d.facing * 180 / Math.PI, 0);
+      const want = d.live ? DEV_LIGHT[d.mode] || DEV_LIGHT.on : DEV_LIGHT.off;
+      if (d.light.render.material !== want) d.light.render.material = want;
+    }
   };
   const detect = $('detect').getContext('2d');
   // one uniform for the side; the officer's a shade darker; rank in the hat
@@ -1085,7 +1175,7 @@ export function setupMission(ctx) {
       if (document.pointerLockElement) document.exitPointerLock();
     },
     // a question with buttons: the game waits (S.dialog) and the pointer is freed until you answer
-    choose(who, text, options) {
+    choose(who, text, options, plain) {
       let el = document.getElementById('choice');
       if (!el) {
         el = document.createElement('div'); el.id = 'choice'; el.className = 'overlay';
@@ -1093,10 +1183,10 @@ export function setupMission(ctx) {
         document.body.appendChild(el);
       }
       el.querySelector('#choice-who').textContent = who;
-      el.querySelector('#choice-text').textContent = '\u201c' + text + '\u201d';
+      el.querySelector('#choice-text').textContent = plain ? text : '\u201c' + text + '\u201d';
       const box = el.querySelector('#choice-btns'); box.innerHTML = '';
       for (const [label, fn] of options) {
-        const b = document.createElement('button'); b.className = 'btn'; b.textContent = '\u201c' + label + '\u201d';
+        const b = document.createElement('button'); b.className = 'btn'; b.textContent = plain ? label : '\u201c' + label + '\u201d';
         // (Rhys: it "remains paused" after the answer) the pointer takes a moment to
         // come back, and the pause menu's watch (two seconds from the last ask) saw it free and
         // opened: now the ask is made afresh, and tried again as at the start
@@ -1172,7 +1262,16 @@ export function setupMission(ctx) {
         if (cannonNear() === c && S.aimNow && S.aimNow.dir) { const d = S.aimNow.dir; c.yaw = Math.atan2(-d[0], -d[2]); c.ent.setEulerAngles(Math.asin(Math.max(-0.5, Math.min(0.5, d[1]))) * 180 / Math.PI, c.yaw * 180 / Math.PI, 0); }
       }
       // a terminal: progress while E is held, nothing lost if you let go - but walk away and it starts again
-      { const tn = terminalNear(); if (tn && !tn.done && input.held('interact') && player.mode !== 'dead') { rt.hackT = (rt.hackT || 0) + simDt * ((arsenal && arsenal.loadout && arsenal.loadout.gearTrait('hackSpeed')) || 1); if (rt.hackT >= tn.time) { rt.hackT = 0; hacked(tn); } } else if (!tn) rt.hackT = 0; }
+      simDtNow = simDt;
+      { const tn = terminalNear(); if (tn && !tn.done && input.held('interact') && player.mode !== 'dead') { rt.hackT = (rt.hackT || 0) + simDt * ((arsenal && arsenal.loadout && arsenal.loadout.gearTrait('hackSpeed')) || 1); if (tn.net) { traced(tn.net, tn.pos); if (Math.random() < simDt * 1.5) noises.push({ pos: tn.pos, loud: 0.35 }); } if (rt.hackT >= tn.time) { rt.hackT = 0; hacked(tn); } } else if (!tn) rt.hackT = 0; }
+      // the hacking kit, at a camera or turret: slower, the same choice for that one
+      { const dn = !terminalNear() && deviceNear(); if (dn && input.held('interact') && player.mode !== 'dead' && !S.dialog) { if (rt.kitDev !== dn) { rt.kitDev = dn; rt.kitT = 0; } rt.kitT += simDt * ((arsenal.loadout.gearTrait('hackSpeed')) || 1); if (dn.net) traced(dn.net, player.pos.slice()); if (rt.kitT >= HACK.kit) { rt.kitT = 0; rt.kitDev = null; hackChoice([dn], 'Hacking kit: ' + deviceName(dn) + '.'); } } else if (!dn) { rt.kitT = 0; rt.kitDev = null; } }
+      // cameras and turrets
+      if (devices.length) {
+        const you = { pos: player.pos, chest: [player.pos[0], player.pos[1] + 1.15, player.pos[2]], dead: player.mode === 'dead' };
+        for (const d of devices) stepDevice(d, simDt, { world: level.world, rel, you, guards, alarm: deviceAlarm, shoot: deviceShot });
+        drawDevices();
+      }
       if (job) {
         const evs = job.tick((y) => y.canSee([level.locket.pos[0], level.locket.pos[1] + 0.1, level.locket.pos[2]], ctxG, 8),
           (a, b) => { nav.syncDoors(level.swingDoors); return nav.find(a, b); });
@@ -1570,7 +1669,10 @@ export function setupMission(ctx) {
         return level.trainRun.state === 'waiting' && level.trainRun.t < TRAIN_RUN.departAt - TRAIN_RUN.sitTo ? 'E  Take your seat and wait for 21:40' : level.hijacked && !level.hijack.skipped ? 'E  Sit down for the rest of the journey' : 'E  Sit down';
       }
       if (player.seated) return 'Seated  -  move to stand up';
+      const dk = !terminalNear() && deviceNear();
+      if (dk) return rt.kitT > 0 && rt.kitDev === dk ? 'Hacking ' + deviceName(dk) + '...  ' + Math.round(rt.kitT / HACK.kit * 100) + '%' + (dk.net && trace.level(dk.net) > 0 ? '   (trace ' + Math.round(trace.level(dk.net) * 100) + '%)' : '') : 'Hold E  Hack ' + deviceName(dk) + ' (hacking kit)';
       const tn = terminalNear();
+      if (tn && tn.net && !tn.done && rt.hackT > 0) return 'Hacking ' + (tn.label || 'the security terminal') + '...  ' + Math.round(rt.hackT / tn.time * 100) + '%' + (trace.level(tn.net) > 0 ? '   (trace ' + Math.round(trace.level(tn.net) * 100) + '%)' : '');
       if (tn) { const tnm = tn.label || 'the security terminal'; return tn.done ? tnm[0].toUpperCase() + tnm.slice(1) + ': done' : rt.hackT > 0 ? (tn.doing || 'Hacking') + ' ' + tnm + '...  ' + Math.round(rt.hackT / tn.time * 100) + '%' : 'Hold E  ' + (tn.verb || 'Hack') + ' ' + tnm; }
       const yn = yellowNear();
       if (yn) return 'E  Talk to ' + (yn.boss ? 'the boss' : 'his bodyguard');
@@ -1685,6 +1787,7 @@ export function setupMission(ctx) {
           return true;
         }
         if (terminalNear()) return true;                        // held, in tick
+        if (deviceNear()) return true;                          // the hacking kit: held, in tick
         const yn = yellowNear(); if (yn) { talkTo(yn); return true; }
       }
       if (!L0) { const az = level.apcZone; return !!(az && rt.wentIn && !m.done && inStreetZone(az, player.pos) && !rules.settled(outcome())); }   // held, in tick

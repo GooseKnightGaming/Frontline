@@ -75,6 +75,7 @@ export default {
     ['Inside', 'The reds have bought the governor, <b>Ashdown-Pryce</b>, and the wing\'s officers with him. Ghost\'s <b>Sergeant Venn</b> is on the top tier, east side, under another name. Her cell door opens only from the control room.'],
     ['Objectives', '<b>Hack the control room</b> (first tier, over the entrance): it unlocks every cell door on the wing. <b>Bring Sergeant Venn out</b> (the top tier, east gallery, the middle). Optionally, stop the governor.'],
     ['The cells', 'Barred fronts: you can see in, and shoot through, but not go in - only a few cells have doors.'],
+    ['Security', 'Cameras over the hall, the first tier and the entrance raise the alarm if they see you; a turret covers the lobby. The <b>security terminal</b> in the control room runs them all: hack it (hold E) to disable them, have them ignore you, or turn the turret on the reds. Hack too long and they trace you.'],
   ],
   time: { date: [24, 10, 2026], hour: 14, minute: 20 }, faction: 'red',
   atmos: { fog: [0.62, 0.64, 0.68, 40, 400], ambient: [0.45, 0.47, 0.52] },
@@ -155,7 +156,18 @@ export default {
     { id: 's2', at: [44, 43, '2'], arms: 'carbine' },
   ],
   hostages: [{ id: 'venn', name: 'Sergeant Venn', she: true, at: [49, 26, '3'] }],
-  terminals: [{ id: 'control', name: 'the control desk', at: [33, 42, '1'], face: [0, -1], time: 7, reveal: 30,
+  // (hacking and control) A Wing's security: cameras over the hall, the first tier's galleries and the
+  // entrance, a turret covering the lobby - one network, run from the security terminal in the control room
+  devices: [
+    { id: 'c-hall-nw', kind: 'camera', at: [20, 13, 'G'], face: [1, 1], net: 'awing' },
+    { id: 'c-hall-se', kind: 'camera', at: [43, 38, 'G'], face: [-1, -1], net: 'awing' },
+    { id: 'c-tier-w', kind: 'camera', at: [18, 13, '1'], face: [0, 1], net: 'awing' },
+    { id: 'c-tier-e', kind: 'camera', at: [45, 38, '1'], face: [0, -1], net: 'awing' },
+    { id: 'c-lobby', kind: 'camera', at: [20, 42, 'G'], face: [1, 0], net: 'awing' },
+    { id: 't-lobby', kind: 'turret', at: [47, 43, 'G'], face: [-1, 0], net: 'awing' },
+  ],
+  terminals: [{ id: 'sec', name: 'the security terminal', at: [40, 43, '1'], face: [0, -1], time: 6, net: 'awing' },
+    { id: 'control', name: 'the control desk', at: [33, 42, '1'], face: [0, -1], time: 7, reveal: 30,
     said: 'The control desk: every cell door on A Wing unlocks with a crash of bolts - and the wing\'s cameras put every red on your radar for 30 seconds.' }],
   objectives: [
     { id: 'o1', kind: 'hack', ref: 'control', text: 'Hack the control desk (the control room, the second tier, south)' },

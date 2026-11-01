@@ -11,6 +11,7 @@ export default {
     ['The place', 'One storey and a plant room under it. Labs along the north side (the chemistry lab, the CAVE lab, the cold store), the service corridor in front of them, offices, the staff room and decontamination in the middle, the main corridor, the lobby. The stair down to the plant room is in decontamination.'],
     ['Your kit', 'The <b>multi-spectrum visor</b>: V steps through night vision, <b>thermal</b> (warm bodies and hot pipes, through mist and smoke), <b>UV</b> (traces people leave) and <b>EMF</b> (wiring and hidden electronics, through walls).'],
     ['The reds', 'Thirteen, all over the station - two of them in the cold store, where the refrigeration has filled the room with mist.'],
+    ['Security', 'Cameras watch the corridors and the lobby - one that sees you raises the alarm - and turrets guard decontamination and the data room. They all run from the <b>security terminal</b> in the west office: hack it (hold E) to disable them, have them ignore you, or turn the turrets on the reds. Hack for too long and they trace you. A <b>hacking kit</b> (a Special) does one at a time, up close.'],
     ['Objectives', 'Find <b>Dr Ilse Brandt</b>: she cut her hand in the chemistry lab as she ran - under UV, the spill trail shows the way. Bring her out. Take the <b>sample case</b> from the cold store. Find the shielded data room - EMF shows where its wiring goes - and hack its <b>data terminal</b>.'],
   ],
   time: { date: [11, 8, 2026], hour: 3, minute: 40 }, night: true, startGear: 'MULTIVIS', faction: 'red',
@@ -117,7 +118,20 @@ export default {
   ],
   hostages: [{ id: 'brandt', name: 'Dr Ilse Brandt', she: true, at: [48, 38, 'B'] }],
   pickups: [{ id: 'samples', name: 'The sample case', what: 'the sample case', at: [30, 7, 'G'], table: false, h: 0.8, colour: [0.85, 0.85, 0.9] }],
-  terminals: [{ id: 'data', name: 'the data terminal', at: [44, 8, 'G'], face: [0, -1], time: 8, reveal: 30,
+  // (Rhys's roadmap: hacking and control) the station's security: cameras down the corridors and in the
+  // lobby, a turret in decontamination and one in the data room - all on one network, whose terminal is
+  // in the west office. Hack it: disable them, have them ignore you, or turn the turrets on the reds.
+  devices: [
+    { id: 'c-lobby', kind: 'camera', at: [24, 36, 'G'], face: [0, -1], net: 'halden' },
+    { id: 'c-main-w', kind: 'camera', at: [2, 27, 'G'], face: [1, 0], net: 'halden' },
+    { id: 'c-main-e', kind: 'camera', at: [49, 27, 'G'], face: [-1, 0], net: 'halden' },
+    { id: 'c-serv-w', kind: 'camera', at: [2, 15, 'G'], face: [1, 0], net: 'halden' },
+    { id: 'c-serv-e', kind: 'camera', at: [49, 15, 'G'], face: [-1, 0], net: 'halden' },
+    { id: 't-decon', kind: 'turret', at: [48, 23, 'G'], face: [-1, -1], net: 'halden' },
+    { id: 't-data', kind: 'turret', at: [45, 11, 'G'], face: [-1, -1], net: 'halden' },
+  ],
+  terminals: [{ id: 'sec', name: 'the security terminal', at: [3, 23, 'G'], face: [1, 0], time: 6, net: 'halden' },
+    { id: 'data', name: 'the data terminal', at: [44, 8, 'G'], face: [0, -1], time: 8, reveal: 30,
     said: 'Data terminal: the station\'s research is copied to your device - and the cameras put every red on your radar for 30 seconds.' }],
   objectives: [
     { id: 'o1', kind: 'rescue', ref: 'brandt', text: 'Find Dr Ilse Brandt and bring her out' },

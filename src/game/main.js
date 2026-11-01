@@ -2161,8 +2161,8 @@ function boot() {
       if (ev.type === 'blast') {
         // an EMP: night vision, torches, turrets and engines out a while, in its reach
         if (ev.emp) {
-          const hit = empPulse(ev.pos, { guards: level.guards || [], turrets: level.turrets || [], vehicles: level.world.vehicles || [] });
-          if (hit.guards + hit.turrets + hit.vehicles) { S.noteT = 3; S.noteText = 'EMP: ' + [hit.guards && hit.guards + ' night vision or torches', hit.turrets && hit.turrets + ' turrets', hit.vehicles && hit.vehicles + ' engines'].filter(Boolean).join(', ') + ' out for ' + EMP.secs + ' s'; }
+          const hit = empPulse(ev.pos, { guards: level.guards || [], turrets: level.turrets || [], vehicles: level.world.vehicles || [], devices: level.liveDevices || [] });
+          if (hit.guards + hit.turrets + hit.vehicles + (hit.cameras || 0)) { S.noteT = 3; S.noteText = 'EMP: ' + [hit.guards && hit.guards + ' night vision or torches', hit.cameras && hit.cameras + ' cameras', hit.turrets && hit.turrets + ' turrets', hit.vehicles && hit.vehicles + ' engines'].filter(Boolean).join(', ') + ' out for ' + EMP.secs + ' s'; }
         }
         wview.onBlast(ev.flash ? 0.4 : 1); wview.addBlast(ev); if (ev.flash) blindFlash = 1;
         audio.blast(Math.hypot(ev.pos[0] - player.pos[0], ev.pos[1] - player.pos[1], ev.pos[2] - player.pos[2]), ev.flash);

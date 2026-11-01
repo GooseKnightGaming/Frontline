@@ -211,6 +211,8 @@ export const ITEMS = {
   // specials: issued for a mission, or by your class - outside the five slots
   CAMO:     { name: 'Special Camouflage', family: 'perk', kg: 1.0, camo: 0.6, note: 'Harder to see with the naked eye - all the more when prone.' },
   QID:      { name: 'Quick Intel Device', family: 'perk', kg: 0.3, hackSpeed: 2, note: 'Hacking and downloading take half the time.' },
+  // (Rhys's roadmap: "taken over at a terminal or with a hacking kit") hold E at a camera or turret, close by
+  HACKKIT:  { name: 'Hacking Kit', family: 'perk', kg: 0.8, hackKit: true, note: 'Hold E at a camera or turret, close by, to disable it, reprogram it to ignore you, or take it over. Slower than a security terminal.' },
   LOCKON:   { name: 'Vehicle Targeting', family: 'perk', lockOn: 45, note: 'Aim a launcher at a vehicle within 45 m: it locks on, and the rocket follows it.' },
   AUTOREPAIR: { name: 'Auto-Repair', family: 'perk', autoRepair: 0.02, note: 'A vehicle you are driving slowly mends itself.' },
   CUSHION:  { name: 'Cushioned Landing', family: 'perk', fallMul: 0.3, note: 'Falls hurt far less.' },
