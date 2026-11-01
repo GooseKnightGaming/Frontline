@@ -45,7 +45,7 @@ export function saveSlot(n, data) {
 export function loadSlot(n) { return listSlots()[n]; }
 // erasing a slot ends its run: the save, its story and its trophies
 export function clearSlot(n) {
-  try { for (const k of [KEY(n), STORY(n), TROPHIES(n), ARMOURY(n), GADGET(n), RECORD(n), SKILLS(n), 'frontline.lantern.' + n]) localStorage.removeItem(k); return true; } catch (e) { return false; }
+  try { for (const k of [KEY(n), STORY(n), TROPHIES(n), ARMOURY(n), GADGET(n), RECORD(n), SKILLS(n), CASEB(n), 'frontline.lantern.' + n]) localStorage.removeItem(k); return true; } catch (e) { return false; }
 }
 // the first slot with no run in it, or -1
 export function freeSlot() {
@@ -168,6 +168,14 @@ export function recordSummary(rec) {
     kd: rec.battles ? (rec.deaths ? (rec.battleKills || 0) / rec.deaths : null) : null,
     fav: fav ? fav[0] : null,
   };
+}
+// (M6.31) the case: clue ids found (sim/play/caseboard.js)
+const CASEB = (n) => 'frontline.case.' + n;
+export function loadCase(n) { try { return JSON.parse(localStorage.getItem(CASEB(n)) || '[]') || []; } catch (e) { return []; } }
+export function addCase(n, ids) {
+  const have = loadCase(n), fresh = (ids || []).filter((id, i, a) => !have.includes(id) && a.indexOf(id) === i);
+  if (fresh.length) { try { localStorage.setItem(CASEB(n), JSON.stringify(have.concat(fresh))); } catch (e) { /* private window */ } }
+  return fresh;
 }
 // (M6.29) the run's skills: experience earned, and the ranks bought with it (sim/play/skills.js)
 const SKILLS = (n) => 'frontline.skills.' + n;

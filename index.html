@@ -214,7 +214,7 @@
   .ride { margin: 4px 0 10px; display: flex; align-items: center; gap: 8px; }
   .ride .ride-btn { width: auto; flex: 1; margin: 0; padding: 6px 10px; }
   .ride-btn.on { background: #e8b423; color: #111; }
-  #qbranch .card { max-height: 92vh; overflow-y: auto; }
+  #qbranch .card, #casebd .card { max-height: 92vh; overflow-y: auto; }
   #q-list .btn { text-align: left; }
   #q-list .btn span { display: block; font-size: 12px; opacity: 0.8; font-weight: normal; margin-top: 2px; }
   #q-list .btn.on { background: #e8b423; color: #111; }
@@ -342,6 +342,15 @@
     <p class="brief-where">Ghost HQ &middot; the inventor's bench. Sign one gadget out: it goes with you on every mission, as a Special, until you bring it back for another.</p>
     <div class="tmenu" id="q-list"></div>
     <button class="btn" id="q-back">Back to HQ</button>
+  </div>
+</div>
+
+<div id="casebd" class="overlay">
+  <div class="card brief-card credits-card">
+    <h2>THE CASE</h2>
+    <p class="brief-where">Ghost HQ &middot; the board. What the missions have turned up - and what is still out there.</p>
+    <div id="case-list" style="text-align:left"></div>
+    <button class="btn" id="case-back">Back to HQ</button>
   </div>
 </div>
 

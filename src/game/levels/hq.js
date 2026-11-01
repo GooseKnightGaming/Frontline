@@ -41,6 +41,7 @@ export const HQ = {
   logistics: [X(PLAN.logistics[0]), Z(PLAN.logistics[1])],
   q: [X(PLAN.q[0]), Z(PLAN.q[1])],
   training: [X(PLAN.hall.x0) - 0.4, Z(48)],          // (M6.31) the training screen: your skills
+  caseBoard: [X(-5), Z(PLAN.hall.z1) - 0.6],         // (M6.31) the case board, on the south wall by the stairs' door
   server: flip(PLAN.server),
   console: [X(PLAN.console[0]), Z(PLAN.console[1])],
   cctvDesk: [X(PLAN.cctvDesk[0]), Z(PLAN.cctvDesk[1])],
@@ -147,6 +148,10 @@ export function buildHQ(level) {
     box([H.x1, F + 2.6, S.z0 - 0.4], [H.x1 + 0.4, top, S.z1 + 0.4], 'wall', { solid: false });
     for (const x of [-22, -14, -6]) for (const z of [41, 53]) light(x, top - 0.4, z, 13, 0.9);
     sign(-14, F + 3.3, H.z1 - 0.06, Math.PI, 'GHOST HQ', 'Operations', 3.6, '#e8b423');
+    // (M6.31) the case board: a corkboard with its string, on the south wall
+    box([-7.4, F + 1.0, H.z1 - 0.08], [-2.6, F + 2.6, H.z1], 'wood', { solid: false });
+    box([-7.2, F + 1.1, H.z1 - 0.1], [-2.8, F + 2.5, H.z1 - 0.08], 'board', { solid: false });
+    sign(-5, F + 2.95, H.z1 - 0.12, Math.PI, 'THE CASE', 'E at the board', 2.0, '#e05050');
 
     // the operations table: a lit map under glass, on a plinth
     const [ox, oz] = PLAN.ops;

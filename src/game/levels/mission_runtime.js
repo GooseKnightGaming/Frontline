@@ -25,6 +25,7 @@ import { makeTarget } from '../../sim/arms/weapons.js';
 import { makeDog, DOG } from '../../sim/people/dog.js';
 import { markIntrusion, downLantern } from './hq_security.js';
 import { xpFor, pointsAt } from '../../sim/play/skills.js';
+import { CASE, cluesFrom, caseOpen } from '../../sim/play/caseboard.js';
 import { Device, stepDevice, setMode, Trace, HACK, MODES, SIREN, darkAt, sirenFor, syncLocks, modeSays, lightsOut, breaks } from '../../sim/world/devices.js';
 
 
@@ -2258,6 +2259,13 @@ export function setupMission(ctx) {
         rt.xpGained = xpFor({ battle: !!B, won: ok, result: m.result, objectives: done, trophies: fresh.length });
         const after = pointsAt(Saves.addXp(Saves.currentSlot(), rt.xpGained).xp);
         rt.newPoints = after - before;
+        // (M6.31) the case: what this mission turned up, brought home
+        if (level.draft && m.result !== 'failed') {
+          const done = (level.terminals || []).filter((q) => q.done).map((q) => q.id).concat((level.pickups || []).filter((q) => q.taken).map((q) => q.id));
+          const was = caseOpen(Saves.loadCase(Saves.currentSlot()));
+          rt.newClues = Saves.addCase(Saves.currentSlot(), cluesFrom(level.draft, done));
+          rt.caseMade = !was && caseOpen(Saves.loadCase(Saves.currentSlot()));
+        }
       }
       $('mend-title').textContent = 'DEBRIEF';
       { const w = document.querySelector('#mend .brief-where'); if (w) w.innerHTML = L0 ? 'Level 0 &middot; Training Mission' : level.draft ? 'Level ' + level.spec.no + ' &middot; ' + level.title + ' (first draft)' : level.factory ? 'Level 2 &middot; Derelict Factory' : level.casino ? 'Level 3 &middot; Casino' : level.trainRun ? 'Level 4 &middot; The Night Train' : 'Level 1 &middot; Riverside Hotel'; }   // (the train's said the hotel)   // (it said Level 0 at the hotel)
@@ -2282,6 +2290,7 @@ export function setupMission(ctx) {
         (m.kills ? row('Headshots', m.headshots + ' of ' + m.kills) : '') +
         row('Favourite weapon', favName) +
         row('Doors breached', m.breaches) +
+        (rt.newClues && rt.newClues.length ? row('The case', rt.newClues.map((id) => (CASE.find((c) => c.id === id) || {}).title).join(', ') + ' &mdash; on the board at Ghost HQ' + (rt.caseMade ? '. <b>Ghost knows where the council meets: Kaldberg.</b>' : '')) : '') +
         (rt.xpGained ? row('Experience', '+' + rt.xpGained + (rt.newPoints ? ' &mdash; ' + (rt.newPoints === 1 ? 'a skill point' : rt.newPoints + ' skill points') + ' to spend at Ghost HQ' : '')) : '') +
         (devices.length ? row('Security hacked', (m.hacked || 0) + (m.hacked === 1 ? ' time' : ' times') + (m.traced ? ' &mdash; <span class="no">traced</span>: they know where Yard 7 is' : m.hacked ? ' &mdash; never traced' : '')) : '') +
         (m.turretKills ? row('Downed by their own turrets', m.turretKills) : '') +

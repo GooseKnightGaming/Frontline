@@ -37,5 +37,6 @@ import tower from './tower.js';
 import testrange from './testrange.js';
 import embassy from './embassy.js';
 import barracks from './barracks.js';
+import kaldberg from './kaldberg.js';
 
-export const DRAFTS = [sewers, bank, cemetery, estate, manor, mine, facility, vantage, ward, campus, shipyard, fortress, drop, beachhead, factoryBattle, riverboat, city, ruins, wasteland, theatre, baths, temple, prison, bunkers, arena, nightclub, airport, outpost, spaceport, subway, listening, yacht, archive, tower, testrange, embassy, barracks];
+export const DRAFTS = [sewers, bank, cemetery, estate, manor, mine, facility, vantage, ward, campus, shipyard, fortress, drop, beachhead, factoryBattle, riverboat, city, ruins, wasteland, theatre, baths, temple, prison, bunkers, arena, nightclub, airport, outpost, spaceport, subway, listening, yacht, archive, tower, testrange, embassy, barracks, kaldberg];

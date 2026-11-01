@@ -71,6 +71,7 @@ import { DoorMove } from '../sim/world/doors.js';
 import { kickOpens } from '../sim/play/mission.js';
 import { hqSecurity, takeIntrusion } from './levels/hq_security.js';
 import { effects as skillEffects, SKILLS, pointsLeft, train as trainSkill, XP } from '../sim/play/skills.js';
+import { CASE, CASE_NEEDS, FINAL, caseOpen } from '../sim/play/caseboard.js';
 import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './core/input.js';
 
 const VERSION = 'M6.31.0';
@@ -727,9 +728,15 @@ function boot() {
   // the first drafts: a list of their own
   if ($('t-drafts')) {
     const list = $('drafts-list');
-    list.innerHTML = DRAFTS.map((d) => '<button class="btn" data-id="' + d.id + '">Level ' + d.no + ': ' + d.title + '</button>').join('');
-    list.querySelectorAll('button').forEach((b) => { b.onclick = () => { saveNow(); goDraft(b.dataset.id); }; });
-    $('t-drafts').onclick = () => { show('assign', false); show('drafts', true); };
+    // (M6.31) the last of them, Kaldberg, only once the case is made (the board at Ghost HQ)
+    const drawDrafts = () => {
+      const open = caseOpen(Saves.loadCase(slotNo)) || TEST;
+      list.innerHTML = DRAFTS.map((d) => d.id === FINAL && !open ? '<button class="btn" disabled>Level ' + d.no + ': ? ? ?  (the case is not made yet - ' + Saves.loadCase(slotNo).length + ' of ' + CASE_NEEDS + ' clues)</button>'
+        : '<button class="btn" data-id="' + d.id + '">Level ' + d.no + ': ' + d.title + '</button>').join('');
+      list.querySelectorAll('button[data-id]').forEach((b) => { b.onclick = () => { saveNow(); goDraft(b.dataset.id); }; });
+    };
+    drawDrafts();
+    $('t-drafts').onclick = () => { drawDrafts(); show('assign', false); show('drafts', true); };
     $('drafts-back').onclick = () => { show('drafts', false); show('assign', true); };
   }
   // ── Ghost HQ: the assignments at the operations table, and how you go ─────
@@ -760,6 +767,18 @@ function boot() {
       list.appendChild(b);
     }
   }
+  // (M6.31) the case board: what the missions have turned up, and what is still to find
+  function openCase() {
+    S.menu = true;
+    if (document.pointerLockElement) document.exitPointerLock();
+    const have = Saves.loadCase(slotNo), lvl = (id) => (DRAFTS.find((d) => d.id === id) || {});
+    $('case-list').innerHTML = CASE.map((c) => have.includes(c.id)
+      ? '<div class="rec-row" style="display:block"><b>' + c.title + '</b> <span style="opacity:0.7">(Level ' + lvl(c.level).no + ', ' + lvl(c.level).title + ')</span><br>' + c.text + '</div>'
+      : '<div class="rec-row" style="display:block;opacity:0.45">? ? ?  <span>(something at Level ' + lvl(c.level).no + ', ' + lvl(c.level).title + ')</span></div>').join('')
+      + '<p style="margin-top:10px">' + (caseOpen(have) ? '<b>The case is made: the council meets at Kaldberg. Level 42 is on the operations table.</b>' : 'Find ' + (CASE_NEEDS - have.length) + ' more, and Ghost will know where the council meets.') + '</p>';
+    show('casebd', true);
+  }
+  $('case-back').onclick = () => { show('casebd', false); deploy(); };
   function openQ() {
     S.menu = true;
     if (document.pointerLockElement) document.exitPointerLock();
@@ -1459,13 +1478,14 @@ function boot() {
     if (Math.hypot(dx, dz) < 1.3) return 'ops';
     if (Math.abs(player.pos[0] - tx) < 6 && player.pos[2] - tz < 2 && player.pos[2] > tz - 0.6) return 'trophies';   // (not through the wall, from the server room)
     if (Math.hypot(player.pos[0] - hq.training[0], player.pos[2] - hq.training[1]) < 2.2) return 'skills';
+    if (Math.hypot(player.pos[0] - hq.caseBoard[0], player.pos[2] - hq.caseBoard[1]) < 2.2) return 'case';
     const [qx, qz] = hq.q;
     if (Math.max(0, Math.abs(player.pos[0] - qx) - 2.4) + Math.max(0, Math.abs(player.pos[2] - qz) - 0.6) < 1.2) return 'q';
     return null;
   }
   function hqTip() {
     const at = hqStation();
-    return at === 'ops' ? 'E  Assignments' : at === 'trophies' ? 'E  The trophy cabinet' : at === 'skills' ? 'E  Training: your skills' + (pointsLeft(Saves.loadSkills(slotNo)) > 0 ? '  (points to spend)' : '') : at === 'q' ? 'E  Q Branch' + (Saves.loadGadget(slotNo) && ITEMS[Saves.loadGadget(slotNo)] ? '  (signed out: ' + ITEMS[Saves.loadGadget(slotNo)].name + ')' : '') : null;
+    return at === 'ops' ? 'E  Assignments' : at === 'trophies' ? 'E  The trophy cabinet' : at === 'case' ? 'E  The case board  (' + Saves.loadCase(slotNo).length + ' clues)' : at === 'skills' ? 'E  Training: your skills' + (pointsLeft(Saves.loadSkills(slotNo)) > 0 ? '  (points to spend)' : '') : at === 'q' ? 'E  Q Branch' + (Saves.loadGadget(slotNo) && ITEMS[Saves.loadGadget(slotNo)] ? '  (signed out: ' + ITEMS[Saves.loadGadget(slotNo)].name + ')' : '') : null;
   }
   function hqUse() {
     const at = hqStation();
@@ -1475,6 +1495,7 @@ function boot() {
     if (at === 'ops') openAssignments();
     else if (at === 'q') openQ();
     else if (at === 'skills') { openMenu(); tab('skills'); }
+    else if (at === 'case') openCase();
     else { openMenu(); tab('trophies'); }
     return true;
   }
@@ -2388,19 +2409,21 @@ function boot() {
         const up = level.world.raycast(player.eyePos, [0, 1, 0], 40, (q) => q.person || q.target);
         S.wxOpen = !up;
       }
-      audio.weather && audio.weather(level.weather, level.weather === 'wind' ? 0.1 : 0.13, S.wxOpen);
-      if (level.weather === 'rain') {
+      audio.weather && audio.weather(level.weather === 'snow' ? 'wind' : level.weather, level.weather === 'rain' ? 0.13 : level.weather === 'snow' ? 0.06 : 0.1, S.wxOpen);
+      if (level.weather === 'rain' || level.weather === 'snow') {
+        const snow = level.weather === 'snow';
         if (!S.rain) {
-          const m = new pc.StandardMaterial(); m.diffuse = new pc.Color(0.7, 0.75, 0.82); m.emissive = new pc.Color(0.25, 0.27, 0.3); m.opacity = 0.35; m.blendType = pc.BLEND_NORMAL; m.depthWrite = false; m.update();
+          const m = new pc.StandardMaterial(); m.diffuse = snow ? new pc.Color(0.95, 0.96, 1) : new pc.Color(0.7, 0.75, 0.82); m.emissive = snow ? new pc.Color(0.6, 0.62, 0.66) : new pc.Color(0.25, 0.27, 0.3); m.opacity = snow ? 0.85 : 0.35; m.blendType = pc.BLEND_NORMAL; m.depthWrite = false; m.update();
           S.rain = [];
-          for (let i = 0; i < 70; i++) {
-            const e = new pc.Entity('rain'); e.addComponent('render', { type: 'box', material: m, castShadows: false }); e.setLocalScale(0.012, 0.5, 0.012);
-            app.root.addChild(e); S.rain.push({ e, x: (Math.random() - 0.5) * 16, y: Math.random() * 12, z: (Math.random() - 0.5) * 16 });
+          for (let i = 0; i < (snow ? 110 : 70); i++) {
+            const e = new pc.Entity('rain'); e.addComponent('render', { type: 'box', material: m, castShadows: false }); if (snow) e.setLocalScale(0.035, 0.035, 0.035); else e.setLocalScale(0.012, 0.5, 0.012);
+            app.root.addChild(e); S.rain.push({ e, x: (Math.random() - 0.5) * 16, y: Math.random() * 12, z: (Math.random() - 0.5) * 16, ph: Math.random() * 6 });
           }
         }
         const c = player.eyePos;
         for (const r of S.rain) {
-          r.y -= dt * 11; if (r.y < -3) { r.y = 9 + Math.random() * 3; r.x = (Math.random() - 0.5) * 16; r.z = (Math.random() - 0.5) * 16; }
+          r.y -= dt * (snow ? 1.4 : 11); if (snow) { r.ph += dt; r.x += Math.sin(r.ph * 1.3) * dt * 0.4; }
+          if (r.y < -3) { r.y = 9 + Math.random() * 3; r.x = (Math.random() - 0.5) * 16; r.z = (Math.random() - 0.5) * 16; }
           if (r.e.enabled !== !!S.wxOpen) r.e.enabled = !!S.wxOpen;
           if (S.wxOpen) r.e.setPosition(c[0] + r.x, c[1] + r.y, c[2] + r.z);
         }

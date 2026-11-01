@@ -7,8 +7,20 @@ GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
 
-## M6.31.0 — (in progress)
-- **Weather** (the roadmap's "weather ambience"): a level's `weather: 'rain' | 'wind'` - its sound (synthesised: filtered
+## M6.31.0 — the case, Kaldberg, snow
+- **The case** (`src/sim/play/caseboard.js`): eight clues, each from one thing done on one of the newer missions (Halden's
+  research, LANTERN's logs, Corwen's files, Varn's mail, the embassy's cipher keys, the courier's microfilm, the training
+  plans, the payload's orders) and brought home. The debrief lists any new clue ("The case"); they are kept in the save
+  slot (`loadCase`/`addCase` in saves.js). **The board** in Ghost HQ's hall (THE CASE; E there) pins them up. Five of
+  them and Ghost knows where the council meets - and the last mission opens in the mission list (until then, `? ? ?`).
+  `test/caseboard.test.mjs` (every clue names a real level and a real terminal or pickup).
+- **Level 42, Kaldberg** (`drafts/kaldberg.js`; the case's end): the reds' council in a hunting lodge in the pass, snow
+  falling. Every system (cameras, pinholes, turrets on the drive, lasers on the gallery, two maglocks, the hall's lights,
+  the alarm), dogs on the drive, a marksman relocating round the gallery, a shield at the study door, radio, engineer,
+  medic, a reserve in the garage. Record the council from the gallery; take the strike order from the Chairman's study
+  (his keycard opens it); stop the Chairman (optional); out by the helipad on the ridge.
+- **Weather** (the roadmap's "weather ambience"): a level's `weather: 'rain' | 'wind' | 'snow'` - snow falls slowly and
+  sways, and sounds as a light wind. Its sound (synthesised: filtered
   noise; duller and quieter indoors - anything over your head within 40 m), and rain falling round you when you are open
   to the sky. Rain at the Archive and the Tower, wind on the Listening Station's cliffs.
 - **The training screen** in Ghost HQ's operations hall (its middle screen, now TRAINING): E there opens your skills.
