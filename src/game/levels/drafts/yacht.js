@@ -70,7 +70,7 @@ export default {
     ['The place', 'Seventy metres of yacht, stern-in at the end of the marina; the gangway up from the pier to her main deck. <b>Lower deck</b>: the engine room (aft), the crew\'s mess and cabins, the stores (the crew\'s stair is there). <b>Main deck</b>: the aft deck, the saloon, the dining room, the galley, the foredeck. <b>Upper deck</b>: the owner\'s suite, the panic room, the sky lounge, the bridge (forward). The <b>sun deck</b> and its helipad, aft, at the top.'],
     ['The man', '<b>Ilya Corwen</b> brokers arms to anyone who pays - the reds most of all. His files are in the <b>panic room</b> off his suite. He has a journalist, <b>Mara Quill</b>, held below in the crew\'s cabins: she came too close.'],
     ['Security', 'Her security runs from the <b>bridge</b>: cameras over the decks (and a <b>pinhole camera</b> in the suite - EMF), a <b>laser tripwire</b> across the sky lounge, the suite and the panic room <b>maglocked</b>, turrets on the sun deck and the foredeck, the saloon\'s and the engine room\'s lights, the alarm. You carry a <b>hacking kit</b>. Corwen carries a <b>keycard</b>.'],
-    ['The crew', 'Fifteen of his men. The bridge officer has the <b>radio</b>; the <b>engineer</b> is in the engine room; a <b>medic</b> in the crew\'s mess; a man with a <b>ballistic shield</b> on the main deck; a <b>marksman</b> on the sun deck who will not stay in one place.'],
+    ['The crew', 'Fifteen of his men. The bridge officer has the <b>radio</b>; the <b>engineer</b> is in the engine room; a <b>medic</b> in the crew\'s mess; a man with a <b>ballistic shield</b> on the main deck; a <b>marksman</b> on the sun deck who will not stay in one place; and a <b>dog</b> with the man on the pier.'],
     ['Objectives', 'Take Corwen\'s <b>files</b> from the panic room. Bring <b>Mara Quill</b> out. Optionally, stop Corwen.'],
   ],
   time: { date: [14, 11, 2026], hour: 23, minute: 50 }, night: true, faction: 'red', requires: 'HACKKIT', startGear: 'MULTIVIS',
@@ -132,7 +132,7 @@ export default {
     { id: 'eng', at: [13, 13, 'G'], arms: 'pistol', temper: 'cowardly', role: 'engineer' },
     { id: 'med', at: [27, 11, 'G'], arms: 'pistol', temper: 'cowardly', role: 'medic' },
     { id: 'c1', at: [27, 16, 'G'], arms: 'smg', temper: 'steady' },
-    { id: 'p1', at: [40, 22, 'G'], route: [[34, 22], [56, 22]], arms: 'carbine' },
+    { id: 'p1', at: [40, 22, 'G'], route: [[34, 22], [56, 22]], arms: 'carbine', dog: true },     // a dog on the pier
   ],
   hostages: [{ id: 'quill', name: 'Mara Quill', she: true, at: [30, 17, 'G'] }],
   pickups: [{ id: 'files', name: 'Corwen\'s files', what: 'the files', at: [30, 11, '2'], h: 0.9, colour: [0.85, 0.8, 0.6] }],

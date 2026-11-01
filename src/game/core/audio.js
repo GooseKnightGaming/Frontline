@@ -324,6 +324,15 @@ export class Audio {
   // a Geiger counter's click
   geiger() { this.burst({ length: 0.008, from: 3500, gain: 0.09 + Math.random() * 0.05, q: 1.5, room: false }); }
   unboard() { this.burst({ length: 0.1, from: 320, to: 140, gain: 0.2, q: 1 }); }
+  // (M6.30) a dog: two hard barks; a bite: a snarl and a snap
+  bark(far) {
+    const g = 0.22 * Math.max(0.15, far === undefined ? 1 : far);
+    this.burst({ length: 0.13, from: 1100, to: 380, gain: g, q: 3 });
+    this.tone({ wave: 'sawtooth', from: 420, to: 260, length: 0.12, gain: g * 0.35 });
+    this.burst({ length: 0.12, from: 1000, to: 360, gain: g * 0.9, q: 3, delay: 0.22 });
+    this.tone({ wave: 'sawtooth', from: 400, to: 250, length: 0.11, gain: g * 0.3, delay: 0.22 });
+  }
+  bite() { this.burst({ length: 0.25, from: 300, to: 120, gain: 0.18, q: 2 }); this.burst({ length: 0.05, from: 2500, gain: 0.2, q: 1, delay: 0.2 }); }
   // the alarm (M6.28): a two-tone wail, rising and falling, for secs
   siren(secs) {
     const n = Math.max(1, Math.round((secs || 5) / 1.1));

@@ -152,7 +152,7 @@ export default {
     { id: 'h2', at: [26, 30, 'G'], arms: 'pistol', temper: 'steady', shield: true },     // a riot shield: round it, or for his head
     { id: 'l1', at: [36, 43, 'G'], arms: 'smg', role: 'radio' },                     // the lobby's radio
     { id: 'e1', at: [30, 43, '2'], arms: 'pistol', temper: 'cowardly', role: 'engineer' },   // the wing's engineer, in the staff room
-    { id: 'y1', at: [30, 51, 'G'], route: [[10, 50], [53, 50]], arms: 'carbine' },
+    { id: 'y1', at: [30, 51, 'G'], route: [[10, 50], [53, 50]], arms: 'carbine', dog: true },     // the yard's dog handler
     { id: 'tw1', at: [8, 52, '2'], arms: 'dmr', temper: 'steady' },
     { id: 'tw2', at: [55, 6, '2'], arms: 'dmr', temper: 'steady' },
     { id: 's2', at: [44, 43, '2'], arms: 'carbine' },

@@ -13,6 +13,12 @@ game into the repository's root.
 - **Furniture with more to it** (kit.js `FURNISH`): shelves hold two lots a shelf in their own colours and heights; machines
   have a screen, a lamp and a vent on one face; beds a pillow and a blanket; sofas their arms. (Seen, not solid: the
   squares stand and stop as before.)
+- **Guard dogs** (`src/sim/people/dog.js`; the roadmap's "dog handler"): a guard with `dog: true` has a dog at his heel.
+  It smells you - within 9 m in the open, 3 m through a wall or a shut door - in the dark and through camouflage; barks
+  (raising the alarm, the siren if it is live), runs at you and bites (11 a bite). It cannot open doors. Shoot it, or
+  dart it to sleep; a dog whose handler is down stays by him. Drawn in code (a body of boxes, legs going as it runs,
+  its tail); barks and bites are synthesised. In the Prison's yard, the Listening Station's fence and the Megayacht's
+  pier. `test/dog.test.mjs`.
 - **The Snake Camera** (Q Branch, `QSNAKE`; the roadmap's "peeking under or through" a door): crouched at a shut door, E
   slides a camera under it - the other side, through the CCTV view (the mouse looks about); E or moving stops it.
 

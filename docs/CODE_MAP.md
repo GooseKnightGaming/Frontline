@@ -6,13 +6,13 @@ Made from each file's opening comment by `python3 tools/code_map.py`. The rules 
 
 | File | Lines | What it is |
 |---|---|---|
-| `main.js` | 2483 | the game in the browser: main.js starts it, builds the level you asked for, and runs it. |
+| `main.js` | 2508 | the game in the browser: main.js starts it, builds the level you asked for, and runs it. |
 
 ## `src/game/core/` - Input, sound, music, voices, saves
 
 | File | Lines | What it is |
 |---|---|---|
-| `audio.js` | 395 | sound, made in code. |
+| `audio.js` | 404 | sound, made in code. |
 | `camsmooth.js` | 22 | camera height smoothing. The body moves in hard little steps (a stair, a crate edge); the eyes should not. The camera height follows the body on a critically damped spring: it speeds up and slows down smoothly instead of lunging a… |
 | `input.js` | 191 | settings and input. Chromebook-first: no mouse wheel, no second mouse button required, and nothing that fights the browser (Ctrl, Tab and the Search key are left alone). Every action can be rebound. |
 | `music.js` | 90 | music. |
@@ -52,9 +52,9 @@ Made from each file's opening comment by `python3 tools/code_map.py`. The rules 
 | `hotel_intel.js` | 87 | the Riverside Hotel's intel (Rhys: "I would like some LORE in the rooms please"). Papers left lying about: not needed to finish, but each one says something about who is here and why - and some of it will matter later (the captain… |
 | `hq.js` | 245 | Ghost HQ, under Yard 7 (Rhys: "Yard 7 is Ghost HQ - an underground laboratory and command centre (the briefing room, the trophy cabinet), a helipad, a van or chopper out to a level"). |
 | `hq_security.js` | 138 | Yard 7's own security, and the day someone else takes it (Rhys's roadmap, "Hacking and control": "it works both ways - an enemy hack can turn Yard 7's own turrets on you, which is the first proper reason for a terminal room under … |
-| `kit.js` | 1007 | the level kit (Rhys: "put together ALL the other levels I've asked for, so that I can play through the game and give pointers on each individual level"). |
+| `kit.js` | 1037 | the level kit (Rhys: "put together ALL the other levels I've asked for, so that I can play through the game and give pointers on each individual level"). |
 | `mission0.js` | 473 | Level 0: the training mission. |
-| `mission_runtime.js` | 2186 | running Level 0 in the game: the guards' bodies, the keycard, the terminal, breaching and bullet time, the hints, and the end. main.js calls in at a handful of points; the rules live in src/sim/play/mission.js. |
+| `mission_runtime.js` | 2235 | running Level 0 in the game: the guards' bodies, the keycard, the terminal, breaching and bullet time, the hints, and the end. main.js calls in at a handful of points; the rules live in src/sim/play/mission.js. |
 | `ranges.js` | 501 | the weapons half of the training course. |
 | `train.js` | 1115 | Level 4, the Night Train (Rhys: "An intercity train that has underground sections. It travels between two fictional cities in a fictional country 'somewhere near the former USSR'... You're off duty, enjoying yourself... [it] defin… |
 | `yard7.js` | 609 | Ghost Training Facility, "Yard 7". A grey-boxed container yard for learning to move: vault lane, climb wall, crouch duct, stairs and catwalk, a dive tower over a deep pool, drop platforms; the training course and the ranges beneat… |
@@ -107,6 +107,7 @@ Made from each file's opening comment by `python3 tools/code_map.py`. The rules 
 | `anim.js` | 154 | which animation the body should be playing. |
 | `captain.js` | 169 | stopping the captain (Rhys: "time for the 'Stop the Captain' objective"). The Riverside Hotel's captain (P13) runs for his helicopter: through the roof door he locks behind him, up the ladder, across the roof to his post (P13A) - … |
 | `contacts.js` | 70 | what you know about who is around you. |
+| `dog.js` | 123 | the guard dog (M6.30; the roadmap's specialists: "a dog handler"). A dog keeps at its handler's heel. It does not see as a man does - it smells: you, near enough, it knows about, in the dark, in camouflage, round a corner (a close… |
 | `factions.js` | 266 | who is against whom (Rhys: in the casino's Businessman's Suite "a Yellow Team of 3: Boss, and his two bodyguards. They are NOT naturally hostile towards YOU. Reds are naturally hostile to You AND Yellows ... You can therefore talk… |
 | `guard.js` | 1267 | a guard (M6). Stage 1: he exists. Stage 2: he notices you. |
 | `hostage.js` | 390 | hostages (the Riverside Hotel: "found, freed, escorted to the police, kept alive"). A hostage sits bound where the reds left him. E frees him (a moment's work, standing over him); then he follows you - the stairs, the corridors, o… |
@@ -137,9 +138,9 @@ Made from each file's opening comment by `python3 tools/code_map.py`. The rules 
 |---|---|---|
 | `emp.js` | 25 | an electromagnetic pulse (the sheet's VD-EMP "Blackout" launcher): it hurts no one, but for a while, within its reach, electronics stop - a guard's night vision or torch goes dark, a turret goes blind and quiet, an engine dies. Pu… |
 | `issue.js` | 45 | what each side's guards carry, from Rhys's weapons sheet (sheet.js). |
-| `loadout.js` | 614 | what you carry. |
+| `loadout.js` | 618 | what you carry. |
 | `sheet.js` | 116 | Rhys's weapons sheet (docs/Frontline_Weapons.xlsx), in the game's terms. WRITTEN BY tools/import_weapons.py - change the sheet and run that, not this file. (How the sheet's columns become these figures: the top of tools/import_wea… |
-| `weapons.js` | 995 | weapons (simulation only: no graphics, fully testable). Five basic weapons for training: knife, pistol, assault rifle, sniper, grenades and flashbangs. Everything here is deliberately simple; the feel gets tuned later. |
+| `weapons.js` | 1020 | weapons (simulation only: no graphics, fully testable). Five basic weapons for training: knife, pistol, assault rifle, sniper, grenades and flashbangs. Everything here is deliberately simple; the feel gets tuned later. |
 
 ## `src/sim/play/` - Missions, story, the training course, battles
 

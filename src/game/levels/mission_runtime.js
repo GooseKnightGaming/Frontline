@@ -22,6 +22,7 @@ import * as Saves from '../core/saves.js';
 import { rewardFor } from '../../sim/play/rewards.js';
 import { deviceView } from '../draw/devices_view.js';
 import { makeTarget } from '../../sim/arms/weapons.js';
+import { makeDog, DOG } from '../../sim/people/dog.js';
 import { markIntrusion, downLantern } from './hq_security.js';
 import { xpFor, pointsAt } from '../../sim/play/skills.js';
 import { Device, stepDevice, setMode, Trace, HACK, MODES, SIREN, darkAt, sirenFor, syncLocks, modeSays, lightsOut, breaks } from '../../sim/world/devices.js';
@@ -788,6 +789,53 @@ export function setupMission(ctx) {
     }
     prevAt = here;
   };
+  // (M6.30) the guard dogs: each at its handler's heel (sim/people/dog.js); drawn here, a body of boxes,
+  // its legs going as it runs
+  const dogs = guards.filter((g) => g.hasDog).map((g) => makeDog(level.world, { id: g.id + '-dog', pos: [g.pos[0] + 0.7, g.pos[1], g.pos[2] + 0.9], yaw: g.yaw, handler: g }));
+  level.dogs = dogs;
+  const dogMat = (r, g2, b) => { const mt = new pc.StandardMaterial(); mt.diffuse = new pc.Color(r, g2, b); mt.gloss = 0.2; mt.update(); return mt; };
+  const DOG_COAT = dogMat(0.22, 0.17, 0.12), DOG_DARK = dogMat(0.08, 0.07, 0.06), DOG_TAN = dogMat(0.55, 0.4, 0.24);
+  const dogBits = (parent, sx, sy, sz, x, y, z, m) => { const e = new pc.Entity(); e.addComponent('render', { type: 'box', material: m, castShadows: true }); e.setLocalScale(sx, sy, sz); e.setLocalPosition(x, y, z); parent.addChild(e); return e; };
+  for (const d of dogs) {
+    const e = new pc.Entity('dog-' + d.id); app.root.addChild(e);
+    dogBits(e, 0.26, 0.26, 0.72, 0, 0.52, 0, DOG_COAT);                    // the body
+    dogBits(e, 0.22, 0.2, 0.3, 0, 0.58, 0.05, DOG_DARK);                   // the saddle
+    dogBits(e, 0.2, 0.22, 0.24, 0, 0.72, -0.44, DOG_COAT);                 // the head
+    dogBits(e, 0.12, 0.1, 0.16, 0, 0.66, -0.6, DOG_TAN);                   // the muzzle
+    dogBits(e, 0.05, 0.05, 0.03, 0, 0.69, -0.69, DOG_DARK);                // the nose
+    for (const sx of [-0.07, 0.07]) dogBits(e, 0.05, 0.12, 0.04, sx, 0.88, -0.42, DOG_DARK);   // the ears
+    d.tail = dogBits(e, 0.05, 0.05, 0.3, 0, 0.62, 0.48, DOG_COAT);
+    d.legs = [[-0.09, -0.25], [0.09, -0.25], [-0.09, 0.25], [0.09, 0.25]].map(([lx, lz]) => {
+      const hip = new pc.Entity(); hip.setLocalPosition(lx, 0.42, lz); e.addChild(hip);
+      dogBits(hip, 0.07, 0.42, 0.08, 0, -0.21, 0, DOG_TAN); return hip;
+    });
+    d.ent = e; d.phase = Math.random() * 6;
+  }
+  const drawDogs = (dt) => {
+    for (const d of dogs) {
+      d.ent.setPosition(d.pos[0], d.pos[1], d.pos[2]);
+      if (d.dead) { d.ent.setEulerAngles(0, d.yaw * 180 / Math.PI, 85); d.ent.setPosition(d.pos[0], d.pos[1] + 0.12, d.pos[2]); continue; }
+      d.ent.setEulerAngles(0, d.yaw * 180 / Math.PI, 0);
+      d.phase += dt * (d.speed > 3 ? 16 : d.speed > 0.2 ? 8 : 0);
+      const sw = d.speed > 0.2 ? (d.speed > 3 ? 38 : 22) : 0;
+      d.legs.forEach((leg, i) => leg.setLocalEulerAngles(Math.sin(d.phase + (i === 0 || i === 3 ? 0 : Math.PI)) * sw, 0, 0));
+      d.tail.setLocalEulerAngles(d.state === 'alert' ? -35 : 10 + Math.sin(d.phase * 0.5) * 10, Math.sin(performance.now() / 120) * (d.state === 'alert' ? 5 : 25), 0);
+    }
+  };
+  const dogsStep = (dt) => {
+    if (!dogs.length) return;
+    const you = { pos: player.pos, dead: player.mode === 'dead' };
+    for (const d of dogs) {
+      d.step(dt, { world: level.world, nav, you,
+        alarm: (dog, pos) => { const came = raiseAlarm(guards, { pos: dog.pos, rank: 'guard', faction: dog.faction }, pos); siren(dog.faction, pos); if (!rt.dogHint) { rt.dogHint = true; showHint('A dog has your scent' + (came.length ? ' - ' + came.length + ' coming.' : '.') + ' It smells you in the dark and through camouflage; shoot it, or dart it.'); } },
+        bite: (dog, dmg) => { player.damage(dmg, 'bitten', dog.pos); } });
+      for (const ev of d.events.splice(0)) {
+        const far = Math.max(0.1, Math.min(1, 1.2 - Math.hypot(ev.pos[0] - player.pos[0], ev.pos[2] - player.pos[2]) / 30));
+        if (ev.type === 'bark') { audio.bark && audio.bark(far); noises.push({ pos: ev.pos, loud: 0.8 }); }
+        if (ev.type === 'bite') audio.bite && audio.bite();
+      }
+    }
+  };
   const brokenWatch = () => {
     for (const d of devices) if (d.shot && d.shot.down && !d.broken) {
       d.broken = true; d.mode = 'off';
@@ -1423,6 +1471,7 @@ export function setupMission(ctx) {
       // the hacking kit, at a camera or turret: slower, the same choice for that one
       { const dn = !terminalNear() && deviceNear(); if (dn && input.held('interact') && player.mode !== 'dead' && !S.dialog) { if (rt.kitDev !== dn) { rt.kitDev = dn; rt.kitT = 0; } const card = byCard(dn); rt.kitT += simDt * ((arsenal.loadout.gearTrait('hackSpeed')) || 1) * ((player.skills && player.skills.hacker) || 1); if (dn.net && !card) traced(dn.net, player.pos.slice()); if (card && rt.kitT >= 2) { rt.kitT = 0; rt.kitDev = null; setMode([dn], 'friendly'); syncLocks(devices); dn.known = true; audio.confirm(); showHint((haveCard.has(dn.net) ? 'The keycard' : 'Skeleton Card') + ': the maglock lets go.'); } else if (!card && rt.kitT >= HACK.kit) { rt.kitT = 0; rt.kitDev = null; hackChoice([dn], (gear('hackReach') ? 'Long-Arm Relay: ' : 'Hacking kit: ') + deviceName(dn) + '.'); } } else if (!dn) { rt.kitT = 0; rt.kitDev = null; } }
       // cameras and turrets
+      if (dogs.length) { dogsStep(simDt); drawDogs(simDt); }
       if (devices.length) {
         const you = { pos: player.pos, chest: [player.pos[0], player.pos[1] + 1.15, player.pos[2]], dead: player.mode === 'dead' };
         const camSlow = gear('camBlind') ? 1e9 : gear('camSlow') || 1;

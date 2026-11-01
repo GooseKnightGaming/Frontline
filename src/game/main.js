@@ -1863,7 +1863,7 @@ function boot() {
       if (ev.type === 'hurt') { S.hurt = Math.min(1, 0.35 + ev.amount / 40); S.lastHurt = S.time; if (ev.amount > 3) audio.hurt(); }
       if (ev.type === 'died') {
         audio.died();
-        const why = { fell: 'The fall was too much.', drowned: 'You ran out of air.' }[ev.why] || 'Operative down.';
+        const why = { fell: 'The fall was too much.', drowned: 'You ran out of air.', bitten: 'The dog got you.' }[ev.why] || 'Operative down.';
         $('dead-why').textContent = why;
         // (Rhys: "Battle - autopauses upon death?") a battle: back in shortly - the game goes on, no menu
         if (missionRt && missionRt.youDown && missionRt.youDown()) { showClassPick(); /* back in at your end */ }
