@@ -20,5 +20,11 @@ const inp = readFileSync(new URL('../src/game/core/input.js', import.meta.url), 
 ok(/this\.touchMove \? this\.touchMove\.x/.test(inp) && /this\.touchMove && this\.touchMove\.sprint/.test(inp), 'the stick reaches the input frame');
 const main = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8');
 ok(/isTouchDevice\(\) && !TEST/.test(main) && /touch\.tick\(\)/.test(main), 'wired in main');
+// (M6.36) the settings: look speed, button size, aim assist
+const tsrc = readFileSync(new URL('../src/game/core/touch.js', import.meta.url), 'utf8');
+ok(/input\.settings\.touchLook/.test(tsrc) && /input\.lookFriction/.test(tsrc) && /touchSize/.test(tsrc), 'touch reads its settings');
+ok(/input\.lookFriction = fr/.test(main) && /settings\.touchAssist !== false/.test(main), 'aim assist set each frame');
+const html = readFileSync(new URL('../src/index.html', import.meta.url), 'utf8');
+for (const id of ['set-tlook', 'set-tsize', 'set-tassist']) ok(html.includes('id="' + id + '"') && main.includes("$('" + id + "')"), 'setting ' + id);
 console.log(bad ? `${bad} of ${n} FAILED` : `ALL ${n} PASSED`);
 if (bad) process.exit(1);

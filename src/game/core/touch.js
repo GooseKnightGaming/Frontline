@@ -50,10 +50,10 @@ export function touchControls(input, opts) {
   root.id = 'touch';
   root.style.cssText = 'position:fixed;inset:0;z-index:4;display:none;touch-action:none;user-select:none;-webkit-user-select:none';
   const btnCss = 'position:absolute;width:58px;height:58px;border-radius:50%;border:2px solid rgba(255,255,255,0.45);background:rgba(20,26,32,0.38);color:#fff;font:700 13px sans-serif;display:flex;align-items:center;justify-content:center;touch-action:none;letter-spacing:1px;';
-  const els = {};
+  const els = {}, where = {};
   for (const [id, label, , where] of TOUCH_BUTTONS) {
     const b = document.createElement('div'); b.className = 'tbtn'; b.dataset.id = id; b.textContent = label;
-    b.style.cssText = btnCss + where; root.appendChild(b); els[id] = b;
+    b.style.cssText = btnCss + where; root.appendChild(b); els[id] = b; b.dataset.where = where;
   }
   const base = document.createElement('div'), knob = document.createElement('div');
   base.style.cssText = 'position:absolute;width:' + STICK.radius * 2 + 'px;height:' + STICK.radius * 2 + 'px;border-radius:50%;border:2px solid rgba(255,255,255,0.35);background:rgba(20,26,32,0.25);display:none;pointer-events:none';
@@ -117,7 +117,7 @@ export function touchControls(input, opts) {
     const lk = S.look.get(id);
     if (lk) {
       // in pixels, scaled so a drag means the same on a small screen and a big one
-      const sc = LOOK / 0.0022;
+      const sc = LOOK / 0.0022 * (+input.settings.touchLook || 1) * (input.lookFriction || 1);
       input.mouse.dx += (e.clientX - lk.x) * sc; input.mouse.dy += (e.clientY - lk.y) * sc;
       lk.x = e.clientX; lk.y = e.clientY; e.preventDefault();
     }
@@ -145,8 +145,18 @@ export function touchControls(input, opts) {
     S.held.clear(); S.look.clear(); S.stick = null; input.touchMove = null;
     base.style.display = knob.style.display = 'none';
   };
+  // (M6.36) the buttons' size (Settings): each scaled about the screen corner it is set from
+  const resize = () => {
+    const k = +input.settings.touchSize || 1;
+    for (const b of Object.values(els)) {
+      const w = b.dataset.where || '';
+      const ox = /right:/.test(w) ? 'right' : 'left', oy = /bottom:/.test(w) ? 'bottom' : 'top';
+      b.style.transformOrigin = ox + ' ' + oy; b.style.transform = k === 1 ? '' : 'scale(' + k + ')';
+    }
+  };
+  resize();
   return {
-    root, els, state: S,
+    root, els, state: S, resize,
     // shown only while you are playing (not over a menu, a crate, a question)
     tick() {
       const on = !!active();

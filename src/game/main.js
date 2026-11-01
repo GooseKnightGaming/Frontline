@@ -75,7 +75,7 @@ import { CASE, CASE_NEEDS, FINAL, caseOpen } from '../sim/play/caseboard.js';
 import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './core/input.js';
 import { isTouchDevice, touchControls } from './core/touch.js';
 
-const VERSION = 'M6.35.0';
+const VERSION = 'M6.36.0';
 const $ = (id) => document.getElementById(id);
 const TEST = /[?&]test\b/.test(location.search);
 // Level 0, the training mission, is its own page load: index.html?level=0
@@ -1257,6 +1257,8 @@ function boot() {
     $('set-sens').value = settings.sensitivity; $('set-sens-v').textContent = settings.sensitivity.toFixed(2);
     $('set-fov').value = settings.fov; $('set-fov-v').textContent = settings.fov;
     $('set-invert').checked = settings.invertY;
+    $('set-tlook').value = settings.touchLook; $('set-tlook-v').textContent = (+settings.touchLook).toFixed(2);
+    $('set-tsize').value = String(settings.touchSize); $('set-tassist').checked = settings.touchAssist !== false;
 
     $('set-quality').value = settings.quality;
     $('set-fps').checked = settings.showFps;
@@ -1269,6 +1271,10 @@ function boot() {
     $('set-music').value = settings.music === undefined ? 0.35 : settings.music;
     $('set-music-v').textContent = Math.round((settings.music === undefined ? 0.35 : settings.music) * 100) + '%';
   }
+  // (M6.36) touch settings
+  $('set-tlook').oninput = (e) => { settings.touchLook = +e.target.value; $('set-tlook-v').textContent = settings.touchLook.toFixed(2); saveSettings(settings); };
+  $('set-tsize').onchange = (e) => { settings.touchSize = +e.target.value; saveSettings(settings); if (touch) touch.resize(); };
+  $('set-tassist').onchange = (e) => { settings.touchAssist = e.target.checked; saveSettings(settings); };
   $('set-sens').oninput = (e) => { settings.sensitivity = +e.target.value; $('set-sens-v').textContent = settings.sensitivity.toFixed(2); saveSettings(settings); };
   $('set-fov').oninput = (e) => { settings.fov = +e.target.value; $('set-fov-v').textContent = settings.fov; saveSettings(settings); };
   $('set-invert').onchange = (e) => { settings.invertY = e.target.checked; saveSettings(settings); };
@@ -2427,7 +2433,17 @@ function boot() {
     for (const d of level.swingDoors || []) d.step(dt);
     if (view.tickSwingDoors) view.tickSwingDoors();
     if (view.tickProps) view.tickProps();
-    if (touch) touch.tick();
+    if (touch) {
+      touch.tick();
+      // (M6.36) aim assist: over an enemy, the view slows (a look straight out from the eye, 60 m)
+      let fr = 1;
+      if (settings.touchAssist !== false && S.playing && !S.menu) {
+        const h = level.world.raycast(player.eyePos, aimDir(), 60, (q) => q.glass || q.shootThrough);
+        const tg = h && h.solid && h.solid.target;
+        if (tg && !tg.down && (tg.guard ? !tg.guard.dead && tg.guard.faction !== 'staff' && !tg.guard.neutral : true)) fr = 0.45;
+      }
+      input.lookFriction = fr;
+    }
     if (level.lift) level.lift.alpha = S.alpha;     // drawn in step with you
     if (level.helicopter) level.helicopter.t += dt;   // its rotor turns, it bobs
     if (view.tickMovers) view.tickMovers();

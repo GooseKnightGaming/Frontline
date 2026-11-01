@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.35.0)
+# Frontline — Handover (M6.36.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,13 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.36.0 — touch settings, aim assist
+- **Touch settings** (shown only on a touch screen, `.touch-only`): look speed (`touchLook`), button size
+  (`touchSize`: small / normal / large - each button scaled about its own screen corner, `touch.resize()`), aim assist
+  (`touchAssist`, on by default).
+- **Aim assist** (touch only): each frame a look straight down the aim (60 m); over a live enemy, `input.lookFriction`
+  is 0.45 and a drag turns the view that much slower - easier to stay on him. No pull, no snap.
 
 ## M6.35.0 — phones, part two; Kaldberg's way in
 - **Phones**: a touch device starts on low quality until you choose (no "quality" saved yet); the first touch in play

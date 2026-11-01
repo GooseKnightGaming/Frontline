@@ -136,6 +136,7 @@
   body.touch #hint { top: 130px; max-width: 40vw; font-size: 13px; }
   body.touch #disguise-tag { top: 158px !important; }
   body.touch #lock-note { display: none !important; }
+  .touch-only { display: none !important; } body.touch .touch-only { display: flex !important; }
   #map { display: block; }
   #compass { text-align: center; font-size: 12px; letter-spacing: 3px; color: var(--amber);
     background: rgba(8,11,14,0.72); padding: 2px 0; border: 1px solid rgba(232,180,35,0.35); border-top: 0; }
@@ -495,6 +496,9 @@
       <div class="set"><span>Look sensitivity</span><input type="range" id="set-sens" min="0.2" max="3" step="0.05"><span id="set-sens-v"></span></div>
       <div class="set"><span>Field of view</span><input type="range" id="set-fov" min="60" max="100" step="1"><span id="set-fov-v"></span></div>
       <div class="set"><span>Invert look up/down</span><input type="checkbox" id="set-invert"><span></span></div>
+      <div class="set touch-only"><span>Touch: look speed</span><input type="range" id="set-tlook" min="0.3" max="2.5" step="0.05"><span id="set-tlook-v"></span></div>
+      <div class="set touch-only"><span>Touch: button size</span><select id="set-tsize"><option value="0.85">Small</option><option value="1">Normal</option><option value="1.2">Large</option></select><span></span></div>
+      <div class="set touch-only"><span>Touch: aim assist (the view slows over an enemy)</span><input type="checkbox" id="set-tassist"><span></span></div>
 
       <div class="set"><span>Sprint-vaulting (sprint at something to go over it)</span><select id="set-autovault"><option value="off">Off</option><option value="waist">Waist height (1.3 m)</option><option value="high">High (2 m)</option></select><span></span></div>
       <div class="set"><span>Graphics quality</span><select id="set-quality"><option value="low">Low (no shadows)</option><option value="medium">Medium</option><option value="high">High</option></select><span></span></div>
