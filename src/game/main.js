@@ -748,7 +748,7 @@ function boot() {
   }
   $('assign-back').onclick = () => { show('assign', false); deploy(); };
   // (M6.29) Q Branch: his gadgets, one signed out to this run at a time
-  const Q_GADGETS = ['HACKKIT', 'QRELAY', 'QSPOOF', 'QSCRAMBLE', 'QSKELETON', 'QSNAKE', 'QID', 'CAMO'];
+  const Q_GADGETS = ['HACKKIT', 'QRELAY', 'QSPOOF', 'QSCRAMBLE', 'QSKELETON', 'QSNAKE', 'QGRAPPLE', 'QID', 'CAMO'];
   function drawQ() {
     const have = Saves.loadGadget(slotNo), list = $('q-list');
     list.innerHTML = '';
@@ -2157,6 +2157,12 @@ function boot() {
           }
         }
         applyLoad();                              // crates, pick-ups and drops change it
+        // (M6.30) Q's grappling line: aiming, the jump key fires it at what you aim at - and up you go
+        if (inp.aim && inp.jumpPressed && player.mode === 'walk' && loadout.gearTrait('grapple')) {
+          const t = player.grappleTarget(aimDir(), 20);
+          if (t) { player.grapple(t); inp.jumpPressed = false; audio.lockOn && audio.lockOn(); }
+          else { S.noteText = 'The grapple needs a ledge or a roof edge above you, within 20 m'; S.noteT = 1.5; inp.jumpPressed = false; }
+        }
         player.step(DT, inp);
         // one-off presses count once, not once per catch-up step
         inp.jumpPressed = false; inp.firePressed = false;
@@ -2372,6 +2378,20 @@ function boot() {
     S.doorMsg = Math.max(0, (S.doorMsg || 0) - dt);
     if (missionRt) missionRt.draw(dt);
     wview.tickTargets(dt, player.eyePos);
+    // (M6.30) the grappling line, from your hands to where it holds, while it takes you up
+    {
+      const tr = player.traverse;
+      if (!S.lineEnt) {
+        const m = new pc.StandardMaterial(); m.diffuse = new pc.Color(0.1, 0.1, 0.1); m.update();
+        S.lineEnt = new pc.Entity('grapple-line'); S.lineEnt.addComponent('render', { type: 'box', material: m, castShadows: false }); S.lineEnt.enabled = false; app.root.addChild(S.lineEnt);
+      }
+      const on = !!(tr && tr.kind === 'grapple' && tr.t < tr.legs[0].dur + 0.1);
+      if (S.lineEnt.enabled !== on) S.lineEnt.enabled = on;
+      if (on) {
+        const a = [player.pos[0], player.pos[1] + 1.25, player.pos[2]], b = tr.line, len = Math.hypot(b[0] - a[0], b[1] - a[1], b[2] - a[2]);
+        S.lineEnt.setPosition((a[0] + b[0]) / 2, (a[1] + b[1]) / 2, (a[2] + b[2]) / 2); S.lineEnt.lookAt(b[0], b[1], b[2]); S.lineEnt.setLocalScale(0.015, 0.015, Math.max(0.1, len));
+      }
+    }
     wview.tickSecurity(dt);
     wview.tickBlasts(dt);
     wview.tickMarks(dt);

@@ -30,6 +30,9 @@ game into the repository's root.
   go in already in a red officer's uniform (`spec.startDisguise`), with a suppressed pistol, smoke and remote cameras. The
   reception hall, the cipher room and the ambassador's office (both maglocked) upstairs, the security room and archive
   below; a dog on the back gate. A trophy, **In Plain Sight**, for doing it with no one seeing through the disguise.
+- **The Grappling Line** (Q Branch, `QGRAPPLE`): aiming, the jump key fires it at a ledge, a wall's top or a roof edge above you
+  within 20 m that a body can stand on (`Player.grappleTarget`), and it takes you up and over (a traverse; the line drawn
+  while it pulls).
 - **The Snake Camera** (Q Branch, `QSNAKE`; the roadmap's "peeking under or through" a door): crouched at a shut door, E
   slides a camera under it - the other side, through the CCTV view (the mouse looks about); E or moving stops it.
 

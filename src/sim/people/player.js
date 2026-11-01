@@ -813,6 +813,35 @@ export class Player {
     this.events.push({ type: ledge.kind });
   }
 
+  // (M6.30) Q's grappling line: where it would take you, aimed from your eye - the top of whatever it strikes, if
+  // that top is above you, a body can stand on it, and it is in reach; or null
+  grappleTarget(dir, reach) {
+    const e = this.eyePos, R = reach || 20;
+    const hit = this.world.raycast(e, dir, R, (s) => s.person || s.target || s.glass || s.shootThrough);
+    if (!hit || !hit.solid) return null;
+    const s = hit.solid, p = [e[0] + dir[0] * hit.t, e[1] + dir[1] * hit.t, e[2] + dir[2] * hit.t];
+    const top = s.max[1];
+    if (top - p[1] > 2.5 || top - this.pos[1] < 1.2) return null;           // too far below its top, or no higher than you
+    const fl = Math.hypot(dir[0], dir[2]) || 1;
+    const land = [p[0] + dir[0] / fl * 0.45, top + 0.02, p[2] + dir[2] / fl * 0.45];
+    const g = this.world.groundBelow(land[0], top + 0.5, land[2], 0.2);
+    if (g === null || Math.abs(g - top) > 0.15) return null;
+    land[1] = g + 0.01;
+    if (!this.free(land, P.height)) return null;
+    return { anchor: [p[0], top, p[2]], land };
+  }
+  grapple(t) {
+    const from = this.pos.slice(), d = Math.hypot(t.land[0] - from[0], t.land[1] - from[1], t.land[2] - from[2]);
+    const below = [t.anchor[0] - (t.land[0] - t.anchor[0]), t.anchor[1] - 0.6, t.anchor[2] - (t.land[2] - t.anchor[2])];
+    const legs = [{ pts: [from, [ (from[0] + below[0]) / 2, Math.max(from[1], below[1]) + 0.3, (from[2] + below[2]) / 2], below], dur: 0.25 + d / 14 },
+      { pts: [below, [below[0], t.land[1] + 0.4, below[2]], t.land.slice()], dur: 0.35 }];
+    this.mode = 'traverse';
+    this.traverse = { kind: 'grapple', legs, pts: [from, below, t.land.slice()], t: 0, dur: legs[0].dur + legs[1].dur, keep: forwardOf(this.yaw), running: false, drop: 0, line: t.anchor.slice() };
+    this.vel = [0, 0, 0];
+    this.events.push({ type: 'grapple' });
+    return true;
+  }
+
   stepTraverse(dt) {
     const tr = this.traverse;
     tr.t += dt;

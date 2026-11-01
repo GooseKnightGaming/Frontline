@@ -230,6 +230,7 @@ export const ITEMS = {
   QSPOOF:   { name: 'Loop Spoofer', family: 'perk', kg: 0.4, camSlow: 3, q: true, note: 'Feeds the cameras a loop: they take three times as long to make you out.' },
   QSCRAMBLE: { name: 'Trace Scrambler', family: 'perk', kg: 0.5, traceMul: 0.4, q: true, note: 'Bounces your hacks round the world: a trace takes two and a half times as long.' },
   QSNAKE:   { name: 'Snake Camera', family: 'perk', kg: 0.3, snakeCam: true, q: true, note: 'Crouch at a shut door and press E: a camera on a cable slides under it, and you see the other side. Move, or E, to stop.' },
+  QGRAPPLE: { name: 'Grappling Line', family: 'perk', kg: 1.4, grapple: true, q: true, note: 'Aim at a ledge, a wall\'s top or a roof edge above you (within 20 m) and press jump: it fires a line, and takes you up.' },
   QSKELETON: { name: 'Skeleton Card', family: 'perk', kg: 0.1, maglockCard: true, q: true, note: 'Swipe it at a maglock\'s keypad (hold E, 2 s): the door is yours - quietly, and no trace.' },
   LOCKON:   { name: 'Vehicle Targeting', family: 'perk', lockOn: 45, note: 'Aim a launcher at a vehicle within 45 m: it locks on, and the rocket follows it.' },
   AUTOREPAIR: { name: 'Auto-Repair', family: 'perk', autoRepair: 0.02, note: 'A vehicle you are driving slowly mends itself.' },

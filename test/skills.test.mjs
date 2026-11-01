@@ -62,4 +62,15 @@ T('the snake camera: crouched at a shut door, E looks under it', () => {
   const mn = src('game/main.js');
   A(/loadout\.gearTrait\('snakeCam'\)/.test(mn) && /S\.snakeCam = \{ pos, look/.test(mn) && /'QSNAKE'/.test(mn), 'no snake camera');
 });
+T('the grappling line: aimed at a ledge above, it takes you up onto it; at nothing, it does not', () => {
+  const w = new World(); w.addSolid([-20, -1, -20], [20, 0, 20], 'floor'); w.addSolid([-3, 0, -8], [3, 4, -6], 'wall');
+  const p = new Player(w); p.pos = [0, 0, 0]; p.vel = [0, 0, 0]; p.settle && p.settle();
+  const up = [0, 0.3, -1], l = Math.hypot(...up), dir = up.map((v) => v / l);
+  const t = p.grappleTarget(dir, 20);
+  A(t && Math.abs(t.land[1] - 4) < 0.05, 'no target: ' + JSON.stringify(t));
+  p.grapple(t);
+  for (let i = 0; i < 120; i++) p.step(1 / 60, Object.assign(blankInput(), { yaw: 0 }));
+  A(p.pos[1] > 3.9 && p.mode === 'walk', 'not up: ' + p.pos.map((v) => v.toFixed(2)) + ' ' + p.mode);
+  A(p.grappleTarget([0, 0, 1], 20) === null, 'grappled at nothing');
+});
 console.log(fails.length ? '\nFAILURES (' + fails.length + '):\n' + fails.map((f) => '  * ' + f).join('\n') : '\nALL ' + pass + ' PASSED');
