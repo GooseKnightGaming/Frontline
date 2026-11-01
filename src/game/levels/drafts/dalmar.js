@@ -103,7 +103,7 @@ export default {
     { id: 'm1', at: [28, 18, '1'], route: [[19, 18], [56, 18], [56, 9], [19, 9]], arms: 'carbine' },
     { id: 'm2', at: [42, 13, '1'], arms: 'shotgun', temper: 'steady' },
     { id: 'mess', at: [12, 14, '1'], arms: 'pistol', temper: 'cowardly', role: 'medic' },
-    { id: 'gang', at: [32, 21, '1'], arms: 'carbine', temper: 'steady' },
+    { id: 'gang', at: [33, 18, '1'], arms: 'carbine', temper: 'steady' },
     { id: 'dk', at: [24, 23, 'G'], route: [[10, 23], [50, 23]], arms: 'carbine', dog: true },
   ],
   pickups: [{ id: 'blight', name: 'The blight', what: 'the blight', at: [36, 11, 'G'], table: false, h: 1.05, colour: [0.55, 0.75, 0.2] }],

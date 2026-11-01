@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.43.0)
+# Frontline — Handover (M6.44.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,14 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.44.0 — Level 45, the Dalmar Star
+- **Level 45, the Dalmar Star** (`drafts/dalmar.js`; the blight's end, after the Grain Terminal): a bulk freighter
+  at the Kessin docks an hour before she sails. Up the gangway to the main deck (cargo in rows, the superstructure
+  aft), down the stair amidships to the hold (the blight's drums; the engine room aft of a bulkhead), up from the
+  crew's mess to the bridge (the radio log, the console, the radio; a marksman on the bridge wings, a turret).
+  Take the blight; copy the radio log; optionally stop Anselm Rook, its buyer. Its own epilogue in the debrief, and a
+  trophy, Harvest Saved. (Case Closed and Tied Up Loose Ends are now Kaldberg's alone - `level.draft === FINAL`.)
 
 ## M6.43.0 — Level 44, the Grain Terminal
 - **Level 44, the Grain Terminal** (`drafts/grain.js`; after the Glasshouse): the blight leaves tonight in a van from
