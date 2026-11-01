@@ -75,7 +75,7 @@ import { CASE, CASE_NEEDS, FINAL, caseOpen, caseClosed } from '../sim/play/caseb
 import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './core/input.js';
 import { isTouchDevice, touchControls, retext } from './core/touch.js';
 
-const VERSION = 'M6.39.0';
+const VERSION = 'M6.40.0';
 const $ = (id) => document.getElementById(id);
 const TEST = /[?&]test\b/.test(location.search);
 // Level 0, the training mission, is its own page load: index.html?level=0
@@ -1261,6 +1261,7 @@ function boot() {
     $('set-invert').checked = settings.invertY;
     $('set-diff').value = settings.difficulty || 'operative';
     $('set-tlook').value = settings.touchLook; $('set-tlook-v').textContent = (+settings.touchLook).toFixed(2);
+    if ($('set-tturn')) $('set-tturn').checked = settings.touchTurn !== false;
     $('set-tsize').value = String(settings.touchSize); $('set-tassist').checked = settings.touchAssist !== false;
 
     $('set-quality').value = settings.quality;
@@ -1278,6 +1279,7 @@ function boot() {
   // (M6.36) touch settings
   $('set-tlook').oninput = (e) => { settings.touchLook = +e.target.value; $('set-tlook-v').textContent = settings.touchLook.toFixed(2); saveSettings(settings); };
   $('set-tsize').onchange = (e) => { settings.touchSize = +e.target.value; saveSettings(settings); if (touch) touch.resize(); };
+  $('set-tturn').onchange = (e) => { settings.touchTurn = e.target.checked; saveSettings(settings); };
   $('set-tassist').onchange = (e) => { settings.touchAssist = e.target.checked; saveSettings(settings); };
   $('set-sens').oninput = (e) => { settings.sensitivity = +e.target.value; $('set-sens-v').textContent = settings.sensitivity.toFixed(2); saveSettings(settings); };
   $('set-fov').oninput = (e) => { settings.fov = +e.target.value; $('set-fov-v').textContent = settings.fov; saveSettings(settings); };
@@ -1976,6 +1978,12 @@ function boot() {
       const inp = input.frame();
       // ignore an absurd mouse jump (entering the window can report one)
       if (S.lastYaw !== undefined && Math.abs(inp.yaw - S.lastYaw) > 2.2) { input.yaw = S.lastYaw; inp.yaw = S.lastYaw; }
+      // (M6.40; the roadmap's "camera follows movement") on a touch screen, walking sideways with the stick the view
+      // eases round towards where you are going - unless you have looked in the last second (Settings: Touch: turn with the stick)
+      if (touch && settings.touchTurn !== false && input.touchMove && inp.moveZ >= -0.2 && Math.abs(inp.moveX) > 0.25 && !inp.aim &&
+          performance.now() - (input.lastLook || 0) > 1000 && player.mode === 'walk') {
+        input.yaw -= inp.moveX * 1.1 * dt; inp.yaw = input.yaw;
+      }
       // A tap must never be lost: if this frame runs no simulation step (a very
       // short frame), the press waits for the next one.
       for (const k of ['jumpPressed', 'crouchPressed', 'sprintPressed', 'interactPressed', 'visionPressed', 'firePressed', 'bashPressed', 'detonatePressed']) {

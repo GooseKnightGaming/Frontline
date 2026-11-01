@@ -7,7 +7,10 @@ GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
 
-## M6.40.0 — case closed
+## M6.40.0 — case closed; turning with the stick
+- **Turn with the stick** (touch only, Settings, on by default; the roadmap's "camera follows movement"): walking
+  sideways with the stick, the view eases round towards where you are going (1.1 rad/s at full push) - not when aiming,
+  backing off, or within a second of a look.
 - Kaldberg done (success): the board keeps a mark of its own (`CLOSED`, 'closed', in the slot's case list) and shows a
   red CASE CLOSED stamp - "The council at Kaldberg is finished. Ghost thanks you." `caseOpen` now counts only real
   clues (so the mark never makes a case). `caseClosed(have)`.
