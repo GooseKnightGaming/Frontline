@@ -71,7 +71,7 @@ import { DoorMove } from '../sim/world/doors.js';
 import { kickOpens } from '../sim/play/mission.js';
 import { hqSecurity, takeIntrusion } from './levels/hq_security.js';
 import { effects as skillEffects, SKILLS, pointsLeft, train as trainSkill, XP } from '../sim/play/skills.js';
-import { CASE, CASE_NEEDS, FINAL, caseOpen } from '../sim/play/caseboard.js';
+import { CASE, CASE_NEEDS, FINAL, caseOpen, caseClosed } from '../sim/play/caseboard.js';
 import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './core/input.js';
 import { isTouchDevice, touchControls, retext } from './core/touch.js';
 
@@ -780,7 +780,8 @@ function boot() {
     $('case-list').innerHTML = CASE.map((c) => have.includes(c.id)
       ? '<div class="rec-row" style="display:block"><b>' + c.title + '</b> <span style="opacity:0.7">(Level ' + lvl(c.level).no + ', ' + lvl(c.level).title + ')</span><br>' + c.text + '</div>'
       : '<div class="rec-row" style="display:block;opacity:0.45">? ? ?  <span>(something at Level ' + lvl(c.level).no + ', ' + lvl(c.level).title + ')</span></div>').join('')
-      + '<p style="margin-top:10px">' + (caseOpen(have) ? '<b>The case is made: the council meets at Kaldberg. Level 42 is on the operations table.</b>' : 'Find ' + (CASE_NEEDS - have.length) + ' more, and Ghost will know where the council meets.') + '</p>';
+      + (caseClosed(have) ? '<div style="margin:14px auto 4px;width:max-content;padding:6px 18px;border:4px double #c0392b;color:#c0392b;font:700 26px/1 \'Courier New\',monospace;letter-spacing:6px;transform:rotate(-6deg)">CASE CLOSED</div><p style="text-align:center;opacity:0.8">The council at Kaldberg is finished. Ghost thanks you.</p>' : '')
+      + '<p style="margin-top:10px">' + (caseClosed(have) ? '' : caseOpen(have) ? '<b>The case is made: the council meets at Kaldberg. Level 42 is on the operations table.</b>' : 'Find ' + (CASE_NEEDS - have.length) + ' more, and Ghost will know where the council meets.') + '</p>';
     show('casebd', true);
   }
   $('case-back').onclick = () => { show('casebd', false); deploy(); };

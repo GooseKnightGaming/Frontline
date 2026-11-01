@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.39.0)
+# Frontline — Handover (M6.40.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,11 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.40.0 — case closed
+- Kaldberg done (success): the board keeps a mark of its own (`CLOSED`, 'closed', in the slot's case list) and shows a
+  red CASE CLOSED stamp - "The council at Kaldberg is finished. Ghost thanks you." `caseOpen` now counts only real
+  clues (so the mark never makes a case). `caseClosed(have)`.
 
 ## M6.39.0 — difficulty
 - **Difficulty** (Settings; `src/sim/play/difficulty.js`): Recruit, Operative (as it was), Veteran. It changes only what

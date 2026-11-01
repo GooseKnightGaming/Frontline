@@ -26,7 +26,7 @@ import { makeTarget } from '../../sim/arms/weapons.js';
 import { makeDog, DOG } from '../../sim/people/dog.js';
 import { markIntrusion, downLantern } from './hq_security.js';
 import { xpFor, pointsAt } from '../../sim/play/skills.js';
-import { CASE, cluesFrom, caseOpen } from '../../sim/play/caseboard.js';
+import { CASE, cluesFrom, caseOpen, FINAL, CLOSED } from '../../sim/play/caseboard.js';
 import { Device, stepDevice, setMode, Trace, HACK, MODES, SIREN, darkAt, sirenFor, syncLocks, modeSays, lightsOut, breaks } from '../../sim/world/devices.js';
 
 
@@ -2323,6 +2323,8 @@ export function setupMission(ctx) {
           const was = caseOpen(Saves.loadCase(Saves.currentSlot()));
           rt.newClues = Saves.addCase(Saves.currentSlot(), cluesFrom(level.draft, done));
           rt.caseMade = !was && caseOpen(Saves.loadCase(Saves.currentSlot()));
+          // (M6.40) the last of it: the case closed
+          if (level.draft === FINAL && m.result === 'success') Saves.addCase(Saves.currentSlot(), [CLOSED]);
         }
       }
       $('mend-title').textContent = 'DEBRIEF';

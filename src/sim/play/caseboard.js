@@ -20,4 +20,7 @@ export const FINAL = 'kaldberg';
 export function cluesFrom(levelId, done) {
   return CASE.filter((c) => c.level === levelId && done.includes(c.ref)).map((c) => c.id);
 }
-export const caseOpen = (have) => (have || []).length >= CASE_NEEDS;
+export const caseOpen = (have) => (have || []).filter((id) => CASE.some((c) => c.id === id)).length >= CASE_NEEDS;
+// (M6.40) and closed: the last mission done (kept on the board as its own mark, 'closed')
+export const CLOSED = 'closed';
+export const caseClosed = (have) => (have || []).includes(CLOSED);
