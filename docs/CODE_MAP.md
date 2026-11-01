@@ -6,7 +6,7 @@ Made from each file's opening comment by `python3 tools/code_map.py`. The rules 
 
 | File | Lines | What it is |
 |---|---|---|
-| `main.js` | 2449 | the game in the browser: main.js starts it, builds the level you asked for, and runs it. |
+| `main.js` | 2459 | the game in the browser: main.js starts it, builds the level you asked for, and runs it. |
 
 ## `src/game/core/` - Input, sound, music, voices, saves
 
@@ -18,7 +18,7 @@ Made from each file's opening comment by `python3 tools/code_map.py`. The rules 
 | `music.js` | 90 | music. |
 | `saves.js` | 182 | saved games. |
 | `severian.js` | 73 | Severian, from Rhys's reference (Severian.docx, Severian Cases.xlsx, the alphabet and romanisation sheet: his early draft, M6.20.12). The language's text lives here, kept apart from its English, exactly as Rhys spelled it - combin… |
-| `spoken.js` | 172 | lines recorded rather than spoken by the browser (Rhys: "Still a significant delay between subtitle and audio"). The browser's speech can take a second or more to start; a recording plays the moment its words go up. Made with Pipe… |
+| `spoken.js` | 176 | lines recorded rather than spoken by the browser (Rhys: "Still a significant delay between subtitle and audio"). The browser's speech can take a second or more to start; a recording plays the moment its words go up. Made with Pipe… |
 | `trophies.js` | 46 | trophies: hidden achievements. Nothing lists what exists; you find out by earning one. Each save slot is its own run (Rhys: "each save slot is its own run"), so each slot has its own trophies, kept in the browser under the slot's … |
 | `voice.js` | 235 | voices. |
 
@@ -51,9 +51,9 @@ Made from each file's opening comment by `python3 tools/code_map.py`. The rules 
 | `hotel_intel.js` | 87 | the Riverside Hotel's intel (Rhys: "I would like some LORE in the rooms please"). Papers left lying about: not needed to finish, but each one says something about who is here and why - and some of it will matter later (the captain… |
 | `hq.js` | 245 | Ghost HQ, under Yard 7 (Rhys: "Yard 7 is Ghost HQ - an underground laboratory and command centre (the briefing room, the trophy cabinet), a helipad, a van or chopper out to a level"). |
 | `hq_security.js` | 138 | Yard 7's own security, and the day someone else takes it (Rhys's roadmap, "Hacking and control": "it works both ways - an enemy hack can turn Yard 7's own turrets on you, which is the first proper reason for a terminal room under … |
-| `kit.js` | 1005 | the level kit (Rhys: "put together ALL the other levels I've asked for, so that I can play through the game and give pointers on each individual level"). |
+| `kit.js` | 1007 | the level kit (Rhys: "put together ALL the other levels I've asked for, so that I can play through the game and give pointers on each individual level"). |
 | `mission0.js` | 473 | Level 0: the training mission. |
-| `mission_runtime.js` | 2157 | running Level 0 in the game: the guards' bodies, the keycard, the terminal, breaching and bullet time, the hints, and the end. main.js calls in at a handful of points; the rules live in src/sim/play/mission.js. |
+| `mission_runtime.js` | 2173 | running Level 0 in the game: the guards' bodies, the keycard, the terminal, breaching and bullet time, the hints, and the end. main.js calls in at a handful of points; the rules live in src/sim/play/mission.js. |
 | `ranges.js` | 501 | the weapons half of the training course. |
 | `train.js` | 1115 | Level 4, the Night Train (Rhys: "An intercity train that has underground sections. It travels between two fictional cities in a fictional country 'somewhere near the former USSR'... You're off duty, enjoying yourself... [it] defin… |
 | `yard7.js` | 609 | Ghost Training Facility, "Yard 7". A grey-boxed container yard for learning to move: vault lane, climb wall, crouch duct, stairs and catwalk, a dive tower over a deep pool, drop platforms; the training course and the ranges beneat… |
@@ -63,6 +63,7 @@ Made from each file's opening comment by `python3 tools/code_map.py`. The rules 
 | File | Lines | What it is |
 |---|---|---|
 | `airport.js` | 175 | Level 31, the Airport (first draft). From Rhys's location boards (part 2): "Airport - exteriors, interiors, props and furniture". Varnholm Airfield, after the last flight: the terminal - the check-in hall, security, the departure … |
+| `archive.js` | 133 | Level 37, the Archive (first draft, M6.29). From Rhys's environment-pack concept sheet: "Library/Archive". The Halloran Library after dark: the Yellows are in, they have its security, and their safe-cracker is at the rare books va… |
 | `arena.js` | 166 | Level 29, the Colosseum: Battle (first draft). From Rhys's location boards: "Colosseum / Arena - arena equipment, seating and spectators". Varnholm's old amphitheatre, the Arena Vetera: the oval of sand, its podium wall, two tiers… |
 | `bank.js` | 101 | Level 6, the Bank (first draft). Rhys: "a bank with a vault". The Yellows are in the Merchants' Exchange Bank after hours, cutting their way to the vault - and in the vault, box 114, is a dossier with Ghost's name on it. |
 | `baths.js` | 145 | Level 25, the Swimming Baths (first draft). From Rhys's location boards: "Swimming Baths - pool area, changing rooms, pool equipment". The Corporation Baths, Varnholm: the big pool under its glass roof, the diving board at the dee… |
@@ -76,7 +77,7 @@ Made from each file's opening comment by `python3 tools/code_map.py`. The rules 
 | `facility.js` | 158 | Level 11, the Research Facility (first draft). Rhys: "maps/scenarios that justify the other Visions [IR, UV, EMF]" - and of a research facility, "a fantastic idea for all 3": thermal through the cold store's mist, UV for the lab's… |
 | `factory_battle.js` | 75 | Level 19, the Factory: Battle (first draft). Rhys's factory sheet was always a battle map (maps/Frontline_Battle_Map_Factory.xlsx: "Valid Spawn Point for Ghost / for Yellow" in the corner rooms) - Level 2 played it as a mission un… |
 | `fortress.js` | 115 | Level 16, the Fortress (first draft). Rhys: "a fortified compound bristling with automatic weapons and rockets - machine guns of every weight (SMGs, LMGs, mounted HMGs) and rocket launchers... walls, towers, gates and a yard to cr… |
-| `index.js` | 35 | the first-draft levels, in play order. Each is a spec for level_kit.js; index.html?level=<id> plays one. Rhys may reorder them: their numbers are only labels. |
+| `index.js` | 37 | the first-draft levels, in play order. Each is a spec for level_kit.js; index.html?level=<id> plays one. Rhys may reorder them: their numbers are only labels. |
 | `listening.js` | 155 | Level 35, the Listening Station (first draft, M6.28: a level built round hacking and control). Skarvik signals station, on the cliffs: the reds' ears. Its program, LANTERN, is what traced Ghost's hacks back to Yard 7 - and the arc… |
 | `manor.js` | 183 | Level 9, the Manor House and its estate (first draft). Rhys (after M6.17.8): "the full estate - the house with its servants' quarters (back stairs, the servants' corridors... the kitchens below stairs), the family's rooms above, a… |
 | `mine.js` | 135 | Level 10, the Mineshaft and the open pit (first draft). Rhys (after M6.17.8): "a working or abandoned mine - timbered tunnels, a cage lift down the shaft, ore carts on rails, a pumping station, and the open pit where it has been b… |
@@ -94,6 +95,7 @@ Made from each file's opening comment by `python3 tools/code_map.py`. The rules 
 | `vantage.js` | 112 | Level 12, the Assassination (first draft). Rhys: "work your way to a vantage point in one building and take aim at a senior Red/Yellow from there" - a target who keeps a routine, a second building in sight of the first, a marksman… |
 | `ward.js` | 132 | Level 13, the drugged level (first draft; M6.19.6, Rhys: "The Ward is trippy - that's good. But it needs to be much better - I need MORE non-Euclidean Geometry!"). Rhys (after M6.17.8): "you have been drugged or poisoned, and the … |
 | `wasteland.js` | 167 | Level 23, the Nuclear Wasteland (first draft). Rhys (after M6.13.7): "Post-Apocalyptic Nuclear Wasteland". The Vell valley, downwind of the Hesk power station: grey dust, dead trees, the old highway full of wrecks, a village nobod… |
+| `yacht.js` | 161 | Level 36, the Megayacht (first draft, M6.29). From Rhys's environment-pack concept sheet: "Megayacht (onboard)". The Salt Crown, seventy metres of her, moored stern-in at the end of the Port Aurel marina - the arms broker Ilya Cor… |
 
 ## `src/sim/people/` - People: you, guards, hostages, what they know
 
@@ -103,7 +105,7 @@ Made from each file's opening comment by `python3 tools/code_map.py`. The rules 
 | `captain.js` | 169 | stopping the captain (Rhys: "time for the 'Stop the Captain' objective"). The Riverside Hotel's captain (P13) runs for his helicopter: through the roof door he locks behind him, up the ladder, across the roof to his post (P13A) - … |
 | `contacts.js` | 70 | what you know about who is around you. |
 | `factions.js` | 266 | who is against whom (Rhys: in the casino's Businessman's Suite "a Yellow Team of 3: Boss, and his two bodyguards. They are NOT naturally hostile towards YOU. Reds are naturally hostile to You AND Yellows ... You can therefore talk… |
-| `guard.js` | 1180 | a guard (M6). Stage 1: he exists. Stage 2: he notices you. |
+| `guard.js` | 1267 | a guard (M6). Stage 1: he exists. Stage 2: he notices you. |
 | `hostage.js` | 390 | hostages (the Riverside Hotel: "found, freed, escorted to the police, kept alive"). A hostage sits bound where the reds left him. E frees him (a moment's work, standing over him); then he follows you - the stairs, the corridors, o… |
 | `hotel_guards.js` | 143 | the Riverside Hotel's reds, from Rhys's map. The Guards tab says who each man is (rank, weapon, temperament, notes); the floor sheets say where he stands (his P square) and the squares he walks (his route, R2, R3...). This turns b… |
 | `player.js` | 984 | the operative's body. Pure simulation: no graphics, no browser. Input goes in, a new state comes out, so every rule here can be tested exactly. |
@@ -132,9 +134,9 @@ Made from each file's opening comment by `python3 tools/code_map.py`. The rules 
 |---|---|---|
 | `emp.js` | 25 | an electromagnetic pulse (the sheet's VD-EMP "Blackout" launcher): it hurts no one, but for a while, within its reach, electronics stop - a guard's night vision or torch goes dark, a turret goes blind and quiet, an engine dies. Pu… |
 | `issue.js` | 45 | what each side's guards carry, from Rhys's weapons sheet (sheet.js). |
-| `loadout.js` | 609 | what you carry. |
+| `loadout.js` | 614 | what you carry. |
 | `sheet.js` | 116 | Rhys's weapons sheet (docs/Frontline_Weapons.xlsx), in the game's terms. WRITTEN BY tools/import_weapons.py - change the sheet and run that, not this file. (How the sheet's columns become these figures: the top of tools/import_wea… |
-| `weapons.js` | 992 | weapons (simulation only: no graphics, fully testable). Five basic weapons for training: knife, pistol, assault rifle, sniper, grenades and flashbangs. Everything here is deliberately simple; the feel gets tuned later. |
+| `weapons.js` | 994 | weapons (simulation only: no graphics, fully testable). Five basic weapons for training: knife, pistol, assault rifle, sniper, grenades and flashbangs. Everything here is deliberately simple; the feel gets tuned later. |
 
 ## `src/sim/play/` - Missions, story, the training course, battles
 

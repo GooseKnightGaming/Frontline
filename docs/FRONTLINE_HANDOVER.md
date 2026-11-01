@@ -27,6 +27,10 @@ game into the repository's root.
   M6.28-29 in one place: her security from the bridge (cameras, a pinhole, a laser, two maglocks, two turrets, two light
   circuits, the alarm), Corwen's keycard, a radio operator, an engineer, a medic, a shield-bearer and a marksman on the
   sun deck. Objectives: Corwen's files (the panic room), Mara Quill (the crew's cabins), optionally Corwen.
+- **Level 37, the Archive** (`drafts/archive.js`; the concept sheet's "Library/Archive"): the Halloran Library at night,
+  the Yellows in it and holding its security (devices with `owner: 'yellow'`). The reading room with its gallery (a marksman
+  up there), the rare books vault (maglocked, a laser across its approach, a pinhole inside), the stacks below (a Yellow
+  turret) and the microfilm room. Objectives: the Halloran Codex, copy the microfilm, optionally free the night librarian.
 - Tests: `devices.test.mjs`.
 
 ## M6.28.0 — hacking and control, the rest (Rhys: "keep building - use your imagination")
