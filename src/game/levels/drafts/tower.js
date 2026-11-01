@@ -105,6 +105,7 @@ export default {
     { id: 'b1', at: [5, 4, '2'], arms: 'smg' },
     { id: 'b2', at: [16, 10, '2'], arms: 'carbine' },
     { id: 's1', at: [16, 17, '2'], arms: 'carbine', temper: 'steady' },
+    { id: 'rv1', at: [36, 7, 'G'], arms: 'carbine', reserve: true }, { id: 'rv2', at: [38, 7, 'G'], arms: 'smg', reserve: true },   // the reserve, at the dock
     { id: 'v1', at: [28, 6, '2'], arms: 'dmr', rank: 'specialist', temper: 'steady', perches: [[28, 6, '2'], [39, 17, '2'], [28, 20, '2']] },
   ],
   pickups: [{ id: 'proto', name: 'The prototype guidance unit', what: 'the prototype', at: [17, 19, '2'], h: 0.9, colour: [0.6, 0.65, 0.7] }],

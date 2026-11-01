@@ -769,6 +769,7 @@ export function setupMission(ctx) {
       if (g.radioT >= SPEC.radio) {
         g.radioed = true;
         const came = raiseAlarm(guards, { pos: g.pos, rank: 'officer', faction: g.faction }, player.pos.slice(), { everywhere: true });
+        callReserves(g.faction, player.pos.slice());
         showHint('He got through. Every ' + (g.faction === 'yellow' ? 'Yellow' : 'red') + ' in the place is coming' + (came.length ? ' - ' + came.length + ' of them.' : '.'));
       }
     }
@@ -846,6 +847,14 @@ export function setupMission(ctx) {
   };
   const trace = new Trace();
   const netDevices = (net) => devices.filter((d) => d.net === net);
+  // (M6.30) the reserves: men not here yet, called in by the radio or the siren - they come in from where they
+  // were placed (the gate, the road), straight for where you were
+  const callReserves = (faction, pos) => {
+    const rs = guards.filter((g) => g.reserve && g.dormant && g.faction === faction);
+    if (!rs.length) return;
+    for (const g of rs) { g.dormant = false; g.target.solid.disabled = false; g.awareness = 0.9; g.stim = pos.slice(); g.since = 0; g.state = 'search'; g.stateT = 0; g.path = null; g.pursuit = true; }
+    later.push({ t: 2.5, fn: () => showHint('Reinforcements: ' + rs.length + ' more coming in.') });
+  };
   // (M6.28) the alarm: while one is on, a shout or a camera sets off the siren - and every guard of
   // its side, anywhere in the place, comes to where you were seen
   const sir = { cool: 0, t: 0 };
@@ -855,6 +864,7 @@ export function setupMission(ctx) {
     if (!bell) return;
     sir.cool = SIREN.again; sir.t = SIREN.secs;
     const came = raiseAlarm(guards, { pos: bell.pos, rank: 'officer', faction: bell.owner }, pos, { everywhere: true });
+    callReserves(bell.owner, pos);
     if (audio.siren) audio.siren(SIREN.secs);
     showHint('The alarm is sounding - ' + (came.length ? came.length + ' more on the way.' : 'the whole place knows.') + (devices.some((d) => d.kind === 'alarm' && d.net) ? ' (Hack the security system to silence it.)' : ''));
   };

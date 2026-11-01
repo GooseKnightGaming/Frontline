@@ -738,7 +738,9 @@ export function buildKitLevel(spec) {
     if (gd.tint) g.tint = gd.tint;          // a man who should stand out: his own colours
     if (gd.objective === false) g.objective = false;
     if (gd.target) g.isTarget = true;
-    if (gd.dog) g.hasDog = true;          // (M6.30) a dog handler: his dog at his heel (sim/people/dog.js)
+    if (gd.dog) g.hasDog = true;
+    // (M6.30) a reserve: not here yet - called in by the radio operator or the siren, from where he is placed
+    if (gd.reserve) { g.reserve = true; g.dormant = true; g.target.solid.disabled = true; g.objective = false; }          // (M6.30) a dog handler: his dog at his heel (sim/people/dog.js)
     // (M6.29) a marksman's perches: where he moves to, one after another, once he has given his place away
     if (gd.perches) g.perches = gd.perches.map(([px, py, pf]) => free([mid(px), floors[pf || gf || K0].y, mid(py)]));
     level.guards.push(g);

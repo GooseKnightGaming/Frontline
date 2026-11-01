@@ -314,4 +314,11 @@ T('disguises: in a red\'s uniform the reds barely make you out from a way off; c
   A(/takeUniform/.test(rt) && /dropDisguise\('Your shot gave you away/.test(rt) && /disguise: rt\.disguise/.test(rt), 'not wired');
 });
 
+T('reserves: not there until the radio or the siren calls them in', () => {
+  const L = buildKitLevel(DRAFTS.find((d) => d.id === 'listening'));
+  const rs = L.guards.filter((g) => g.reserve);
+  A(rs.length === 4 && rs.every((g) => g.dormant && g.target.solid.disabled && g.objective === false), 'reserves not held back');
+  A(/callReserves\(g\.faction, player\.pos\.slice\(\)\)/.test(rt) && /callReserves\(bell\.owner, pos\)/.test(rt), 'never called');
+});
+
 console.log(fails.length ? '\nFAILURES (' + fails.length + '):\n' + fails.map((f) => '  * ' + f).join('\n') : '\nALL ' + pass + ' PASSED');

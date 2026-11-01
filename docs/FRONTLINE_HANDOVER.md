@@ -33,6 +33,9 @@ game into the repository's root.
 - **The Grappling Line** (Q Branch, `QGRAPPLE`): aiming, the jump key fires it at a ledge, a wall's top or a roof edge above you
   within 20 m that a body can stand on (`Player.grappleTarget`), and it takes you up and over (a traverse; the line drawn
   while it pulls).
+- **Reserves** (`reserve: true` on a guard): not there at the start; the radio operator getting through, or the siren,
+  calls them in - they come from where they are placed (the gate, the dock) straight for you. Four at the Listening
+  Station's gate, two at the Tower's dock. (Not counted for "clear the place".)
 - **The Snake Camera** (Q Branch, `QSNAKE`; the roadmap's "peeking under or through" a door): crouched at a shut door, E
   slides a camera under it - the other side, through the CCTV view (the mouse looks about); E or moving stops it.
 

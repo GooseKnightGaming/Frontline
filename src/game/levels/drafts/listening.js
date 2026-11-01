@@ -111,6 +111,9 @@ export default {
     { id: 'v3', at: [31, 15, 'B'], arms: 'dmr', rank: 'specialist', temper: 'steady', perches: [[31, 15, 'B'], [46, 27, 'B'], [38, 9, 'B']] },   // a marksman: he moves once he has given his place away
     { id: 'a1', at: [14, 14, 'B'], arms: 'carbine' },
     { id: 'eng', at: [20, 25, 'B'], arms: 'pistol', temper: 'cowardly', role: 'engineer' },
+    // the reserve: a truck's worth at the gate, there only if the radio or the siren calls them
+    { id: 'rv1', at: [26, 42, 'G'], arms: 'carbine', reserve: true }, { id: 'rv2', at: [29, 42, 'G'], arms: 'carbine', reserve: true },
+    { id: 'rv3', at: [27, 43, 'G'], arms: 'smg', reserve: true }, { id: 'rv4', at: [30, 43, 'G'], arms: 'shotgun', reserve: true },
   ],
   pickups: [{ id: 'log', name: 'The intercept log', what: 'the log', at: [16, 16, 'G'], table: false, h: 0.8, colour: [0.85, 0.8, 0.5] }],
   devices: [
