@@ -10,6 +10,7 @@ export default {
   where: 'The hunting lodge in the Kaldberg pass. 23:00, snow falling, the council in session.',
   brief: [
     ['The case', 'Everything we have turned up points here. The council - the people LANTERN answers to, who bought the guidance systems, who pay through the embassy and who have a strike force ready for tomorrow - meets tonight at Kaldberg.'],
+    ['The way in', 'On foot, through the pines at the south-west corner of the drive. Two dogs work the drive and the ridge; the posts at the door have turrets either side of them.'],
     ['The place', 'A hunting lodge on the pass. Ground floor: the <b>great hall</b> (the council at its long table), the kitchen and stores (west), the <b>security room</b> (east - maglocked), the entrance hall, the boot room, the garage (south-east). Up the stair in the entrance hall: the <b>gallery</b> round the great hall, guest rooms (west), the <b>Chairman\'s study</b> (east - maglocked). Outside: the drive, the guard posts, the helipad on the ridge (north) - your way out.'],
     ['Security', 'All of it, run from the security room: cameras (and pinholes - EMF), lasers across the gallery, the two maglocks, turrets on the drive, the great hall\'s lights, the alarm. A <b>radio</b>, an <b>engineer</b>, a <b>medic</b>, a <b>shield</b> at the study door, a <b>marksman</b> on the gallery, two <b>dogs</b> on the drive, a <b>reserve</b> in the garage. The Chairman carries a keycard.'],
     ['Objectives', '<b>Record the council</b> (the terminal on the gallery over the great hall). Take the <b>strike order</b> from the Chairman\'s study. Optionally, stop <b>the Chairman</b>. Out by the helipad on the ridge.'],
@@ -64,7 +65,7 @@ export default {
     },
   },
   stairs: [{ x: 34, y: 30, dir: 'N', len: 4, w: 2, from: 'G', to: '1' }],
-  start: { x: 27, y: 44, floor: 'G', yaw: 0 },
+  start: { x: 2, y: 44, floor: 'G', yaw: 0 },   // in the pines at the drive's south-west corner, out of the dogs' noses
   extra(kit) {
     const { box, level, mid, CELL: C } = kit;
     // the helipad on the ridge, its H; the lodge's chimney (outside the north wall); snow on the ground
@@ -99,7 +100,7 @@ export default {
     { id: 'eng', at: [44, 14, 'G'], arms: 'pistol', temper: 'cowardly', role: 'engineer' },
     { id: 'cook', at: [13, 13, 'G'], arms: 'pistol', temper: 'cowardly', role: 'medic' },
     { id: 'door', at: [22, 29, 'G'], arms: 'carbine', temper: 'steady' },
-    { id: 'd1', at: [15, 38, 'G'], route: [[6, 38], [48, 38]], arms: 'carbine', dog: true },
+    { id: 'd1', at: [30, 38, 'G'], route: [[16, 38], [48, 38]], arms: 'carbine', dog: true },
     { id: 'd2', at: [40, 6, 'G'], route: [[8, 6], [48, 6]], arms: 'carbine', dog: true },
     { id: 'post1', at: [22, 35, 'G'], arms: 'carbine', temper: 'steady' }, { id: 'post2', at: [32, 35, 'G'], arms: 'carbine', temper: 'steady' },
     { id: 'rv1', at: [40, 27, 'G'], arms: 'carbine', reserve: true }, { id: 'rv2', at: [42, 27, 'G'], arms: 'smg', reserve: true },

@@ -190,6 +190,14 @@
   #title, #slots { background: linear-gradient(rgba(6,9,12,0.35), rgba(6,9,12,0.72)); }
   #t-logo { width: min(600px, 84%); display: block; margin: 0 auto 14px; }
   .tmenu { max-width: 320px; margin: 0 auto; }
+  /* (M6.35) a phone on its side: a short screen - the logo smaller, the title's buttons two abreast, cards taller */
+  @media (max-height: 520px) {
+    .card { padding: 14px 18px; max-height: 96vh; }
+    #t-logo { width: min(320px, 46%); margin-bottom: 8px; }
+    .tmenu { max-width: 560px; display: grid; grid-template-columns: 1fr 1fr; gap: 0 10px; }
+    .tmenu .btn { margin: 4px 0; padding-top: 8px; padding-bottom: 8px; }
+    #m-badge { max-height: 70px; width: auto !important; }
+  }
   .kofi { background: #2b1b06; border-color: #a9772a; color: #f0c07a; }
   #m-badge { width: min(300px, 70%); display: block; margin: 0 auto 10px; }
   #t-gk { width: 148px; display: block; margin: 14px auto 0; opacity: 0.9; }
@@ -582,6 +590,6 @@
   document.getElementById('splat').style.setProperty('--splat', 'url(' + c.toDataURL() + ')');
 })();
 </script>
-<script src="game.js?v=M6.34.0"></script>
+<script src="game.js?v=M6.35.0"></script>
 </body>
 </html>

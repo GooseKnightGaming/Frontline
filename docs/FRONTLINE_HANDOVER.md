@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.34.0)
+# Frontline — Handover (M6.35.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,13 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.35.0 — phones, part two; Kaldberg's way in
+- **Phones**: a touch device starts on low quality until you choose (no "quality" saved yet); the first touch in play
+  asks for full screen and landscape (Android; iPhones ignore it). Short screens (`max-height: 520px`): smaller logo,
+  the title's buttons two abreast, cards taller and tighter, the pause menu's badge smaller.
+- **Kaldberg**: you began in the drive, nine metres from a dog's patrol - the alarm went within seconds. Now you come in
+  through the pines at the south-west corner (a new brief line, "The way in"), and that dog works the east of the drive.
 
 ## M6.34.0 — touch controls, Kaldberg's ending
 - **Touch controls** (`src/game/core/touch.js`; Rhys could not play on his phone): on a touch screen (`pointer: coarse`,
