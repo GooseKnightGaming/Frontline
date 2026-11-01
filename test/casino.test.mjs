@@ -1219,7 +1219,7 @@ T('the locket and the ledger are gone once taken: each its own thing to draw, hi
   // the case stays: velvet still in the merged geometry by the locket
   A(C.pieces.some((p) => !p.prop && Math.hypot((p.min[0] + p.max[0]) / 2 - C.locket.pos[0], (p.min[2] + p.max[2]) / 2 - C.locket.pos[2]) < 0.2 && p.max[1] > C.locket.pos[1]), 'the case went with it');
   const rd = readFileSync(new URL('../src/game/draw/render.js', import.meta.url), 'utf8'), main = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8');
-  A(/staticPieces = level\.pieces\.filter\(\(p\) => !doorTag\(p\) && !p\.prop\)/.test(rd), 'still merged into the room');
+  A(/staticPieces = level\.pieces\.filter\(\(p\) => !doorTag\(p\) && !p\.prop(\)| && !p\.pane\))/.test(rd), 'still merged into the room');
   A(/tickProps\(\) \{[^\n]*level\[name\]\.taken/.test(rd) && /view\.tickProps\(\)/.test(main), 'never hidden when taken');
 });
 
