@@ -2251,6 +2251,21 @@ export function setupMission(ctx) {
     },
 
     // where the radar's diamond points
+    // (M6.49) for the mission map: where each thing still to do is (x, y, z)
+    objectivesLeft() {
+      if (!level.draft) return [];
+      const out = [];
+      for (const o of level.objectives || []) {
+        const r = draftObjectives().find((q) => q.id === o.id);
+        if (!r || r.done || r.failed) continue;
+        const t = o.kind === 'hack' ? level.terminals.find((q) => q.id === o.ref) : o.kind === 'take' ? level.pickups.find((q) => q.id === o.ref)
+          : o.kind === 'kill' ? guards.find((q) => q.id === o.ref && !q.dead) : o.kind === 'rescue' ? hostages.find((h) => (!o.ref || h.id === o.ref) && h.state !== 'rescued' && h.state !== 'dead')
+          : o.kind === 'reach' ? (level.reach || []).find((q) => q.id === o.ref) : null;
+        const p = t && (t.pos || (t.box && [(t.box[0][0] + t.box[1][0]) / 2, t.box[0][1], (t.box[0][2] + t.box[1][2]) / 2]));
+        if (p) out.push(p);
+      }
+      return out;
+    },
     objectivePos() {
       if (!L0 && !m.done && rules.settled(outcome()) && level.apcZone) return [level.apcZone.pos[0], level.apcZone.pos[2]];   // the jeep, on the radar (Rhys: the diamond "doesn't align with anything" - it was given x, y, z for x, z)
       // the train: the guard's van, once he has called for help, until he is with you

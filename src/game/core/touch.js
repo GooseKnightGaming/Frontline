@@ -31,6 +31,7 @@ export const TOUCH_BUTTONS = [
   ['mode', 'MODE', 'firemode', 'left:222px;top:12px;width:46px;height:46px;font-size:10px'],
   ['vision', 'V', 'vision', 'left:274px;top:12px;width:46px;height:46px'],
   ['map', 'MAP', 'map', 'left:326px;top:12px;width:46px;height:46px;font-size:10px'],
+  ['plan', 'PLAN', 'plan', 'left:378px;top:12px;width:46px;height:46px;font-size:10px'],
 ];
 export const STICK = { radius: 56, sprintAt: 0.92, dead: 0.12 };
 export const LOOK = 0.0055;          // radians a pixel of drag, before the sensitivity setting

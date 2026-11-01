@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.48.0)
+# Frontline — Handover (M6.49.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,13 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.49.0 — the mission map
+- **The mission map** (`src/game/draw/plan_map.js`; the roadmap's "mission maps"): B (a binding, `plan`; PLAN on a
+  touch screen) puts up a floor plan of the floor you are on, drawn from the rows the level was built from
+  (`level.plan` from kit.js - every first draft has one): walls, windows, doors, furniture, water, holes, outdoors on
+  the ground floor; you (an arrow), what is still to do (`missionRt.objectivesLeft()`), the way out, the devices you
+  know of. Over the game, not pausing it; redrawn five times a second. `test/plan.test.mjs`.
 
 ## M6.48.0 — Level 46, the Ministry of Supply
 - **Level 46, the Ministry of Supply** (`drafts/ministry.js`; where the Dalmar Star's radio log led): by day, in

@@ -58,6 +58,7 @@ import * as Saves from './core/saves.js';
 import { recordOutcome } from '../sim/play/story.js';
 import { Course, movementSteps, weaponsSteps } from '../sim/play/course.js';
 import * as Minimap from './draw/minimap.js';
+import { drawPlan } from './draw/plan_map.js';
 import { Tracker, sense, RADAR_RANGES, RADAR_NAMES, fade } from '../sim/people/contacts.js';
 import { Audio } from './core/audio.js';
 import { Music, pickTrack } from './core/music.js';
@@ -2086,6 +2087,11 @@ function boot() {
         settings.mapZoom = z; saveSettings(settings); S.mapT = 1;
         $('map-wrap').style.display = settings.map ? 'block' : 'none';
       }
+      // (M6.49) the mission map: B (or PLAN) shows the floor plan of where you are
+      if (inp.planPressed) {
+        if (!level.plan) { S.noteText = 'No map of this place'; S.noteT = 2; }
+        else { S.plan = !S.plan; audio.click(); }
+      }
       const cctv = level.cctv;
       // back to your own eyes, facing the way you were before you sat down
       const stopCctv = () => {
@@ -2466,6 +2472,22 @@ function boot() {
     for (const d of level.swingDoors || []) d.step(dt);
     if (view.tickSwingDoors) view.tickSwingDoors();
     if (view.tickProps) view.tickProps();
+    // (M6.49) the mission map, while it is up (redrawn a few times a second)
+    {
+      const pm = $('planmap'), on = !!(S.plan && level.plan && S.playing && !S.menu);
+      if ((pm.style.display === 'block') !== on) pm.style.display = on ? 'block' : 'none';
+      if (on && (S.planT = (S.planT || 0) - dt) <= 0) {
+        S.planT = 0.2;
+        const w = window.innerWidth, h = window.innerHeight;
+        if (pm.width !== w || pm.height !== h) { pm.width = w; pm.height = h; }
+        drawPlan(pm.getContext('2d'), w, h, level.plan, player.pos[1], {
+          you: { x: player.pos[0], z: player.pos[2], yaw: input.yaw },
+          objectives: missionRt && missionRt.objectivesLeft ? missionRt.objectivesLeft() : [],
+          out: level.extraction ? [level.extraction.pos[0], level.extraction.pos[2]] : null,
+          devices: (level.liveDevices || []).filter((d) => d.known).map((d) => ({ x: d.pos[0], y: d.floorY !== undefined ? d.floorY : d.pos[1] - 2.2, z: d.pos[2] })),
+        });
+      }
+    }
     if (touch) {
       touch.tick();
       // (M6.36) aim assist: over an enemy, the view slows (a look straight out from the eye, 60 m)

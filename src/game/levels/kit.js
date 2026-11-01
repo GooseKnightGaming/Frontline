@@ -926,6 +926,8 @@ export function buildKitLevel(spec) {
     if (g.target) g.target.solid.rider = v;
     if (g.moveBody) g.moveBody();
   }
+  // (M6.49) the floor plans, for the mission map: each floor's rows as built
+  level.plan = { cell: CELL, floors: Object.keys(floors).map((k) => ({ key: k, y: floors[k].y, rows: floors[k].rows.slice() })) };
   if (spec.extra) spec.extra(kit);
   hangDoors(world, level.swingDoors);
   // what to bake: the map, and a little round it
