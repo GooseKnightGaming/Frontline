@@ -15,7 +15,7 @@ import { SENSE, RANKS, ARMS, LINES, YELLOW_LINES, raiseAlarm, lineFor, groundBel
 import { Voices, PRIORITY } from '../core/voice.js';
 import { ITEMS, baseId, fits, pickupSlot, holdAfterPickup, withTags } from '../../sim/arms/loadout.js';
 import { pickFoe, hostileToYou, Standing, YELLOW_TALK, YellowJob, vaultWhere, LOCKET_CHOICES } from '../../sim/people/factions.js';
-import { spokenVoice } from '../core/spoken.js';
+import { spokenVoice, SPOKEN, SPOKEN_SETS } from '../core/spoken.js';
 import { inTrain, inCoach, nearestSeat, FLOOR as FLOOR_Y, HIJACK, HIJACK_TALK, STAFF_TALK, NEWSPAPER, RUN as TRAIN_RUN } from './train.js';
 import * as Trophies from '../core/trophies.js';
 import * as Saves from '../core/saves.js';
@@ -120,7 +120,9 @@ export function setupMission(ctx) {
     }
     lastAnyT = t; g.lastSaidT = t; lastKindT[key] = t; lastLine[key] = text;
     // the words go up as they are heard, not before
-    voices.say(g.id, text, key, Math.max(0.15, Math.min(1, 1.25 - d / 20)), (said) => subtitle(g, said, 2.8), spokenVoice(g, key.startsWith('y_')));
+    // (M6.29) a Yellow saying one of the shared lines a Yellow voice has recorded (the specialists'): in his own voice
+    const yv = key.startsWith('y_') || (g.faction === 'yellow' && (SPOKEN_SETS.yellow || []).includes(SPOKEN[text]));
+    voices.say(g.id, text, key, Math.max(0.15, Math.min(1, 1.25 - d / 20)), (said) => subtitle(g, said, 2.8), spokenVoice(g, yv));
   };
   // said straight to you (talking to a Yellow): no waiting its turn
   const speak = (g, text) => voices.say(g.id, text, 'talk', 1, (said) => subtitle(g, said, 2.4 + said.length * 0.05), spokenVoice(g, true));
