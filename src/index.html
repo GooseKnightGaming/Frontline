@@ -136,6 +136,8 @@
   body.touch #hint { top: 130px; max-width: 40vw; font-size: 13px; }
   body.touch #disguise-tag { top: 158px !important; }
   body.touch #lock-note { display: none !important; }
+  /* (M6.49) larger text on the HUD (Settings) */
+  body.bigtext #prompt { font-size: 19px; } body.bigtext #hint { font-size: 17px; max-width: 460px; } body.bigtext #step { font-size: 18px; } body.bigtext #zone { font-size: 15px; } body.bigtext #w-name { font-size: 15px; }
   .touch-only { display: none !important; } body.touch .touch-only { display: flex !important; }
   #map { display: block; }
   #compass { text-align: center; font-size: 12px; letter-spacing: 3px; color: var(--amber);
@@ -496,6 +498,7 @@
     <div class="tab" id="tab-settings">
       <h2>SETTINGS</h2>
       <div class="set"><span>Difficulty</span><select id="set-diff"><option value="recruit">Recruit - they miss more, hurt less, see you slower</option><option value="operative">Operative - as it was made</option><option value="veteran">Veteran - sharper, quicker, harder</option></select><span></span></div>
+      <div class="set"><span>Text size (prompts, hints, objectives)</span><select id="set-text"><option value="normal">Normal</option><option value="large">Large</option></select><span></span></div>
       <div class="set"><span>Look sensitivity</span><input type="range" id="set-sens" min="0.2" max="3" step="0.05"><span id="set-sens-v"></span></div>
       <div class="set"><span>Field of view</span><input type="range" id="set-fov" min="60" max="100" step="1"><span id="set-fov-v"></span></div>
       <div class="set"><span>Invert look up/down</span><input type="checkbox" id="set-invert"><span></span></div>

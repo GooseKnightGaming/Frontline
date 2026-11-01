@@ -108,6 +108,7 @@ function boot() {
   // ── the engine, the level, the light bake ───────────────────────────────────
   const canvas = $('app');
   const settings = loadSettings();
+  if (settings.textSize === 'large') document.body.classList.add('bigtext');      // (M6.49)
   // (M6.35) a phone or tablet starts on low quality (until you choose otherwise): its graphics are a fraction of a
   // laptop's, and a smooth game matters more than a pretty one
   try { if (isTouchDevice() && !TEST && !/"quality"/.test(localStorage.getItem('frontline.settings.v1') || '')) settings.quality = 'low'; } catch (e) { /* private mode */ }
@@ -1280,6 +1281,7 @@ function boot() {
     $('set-fov').value = settings.fov; $('set-fov-v').textContent = settings.fov;
     $('set-invert').checked = settings.invertY;
     $('set-diff').value = settings.difficulty || 'operative';
+    $('set-text').value = settings.textSize || 'normal';
     $('set-tlook').value = settings.touchLook; $('set-tlook-v').textContent = (+settings.touchLook).toFixed(2);
     if ($('set-tturn')) $('set-tturn').checked = settings.touchTurn !== false;
     if ($('set-tauto')) $('set-tauto').checked = !!settings.touchAutoFire;
@@ -1296,6 +1298,7 @@ function boot() {
     $('set-music').value = settings.music === undefined ? 0.35 : settings.music;
     $('set-music-v').textContent = Math.round((settings.music === undefined ? 0.35 : settings.music) * 100) + '%';
   }
+  $('set-text').onchange = (e) => { settings.textSize = e.target.value; saveSettings(settings); document.body.classList.toggle('bigtext', settings.textSize === 'large'); };
   $('set-diff').onchange = (e) => { settings.difficulty = e.target.value; saveSettings(settings); };      // (M6.39)
   // (M6.36) touch settings
   $('set-tlook').oninput = (e) => { settings.touchLook = +e.target.value; $('set-tlook-v').textContent = settings.touchLook.toFixed(2); saveSettings(settings); };

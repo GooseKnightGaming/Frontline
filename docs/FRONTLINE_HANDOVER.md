@@ -13,6 +13,8 @@ game into the repository's root.
   (`level.plan` from kit.js - every first draft has one): walls, windows, doors, furniture, water, holes, outdoors on
   the ground floor; you (an arrow), what is still to do (`missionRt.objectivesLeft()`), the way out, the devices you
   know of. Over the game, not pausing it; redrawn five times a second. `test/plan.test.mjs`.
+- **Text size** (Settings): Large makes the prompt, hints, objectives, zone and weapon name bigger (`body.bigtext`).
+- The browser suite's door-prompt check waits up to 40 s (the test machine stalls there at times).
 
 ## M6.48.0 — Level 46, the Ministry of Supply
 - **Level 46, the Ministry of Supply** (`drafts/ministry.js`; where the Dalmar Star's radio log led): by day, in

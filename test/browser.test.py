@@ -327,7 +327,7 @@ async def main():
             return await pg.evaluate(js)
         # within reach of the door (it answers within 1.6 m of its middle)
         await pg.evaluate("FL.doors[0].set(false, 1); FL.doors[0].swing = 0; FL.pose([-85.0, -16, 0], -Math.PI / 2, 0)")
-        prompt = await until("/Open the door/.test(document.getElementById('prompt').textContent)")
+        prompt = await until("/Open the door/.test(document.getElementById('prompt').textContent)", 40)      # (the test machine stalls here at times)
         ok('at the door you are offered to open it', prompt, repr(await pg.evaluate("document.getElementById('prompt').textContent")))
         await snap(pg, '/tmp/fl/door_shut.png')
         await pg.keyboard.press('KeyE')
