@@ -31,5 +31,6 @@ import outpost from './outpost.js';
 import spaceport from './spaceport.js';
 import subway from './subway.js';
 import listening from './listening.js';
+import yacht from './yacht.js';
 
-export const DRAFTS = [sewers, bank, cemetery, estate, manor, mine, facility, vantage, ward, campus, shipyard, fortress, drop, beachhead, factoryBattle, riverboat, city, ruins, wasteland, theatre, baths, temple, prison, bunkers, arena, nightclub, airport, outpost, spaceport, subway, listening];
+export const DRAFTS = [sewers, bank, cemetery, estate, manor, mine, facility, vantage, ward, campus, shipyard, fortress, drop, beachhead, factoryBattle, riverboat, city, ruins, wasteland, theatre, baths, temple, prison, bunkers, arena, nightclub, airport, outpost, spaceport, subway, listening, yacht];

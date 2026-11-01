@@ -20,6 +20,13 @@ game into the repository's root.
   may carry it; any run at Logistics.
 - **The marksman** (`perches: [[x, y, floor], ...]` on a guard): after five rounds from one place he moves on to his next
   perch ("Moving!"), and fights from there. One each in the Facility, the Prison and the Listening Station.
+- **Level 36, the Megayacht** (`drafts/yacht.js`; Rhys's environment-pack sheet, "Megayacht (onboard)"): the Salt Crown,
+  moored at Port Aurel marina - the arms broker Ilya Corwen's. Four decks (lower: engine room, crew's mess and cabins,
+  stores; main: aft deck, saloon, dining room, galley, foredeck; upper: the owner's suite, the panic room, the sky lounge,
+  the bridge; the sun deck and its helipad), side decks round the superstructure, the gangway up from the pier. All of
+  M6.28-29 in one place: her security from the bridge (cameras, a pinhole, a laser, two maglocks, two turrets, two light
+  circuits, the alarm), Corwen's keycard, a radio operator, an engineer, a medic, a shield-bearer and a marksman on the
+  sun deck. Objectives: Corwen's files (the panic room), Mara Quill (the crew's cabins), optionally Corwen.
 - Tests: `devices.test.mjs`.
 
 ## M6.28.0 — hacking and control, the rest (Rhys: "keep building - use your imagination")
