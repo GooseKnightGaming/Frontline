@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.44.0)
+# Frontline — Handover (M6.45.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,11 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.45.0 — the blight on the board
+- The case board's second case, **THE BLIGHT** (`BLIGHT` in caseboard.js): the Glasshouse, the Grain Terminal, the
+  Dalmar Star, each kept as a mark ('blight:<level>') when its mission is done (not failed); shown once begun, steps
+  not yet done as ? ? ?; HARVEST SAVED stamped when all three are. The marks never count as the first case's clues.
 
 ## M6.44.0 — Level 45, the Dalmar Star
 - **Level 45, the Dalmar Star** (`drafts/dalmar.js`; the blight's end, after the Grain Terminal): a bulk freighter

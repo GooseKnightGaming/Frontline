@@ -26,7 +26,7 @@ import { makeTarget } from '../../sim/arms/weapons.js';
 import { makeDog, DOG } from '../../sim/people/dog.js';
 import { markIntrusion, downLantern } from './hq_security.js';
 import { xpFor, pointsAt } from '../../sim/play/skills.js';
-import { CASE, cluesFrom, caseOpen, FINAL, CLOSED } from '../../sim/play/caseboard.js';
+import { CASE, cluesFrom, caseOpen, FINAL, CLOSED, blightStep } from '../../sim/play/caseboard.js';
 import { settle as settleContracts, TERMS as CONTRACT_TERMS, describe as contractText } from '../../sim/play/contracts.js';
 import { Device, stepDevice, setMode, Trace, HACK, MODES, SIREN, darkAt, sirenFor, syncLocks, modeSays, lightsOut, breaks } from '../../sim/world/devices.js';
 
@@ -2328,6 +2328,8 @@ export function setupMission(ctx) {
           rt.caseMade = !was && caseOpen(Saves.loadCase(Saves.currentSlot()));
           // (M6.40) the last of it: the case closed
           if (level.draft === FINAL && m.result === 'success') Saves.addCase(Saves.currentSlot(), [CLOSED]);
+          // (M6.45) the blight's trail, a step at a time
+          if (blightStep(level.draft)) Saves.addCase(Saves.currentSlot(), [blightStep(level.draft)]);
         }
         // (M6.41) the contracts board: any open one this mission pays
         if (level.draft) {

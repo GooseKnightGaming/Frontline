@@ -24,3 +24,14 @@ export const caseOpen = (have) => (have || []).filter((id) => CASE.some((c) => c
 // (M6.40) and closed: the last mission done (kept on the board as its own mark, 'closed')
 export const CLOSED = 'closed';
 export const caseClosed = (have) => (have || []).includes(CLOSED);
+
+// (M6.45) the second case on the board: the blight - what Varn grew, followed to where it was going. Each step a
+// mission done (a success or near enough), kept on the board as its own mark ('blight:<level>').
+export const BLIGHT = [
+  { level: 'glasshouse', title: 'The Glasshouse', text: 'Varn\'s research: a blight for wheat, bred to order.' },
+  { level: 'grain', title: 'The Grain Terminal', text: 'The van stopped; the manifest names the Dalmar Star, for Kessin.' },
+  { level: 'dalmar', title: 'The Dalmar Star', text: 'The blight off her, and her radio log: the buyer named.' },
+];
+export const blightMark = (level) => 'blight:' + level;
+export const blightStep = (level) => BLIGHT.some((b) => b.level === level) ? blightMark(level) : null;
+export const blightDone = (have) => BLIGHT.every((b) => (have || []).includes(blightMark(b.level)));
