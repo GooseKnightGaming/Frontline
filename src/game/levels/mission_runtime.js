@@ -1783,8 +1783,8 @@ export function setupMission(ctx) {
       for (const f of fx) if (f.t > 0) { f.t -= dt; if (f.t <= 0) f.e.enabled = false; }
       // (Rhys: on the cameras, guards blinked out partway round)
       // drawn by where you are looking from: a camera, while you watch one
-      const cam = S.cctv != null && level.cctv && level.cctv.cameras[S.cctv];
-      const eye = cam ? [cam.pos[0], cam.pos[1] - 2.2, cam.pos[2]] : player.pos;
+      const cam = S.snakeCam || (S.cctv != null && level.cctv && level.cctv.cameras[S.cctv]);
+      const eye = cam ? [cam.pos[0], S.snakeCam ? cam.pos[1] - 0.12 : cam.pos[1] - 2.2, cam.pos[2]] : player.pos;
       // (Rhys: "an enemy spawn in behind me from absolutely nowhere")
       // near, on your floor, or - new - in plain sight from where you look
       const sightEye = cam ? cam.pos : player.eyePos;

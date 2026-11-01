@@ -213,7 +213,7 @@ export const ITEMS = {
               note: 'Flashbangs barely register.' },
   INTEL:    { name: 'Intel Device', family: 'gear', marks: true,
               note: 'Anyone you have seen stays marked on your compass.' },
-  LOCKKIT:  { name: 'Lockpicks', family: 'gear', picks: true, note: 'Locks open quietly, given time.' },
+  LOCKKIT:  { name: 'Lockpicks', family: 'gear', picks: true, note: 'Hold E at an ordinary locked door: it opens in a few seconds, quietly (not maglocks, vaults or reinforced doors).' },
   // (Rhys: two "Trauma Kits") the gear one, renamed; the Trauma Kit is the one-use utility (Room 201's)
   MEDGEAR:  { name: 'Haemostatic Dressings', kg: 1.2, family: 'gear', healRate: 2.2, note: 'You recover from wounds faster.' },
   // specials: issued for a mission, or by your class - outside the five slots
@@ -225,6 +225,7 @@ export const ITEMS = {
   QRELAY:   { name: 'Long-Arm Relay', family: 'perk', kg: 0.9, hackKit: true, hackReach: 10, q: true, note: 'A hacking kit with a dish: hack a camera, turret, lock or panel from up to 10 m away - in sight of it.' },
   QSPOOF:   { name: 'Loop Spoofer', family: 'perk', kg: 0.4, camSlow: 3, q: true, note: 'Feeds the cameras a loop: they take three times as long to make you out.' },
   QSCRAMBLE: { name: 'Trace Scrambler', family: 'perk', kg: 0.5, traceMul: 0.4, q: true, note: 'Bounces your hacks round the world: a trace takes two and a half times as long.' },
+  QSNAKE:   { name: 'Snake Camera', family: 'perk', kg: 0.3, snakeCam: true, q: true, note: 'Crouch at a shut door and press E: a camera on a cable slides under it, and you see the other side. Move, or E, to stop.' },
   QSKELETON: { name: 'Skeleton Card', family: 'perk', kg: 0.1, maglockCard: true, q: true, note: 'Swipe it at a maglock\'s keypad (hold E, 2 s): the door is yours - quietly, and no trace.' },
   LOCKON:   { name: 'Vehicle Targeting', family: 'perk', lockOn: 45, note: 'Aim a launcher at a vehicle within 45 m: it locks on, and the rocket follows it.' },
   AUTOREPAIR: { name: 'Auto-Repair', family: 'perk', autoRepair: 0.02, note: 'A vehicle you are driving slowly mends itself.' },

@@ -54,4 +54,12 @@ T('the rebreather: under water, no breath lost', () => {
     A(mul ? p.breath < 24.5 : p.breath >= 24.99, 'breath ' + p.breath.toFixed(2) + ' with ' + mul);
   }
 });
+T('lockpicks: an ordinary locked door, held E at, opens quietly; not a maglock, a vault, a reinforced door', () => {
+  const mn = src('game/main.js');
+  A(/const pickable = \(d\) =>/.test(mn) && /!d\.def\.maglock && !d\.def\.vault/.test(mn) && /d\.unlock\(\); S\.pickT = 0/.test(mn), 'no picking');
+});
+T('the snake camera: crouched at a shut door, E looks under it', () => {
+  const mn = src('game/main.js');
+  A(/loadout\.gearTrait\('snakeCam'\)/.test(mn) && /S\.snakeCam = \{ pos, look/.test(mn) && /'QSNAKE'/.test(mn), 'no snake camera');
+});
 console.log(fails.length ? '\nFAILURES (' + fails.length + '):\n' + fails.map((f) => '  * ' + f).join('\n') : '\nALL ' + pass + ' PASSED');

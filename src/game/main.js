@@ -73,7 +73,7 @@ import { hqSecurity, takeIntrusion } from './levels/hq_security.js';
 import { effects as skillEffects, SKILLS, pointsLeft, train as trainSkill, XP } from '../sim/play/skills.js';
 import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './core/input.js';
 
-const VERSION = 'M6.29.0';
+const VERSION = 'M6.30.0';
 const $ = (id) => document.getElementById(id);
 const TEST = /[?&]test\b/.test(location.search);
 // Level 0, the training mission, is its own page load: index.html?level=0
@@ -331,6 +331,9 @@ function boot() {
     return best;
   }
   // an ordinary door within reach
+  // a lock the picks will open: an ordinary locked door - not a maglock, a vault, a blast door or a reinforced one
+  const PICK_SECS = 4;
+  const pickable = (d) => !!(d && d.locked && !d.open && !d.blown && !d.def.maglock && !d.def.vault && !d.def.blastDoor && d.def.build !== 'reinforced' && !d.def.lockedText);
   function swingDoorNear() {
     // The nearest door in reach - not the first in the list, which made the
     // second of a pair of doors almost impossible to pick. Crouched,
@@ -745,7 +748,7 @@ function boot() {
   }
   $('assign-back').onclick = () => { show('assign', false); deploy(); };
   // (M6.29) Q Branch: his gadgets, one signed out to this run at a time
-  const Q_GADGETS = ['HACKKIT', 'QRELAY', 'QSPOOF', 'QSCRAMBLE', 'QSKELETON', 'QID', 'CAMO'];
+  const Q_GADGETS = ['HACKKIT', 'QRELAY', 'QSPOOF', 'QSCRAMBLE', 'QSKELETON', 'QSNAKE', 'QID', 'CAMO'];
   function drawQ() {
     const have = Saves.loadGadget(slotNo), list = $('q-list');
     list.innerHTML = '';
@@ -1045,7 +1048,8 @@ function boot() {
     const lockedFor = (d) => d && d.locked && !d.open && !d.blown ? d.def.lockedText ? d.def.lockedText : (d.needs && hasKey(d.needs) ? 'E  Unlock it with the ' + keyLabel(d.needs)
       : d.def.maglock ? 'A security door  -  maglocked: hack the security system, or blow it' : d.def.blastDoor ? 'A blast door  -  no charge will move it: its controls will' : d.def.vault && DRAFT ? 'The vault door  -  locked; the security terminal opens it' : d.def.build === 'reinforced' ? 'Reinforced and locked  -  ' + (d.needs ? 'it takes a key, or a breaching charge' : 'a breaching charge will open it') : 'Locked  -  F  Kick it open') : null;
     const ldoor = !MISSION && swingDoorNear();
-    const lockedTip = lockedFor(ldoor);
+    // (M6.30, Rhys: "lockpicks and lockpicking, properly") with the lockpicks, an ordinary locked door can be picked
+    const lockedTip = loadout.gearTrait('picks') && pickable(ldoor) ? (S.pickT > 0 ? 'Picking the lock...  ' + Math.round(S.pickT / PICK_SECS * 100) + '%' : 'Hold E  Pick the lock   (F  Kick it open)') : lockedFor(ldoor);
     const vn = !player.driving && vehicleNear();
     const mp = (player.driving ? (player.driving.kind === 'boat' ? 'Boat' : 'Driving') + '  ' + player.driving.kmh + ' km/h' + (player.driving.wrecked ? '  -  WRECKED' : '') + '   -   W/S throttle, A/D steer, SPACE brake, E to get out' : null) ||
       (vn ? (vn.kind === 'boat' ? 'E  Take the helm' : 'E  Get in and drive') : null) || (missionRt && missionRt.prompt()) || (atConsole ? 'E  Watch the CCTV cameras' : null) || (hqSec && hqSec.tip()) || hqTip() || keyTip() || intelTip() || noteTip() || safeTip() || stopTip() || liftTip() || lockedTip || chargeTip();
@@ -1604,10 +1608,11 @@ function boot() {
       cam.camera.fov = 55;
       return;
     }
-    if (S.cctv != null && level.cctv) {
+    if ((S.cctv != null && level.cctv) || S.snakeCam) {
       // watching a camera: its view, nothing of your own kit
       // (Rhys: pan with the mouse; and you were invisible on camera 7)
-      const c = level.cctv.cameras[S.cctv];
+      // (M6.30) or Q's snake camera, under a door
+      const c = S.snakeCam || level.cctv.cameras[S.cctv];
       for (const k of Object.keys(wview.held)) wview.held[k].enabled = false;
       const home = S.cctvHome || { yaw: input.yaw, pitch: input.pitch };
       if (opr && opr.ready) {
@@ -2002,12 +2007,13 @@ function boot() {
       const cctv = level.cctv;
       // back to your own eyes, facing the way you were before you sat down
       const stopCctv = () => {
-        S.cctv = null; $('cctv').style.display = 'none';
+        S.cctv = null; S.snakeCam = null; $('cctv').style.display = 'none';
         if (!S.third) wview.setThird(false);              // the weapon back from the body to your view
         if (S.cctvHome) { input.yaw = S.cctvHome.yaw; input.pitch = S.cctvHome.pitch; player.yaw = input.yaw; S.cctvHome = null; }
       };
-      if (S.cctv != null && (inp.moveX || inp.moveZ || inp.jumpPressed || inp.fire)) stopCctv();
-      if (inp.interactPressed && cctv && cctv.cameras.length && (S.cctv != null ||
+      if ((S.cctv != null || S.snakeCam) && (inp.moveX || inp.moveZ || inp.jumpPressed || inp.fire)) stopCctv();
+      if (inp.interactPressed && S.snakeCam) { stopCctv(); audio.confirm(); }
+      else if (inp.interactPressed && cctv && cctv.cameras.length && (S.cctv != null ||
           atAConsole(cctv))) {
         if (S.cctv == null) S.cctvHome = { yaw: input.yaw, pitch: input.pitch };
         S.cctv = S.cctv == null ? 0 : S.cctv + 1;
@@ -2041,6 +2047,16 @@ function boot() {
         const d = !ch && doorNear();
         const sd = !ch && !d && swingDoorNear();
         if (ch) arsenal.disarm(ch, player);
+        // (M6.30) Q's snake camera: crouched at a shut door, E slides it under - a look at the other side
+        else if (sd && !sd.open && player.stance > 0 && loadout.gearTrait('snakeCam')) {
+          const c = sd.centre, n = sd.n, side = Math.sign(c[n] - player.pos[n]) || 1;
+          const pos = c.slice(); pos[n] += side * 0.3; pos[1] = sd.def.y0 + 0.12;
+          const look = pos.slice(); look[n] += side * 6; look[1] = sd.def.y0 + 0.9;
+          S.snakeCam = { pos, look, label: 'Snake camera - under the door' };
+          S.cctvHome = { yaw: input.yaw, pitch: input.pitch }; S.cctvRef = { yaw: input.yaw, pitch: input.pitch };
+          $('cctv').style.display = 'block'; $('cctv-label').textContent = 'SNAKE CAMERA  -  UNDER THE DOOR   (E, or move, to stop)';
+          audio.confirm();
+        }
         else if (sd) {
           const b = player.box();
           const r = sd.use(player.pos, b);
@@ -2158,6 +2174,14 @@ function boot() {
     if (hqSec) {
       if (hqSec.pending && S.playing && !S.menu) { hqSec.start(hqSec.pending); hqSec.pending = null; }
       hqSec.tick(active ? dt : 0, (input.held('interact') && !TEST) || !!S.testHoldE);
+    }
+    // picking a lock: E held at it, with the lockpicks (quiet; a kick is not)
+    {
+      const d = active && !MISSION && loadout.gearTrait('picks') ? swingDoorNear() : null;
+      if (pickable(d) && ((input.held('interact') && !TEST) || !!S.testHoldE)) {
+        S.pickT = (S.pickT || 0) + dt * ((player.skills && player.skills.hacker) || 1);
+        if (S.pickT >= PICK_SECS) { d.unlock(); S.pickT = 0; audio.confirm(); S.noteText = 'Picked - the door is unlocked, and nobody heard a thing'; S.noteT = 2.5; }
+      } else S.pickT = 0;
     }
     if (course) {
       const was = course.text;

@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.29.0)
+# Frontline — Handover (M6.30.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,12 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.30.0 — (in progress)
+- **Lockpicking, properly** (Rhys, M6.9.13): with the Lockpicks (gear), hold E at an ordinary locked door - 4 s (Hacker
+  speeds it), quiet, and it is unlocked. Not maglocks, vaults, blast doors or reinforced doors.
+- **The Snake Camera** (Q Branch, `QSNAKE`; the roadmap's "peeking under or through" a door): crouched at a shut door, E
+  slides a camera under it - the other side, through the CCTV view (the mouse looks about); E or moving stops it.
 
 ## M6.29.0 — smarter enemies: flanking and suppressing fire (the roadmap's "guards that flank ... suppress")
 - **Flanking** (`Guard.flankStep`): a bold guard in a fight with you who loses sight of you waits 1.2 s, then goes round -
