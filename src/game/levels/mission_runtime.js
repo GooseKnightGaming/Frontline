@@ -2287,8 +2287,10 @@ export function setupMission(ctx) {
       const all = L0 ? m.trophies() : B ? [] : level.trainRun ? [] : level.draft ? clearTrophies(m, targets, level.draft, level.title, level.spec.place || 'the ' + level.title, 'enemy') : level.factory ? factoryTrophies(m, guards) : level.casino ? casinoTrophies(m, targets) : hotelTrophies(m, hostages, guards.length);
       if (devices.length && level.draft) all.push(...hackTrophies(m, level.draft, level.title));
       // (M6.33) the end of the case: Kaldberg done
-      if (level.spec && level.spec.epilogue && (m.result === 'success' || m.result === 'partial')) all.push({ id: 'case_closed', name: 'Case Closed', about: 'From the first clue to the council at Kaldberg: the reds\' council, on tape.' });
-      if (level.spec && level.spec.epilogue && m.result === 'success' && guards.some((g) => g.tied)) all.push({ id: 'kaldberg_rope', name: 'Tied Up Loose Ends', about: 'At Kaldberg, a man held up, questioned - and tied.' });
+      if (level.draft === FINAL && (m.result === 'success' || m.result === 'partial')) all.push({ id: 'case_closed', name: 'Case Closed', about: 'From the first clue to the council at Kaldberg: the reds\' council, on tape.' });
+      if (level.draft === FINAL && m.result === 'success' && guards.some((g) => g.tied)) all.push({ id: 'kaldberg_rope', name: 'Tied Up Loose Ends', about: 'At Kaldberg, a man held up, questioned - and tied.' });
+      // (M6.44) the blight's end: the Dalmar Star
+      if (level.draft === 'dalmar' && m.result === 'success') all.push({ id: 'blight_ended', name: 'Harvest Saved', about: 'The blight off the Dalmar Star, and the radio log in Ghost\'s hands.' });
       // (M6.30) in a mission begun in disguise, the whole of it without anyone seeing through it
       if (level.spec && level.spec.startDisguise && !rt.disguiseBlown && (m.result === 'success' || m.result === 'partial')) all.push({ id: level.draft + '_plain_sight', name: 'In Plain Sight: ' + level.title, about: 'Done in disguise, from the door and back - no one saw through it.' });
       // (Level 35) LANTERN turned round: no trace finds Yard 7 again, this run
