@@ -324,6 +324,14 @@ export class Audio {
   // a Geiger counter's click
   geiger() { this.burst({ length: 0.008, from: 3500, gain: 0.09 + Math.random() * 0.05, q: 1.5, room: false }); }
   unboard() { this.burst({ length: 0.1, from: 320, to: 140, gain: 0.2, q: 1 }); }
+  // the alarm (M6.28): a two-tone wail, rising and falling, for secs
+  siren(secs) {
+    const n = Math.max(1, Math.round((secs || 5) / 1.1));
+    for (let i = 0; i < n; i++) {
+      this.tone({ wave: 'sawtooth', from: 520, to: 880, length: 0.55, gain: 0.05, delay: i * 1.1, attack: 0.05 });
+      this.tone({ wave: 'sawtooth', from: 880, to: 520, length: 0.55, gain: 0.05, delay: i * 1.1 + 0.55, attack: 0.02 });
+    }
+  }
   lockOn() {
     this.tone({ wave: 'square', from: 900, length: 0.06, gain: 0.09 });
     this.tone({ wave: 'square', from: 1200, length: 0.08, gain: 0.09, delay: 0.1 });

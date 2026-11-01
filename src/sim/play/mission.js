@@ -179,6 +179,14 @@ export function clearTrophies(m, guards, id, name, place, one) {
   if (m.kills > 1 && m.headshots === m.kills) out.push({ id: id + '_sharpshooter', name: 'Sharpshooter: ' + name, about: 'Every kill in ' + place + ' a headshot.' });
   return out;
 }
+// (M6.29) hacking: a red brought down by his own side's turret, turned; a whole job without a trace
+export function hackTrophies(m, id, name) {
+  const out = [];
+  if (!m.done || (m.result !== 'success' && m.result !== 'partial')) return out;
+  if (m.turretKills > 0) out.push({ id: 'ghost_in_the_machine', name: 'Ghost in the Machine', about: 'A red brought down by one of his own side\'s turrets - turned on him by you.' });
+  if ((m.hacked || 0) >= 3 && !m.traced) out.push({ id: id + '_no_trace', name: 'Not a Trace: ' + name, about: 'Hacked their security three times or more - and never traced.' });
+  return out;
+}
 export const factoryTrophies = (m, guards) => clearTrophies(m, guards, 'factory', 'Factory', 'the Derelict Factory', 'yellow');
 // (Rhys: clearing the reds out "no longer essential - can be a Trophy again")
 export const casinoTrophies = (m, guards) => {     // guards: the reds only

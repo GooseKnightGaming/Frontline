@@ -94,6 +94,16 @@ T('the story travels with a save and its transfer code; each slot keeps its own 
     A(S.freeSlot() === 1, 'free slot after erasing: ' + S.freeSlot());
   });
 }
+T('the service record adds every mission and battle up, per run; erased with the run', () => {
+  S.addRecord(3, { missions: 1, won: 1, kills: 4, shotsFired: 20, shotsHit: 10, secs: 300, fav: 'K7' });
+  S.addRecord(3, { battles: 1, battlesWon: 1, battleKills: 6, kills: 6, deaths: 3, shotsFired: 20, shotsHit: 5, fav: 'K7' });
+  const r = S.loadRecord(3), sum = S.recordSummary(r);
+  A(r.missions === 1 && r.battles === 1 && r.kills === 10 && r.secs === 300, JSON.stringify(r));
+  A(Math.abs(sum.accuracy - 0.375) < 1e-9 && sum.kd === 2 && sum.fav === 'K7', JSON.stringify(sum));
+  A(!S.loadRecord(4).missions, 'leaked into another run');
+  S.clearSlot(3); A(!S.loadRecord(3).missions, 'not erased');
+  S.saveGadget(3, 'QRELAY'); A(S.loadGadget(3) === 'QRELAY', 'gadget'); S.clearSlot(3); A(S.loadGadget(3) === null, 'gadget not erased');
+});
 console.log('\n' + '='.repeat(50));
 console.log(fails.length ? 'FAILURES (' + fails.length + ')' : 'ALL ' + pass + ' PASSED');
 process.exit(fails.length ? 1 : 0);

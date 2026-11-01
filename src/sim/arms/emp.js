@@ -13,6 +13,13 @@ export function pulse(pos, things, reach, secs) {
   for (const t of things.turrets || []) if (t.turret && !t.down && near(t.turret.pos)) { t.turret.jammed = Math.max(t.turret.jammed || 0, T); hit.turrets++; }
   for (const v of things.vehicles || []) if (near(v.pos)) { v.stalled = Math.max(v.stalled || 0, T); hit.vehicles++; }
   // a mission's cameras and turrets (sim/world/devices.js)
-  for (const d of things.devices || []) if (d.mode !== 'off' && near(d.pos)) { d.jammed = Math.max(d.jammed || 0, T); if (d.kind === 'turret') hit.turrets++; else hit.cameras = (hit.cameras || 0) + 1; }
+  // (and M6.28 the locks - an EMP fries one open for good - the lights and the alarm)
+  for (const d of things.devices || []) if (d.mode !== 'off' && near(d.pos)) {
+    d.jammed = Math.max(d.jammed || 0, T);
+    if (d.kind === 'lock') { d.fried = true; hit.locks = (hit.locks || 0) + 1; }
+    else if (d.kind === 'turret') hit.turrets++;
+    else if (d.kind === 'camera') hit.cameras = (hit.cameras || 0) + 1;
+    else hit[d.kind] = (hit[d.kind] || 0) + 1;
+  }
   return hit;
 }

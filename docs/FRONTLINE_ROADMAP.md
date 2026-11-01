@@ -107,8 +107,11 @@ and gives the UV/thermal goggles something to look for.
 **Started in M6.27.0**: cameras and turrets with owners and networks; security
 terminals and the Hacking Kit; disable / reprogram / take control; noise and the
 trace; the EMP puts them out (`src/sim/world/devices.js`). In the Research
-Facility and the Prison. Still to do: door locks, lights and alarms; enemy hacks
-and the console under Yard 7.
+Facility and the Prison. **M6.28.0: the rest** - maglocks, lights, the alarm's
+siren, devices on the radar, shooting them out, the engineer and the radio
+operator, Q Branch's gadgets, and the server room under Yard 7 with its intrusions
+(traced on a mission? they come for Yard 7). Still open: a hacking range in the
+training course; the hacking suit; UV/thermal goggles finding hidden devices.
 
 ## Debrief and statistics (Rhys, M6.5.0)
 The mission debrief exists (result, objectives, time, casualties, knockouts,

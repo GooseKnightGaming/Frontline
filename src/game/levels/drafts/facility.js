@@ -10,8 +10,10 @@ export default {
   brief: [
     ['The place', 'One storey and a plant room under it. Labs along the north side (the chemistry lab, the CAVE lab, the cold store), the service corridor in front of them, offices, the staff room and decontamination in the middle, the main corridor, the lobby. The stair down to the plant room is in decontamination.'],
     ['Your kit', 'The <b>multi-spectrum visor</b>: V steps through night vision, <b>thermal</b> (warm bodies and hot pipes, through mist and smoke), <b>UV</b> (traces people leave) and <b>EMF</b> (wiring and hidden electronics, through walls).'],
-    ['The reds', 'Thirteen, all over the station - two of them in the cold store, where the refrigeration has filled the room with mist.'],
+    ['The reds', 'Fourteen, all over the station - two of them in the cold store, where the refrigeration has filled the room with mist.'],
     ['Security', 'Cameras watch the corridors and the lobby - one that sees you raises the alarm - and turrets guard decontamination and the data room. They all run from the <b>security terminal</b> in the west office: hack it (hold E) to disable them, have them ignore you, or turn the turrets on the reds. Hack for too long and they trace you. Your <b>hacking kit</b> (this mission\'s Special) takes them one at a time, up close - more slowly.'],
+    ['The specialists', 'The officer in the security office carries the <b>radio</b>: if he sees you, a few seconds and every red in the station is coming - drop him first. And the station\'s <b>engineer</b> (in the staff room) goes to the security terminal to put a hacked system back on: stop him, or hack it again.'],
+    ['The building', 'Decontamination\'s two doors are <b>maglocked</b>: no kick opens them - hack the system, use the kit on a keypad, or blow them. The corridors\' <b>lights</b> are on the same system: put them out and the reds see only what is close (night vision sees it all). And while the <b>alarm</b> is live, one shout sets off the siren and the whole station comes. And not every camera is where you can see it: there are <b>pinhole cameras</b> in the walls - EMF shows them.'],
     ['Objectives', 'Find <b>Dr Ilse Brandt</b>: she cut her hand in the chemistry lab as she ran - under UV, the spill trail shows the way. Bring her out. Take the <b>sample case</b> from the cold store. Find the shielded data room - EMF shows where its wiring goes - and hack its <b>data terminal</b>.'],
   ],
   time: { date: [11, 8, 2026], hour: 3, minute: 40 }, night: true, startGear: 'MULTIVIS', faction: 'red', requires: 'HACKKIT',
@@ -109,12 +111,13 @@ export default {
     { id: 'h5', at: [33, 9, 'G'], route: [[27, 5], [33, 5], [33, 10], [27, 10]], arms: 'carbine' },
     { id: 'h6', at: [7, 8, 'G'], arms: 'pistol' },
     { id: 'h7', at: [18, 8, 'G'], arms: 'carbine', rank: 'sergeant' },
-    { id: 'h8', at: [16, 21, 'G'], arms: 'pistol', rank: 'officer', temper: 'steady' },
+    { id: 'h8', at: [16, 21, 'G'], arms: 'pistol', rank: 'officer', temper: 'steady', role: 'radio' },      // the radio: stop him before he calls it in
     { id: 'h9', at: [43, 7, 'G'], arms: 'shotgun', temper: 'steady' },
     { id: 'h10', at: [45, 21, 'G'], arms: 'smg' },
     { id: 'h11', at: [40, 30, 'B'], route: [[31, 29], [48, 29]], arms: 'carbine' },
     { id: 'h12', at: [38, 23, 'B'], arms: 'pistol', temper: 'cowardly' },
     { id: 'h13', at: [5, 21, 'G'], arms: 'dmr', rank: 'specialist', temper: 'steady' },
+    { id: 'h14', at: [27, 22, 'G'], arms: 'pistol', temper: 'cowardly', role: 'engineer' },                  // the station's engineer: he puts a hacked system back on
   ],
   hostages: [{ id: 'brandt', name: 'Dr Ilse Brandt', she: true, at: [48, 38, 'B'] }],
   pickups: [{ id: 'samples', name: 'The sample case', what: 'the sample case', at: [30, 7, 'G'], table: false, h: 0.8, colour: [0.85, 0.85, 0.9] }],
@@ -129,6 +132,16 @@ export default {
     { id: 'c-serv-e', kind: 'camera', at: [49, 15, 'G'], face: [-1, 0], net: 'halden' },
     { id: 't-decon', kind: 'turret', at: [48, 23, 'G'], face: [-1, -1], net: 'halden' },
     { id: 't-data', kind: 'turret', at: [45, 11, 'G'], face: [-1, -1], net: 'halden' },
+    // (M6.28) decontamination's doors maglocked (the way down to the plant room); the corridors' lights;
+    // the alarm, by the staff room
+    { id: 'm-decon-s', kind: 'lock', at: [42, 25, 'G'], net: 'halden' },
+    { id: 'm-decon-n', kind: 'lock', at: [42, 17, 'G'], net: 'halden' },
+    { id: 'l-main', kind: 'lights', at: [3, 28, 'G'], face: [0, -1], area: [2, 26, 49, 28], name: 'the main corridor', net: 'halden' },
+    { id: 'l-serv', kind: 'lights', at: [48, 14, 'G'], face: [0, 1], area: [2, 14, 49, 16], name: 'the service corridor', net: 'halden' },
+    { id: 'a-bell', kind: 'alarm', at: [26, 26, 'G'], face: [0, 1], net: 'halden' },
+    // and two pinhole cameras, in the walls - EMF finds them
+    { id: 'c-pin-cave', kind: 'camera', at: [13, 2, 'G'], face: [1, 1], net: 'halden', hidden: true },
+    { id: 'c-pin-staff', kind: 'camera', at: [29, 18, 'G'], face: [-1, 1], net: 'halden', hidden: true },
   ],
   terminals: [{ id: 'sec', name: 'the security terminal', at: [3, 23, 'G'], face: [1, 0], time: 6, net: 'halden' },
     { id: 'data', name: 'the data terminal', at: [44, 8, 'G'], face: [0, -1], time: 8, reveal: 30,

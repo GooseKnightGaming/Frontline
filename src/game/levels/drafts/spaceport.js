@@ -58,9 +58,10 @@ export default {
   brief: [
     ['The place', '<b>Pad 2</b> (north-east): the rocket on it; the <b>gantry</b> beside it, its platforms at 8, 16 and 24 metres up a ladders up its faces; the arm from the top platform to the payload. <b>Mission control</b> (west): the control room and its rows of consoles, the director\'s office, a viewing gallery over the back of the room. The <b>assembly hangar</b> (south), a spaceplane in it.'],
     ['The launch', 'The reds have bought tonight\'s launch: their satellite goes up on it, carrying what it should not. Its <b>arming unit</b> is in the payload, at the top of the gantry - pull it and the launch is dead.'],
+    ['Security', 'Two <b>turrets</b> cover the pad\'s approach from the road; <b>cameras</b> watch mission control and the hangar; the director\'s office is <b>maglocked</b>; the blockhouse\'s <b>lights</b> and its <b>alarm</b> are on the same network. The <b>range-safety console</b>, in the room behind the control room, runs them all - and you are issued a <b>hacking kit</b>. The man by the big screen carries the <b>radio</b>; the hangar has an <b>engineer</b> who will put a hacked system back on.'],
     ['Objectives', '<b>Pull the arming unit</b> (the gantry\'s top platform). Take the <b>flight program</b> - the satellite\'s orders - from the director\'s office in mission control. Optionally, stop <b>Director Halvorsen</b>.'],
   ],
-  time: { date: [29, 10, 2026], hour: 21, minute: 10 }, faction: 'red', night: true,
+  time: { date: [29, 10, 2026], hour: 21, minute: 10 }, faction: 'red', night: true, requires: 'HACKKIT',
   atmos: { fog: [0.08, 0.1, 0.16, 60, 420], ambient: [0.26, 0.28, 0.36] },
   startLoadout: { primary: 'K7', backup: 'PX9', utility1: 'FRAG', utility2: 'SMOKE', gear: 'LENSES' },
   extractName: 'the coast road, west', navCap: 120000, testNavCap: 600000, chaseMax: 70,
@@ -137,7 +138,7 @@ export default {
   ],
   guards: [
     { id: 'halvorsen', at: [21, 12, 'G'], arms: 'pistol', rank: 'officer', temper: 'cowardly', name: 'Director Halvorsen', tint: [0.9, 0.95, 1.05] },
-    { id: 'm1', at: [12, 13, 'G'], arms: 'smg' },
+    { id: 'm1', at: [12, 13, 'G'], arms: 'smg', role: 'radio' },
     { id: 'm2', at: [16, 19, 'G'], arms: 'carbine', temper: 'steady' },
     { id: 'm3', at: [12, 20, 'MC'], arms: 'dmr', rank: 'specialist' },
     { id: 'm4', at: [21, 18, 'G'], arms: 'shotgun' },
@@ -147,12 +148,27 @@ export default {
     { id: 'pad1', at: [45, 20, 'G'], route: [[44, 8], [44, 22], [58, 22], [58, 8]], arms: 'carbine' },
     { id: 'pad2', at: [56, 10, 'G'], arms: 'lmg', temper: 'steady' },
     { id: 'h1', at: [14, 40, 'G'], route: [[12, 36], [12, 50], [36, 50], [36, 36]], arms: 'smg' },
-    { id: 'h2', at: [34, 44, 'G'], arms: 'carbine' },
+    { id: 'h2', at: [34, 44, 'G'], arms: 'carbine', role: 'engineer', temper: 'cowardly' },
     { id: 'r1', at: [30, 27, 'G'], route: [[4, 27], [60, 27]], arms: 'carbine' },
     { id: 'r2', at: [32, 14, 'G'], route: [[32, 2], [32, 26]], arms: 'dmr', temper: 'steady' },
   ],
+  // (M6.28, hacking and control) the complex's security, all on one network: two turrets guarding the pad's
+  // approach, cameras in mission control and the hangar, the director's office maglocked, the blockhouse's
+  // lights, its alarm - run from the range-safety console in the back room
+  devices: [
+    { id: 't-pad-n', kind: 'turret', at: [43, 9, 'G'], face: [-1, 0], net: 'teskel' },
+    { id: 't-pad-s', kind: 'turret', at: [43, 21, 'G'], face: [-1, 0], net: 'teskel' },
+    { id: 'c-mc', kind: 'camera', at: [7, 9, 'G'], face: [1, 1], net: 'teskel' },
+    { id: 'c-mc-s', kind: 'camera', at: [17, 21, 'G'], face: [-1, -1], net: 'teskel' },
+    { id: 'c-hangar', kind: 'camera', at: [9, 33, 'G'], face: [1, 1], net: 'teskel' },
+    { id: 'm-office-w', kind: 'lock', at: [18, 12, 'G'], net: 'teskel' },
+    { id: 'm-office-s', kind: 'lock', at: [21, 15, 'G'], net: 'teskel' },
+    { id: 'l-mc', kind: 'lights', at: [17, 10, 'G'], face: [-1, 0], area: [7, 9, 17, 21], name: 'mission control', net: 'teskel' },
+    { id: 'a-mc', kind: 'alarm', at: [12, 21, 'G'], face: [0, -1], net: 'teskel' },
+  ],
   pickups: [{ id: 'program', name: 'The flight program', what: 'the program', at: [22, 11, 'G'], h: 0.9, colour: [0.3, 0.9, 0.7] }],
-  terminals: [{ id: 'arming', name: 'the payload\'s arming unit', at: [RX - 1, RY + 1, 'P3'], face: [1, 0], time: 7, reveal: 20, verb: 'Pull', doing: 'Pulling',
+  terminals: [{ id: 'sec', name: 'the range-safety console', at: [22, 17, 'G'], face: [0, 1], time: 6, net: 'teskel' },
+    { id: 'arming', name: 'the payload\'s arming unit', at: [RX - 1, RY + 1, 'P3'], face: [1, 0], time: 7, reveal: 20, verb: 'Pull', doing: 'Pulling',
     said: 'The arming unit comes out of the payload in your hands - the count stops at T-38 minutes, and the pad\'s cameras put every red on your radar for 20 seconds.' }],
   objectives: [
     { id: 'o1', kind: 'hack', ref: 'arming', text: 'Pull the arming unit (the gantry\'s top platform)' },

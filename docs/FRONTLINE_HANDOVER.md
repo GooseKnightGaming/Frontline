@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.27.0)
+# Frontline — Handover (M6.28.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,48 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.28.0 — hacking and control, the rest (Rhys: "keep building - use your imagination")
+- **Three more devices** (`devices.js`): `lock` (a **maglock** on a door - its leaves become security doors no kick
+  opens; a keypad on the jamb; locked while on, free once hacked; an EMP **burns it open for good**), `lights` (a
+  lighting circuit over an area: out when disabled or taken - in the dark a guard sees only what is close (`darkFor` in
+  guard.js; `ctx.dark` may be a test of the place), and **your screen goes dark there too** (`level.blackout`), night
+  vision or thermal see), and `alarm` (while one is on and live, a shout or a camera sets off **the siren**: every guard
+  of its side, anywhere, comes - `raiseAlarm(..., { everywhere: true })`; then not again for 45 s). The hack's choice now
+  says what each answer does to that network (`modeSays`).
+- **Cameras and turrets can be shot out** (a small target round each head; 12 hp and 70 hp).
+- **Devices on the radar** once you know of them (seen from within 24 m, by EMF, or on a network you hacked): a
+  triangle for a camera, a cross for a turret, a bar for a lock, a ring for lights, a dot for the alarm - coloured red /
+  amber / green / grey (`minimap.js deviceBlip`).
+- **The specialists** (the roadmap's): a guard with `role: 'engineer'` walks to a hacked network's terminal and puts it
+  all back on after 6 s there; `role: 'radio'`, once he has seen you, calls every man of his side in after 6 s unless
+  he is dropped first. One of each in the Facility and the Prison.
+- **Q Branch** (Ghost HQ, E at his bench): sign out one gadget per run (`Saves.loadGadget/saveGadget`), carried on every
+  mission as a Special: the Hacking Kit; the new **Long-Arm Relay** (hack from 10 m, in sight), **Loop Spoofer** (cameras
+  take 3x as long), **Trace Scrambler** (traces 2.5x slower), **Skeleton Card** (a maglock's keypad, 2 s, no trace); the
+  Quick Intel Device; Special Camouflage.
+- **The server room under Yard 7** (off the operations hall's north-east corner): racks, a status board, a **CCTV desk**
+  (the yard from the hangar frame, the HQ door, the hall) and the **security console**. Yard 7's turrets (the two on the
+  hangar frame, and two new ones hung over the hall) are devices now, Ghost's (green). **An intrusion**
+  (`hq_security.js`): after a mission on which you were **traced** (`markIntrusion`), or 8% of the time otherwise, you come
+  home to the reds holding them - you arrive at the foot of the stairs, the hall's turrets fire on you, the operations
+  table will not send you out; hold E at the security console (5 s) to lock them out. `FL.intrude()` starts one.
+- **The debrief**: *Security hacked* (and whether you were traced), *Downed by their own turrets*; two trophies, **Ghost in
+  the Machine** and **Not a Trace: <level>**.
+- Facility: decontamination's two doors maglocked, the main and service corridors' lights, the alarm. Prison: the
+  control room's door maglocked (the kit or the card at its keypad, or blow it), the hall's lights, the alarm.
+- **Two more levels with security systems**: the **Space Port** (pad turrets, cameras in mission control and the hangar,
+  the director's office maglocked, the blockhouse's lights and alarm, the range-safety console) and the **Airport**
+  (cameras over the halls, the VIP lounge maglocked with Rourke's turret inside, the lounge's lights, the alarm, the
+  security office's console). Both issue the kit and have an engineer and a radio operator.
+- **Pinhole cameras** (`hidden: true`): no bracket, not drawn, not known - until EMF shows them. Two in the Facility.
+- During an intrusion the radar's objective diamond points at the security console.
+- **The service record** (the roadmap's "per match and over time"): each run (`Saves.loadRecord/addRecord`) adds up every
+  mission and battle - missions and how they went, battles won, **K/D in battle**, casualties, knockouts, takedowns,
+  accuracy, headshots, times spotted, security hacked, hostages rescued, favourite weapon, time in the field - shown
+  above the trophies in the menu. A battle's debrief now gives its **K/D**.
+- Device drawing moved to `src/game/draw/devices_view.js` (missions and HQ share it). Tests: `devices.test.mjs` (15),
+  `hq.test.mjs` (11).
 
 ## M6.27.0 — hacking and control, first slice (Rhys chose it next; the roadmap's "Hacking and control")
 - **Cameras and turrets** (`src/sim/world/devices.js`, pure): each belongs to a side (`owner`) and a network (`net`).

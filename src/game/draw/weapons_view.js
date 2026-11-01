@@ -457,7 +457,7 @@ export class WeaponView {
     const post = new pc.StandardMaterial();
     post.diffuse = new pc.Color(0.2, 0.22, 0.24); post.update();
     for (const t of world.targets || []) {
-      if (t.guard || t.hostage) continue;   // people are drawn as people, not range boards (hostages too)
+      if (t.guard || t.hostage || t.device) continue;   // (a camera or turret's own target: drawn as itself)   // people are drawn as people, not range boards (hostages too)
       const sx = t.max[0] - t.min[0], sy = t.max[1] - t.min[1], sz = t.max[2] - t.min[2];
       const wide = Math.max(sx, sz);
       // the figure, on a hinge at its feet

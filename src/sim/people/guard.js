@@ -137,6 +137,9 @@ export const LINES = {
   hold: ['Holding here.', 'Hold position!'],
   flashed: ['Argh - my eyes!', 'I can\'t see!', 'Flashbang! I\'m blind!'],
   backup: ['Need backup here!', 'Requesting backup!'],
+  radio: ['Control, contact! All units, converge on my position!', 'Control, we have an intruder - send everyone!'],
+  fixing: ['Someone has been in the security system. Resetting it.', 'The system is down - I will get it back up.'],
+  fixed: ['Security is back online.', 'There. The system is back up.'],
   coming: ['On my way!', 'Coming!'],
   flee: ['I\'m out of here!', 'No - no more!', 'Fall back! Fall back!'],
   // once the building is on alert, the easy-going lines give way to these
@@ -169,8 +172,12 @@ export const YELLOW_LINES = {
 // (Rhys: reds from the bar and the vault's anteroom wandered the coil) a shout about
 // a fight with the Yellows (opts.rival) brings only those on his floor; a shout about you
 // brings men from other floors too - by the stairs, not the coil (answering is not a chase)
+// is it dark at p? ctx.dark: true (the whole place, the hotel's power cut), or (M6.28, a lighting
+// circuit hacked out) a test of the place
+export const darkFor = (ctx, p) => typeof ctx.dark === 'function' ? ctx.dark(p) : !!ctx.dark;
 export function raiseAlarm(guards, from, pos, opts) {
   const rival = !!(opts && opts.rival);
+  const everywhere = !!(opts && opts.everywhere);     // the siren (M6.28): every man of his side, on every floor
   const call = SENSE.call * (RANKS[from.rank] || RANKS.guard).call;
   const answered = [];
   for (const g of guards) {
@@ -181,7 +188,7 @@ export function raiseAlarm(guards, from, pos, opts) {
     // from another floor - he fights whoever comes up
     if ((g.holdFloor || rival) && Math.abs(g.pos[1] - from.pos[1]) > 2.2) continue;
     const reach = call * (TEMPER[g.temper] || TEMPER.bold).answer * (Math.abs(g.pos[1] - from.pos[1]) > 2.2 ? 0.4 : 1);
-    if (Math.hypot(g.pos[0] - from.pos[0], g.pos[2] - from.pos[2]) > reach) continue;
+    if (!everywhere && Math.hypot(g.pos[0] - from.pos[0], g.pos[2] - from.pos[2]) > reach) continue;
     g.awareness = Math.max(g.awareness, 0.7);
     // each takes his own spot round it (Rhys: two guards stood inside each other)
     // the first at the spot, then six round a close ring, then a wider one
@@ -246,6 +253,9 @@ export class Guard {
     // the weapon he carries (and drops): his side's, from Rhys's weapons sheet (sim/arms/issue.js)
     this.item = def.item !== undefined ? def.item : (issued(this.faction, this.armsName, this.id) || (this.arms && this.arms.item) || null);
     this.temper = def.temper || 'bold';
+    // (M6.29, the roadmap's specialists) 'engineer': puts a hacked security system back on, at its
+    // terminal; 'radio': once he has seen you, calls the whole place in unless he is stopped first
+    this.role = def.role || null;
     this.sees = def.sees || null;               // 'nvg' | 'torch' | null: what he sees by in the dark
     this.fleeOn = def.fleeOn || 'hurt';         // a coward runs when hurt - or, some, at the first sign of trouble
     this.pos = def.pos.slice();
@@ -402,7 +412,7 @@ export class Guard {
       if (d > SENSE.range) continue;
       const ang = this.angleTo(p);
       if (ang > SENSE.outer) continue;                  // behind him is behind him (Rhys: no sixth sense)
-      if (ctx.dark && !this.darkSees(d, ang)) continue;
+      if (darkFor(ctx, p) && !this.darkSees(d, ang)) continue;
       if (!this.clearTo(p, d, ctx)) continue;
       const cone = ang < SENSE.inner ? 1 : ang < SENSE.outer ? 0.45 : 0.3;
       const far = Math.max(0.15, Math.min(1.4, 1.4 - d / 20));
@@ -419,7 +429,7 @@ export class Guard {
 
   canSee(p, ctx, range) {
     const d = this.dist3(p), ang = this.angleTo(p);
-    return d < (range || SENSE.range) && ang < SENSE.outer && (!ctx.dark || this.darkSees(d, ang)) && this.clearTo(p, d, ctx);
+    return d < (range || SENSE.range) && ang < SENSE.outer && (!darkFor(ctx, p) || this.darkSees(d, ang)) && this.clearTo(p, d, ctx);
   }
   // in the dark: can he make out something d metres off, ang off his nose?
   darkSees(d, ang) {
@@ -466,7 +476,7 @@ export class Guard {
     if (d > radius) return 0;
     if (d > 0.5 && !this.clearTo(pos, d, ctx)) return 0;
     const facing = this.angleTo(pos) < SENSE.outer ? 1 : 0.55;
-    const t = blind * Math.sqrt(1 - d / radius) * facing * (ctx.dark && this.sees === 'nvg' ? DARK.nvgFlash : 1);
+    const t = blind * Math.sqrt(1 - d / radius) * facing * (darkFor(ctx, this.pos) && this.sees === 'nvg' ? DARK.nvgFlash : 1);
     if (t < 0.4) return 0;
     this.blindT = Math.max(this.blindT || 0, t);
     this.deafT = Math.max(this.deafT || 0, t * 1.3);

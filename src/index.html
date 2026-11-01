@@ -213,6 +213,12 @@
   .ride { margin: 4px 0 10px; display: flex; align-items: center; gap: 8px; }
   .ride .ride-btn { width: auto; flex: 1; margin: 0; padding: 6px 10px; }
   .ride-btn.on { background: #e8b423; color: #111; }
+  #qbranch .card { max-height: 92vh; overflow-y: auto; }
+  #q-list .btn { text-align: left; }
+  #q-list .btn span { display: block; font-size: 12px; opacity: 0.8; font-weight: normal; margin-top: 2px; }
+  #q-list .btn.on { background: #e8b423; color: #111; }
+  .rec-row { display: flex; justify-content: space-between; gap: 12px; padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 14px; }
+  .rec-row b { color: #e8b423; text-align: right; }
 </style>
 </head>
 <body>
@@ -325,6 +331,15 @@
   </div>
 </div>
 
+<div id="qbranch" class="overlay">
+  <div class="card brief-card credits-card">
+    <h2>Q BRANCH</h2>
+    <p class="brief-where">Ghost HQ &middot; the inventor's bench. Sign one gadget out: it goes with you on every mission, as a Special, until you bring it back for another.</p>
+    <div class="tmenu" id="q-list"></div>
+    <button class="btn" id="q-back">Back to HQ</button>
+  </div>
+</div>
+
 <div id="drafts" class="overlay">
   <div class="card brief-card credits-card">
     <h2>FIRST DRAFTS</h2>
@@ -423,6 +438,8 @@
       <button class="btn btn-back">Back</button>
     </div>
     <div class="tab" id="tab-trophies">
+      <h2>SERVICE RECORD</h2>
+      <div id="record-list"></div>
       <h2>TROPHIES</h2>
       <div id="trophy-list"></div>
       <button class="btn btn-back">Back</button>

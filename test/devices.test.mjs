@@ -1,12 +1,14 @@
 // FRONTLINE - hacking and control: cameras, turrets, terminals, the hacking kit, the trace.
 import { buildKitLevel } from '../src/game/levels/kit.js';
 import { DRAFTS } from '../src/game/levels/drafts/index.js';
-import { Device, stepDevice, setMode, Trace, HACK, CAMERA, TURRET } from '../src/sim/world/devices.js';
+import { Device, stepDevice, setMode, Trace, HACK, CAMERA, TURRET, darkAt, sirenFor, syncLocks, modeSays } from '../src/sim/world/devices.js';
+import { raiseAlarm, darkFor } from '../src/sim/people/guard.js';
 import { Guard } from '../src/sim/people/guard.js';
 import { World } from '../src/sim/world/world.js';
 import { pulse } from '../src/sim/arms/emp.js';
 import { ITEMS } from '../src/sim/arms/loadout.js';
 import { readFileSync } from 'fs';
+import { hackTrophies } from '../src/sim/play/mission.js';
 let pass = 0; const fails = [];
 const T = (n, f) => { try { f(); pass++; console.log('  PASS  ' + n); } catch (e) { fails.push(n); console.log('  FAIL  ' + n + ' :: ' + e.message); } };
 const A = (c, m) => { if (!c) throw new Error(m); };
@@ -62,7 +64,7 @@ T('the trace: hacking a network long enough gives you away, once', () => {
 T('the Research Facility: cameras and turrets on one network, and its security terminal', () => {
   const L = buildKitLevel(DRAFTS.find((d) => d.id === 'facility'));
   const cams = L.devices.filter((d) => d.kind === 'camera'), turs = L.devices.filter((d) => d.kind === 'turret');
-  A(cams.length === 5 && turs.length === 2 && L.devices.every((d) => d.net === 'halden' && d.owner === 'red'), 'devices: ' + L.devices.length);
+  A(cams.length === 7 && cams.filter((c) => c.hidden).length === 2 && turs.length === 2 && L.devices.every((d) => d.net === 'halden' && d.owner === 'red'), 'devices: ' + L.devices.length);
   const sec = L.terminals.find((t) => t.id === 'sec');
   A(sec && sec.net === 'halden', 'no security terminal');
   A(L.requires === 'HACKKIT', 'no hacking kit issued');
@@ -76,8 +78,120 @@ T('the Research Facility: cameras and turrets on one network, and its security t
 T('the hacking kit, and the runtime: terminals choose, the kit hacks one, devices drawn, alarm and shots', () => {
   A(ITEMS.HACKKIT && ITEMS.HACKKIT.hackKit && ITEMS.HACKKIT.family === 'perk', 'no hacking kit');
   A(/if \(t\.net\) \{ hackChoice\(netDevices\(t\.net\)/.test(rt), 'terminals do not hack their network');
-  A(/hackChoice\(\[dn\]/.test(rt) && /gearTrait\('hackKit'\)/.test(rt), 'the kit does nothing');
+  A(/hackChoice\(\[dn\]/.test(rt) && /gear\('hackKit'\)/.test(rt), 'the kit does nothing');
   A(/stepDevice\(d, simDt/.test(rt) && /drawDevices\(\)/.test(rt) && /raiseAlarm\(guards, \{ pos: dev\.pos/.test(rt), 'not stepped, drawn, or calling it in');
+});
+
+// ── M6.28: locks, lights, the alarm, the radar ──
+T('a maglock holds its doors while it is on; hacked, or burnt out by an EMP, it lets go', () => {
+  const leaf = { locked: true, blown: false }, leaf2 = { locked: true, blown: false };
+  const lk = new Device({ id: 'm', kind: 'lock', pos: [0, 1.3, 0], doors: [leaf] });
+  A(syncLocks([lk]) === 0 && leaf.locked, 'not held');
+  setMode([lk], 'friendly'); syncLocks([lk]); A(!leaf.locked, 'still locked');
+  setMode([lk], 'on'); syncLocks([lk]); A(leaf.locked, 'not locked again');
+  const lk2 = new Device({ id: 'm2', kind: 'lock', pos: [30, 1.3, 0], doors: [leaf2] });
+  const hit = pulse([0, 1, 0], { devices: [lk, lk2] });
+  syncLocks([lk, lk2]);
+  A(hit.locks === 1 && lk.fried && !leaf.locked && leaf2.locked, 'the EMP: ' + JSON.stringify(hit));
+  run(lk, 30, {}); syncLocks([lk]); A(!leaf.locked, 'a fried lock came back');
+});
+T('lights out: dark where they light, for the guards and in the view - but not elsewhere', () => {
+  const li = new Device({ id: 'l', kind: 'lights', pos: [0, 1.4, 0], area: [[0, -0.5, 0], [10, 3, 4]] });
+  const devs = [li];
+  A(!darkAt(devs, [5, 1, 2]), 'dark while on');
+  setMode(devs, 'off'); A(darkAt(devs, [5, 1, 2]) && !darkAt(devs, [5, 1, 9]), 'not dark where it should be');
+  setMode(devs, 'friendly'); A(!darkAt(devs, [5, 1, 2]), 'reprogrammed lights should stay on');
+  setMode(devs, 'ours'); A(darkAt(devs, [5, 1, 2]), 'taken: yours, and out');
+  const ctx = { dark: (p) => !!darkAt(devs, p) };
+  A(darkFor(ctx, [5, 1, 2]) && !darkFor(ctx, [20, 1, 2]) && darkFor({ dark: true }, [0, 0, 0]) && !darkFor({}, [0, 0, 0]), 'darkFor');
+  // a guard in the lit corridor does not make you out in the dark room 8 m off
+  const w = new World(), g = new Guard(w, { id: 'g', pos: [5, 0, 12], faction: 'red' });
+  g.yaw = 0;
+  const you = { eye: [5, 1.6, 2], chest: [5, 1.1, 2], pos: [5, 0, 2], stance: 0, speed: 1, noise: 0 };
+  A(g.visibility({ you, world: w }) > 0, 'he should see you in the light');
+  A(g.visibility({ you, world: w, dark: ctx.dark }) === 0, 'he sees you in the dark');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
+  A(/dark: level\.dark \? true : dark/.test(rt) && /level\.blackout = dark/.test(rt), 'not wired into the runtime');
+  A(/level\.blackout && level\.blackout\(player\.eyePos\)/.test(readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8')), 'your view does not go dark');
+});
+T('the alarm: while it is on, the siren brings every guard of its side, from anywhere', () => {
+  const w = new World();
+  const near = new Guard(w, { id: 'n', pos: [3, 0, 0], faction: 'red' }), far = new Guard(w, { id: 'f', pos: [120, 4, 60], faction: 'red' });
+  const other = new Guard(w, { id: 'y', pos: [5, 0, 0], faction: 'yellow' });
+  const bell = new Device({ id: 'a', kind: 'alarm', pos: [0, 3, 0], owner: 'red' });
+  A(sirenFor([bell], 'red') === bell && !sirenFor([bell], 'yellow'), 'whose alarm');
+  const shout = raiseAlarm([near, far, other], { pos: [0, 0, 0], rank: 'guard', faction: 'red' }, [0, 0, 0]);
+  A(shout.length === 1, 'a shout carried ' + shout.length);
+  near.state = 'patrol'; near.awareness = 0;
+  const all = raiseAlarm([near, far, other], { pos: [0, 3, 0], rank: 'officer', faction: 'red' }, [0, 0, 0], { everywhere: true });
+  A(all.length === 2 && all.includes(far) && !all.includes(other), 'the siren brought ' + all.length);
+  setMode([bell], 'friendly'); A(!sirenFor([bell], 'red'), 'reprogrammed, it still sounds');
+  bell.mode = 'on'; bell.jammed = 5; A(!sirenFor([bell], 'red'), 'jammed, it still sounds');
+});
+T('the Facility and the Prison: maglocked doors (no kicking them), lights over their areas, an alarm', () => {
+  for (const [id, locks, net] of [['facility', 2, 'halden'], ['prison', 1, 'awing']]) {
+    const L = buildKitLevel(DRAFTS.find((d) => d.id === id));
+    const ls = L.devices.filter((d) => d.kind === 'lock');
+    A(ls.length === locks && ls.every((d) => d.doors.length >= 1 && d.doors.every((q) => q.locked && q.def.maglock && q.def.build === 'reinforced')), id + ': locks not on their doors');
+    const li = L.devices.filter((d) => d.kind === 'lights');
+    A(li.length && li.every((d) => d.area && d.area[1][0] > d.area[0][0] + 10), id + ': no lights');
+    A(L.devices.some((d) => d.kind === 'alarm') && L.devices.every((d) => d.net === net), id + ': no alarm');
+    // the keypad beside the door, not in the middle of it
+    for (const d of ls) { const c = d.doors[0].centre; A(Math.hypot(d.pos[0] - c[0], d.pos[2] - c[2]) > 0.5, id + ': keypad in the doorway'); }
+  }
+});
+T('the choice says what it does; the radar shows the devices you know of, coloured by whose they are', () => {
+  const devs = [new Device({ id: 'c', kind: 'camera', pos: [0, 0, 0] }), new Device({ id: 'l', kind: 'lights', pos: [0, 0, 0] }), new Device({ id: 'm', kind: 'lock', pos: [0, 0, 0] })];
+  A(/lights out/.test(modeSays(devs, 'off')) && /doors unlocked/.test(modeSays(devs, 'off')) && /lights stay on/.test(modeSays(devs, 'friendly')), modeSays(devs, 'off'));
+  const mn = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8'), mm = readFileSync(new URL('../src/game/draw/minimap.js', import.meta.url), 'utf8');
+  A(/kind: 'device', device: d\.kind/.test(mn) && /if \(!d\.known/.test(mn) && /deviceBlip/.test(mm), 'not on the radar');
+  A(/d\.known = true/.test(rt), 'never known');
+});
+
+// ── M6.29: Q Branch's gadgets ──
+T('Q Branch: the Long-Arm Relay, the Loop Spoofer, the Trace Scrambler, the Skeleton Card', () => {
+  for (const id of ['QRELAY', 'QSPOOF', 'QSCRAMBLE', 'QSKELETON']) A(ITEMS[id] && ITEMS[id].family === 'perk' && ITEMS[id].q && ITEMS[id].note, id);
+  A(ITEMS.QRELAY.hackKit && ITEMS.QRELAY.hackReach > HACK.reach, 'the relay does not reach');
+  // the spoofer: a camera takes three times as long
+  const cam = new Device({ id: 'c', kind: 'camera', pos: [0, 2.6, 0], yaw: 0 }); cam.t = 0;
+  let calls = 0; const ctx = { you: you(0, -8), guards: [], alarm: () => calls++, camSlow: ITEMS.QSPOOF.camSlow };
+  run(cam, CAMERA.notice * 2, ctx); A(calls === 0, 'spoofed, it saw you at once');
+  run(cam, CAMERA.notice * 1.3, ctx); A(calls === 1, 'spoofed, it never saw you');
+  A(/gear\('hackReach'\)/.test(rt) && /gear\('traceMul'\)/.test(rt) && /byCard\(dn\)/.test(rt) && /camSlow/.test(rt), 'not wired in');
+  const mn = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8');
+  A(/Saves\.loadGadget\(Saves\.currentSlot\(\)\)/.test(mn) && /at === 'q'\) openQ\(\)/.test(mn) && /Q_GADGETS/.test(mn), 'Q Branch does not sign them out');
+});
+
+// ── M6.29: the specialists ──
+T('the engineer puts a hacked system back on; the radio operator calls the place in', () => {
+  const w = new World();
+  A(new Guard(w, { id: 'e', pos: [0, 0, 0], role: 'engineer' }).role === 'engineer' && new Guard(w, { id: 'g', pos: [0, 0, 0] }).role === null, 'no role');
+  for (const id of ['facility', 'prison']) {
+    const spec = DRAFTS.find((d) => d.id === id);
+    A(spec.guards.some((g) => g.role === 'engineer') && spec.guards.some((g) => g.role === 'radio'), id + ': no specialists');
+  }
+  A(/specialists\(simDt\)/.test(rt) && /g\.role === 'engineer'/.test(rt) && /g\.role !== 'radio'/.test(rt) && /everywhere: true/.test(rt), 'not in the runtime');
+});
+
+T('the debrief: how often you hacked, whether they traced you; and two trophies for it', () => {
+  const won = { done: true, result: 'success' };
+  A(hackTrophies(Object.assign({ turretKills: 1 }, won), 'facility', 'X').some((t) => t.id === 'ghost_in_the_machine'), 'no Ghost in the Machine');
+  A(hackTrophies(Object.assign({ hacked: 3 }, won), 'facility', 'X').some((t) => t.id === 'facility_no_trace'), 'no Not a Trace');
+  A(!hackTrophies(Object.assign({ hacked: 3, traced: true }, won), 'facility', 'X').length && !hackTrophies({ done: true, result: 'failed', turretKills: 2 }, 'f', 'X').length, 'given wrongly');
+  A(/row\('Security hacked'/.test(rt) && /m\.turretKills = \(m\.turretKills \|\| 0\) \+ 1/.test(rt) && /m\.traced = true/.test(rt), 'not counted');
+});
+
+T('every level with a security system: a terminal on its network, its locks on doors, the kit issued', () => {
+  const withDevices = DRAFTS.filter((d) => d.devices && d.devices.length);
+  A(withDevices.length >= 4, withDevices.length + ' levels');
+  for (const spec of withDevices) {
+    const L = buildKitLevel(spec);
+    const nets = new Set(L.devices.map((d) => d.net));
+    for (const n of nets) A(L.terminals.some((t) => t.net === n), spec.id + ': no terminal for ' + n);
+    for (const d of L.devices.filter((q) => q.kind === 'lock')) A(d.doors.length && d.doors.every((q) => q.def.maglock), spec.id + ': ' + d.id + ' on no door');
+    A(L.requires === 'HACKKIT', spec.id + ': no hacking kit');
+    A(spec.guards.some((g) => g.role === 'engineer') && spec.guards.some((g) => g.role === 'radio'), spec.id + ': no specialists');
+  }
 });
 
 console.log(fails.length ? '\nFAILURES (' + fails.length + '):\n' + fails.map((f) => '  * ' + f).join('\n') : '\nALL ' + pass + ' PASSED');

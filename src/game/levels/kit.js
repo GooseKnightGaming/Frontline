@@ -790,21 +790,43 @@ export function buildKitLevel(spec) {
   }
   // ── defence systems (sim/world/devices.js): cameras high on a wall, turrets on a pedestal ──
   //   spec.devices: [{ id, kind: 'camera' | 'turret', at: [x, y, floor], face: [dx, dy] (the way it looks), net, owner }]
+  //   M6.28: kind 'lock' (at: the door's square), 'lights' (at: the panel's square, face: away from its
+  //   wall, area: [x0, y0, x1, y1] the squares it lights, name: where), 'alarm' (at, face: as a camera's)
   level.devices = [];
   for (const d of spec.devices || []) {
     const F = floors[d.at[2] || K0], base = at(d.at[0], d.at[1], d.at[2]), f = d.face || [0, 1], fl = Math.hypot(f[0], f[1]) || 1;
     const yaw = Math.atan2(-f[0] / fl, -f[1] / fl);
-    let pos;
-    if (d.kind === 'camera') {
+    let pos, extra = {};
+    if (d.kind === 'lock') {
+      // a maglock (M6.28): on the door in that square (both leaves of a pair) - a security door now,
+      // no kick will open it; its keypad on the jamb beside it, seen from both sides
+      const c = [mid(d.at[0]), F.y, mid(d.at[1])];
+      const leaves = level.swingDoors.filter((q) => Math.abs(q.def.y0 - F.y) < 0.5 && Math.hypot(q.centre[0] - c[0], q.centre[2] - c[2]) < CELL * 0.95);
+      for (const q of leaves) Object.assign(q.def, { build: 'reinforced', maglock: true, label: 'security door' }), q.locked = true;
+      const q0 = leaves[0];
+      if (q0) {
+        const along = Math.max(...leaves.map((q) => Math.max(q.def.from, q.def.to))) + 0.13;
+        pos = q0.def.plane === 'x' ? [q0.def.at, F.y + 1.3, along] : [along, F.y + 1.3, q0.def.at];
+      } else pos = [c[0], F.y + 1.3, c[2]];
+      extra = { doors: leaves, plane: q0 ? q0.def.plane : 'z' };
+    } else if (d.kind === 'lights' || d.kind === 'alarm') {
+      // a breaker panel at chest height, or the alarm's bell high up: on the wall behind the square
+      const back = CELL * 0.45, y = d.kind === 'alarm' ? F.y + (F.wallH || S.wallH) - 0.5 : F.y + 1.45;
+      pos = [base[0] - f[0] / fl * back, y, base[2] - f[1] / fl * back];
+      if (d.kind === 'lights') {
+        const a = d.area || [d.at[0], d.at[1], d.at[0], d.at[1]];
+        extra.area = [[a[0] * CELL, F.y - 0.5, a[1] * CELL], [(a[2] + 1) * CELL, F.y + (F.wallH || S.wallH), (a[3] + 1) * CELL]];
+      }
+    } else if (d.kind === 'camera') {
       // on the wall behind it, just under the ceiling
       const back = CELL * 0.42, y = F.y + (F.wallH || S.wallH) - 0.35;
       pos = [base[0] - f[0] / fl * back, y, base[2] - f[1] / fl * back];
-      box([pos[0] - 0.06, y + 0.05, pos[2] - 0.06], [pos[0] + 0.06, y + 0.35, pos[2] + 0.06], 'metal', { solid: false });   // its bracket
+      if (!d.hidden) box([pos[0] - 0.06, y + 0.05, pos[2] - 0.06], [pos[0] + 0.06, y + 0.35, pos[2] + 0.06], 'metal', { solid: false });   // its bracket (a pinhole camera has none)
     } else {
       pos = [base[0], F.y + 1.35, base[2]];
       box([base[0] - 0.28, F.y, base[2] - 0.28], [base[0] + 0.28, F.y + 1.05, base[2] + 0.28], 'metal', { tint: [0.4, 0.42, 0.45] });   // its pedestal
     }
-    level.devices.push({ id: d.id, kind: d.kind, pos, yaw, net: d.net || null, owner: d.owner || spec.faction || 'red' });
+    level.devices.push(Object.assign({ id: d.id, kind: d.kind, pos, yaw, net: d.net || null, owner: d.owner || spec.faction || 'red', name: d.name || null, hidden: !!d.hidden }, extra));
   }
   // ── places to reach ──
   for (const r of spec.reach || []) {

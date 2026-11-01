@@ -7,6 +7,9 @@
 //   - the trophy cabinet: what you have earned
 //   - Logistics: a counter where anything unlocked can be drawn, as at the Quartermaster
 //   - Q Branch: the inventor's bench (gadgets, to come)
+//   - (M6.29) the server room, off the hall's north-east corner: the racks, the monitor wall (the
+//     yard's systems, and whose they are), the CCTV desk, and the security console that locks an
+//     intruder out (see hq_security.js) - and the hall's own two turrets, hung from its ceiling
 // and a helipad in the yard. Coming back from a mission (index.html?at=hq) you arrive in the hall.
 
 import { Crate } from '../../sim/arms/loadout.js';
@@ -22,6 +25,10 @@ const PLAN = {
   trophies: [-16, 36.9],                          // the trophy cabinet, along the north wall
   logistics: [-20, 56.6],                         // the counter, along the south wall
   q: [-4.5, 38.5],                                // Q Branch's bench
+  server: { x0: -27, x1: -17.4, z0: 28, z1: 35.6 },  // the server room, north of the hall's far end
+  serverDoor: [-26.2, -24.6],                     // its doorway in the hall's north wall
+  console: [-24, 28.9],                         // the security console, against its north wall
+  cctvDesk: [-19.8, 29.3],                        // the CCTV desk
 };
 const flip = (r) => ({ x0: X(r.x1), x1: X(r.x0), z0: Z(r.z0), z1: Z(r.z1) });
 // where everything is, in the yard
@@ -33,8 +40,15 @@ export const HQ = {
   trophies: [X(PLAN.trophies[0]), Z(PLAN.trophies[1])],
   logistics: [X(PLAN.logistics[0]), Z(PLAN.logistics[1])],
   q: [X(PLAN.q[0]), Z(PLAN.q[1])],
+  server: flip(PLAN.server),
+  console: [X(PLAN.console[0]), Z(PLAN.console[1])],
+  cctvDesk: [X(PLAN.cctvDesk[0]), Z(PLAN.cctvDesk[1])],
   helipad: [-46, 28],                             // on the surface, north-west of the hut
   arrive: { pos: [X(-3), -12, Z(49.5)], yaw: -Math.PI / 2 },   // where you come back in: by the stairs, facing the hall
+  // (M6.29) back to an intrusion: at the foot of the stairs, out of the hall turrets' sight
+  arriveSafe: { pos: [X(5), -12, Z(51)], yaw: -Math.PI / 2 },
+  // the hall's turrets, hung from its ceiling over the south side, looking north across it
+  turrets: [{ id: 'hq-t1', pos: [X(-14), -12 + 3.55, Z(56.5)], yaw: 0 }, { id: 'hq-t2', pos: [X(-23), -12 + 3.55, Z(56.5)], yaw: 0 }],
 };
 
 // the yard's ground, west of the pool, with a hole for the stairwell (it replaces the one solid slab)
@@ -119,7 +133,11 @@ export function buildHQ(level) {
     const top = F + 4;
     box([H.x0 - 0.4, F - 0.4, H.z0 - 0.4], [H.x1 + 0.4, F, H.z1 + 0.4], 'concrete2');              // floor
     box([H.x0 - 0.4, top, H.z0 - 0.4], [H.x1 + 0.4, top + 0.4, H.z1 + 0.4], 'metal');              // ceiling
-    box([H.x0 - 0.4, F, H.z0 - 0.4], [H.x1 + 0.4, top, H.z0], 'wall');                             // north
+    // north, with the server room's doorway at its west (on the plan) end
+    const [sd0, sd1] = PLAN.serverDoor;
+    box([H.x0 - 0.4, F, H.z0 - 0.4], [sd0, top, H.z0], 'wall');
+    box([sd0, F + 2.4, H.z0 - 0.4], [sd1, top, H.z0], 'wall');
+    box([sd1, F, H.z0 - 0.4], [H.x1 + 0.4, top, H.z0], 'wall');
     box([H.x0 - 0.4, F, H.z1], [H.x1 + 0.4, top, H.z1 + 0.4], 'wall');                             // south
     box([H.x0 - 0.4, F, H.z0], [H.x0, top, H.z1], 'wall');                                         // west
     // east: the shaft's own wall where they meet, a wall either side of it
@@ -171,8 +189,38 @@ export function buildHQ(level) {
     box([qx - 2.5, F + 0.95, qz - 0.7], [qx + 2.5, F + 1.0, qz + 0.7], 'metal', { solid: false });
     box([qx - 2.4, F + 1.2, H.z0], [qx + 2.4, F + 2.9, H.z0 + 0.08], 'board', { solid: false });
     for (let i = 0; i < 6; i++) box([qx - 2 + i * 0.75, F + 1.0, qz - 0.3], [qx - 1.7 + i * 0.75, F + 1.0 + 0.12 + (i % 3) * 0.1, qz], i % 2 ? 'metal' : 'lamp', { solid: false });
-    sign(qx, F + 3.3, H.z0 + 0.1, 0, 'Q BRANCH', 'Gadgets - coming soon', 2.4, '#6cc4e8');
+    sign(qx, F + 3.3, H.z0 + 0.1, 0, 'Q BRANCH', 'E at the bench: gadgets', 2.4, '#6cc4e8');
   }
+
+  // ── the server room (M6.29) ─────────────────────────────────────────────
+  {
+    const R = PLAN.server, top = F + 3.2, [sd0, sd1] = PLAN.serverDoor;
+    box([R.x0 - 0.4, F - 0.4, R.z0 - 0.4], [R.x1 + 0.4, F, R.z1], 'concrete2');                    // floor
+    box([R.x0 - 0.4, top, R.z0 - 0.4], [R.x1 + 0.4, top + 0.4, R.z1], 'metal');                    // ceiling
+    box([R.x0 - 0.4, F, R.z0 - 0.4], [R.x1 + 0.4, top, R.z0], 'wall');                             // north
+    box([R.x0 - 0.4, F, R.z0], [R.x0, top, R.z1], 'wall');                                         // west (on the plan)
+    box([R.x1, F, R.z0], [R.x1 + 0.4, top, R.z1], 'wall');                                         // east
+    box([sd1, top, R.z1], [R.x1 + 0.4, F + 4, R.z1 + 0.4], 'wall', { solid: false });               // over its wall to the hall's ceiling
+    // the racks: two rows, their lights in strips down the front
+    for (const z of [31.2, 33.6]) {
+      box([-23.2, F, z - 0.45], [-18.2, F + 2.2, z + 0.45], 'metal');
+      for (let x = -23; x < -18.4; x += 0.62) for (const y of [0.5, 1.1, 1.7]) box([x, F + y, z + 0.46], [x + 0.06, F + y + 0.03, z + 0.47], 'lamp', { solid: false });
+      for (let x = -23; x < -18.4; x += 0.62) for (const y of [0.5, 1.1, 1.7]) box([x + 0.2, F + y, z - 0.47], [x + 0.26, F + y + 0.03, z - 0.46], 'screen', { solid: false });
+    }
+    // the security console and the CCTV desk, under the monitor wall
+    const [cx, cz] = PLAN.console, [vx, vz] = PLAN.cctvDesk;
+    box([cx - 1.2, F, cz - 0.5], [cx + 1.2, F + 0.82, cz + 0.4], 'metal');
+    box([cx - 0.5, F + 0.82, cz - 0.42], [cx + 0.5, F + 0.9, cz - 0.1], 'hazard', { solid: false });   // its lockout key, under a yellow flap
+    box([vx - 0.9, F, vz - 0.4], [vx + 0.9, F + 0.76, vz + 0.4], 'metal');
+    for (const dx of [-0.42, 0.42]) box([vx + dx - 0.3, F + 0.78, vz - 0.05], [vx + dx + 0.3, F + 1.2, vz + 0.02], 'screen', { solid: false });
+    for (let i = 0; i < 6; i++) box([R.x0 + 0.3 + i * 1.2, F + 1.4, R.z0], [R.x0 + 1.3 + i * 1.2, F + 2.0, R.z0 + 0.06], 'screen', { solid: false });
+    sign(sd0 - 0.2 + (sd1 - sd0) / 2, F + 2.75, R.z1 + 0.06, 0, 'SERVER ROOM', 'Yard 7 security', 1.8, '#6cc4e8');
+    // the status board over the console: the yard's systems, and whose they are (hq_security.js fills it)
+    signs.push({ pos: [X(cx), F + 2.55, Z(R.z0 + 0.08)], yaw: 0, w: 3.6, h: 1.12, text: 'YARD 7 SECURITY', sub: '', col: '#7fd07f',
+      board: () => (level.hqBoard ? level.hqBoard() : [['YARD 7 SECURITY', 'GHOST'], ['TURRETS', '4 OK'], ['CAMERAS', 'OK'], ['NETWORK', 'SECURE']]) });
+    light(-22, top - 0.3, 31.8, 9, 0.75);
+  }
+  world.addZone([X(PLAN.server.x1), F - 0.5, Z(PLAN.server.z0)], [X(PLAN.server.x0), F + 3.2, Z(PLAN.server.z1)], 'hq_server', 'Ghost HQ - the server room');
 
   // ── the helipad, in the yard ────────────────────────────────────────────
   {

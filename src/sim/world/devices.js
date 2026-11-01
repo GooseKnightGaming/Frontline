@@ -11,6 +11,14 @@
 //   'friendly'  reprogrammed to ignore you (and still not to fire on its owners)
 //   'ours'      taken over: a turret fires on its owners; a camera stays quiet
 // An EMP (emp.js) puts any of them out for a while (`jammed`).
+// M6.28: three more kinds, which do nothing on their own but say how the place is:
+//   'lock'    a maglock on a door (`doors`, its leaves): locked while it is on and live; disabled,
+//             reprogrammed or taken, it lets go. An EMP fries it open for good (it fails safe).
+//   'lights'  a lighting circuit over an area (`area`, a world box): out when disabled or taken
+//             (yours to keep dark), or a while after an EMP. In the dark a guard sees only what is
+//             close (or what his night vision or torch shows him) - and your own screen goes dark too.
+//   'alarm'   the alarm: while one is on, a shout or a camera that sees you sets off the siren,
+//             and every guard of its side comes. Disabled, reprogrammed or taken, it stays quiet.
 // Pure: no drawing. The runtime steps them and turns what they ask for into alarms and shots.
 
 import { hostileToYou } from '../people/factions.js';
@@ -23,6 +31,7 @@ export const HACK = {
   reach: 2.4,       // how close the kit has to be (across the ground)
   trace: 8,         // seconds of hacking a network before its owners trace it - and come looking (a terminal's 6 s is safe; two devices by kit are not)
 };
+export const SIREN = { again: 45, secs: 5 };   // how long before it can sound again; how long it wails
 export const MODES = {
   off: 'Disable',
   friendly: 'Reprogram: ignore me',
@@ -38,6 +47,11 @@ export class Device {
   constructor(def) {
     this.id = def.id; this.kind = def.kind; this.pos = def.pos.slice();
     this.yaw = def.yaw || 0; this.net = def.net || null; this.owner = def.owner || 'red';
+    this.doors = def.doors || [];           // a lock: the door leaves it holds
+    this.area = def.area || null;           // lights: the box they light [[x0, y0, z0], [x1, y1, z1]]
+    this.name = def.name || null;           // what it is called in the hints (the lights: where)
+    this.fried = false;                     // a lock an EMP has burnt out: open for good
+    this.hidden = !!def.hidden;             // (M6.28) a pinhole camera: seen only by EMF
     this.mode = 'on'; this.jammed = 0;
     this.look = 0;                 // where it points now, off its base yaw
     this.t = Math.random() * 10;   // its own clock, for the idle sweep
@@ -45,7 +59,7 @@ export class Device {
     this.burst = 0; this.gapT = 0; this.pauseT = 0;
     this.spotted = false;          // a camera, the moment it calls the alarm
   }
-  get live() { return this.mode !== 'off' && !(this.jammed > 0); }
+  get live() { return this.mode !== 'off' && !(this.jammed > 0) && !this.fried; }
   get facing() { return this.yaw + this.look; }
   // does it go for you, as things stand?
   againstYou(rel) { return this.mode === 'on' && hostileToYou({ faction: this.owner }, rel); }
@@ -76,12 +90,13 @@ export function stepDevice(dev, dt, ctx) {
   if (dev.cool > 0) dev.cool -= dt;
   if (dev.jammed > 0) dev.jammed = Math.max(0, dev.jammed - dt);
   if (!dev.live) { dev.seenT = 0; dev.target = null; dev.burst = 0; return; }
+  if (dev.kind !== 'camera' && dev.kind !== 'turret') return;     // locks, lights, alarms: only a state
   const you = ctx.you;
   if (dev.kind === 'camera') {
     dev.look = Math.sin(dev.t * CAMERA.sweepRate) * CAMERA.sweep;
     const watching = you && !you.dead && dev.againstYou(ctx.rel) && sees(dev, you.chest, CAMERA.range, CAMERA.half, ctx.world);
     dev.seenT = watching ? dev.seenT + dt : Math.max(0, dev.seenT - dt * 0.5);
-    if (watching && dev.seenT >= CAMERA.notice && dev.cool <= 0) {
+    if (watching && dev.seenT >= CAMERA.notice * (ctx.camSlow || 1) && dev.cool <= 0) {
       dev.cool = CAMERA.again; dev.spotted = true;
       if (ctx.alarm) ctx.alarm(dev, you.pos.slice());
     }
@@ -128,7 +143,7 @@ export function stepDevice(dev, dt, ctx) {
 // a hack's outcome, on one device or a network's every device; returns how many changed
 export function setMode(devices, mode) {
   let n = 0;
-  for (const d of devices) if (d.mode !== mode) { d.mode = mode; d.seenT = 0; d.target = null; d.burst = 0; n++; }
+  for (const d of devices) if (d.mode !== mode && !d.broken) { d.mode = mode; d.seenT = 0; d.target = null; d.burst = 0; n++; }
   return n;
 }
 
@@ -143,4 +158,41 @@ export class Trace {
     return false;
   }
   level(net) { return net ? Math.min(1, (this.t[net] || 0) / HACK.trace) : 0; }
+}
+
+// ── locks, lights, alarms: what they say about the place ──
+// a lock holds its doors while it is on and live
+export const holds = (dev) => dev.kind === 'lock' && dev.mode === 'on' && dev.live;
+// lights are out: disabled or taken over, or jammed a while
+export const lightsOut = (dev) => dev.kind === 'lights' && (dev.mode === 'off' || dev.mode === 'ours' || dev.jammed > 0);
+const within = (b, p) => p[0] >= b[0][0] && p[0] <= b[1][0] && p[1] >= b[0][1] && p[1] <= b[1][1] && p[2] >= b[0][2] && p[2] <= b[1][2];
+// is it dark at p (a circuit over it is out)?
+export function darkAt(devices, p) {
+  for (const d of devices) if (d.kind === 'lights' && d.area && lightsOut(d) && within(d.area, p)) return d;
+  return null;
+}
+// is there an alarm that would sound for this side?
+export function sirenFor(devices, owner) {
+  return devices.find((d) => d.kind === 'alarm' && d.mode === 'on' && d.live && (!owner || d.owner === owner)) || null;
+}
+// set each lock's doors by it: locked while it holds, free once it lets go (a door blown open stays open)
+export function syncLocks(devices) {
+  let changed = 0;
+  for (const d of devices) {
+    if (d.kind !== 'lock') continue;
+    const want = holds(d);
+    for (const leaf of d.doors) if (!leaf.blown && leaf.locked !== want) { leaf.locked = want; changed++; }
+  }
+  return changed;
+}
+// what a hack's choice does to these devices, in words (for the choice itself)
+export function modeSays(devices, mode) {
+  const has = (k) => devices.some((d) => d.kind === k);
+  const bits = [];
+  if (has('camera')) bits.push(mode === 'on' ? '' : mode === 'friendly' ? 'cameras ignore you' : mode === 'ours' ? 'cameras yours' : 'cameras off');
+  if (has('turret')) bits.push(mode === 'friendly' ? 'turrets hold fire on you' : mode === 'ours' ? 'turrets fire on the reds' : 'turrets off');
+  if (has('lock')) bits.push('doors unlocked');
+  if (has('lights')) bits.push(mode === 'friendly' ? 'lights stay on' : 'lights out');
+  if (has('alarm')) bits.push('the alarm silent');
+  return bits.filter(Boolean).join(', ');
 }

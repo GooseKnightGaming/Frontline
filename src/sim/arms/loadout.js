@@ -212,7 +212,12 @@ export const ITEMS = {
   CAMO:     { name: 'Special Camouflage', family: 'perk', kg: 1.0, camo: 0.6, note: 'Harder to see with the naked eye - all the more when prone.' },
   QID:      { name: 'Quick Intel Device', family: 'perk', kg: 0.3, hackSpeed: 2, note: 'Hacking and downloading take half the time.' },
   // (Rhys's roadmap: "taken over at a terminal or with a hacking kit") hold E at a camera or turret, close by
-  HACKKIT:  { name: 'Hacking Kit', family: 'perk', kg: 0.8, hackKit: true, note: 'Hold E at a camera or turret, close by, to disable it, reprogram it to ignore you, or take it over. Slower than a security terminal.' },
+  HACKKIT:  { name: 'Hacking Kit', family: 'perk', kg: 0.8, hackKit: true, note: 'Hold E at a camera, turret, maglock keypad, lighting panel or alarm, close by: disable it, reprogram it to ignore you, or take it over. Slower than a security terminal.' },
+  // (M6.29) Q Branch's gadgets - signed out at his bench in Ghost HQ, carried on every mission as a Special
+  QRELAY:   { name: 'Long-Arm Relay', family: 'perk', kg: 0.9, hackKit: true, hackReach: 10, q: true, note: 'A hacking kit with a dish: hack a camera, turret, lock or panel from up to 10 m away - in sight of it.' },
+  QSPOOF:   { name: 'Loop Spoofer', family: 'perk', kg: 0.4, camSlow: 3, q: true, note: 'Feeds the cameras a loop: they take three times as long to make you out.' },
+  QSCRAMBLE: { name: 'Trace Scrambler', family: 'perk', kg: 0.5, traceMul: 0.4, q: true, note: 'Bounces your hacks round the world: a trace takes two and a half times as long.' },
+  QSKELETON: { name: 'Skeleton Card', family: 'perk', kg: 0.1, maglockCard: true, q: true, note: 'Swipe it at a maglock\'s keypad (hold E, 2 s): the door is yours - quietly, and no trace.' },
   LOCKON:   { name: 'Vehicle Targeting', family: 'perk', lockOn: 45, note: 'Aim a launcher at a vehicle within 45 m: it locks on, and the rocket follows it.' },
   AUTOREPAIR: { name: 'Auto-Repair', family: 'perk', autoRepair: 0.02, note: 'A vehicle you are driving slowly mends itself.' },
   CUSHION:  { name: 'Cushioned Landing', family: 'perk', fallMul: 0.3, note: 'Falls hurt far less.' },

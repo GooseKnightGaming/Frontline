@@ -45,7 +45,7 @@ export function saveSlot(n, data) {
 export function loadSlot(n) { return listSlots()[n]; }
 // erasing a slot ends its run: the save, its story and its trophies
 export function clearSlot(n) {
-  try { for (const k of [KEY(n), STORY(n), TROPHIES(n), ARMOURY(n)]) localStorage.removeItem(k); return true; } catch (e) { return false; }
+  try { for (const k of [KEY(n), STORY(n), TROPHIES(n), ARMOURY(n), GADGET(n), RECORD(n)]) localStorage.removeItem(k); return true; } catch (e) { return false; }
 }
 // the first slot with no run in it, or -1
 export function freeSlot() {
@@ -143,6 +143,32 @@ export const TROPHIES = (n) => 'frontline.trophies.' + n;
 // The weapons a run has brought home (Rhys: "Most new weapons are found/captured in the
 // field. Some are from completing particular missions") - at Logistics and the
 // Quartermaster from then on. Kept per slot, like the story: a mission page writes it.
+// (M6.29) the gadget Q Branch has signed out to this run: carried on every mission as a Special
+const GADGET = (n) => 'frontline.gadget.' + n;
+export function loadGadget(n) { try { return localStorage.getItem(GADGET(n)) || null; } catch (e) { return null; } }
+export function saveGadget(n, id) { try { if (id) localStorage.setItem(GADGET(n), id); else localStorage.removeItem(GADGET(n)); return true; } catch (e) { return false; } }
+// (M6.28) the run's service record: every mission and battle added up (Rhys: "per match and over time")
+const RECORD = (n) => 'frontline.record.' + n;
+export const RECORD_SUMS = ['missions', 'won', 'partial', 'failed', 'battles', 'battlesWon', 'battleKills', 'kills', 'knockouts', 'takedowns', 'deaths', 'shotsFired', 'shotsHit', 'headshots', 'spotted', 'secs', 'hacked', 'traced', 'rescued'];
+export function loadRecord(n) { try { return JSON.parse(localStorage.getItem(RECORD(n)) || 'null') || { favs: {} }; } catch (e) { return { favs: {} }; } }
+// add one mission's or battle's numbers; fav: the weapon it was won with most
+export function addRecord(n, r) {
+  const rec = loadRecord(n);
+  for (const k of RECORD_SUMS) rec[k] = (rec[k] || 0) + (r[k] || 0);
+  rec.favs = rec.favs || {};
+  if (r.fav) rec.favs[r.fav] = (rec.favs[r.fav] || 0) + 1;
+  try { localStorage.setItem(RECORD(n), JSON.stringify(rec)); } catch (e) { /* private window */ }
+  return rec;
+}
+// what it comes to: rates and the favourite
+export function recordSummary(rec) {
+  const fav = Object.entries(rec.favs || {}).sort((a, b) => b[1] - a[1])[0];
+  return {
+    accuracy: rec.shotsFired ? rec.shotsHit / rec.shotsFired : null,
+    kd: rec.battles ? (rec.deaths ? (rec.battleKills || 0) / rec.deaths : null) : null,
+    fav: fav ? fav[0] : null,
+  };
+}
 const ARMOURY = (n) => 'frontline.armoury.' + n;
 export function loadArmoury(n) { try { return JSON.parse(localStorage.getItem(ARMOURY(n)) || '[]') || []; } catch (e) { return []; } }
 export function saveArmoury(n, ids) { try { localStorage.setItem(ARMOURY(n), JSON.stringify(ids || [])); return true; } catch (e) { return false; } }

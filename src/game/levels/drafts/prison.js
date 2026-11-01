@@ -75,7 +75,8 @@ export default {
     ['Inside', 'The reds have bought the governor, <b>Ashdown-Pryce</b>, and the wing\'s officers with him. Ghost\'s <b>Sergeant Venn</b> is on the top tier, east side, under another name. Her cell door opens only from the control room.'],
     ['Objectives', '<b>Hack the control room</b> (first tier, over the entrance): it unlocks every cell door on the wing. <b>Bring Sergeant Venn out</b> (the top tier, east gallery, the middle). Optionally, stop the governor.'],
     ['The cells', 'Barred fronts: you can see in, and shoot through, but not go in - only a few cells have doors.'],
-    ['Security', 'Cameras over the hall, the first tier and the entrance raise the alarm if they see you; a turret covers the lobby. The <b>security terminal</b> in the control room runs them all: hack it (hold E) to disable them, have them ignore you, or turn the turret on the reds. Hack too long and they trace you. Your <b>hacking kit</b> (this mission\'s Special) takes them one at a time, up close.'],
+    ['The specialists', 'The guard in the lobby carries the <b>radio</b>: if he sees you, a few seconds and the whole wing is coming - drop him first. The wing\'s <b>engineer</b> (in the staff room, third tier) goes to the security terminal to put a hacked system back on: stop him, or hack it again.'],
+    ['Security', 'Cameras over the hall, the first tier and the entrance raise the alarm if they see you; a turret covers the lobby. The <b>security terminal</b> in the control room runs them all: hack it (hold E) to disable them, have them ignore you, or turn the turret on the reds. Hack too long and they trace you. Your <b>hacking kit</b> (this mission\'s Special) takes them one at a time, up close. The control room\'s own door is <b>maglocked</b> - use the kit on its keypad, or blow it - the hall\'s <b>lights</b> are on the system too (out, the reds see only what is close), and while the <b>alarm</b> is live one shout sets off the siren for the whole wing.'],
   ],
   time: { date: [24, 10, 2026], hour: 14, minute: 20 }, faction: 'red', requires: 'HACKKIT',
   atmos: { fog: [0.62, 0.64, 0.68, 40, 400], ambient: [0.45, 0.47, 0.52] },
@@ -149,7 +150,8 @@ export default {
     { id: 'c2', at: [36, 44, '1'], arms: 'pistol', temper: 'cowardly' },
     { id: 'h1', at: [31, 22, 'G'], route: [[22, 15], [41, 15], [41, 37], [22, 37]], arms: 'carbine' },
     { id: 'h2', at: [26, 30, 'G'], arms: 'shotgun', temper: 'steady' },
-    { id: 'l1', at: [36, 43, 'G'], arms: 'smg' },
+    { id: 'l1', at: [36, 43, 'G'], arms: 'smg', role: 'radio' },                     // the lobby's radio
+    { id: 'e1', at: [30, 43, '2'], arms: 'pistol', temper: 'cowardly', role: 'engineer' },   // the wing's engineer, in the staff room
     { id: 'y1', at: [30, 51, 'G'], route: [[10, 50], [53, 50]], arms: 'carbine' },
     { id: 'tw1', at: [8, 52, '2'], arms: 'dmr', temper: 'steady' },
     { id: 'tw2', at: [55, 6, '2'], arms: 'dmr', temper: 'steady' },
@@ -165,6 +167,10 @@ export default {
     { id: 'c-tier-e', kind: 'camera', at: [45, 38, '1'], face: [0, -1], net: 'awing' },
     { id: 'c-lobby', kind: 'camera', at: [20, 42, 'G'], face: [1, 0], net: 'awing' },
     { id: 't-lobby', kind: 'turret', at: [47, 43, 'G'], face: [-1, 0], net: 'awing' },
+    // (M6.28) the control room's door maglocked; the hall's lights; the wing's alarm
+    { id: 'm-control', kind: 'lock', at: [31, 41, '1'], net: 'awing' },
+    { id: 'l-hall', kind: 'lights', at: [21, 40, 'G'], face: [0, -1], area: [20, 13, 43, 38], name: 'the hall', net: 'awing' },
+    { id: 'a-bell', kind: 'alarm', at: [33, 40, 'G'], face: [0, -1], net: 'awing' },
   ],
   terminals: [{ id: 'sec', name: 'the security terminal', at: [40, 43, '1'], face: [0, -1], time: 6, net: 'awing' },
     { id: 'control', name: 'the control desk', at: [33, 42, '1'], face: [0, -1], time: 7, reveal: 30,

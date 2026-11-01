@@ -69,9 +69,10 @@ import { bakeWhen, BAKE_AFTER_FRAMES } from '../sim/world/bake.js';
 import { holdLiftFor } from '../sim/people/hostage.js';
 import { DoorMove } from '../sim/world/doors.js';
 import { kickOpens } from '../sim/play/mission.js';
+import { hqSecurity, takeIntrusion } from './levels/hq_security.js';
 import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './core/input.js';
 
-const VERSION = 'M6.27.0';
+const VERSION = 'M6.28.0';
 const $ = (id) => document.getElementById(id);
 const TEST = /[?&]test\b/.test(location.search);
 // Level 0, the training mission, is its own page load: index.html?level=0
@@ -214,9 +215,12 @@ function boot() {
   // with your loadout otherwise") - a level names it in `requires`; a kit that
   // put the parachute in the gear slot hands it over, and wears lenses instead
   let special = level.requires || null;
+  // (M6.29) the gadget Q Branch signed out to this run: a Special on every mission
+  const qGadget = ON_MISSION ? Saves.loadGadget(Saves.currentSlot()) : null;
   if (!special && kit0.gear && ITEMS[kit0.gear] && ITEMS[kit0.gear].chute) { special = kit0.gear; kit0.gear = 'LENSES'; }
   const loadout = new Loadout(Object.fromEntries(Object.entries(kit0).filter(([k]) => k !== 'mods')));
   loadout.special = special;
+  if (qGadget && ITEMS[qGadget] && qGadget !== special) loadout.specials.push(qGadget);
   for (const [slot, mods] of Object.entries(kit0.mods || {})) for (const m of mods) loadout.fit(slot, m);
   // what you carry weighs on you
   // rounds, grenades and mods count - what is actually left of them - and the
@@ -230,8 +234,12 @@ function boot() {
   const arsenal = new Arsenal(level.world, { loadout });
   applyLoad();
   const wview = new WeaponView(pc, app, cam, arsenal);
-  wview.buildSecurity(level.securityTurrets);
   wview.buildTargets(level.world, view.tex);
+  // (M6.29) Ghost HQ's security: Yard 7's turrets as devices of its own (and an intrusion to lock out);
+  // anywhere else, the old watching turrets
+  const hqNote = (text, secs) => { S.noteText = text; S.noteT = secs || 3; };
+  const hqSec = level.hq && !ON_MISSION ? hqSecurity({ pc, app, level, player, audio, note: hqNote }) : null;
+  if (!hqSec) wview.buildSecurity(level.securityTurrets);
   let score = 0, hitMark = 0, blindFlash = 0;
   let openCrate = null, crateSlot = 'primary';
   let course = null;
@@ -730,6 +738,26 @@ function boot() {
     show('assign', true);
   }
   $('assign-back').onclick = () => { show('assign', false); deploy(); };
+  // (M6.29) Q Branch: his gadgets, one signed out to this run at a time
+  const Q_GADGETS = ['HACKKIT', 'QRELAY', 'QSPOOF', 'QSCRAMBLE', 'QSKELETON', 'QID', 'CAMO'];
+  function drawQ() {
+    const have = Saves.loadGadget(slotNo), list = $('q-list');
+    list.innerHTML = '';
+    for (const id of [null].concat(Q_GADGETS)) {
+      const b = document.createElement('button');
+      b.className = 'btn' + ((have || null) === id ? ' on' : '');
+      b.innerHTML = id ? ITEMS[id].name + (ITEMS[id].q ? ' <i>(new)</i>' : '') + '<span>' + (ITEMS[id].note || '') + '</span>' : 'Nothing<span>Go with what the mission and your class give you.</span>';
+      b.onclick = () => { Saves.saveGadget(slotNo, id); audio.confirm(); drawQ(); };
+      list.appendChild(b);
+    }
+  }
+  function openQ() {
+    S.menu = true;
+    if (document.pointerLockElement) document.exitPointerLock();
+    drawQ();
+    show('qbranch', true);
+  }
+  $('q-back').onclick = () => { show('qbranch', false); deploy(); };
   // ── credits ─────────────────────────────────────────────────────────────────
   // the credits: everyone whose work is in the game (a licence condition, and fair)
   $('t-credits').onclick = () => { show('title', false); show('credits', true); };
@@ -804,7 +832,7 @@ function boot() {
     S.cls = cls;
     const base = cls ? cls.kit : kit0;
     if (kit !== false) for (const sl of SLOTS) loadout.put(sl, base[sl] || null, (base.mods || {})[sl] || []);
-    loadout.specials = [special, cls && cls.special].filter(Boolean);
+    loadout.specials = [special, cls && cls.special, qGadget && ITEMS[qGadget] ? qGadget : null].filter((id, i, a) => id && a.indexOf(id) === i);
   };
   if (PICK) {
     const names = { primary: 'Primary', backup: 'Secondary', utility1: 'Utility 1', utility2: 'Utility 2', gear: 'Gear' };
@@ -832,7 +860,7 @@ function boot() {
       }
       $('kit-role').textContent = S.cls ? S.cls.role : 'The kit this mission issues. Choose a class to change it.';
       $('kit-special').innerHTML = loadout.specials.map((id) => '<label><span>Special</span><b>' + ITEMS[id].name + '</b><i>'
-        + (id === special ? 'issued for this mission' : ITEMS[id].note || '') + '</i></label>').join('');
+        + (id === special ? 'issued for this mission' : id === qGadget ? 'from Q Branch - ' + (ITEMS[id].note || '') : ITEMS[id].note || '') + '</i></label>').join('');
       arsenal.ammo = {}; arsenal.reset(loadout); applyLoad();
       const e = loadEffect(loadout.weight(arsenal));
       $('kit-weight').innerHTML = '<b>Weight</b> ' + e.kg.toFixed(1) + ' kg &middot; ' + e.label
@@ -918,6 +946,19 @@ function boot() {
   // only what you have earned: nothing says what else there is
   function drawTrophies() {
     const have = Trophies.earned(slotNo);
+    // (M6.28) the run's service record, over every mission and battle
+    const rec = Saves.loadRecord(slotNo), sum = Saves.recordSummary(rec), rw = (k, v) => '<div class="rec-row"><span>' + k + '</span><b>' + v + '</b></div>';
+    const hrs = Math.floor((rec.secs || 0) / 3600), mins = Math.floor(((rec.secs || 0) % 3600) / 60);
+    $('record-list').innerHTML = (rec.missions || rec.battles) ? rw('Missions', (rec.missions || 0) + (rec.missions ? ' (' + (rec.won || 0) + ' successful, ' + (rec.partial || 0) + ' complete, ' + (rec.failed || 0) + ' failed)' : ''))
+      + (rec.battles ? rw('Battles', rec.battles + ' (' + (rec.battlesWon || 0) + ' won)') + rw('K/D in battle', sum.kd === null ? (rec.deaths ? '0' : 'never fallen') : sum.kd.toFixed(2)) : '')
+      + rw('Enemy casualties', rec.kills || 0) + rw('Knocked out', rec.knockouts || 0) + rw('Takedowns', rec.takedowns || 0)
+      + rw('Accuracy', sum.accuracy === null ? 'no shots fired' : Math.round(sum.accuracy * 100) + '% (' + rec.shotsHit + ' of ' + rec.shotsFired + ')')
+      + rw('Headshots', rec.headshots || 0) + rw('Times spotted', rec.spotted || 0)
+      + (rec.hacked ? rw('Security hacked', rec.hacked + (rec.traced ? ' (traced ' + rec.traced + ')' : '')) : '')
+      + (rec.rescued ? rw('Hostages rescued', rec.rescued) : '')
+      + rw('Favourite weapon', sum.fav === 'knife' ? 'Knife' : sum.fav && ITEMS[sum.fav] ? ITEMS[sum.fav].name : '\u2014')
+      + rw('Time in the field', hrs ? hrs + ' h ' + mins + ' min' : mins + ' min')
+      : '<p>No missions yet.</p>';
     $('trophy-list').innerHTML = have.length
       ? have.map((t) => '<div class="trophy"><b>' + t.name + '</b><i>' + t.about + '</i></div>').join('')
       : '<p>None yet.</p>';
@@ -978,12 +1019,12 @@ function boot() {
     // hotel has a mission runtime now, which had switched these off; and the
     // plain door prompt below never asks whether the door is locked
     const lockedFor = (d) => d && d.locked && !d.open && !d.blown ? d.def.lockedText ? d.def.lockedText : (d.needs && hasKey(d.needs) ? 'E  Unlock it with the ' + keyLabel(d.needs)
-      : d.def.blastDoor ? 'A blast door  -  no charge will move it: its controls will' : d.def.vault && DRAFT ? 'The vault door  -  locked; the security terminal opens it' : d.def.build === 'reinforced' ? 'Reinforced and locked  -  ' + (d.needs ? 'it takes a key, or a breaching charge' : 'a breaching charge will open it') : 'Locked  -  F  Kick it open') : null;
+      : d.def.maglock ? 'A security door  -  maglocked: hack the security system, or blow it' : d.def.blastDoor ? 'A blast door  -  no charge will move it: its controls will' : d.def.vault && DRAFT ? 'The vault door  -  locked; the security terminal opens it' : d.def.build === 'reinforced' ? 'Reinforced and locked  -  ' + (d.needs ? 'it takes a key, or a breaching charge' : 'a breaching charge will open it') : 'Locked  -  F  Kick it open') : null;
     const ldoor = !MISSION && swingDoorNear();
     const lockedTip = lockedFor(ldoor);
     const vn = !player.driving && vehicleNear();
     const mp = (player.driving ? (player.driving.kind === 'boat' ? 'Boat' : 'Driving') + '  ' + player.driving.kmh + ' km/h' + (player.driving.wrecked ? '  -  WRECKED' : '') + '   -   W/S throttle, A/D steer, SPACE brake, E to get out' : null) ||
-      (vn ? (vn.kind === 'boat' ? 'E  Take the helm' : 'E  Get in and drive') : null) || (missionRt && missionRt.prompt()) || (atConsole ? 'E  Watch the CCTV cameras' : null) || hqTip() || keyTip() || intelTip() || noteTip() || safeTip() || stopTip() || liftTip() || lockedTip || chargeTip();
+      (vn ? (vn.kind === 'boat' ? 'E  Take the helm' : 'E  Get in and drive') : null) || (missionRt && missionRt.prompt()) || (atConsole ? 'E  Watch the CCTV cameras' : null) || (hqSec && hqSec.tip()) || hqTip() || keyTip() || intelTip() || noteTip() || safeTip() || stopTip() || liftTip() || lockedTip || chargeTip();
     if (S.visionMsg > 0) S.visionMsg -= 1 / 60;
     S.repackShown = false;                  // set below if repacking is what E would do now
     drawSafeUi();
@@ -1259,7 +1300,9 @@ function boot() {
       canvas.style.filter = df; const ov0 = $('nv'); if (ov0) ov0.style.display = 'none'; return;
     }
     const f = nv ? 'brightness(4.2) contrast(1.25) grayscale(1) sepia(1) hue-rotate(58deg) saturate(2.6)' : ir ? 'grayscale(1) brightness(2.4) contrast(1.2)'
-      : vm === 'thermal' ? 'grayscale(1) brightness(2.2) contrast(0.55)' : vm === 'uv' ? 'brightness(1.6) sepia(1) hue-rotate(215deg) saturate(3.2)' : vm === 'emf' ? 'brightness(1.4) contrast(1.2) saturate(0.35)' : '';
+      : vm === 'thermal' ? 'grayscale(1) brightness(2.2) contrast(0.55)' : vm === 'uv' ? 'brightness(1.6) sepia(1) hue-rotate(215deg) saturate(3.2)' : vm === 'emf' ? 'brightness(1.4) contrast(1.2) saturate(0.35)'
+      // (M6.28) where the lights have been hacked out: dark for you too (night vision or thermal sees)
+      : !watching && S.playing && level.blackout && level.blackout(player.eyePos) ? 'brightness(0.3) saturate(0.5)' : '';
     if (canvas.style.filter !== f) canvas.style.filter = f;
     const ov = $('nv');
     if (ov) ov.style.display = nv ? 'block' : 'none';
@@ -1385,18 +1428,22 @@ function boot() {
     const [ox, oz] = hq.ops, [tx, tz] = hq.trophies;
     const dx = Math.max(0, Math.abs(player.pos[0] - ox) - 2.6), dz = Math.max(0, Math.abs(player.pos[2] - oz) - 1.5);
     if (Math.hypot(dx, dz) < 1.3) return 'ops';
-    if (Math.abs(player.pos[0] - tx) < 6 && player.pos[2] - tz < 2) return 'trophies';
+    if (Math.abs(player.pos[0] - tx) < 6 && player.pos[2] - tz < 2 && player.pos[2] > tz - 0.6) return 'trophies';   // (not through the wall, from the server room)
+    const [qx, qz] = hq.q;
+    if (Math.max(0, Math.abs(player.pos[0] - qx) - 2.4) + Math.max(0, Math.abs(player.pos[2] - qz) - 0.6) < 1.2) return 'q';
     return null;
   }
   function hqTip() {
     const at = hqStation();
-    return at === 'ops' ? 'E  Assignments' : at === 'trophies' ? 'E  The trophy cabinet' : null;
+    return at === 'ops' ? 'E  Assignments' : at === 'trophies' ? 'E  The trophy cabinet' : at === 'q' ? 'E  Q Branch' + (Saves.loadGadget(slotNo) && ITEMS[Saves.loadGadget(slotNo)] ? '  (signed out: ' + ITEMS[Saves.loadGadget(slotNo)].name + ')' : '') : null;
   }
   function hqUse() {
     const at = hqStation();
     if (!at) return false;
+    if (at === 'ops' && hqSec && hqSec.active) { audio.deny(); S.noteText = 'Not with Yard 7 in their hands: lock the intruder out first (the server room, the security console)'; S.noteT = 4; return true; }
     audio.confirm();
     if (at === 'ops') openAssignments();
+    else if (at === 'q') openQ();
     else { openMenu(); tab('trophies'); }
     return true;
   }
@@ -2083,6 +2130,10 @@ function boot() {
     stepRanges(level, player, arsenal, active ? dt : 0, S.rangeT || 0);
     S.aimNow = { aim: !!(lastInput && lastInput.aim), dir: aimDir() };      // for the Yellows: is a gun held on them?
     if (missionRt) missionRt.tick(dt, active ? dt * missionRt.timeScale() : 0, active);
+    if (hqSec) {
+      if (hqSec.pending && S.playing && !S.menu) { hqSec.start(hqSec.pending); hqSec.pending = null; }
+      hqSec.tick(active ? dt : 0, (input.held('interact') && !TEST) || !!S.testHoldE);
+    }
     if (course) {
       const was = course.text;
       if (course.section === 'movement' && player.pos[2] > 10) course.skipSection('movement');
@@ -2162,7 +2213,7 @@ function boot() {
         // an EMP: night vision, torches, turrets and engines out a while, in its reach
         if (ev.emp) {
           const hit = empPulse(ev.pos, { guards: level.guards || [], turrets: level.turrets || [], vehicles: level.world.vehicles || [], devices: level.liveDevices || [] });
-          if (hit.guards + hit.turrets + hit.vehicles + (hit.cameras || 0)) { S.noteT = 3; S.noteText = 'EMP: ' + [hit.guards && hit.guards + ' night vision or torches', hit.cameras && hit.cameras + ' cameras', hit.turrets && hit.turrets + ' turrets', hit.vehicles && hit.vehicles + ' engines'].filter(Boolean).join(', ') + ' out for ' + EMP.secs + ' s'; }
+          if (hit.guards + hit.turrets + hit.vehicles + (hit.cameras || 0) + (hit.lights || 0) + (hit.alarm || 0) + (hit.locks || 0)) { S.noteT = 3; S.noteText = 'EMP: ' + [hit.guards && hit.guards + ' night vision or torches', hit.cameras && hit.cameras + ' cameras', hit.turrets && hit.turrets + ' turrets', hit.vehicles && hit.vehicles + ' engines', hit.lights && 'the lights', hit.alarm && 'the alarm'].filter(Boolean).join(', ') + ' out for ' + EMP.secs + ' s' + (hit.locks ? '; ' + (hit.locks === 1 ? 'a maglock' : hit.locks + ' maglocks') + ' burnt out - open for good' : ''); }
         }
         wview.onBlast(ev.flash ? 0.4 : 1); wview.addBlast(ev); if (ev.flash) blindFlash = 1;
         audio.blast(Math.hypot(ev.pos[0] - player.pos[0], ev.pos[1] - player.pos[1], ev.pos[2] - player.pos[2]), ev.flash);
@@ -2203,6 +2254,7 @@ function boot() {
       const me = { eye: player.eyePos, yaw: input.yaw };
       const found = [];
       (level.world.targets || []).forEach((t, i) => {
+        if (t.device) return;          // a camera or turret: on the radar as a device, below
         if (t.down || (t.guard && t.guard.dormant) || (t.hostage && (t.hostage.state === 'dead' || t.hostage.state === 'rescued'))) { tracker.forget('t' + i); return; }
         // the guard rota from a hacked terminal: every red on the radar while it lasts
         const how = sense(level.world, me, { pos: t.centre, solid: t.solid, loud: t.turret && t.turret.firing ? 1 : 0 }) ||
@@ -2221,10 +2273,15 @@ function boot() {
           const d = Math.hypot(c.pos[0] - player.pos[0], c.pos[2] - player.pos[2]);
           if (d < range) contacts.push({ kind: 'interest', pos: c.pos, live: true });
         }
+        // (M6.28) the defence systems you know of: their colour whose they are, their shape what
+        for (const d of level.liveDevices || []) {
+          if (!d.known || Math.hypot(d.pos[0] - player.pos[0], d.pos[2] - player.pos[2]) >= range) continue;
+          contacts.push({ kind: 'device', device: d.kind, mode: d.live ? d.mode : 'off', pos: d.pos, live: true });
+        }
         Minimap.draw(mapCtx, 170, level, player, {
           yaw: input.yaw, contacts, range,
           label: RADAR_NAMES[settings.mapZoom === undefined ? 1 : settings.mapZoom] + '  ' + range + ' m',
-          objective: zone ? [(zone[0][0] + zone[1][0]) / 2, (zone[0][2] + zone[1][2]) / 2] : missionRt ? missionRt.objectivePos() : null,
+          objective: zone ? [(zone[0][0] + zone[1][0]) / 2, (zone[0][2] + zone[1][2]) / 2] : missionRt ? missionRt.objectivePos() : hqSec && hqSec.active ? level.hq.console : null,
         });
       }
       const h = Minimap.heading(input.yaw);
@@ -2338,8 +2395,12 @@ function boot() {
     if (AT_HQ && level.hq) {
       const saved = Saves.listSlots()[slotNo];
       if (saved) applySave(saved);
-      player.pos = level.hq.arrive.pos.slice(); player.vel = [0, 0, 0];
-      input.yaw = player.yaw = level.hq.arrive.yaw; input.pitch = 0;
+      // (M6.29) an intrusion waiting: at the foot of the stairs, out of the hall turrets' sight
+      const why = hqSec ? takeIntrusion() : null;
+      const at = why ? level.hq.arriveSafe : level.hq.arrive;
+      player.pos = at.pos.slice(); player.vel = [0, 0, 0];
+      input.yaw = player.yaw = at.yaw; input.pitch = 0;
+      if (why) hqSec.pending = why;
       saveNow();
       try { history.replaceState(null, '', location.pathname + (TEST ? '?test' : '')); } catch (e) { /* file:// */ }
     }
@@ -2348,7 +2409,8 @@ function boot() {
 
   // ── test hooks (used by the automated browser tests) ────────────────────
   window.FL = {
-    app, pc, player, level, view, input, settings, S, characterFill,
+    app, pc, player, level, view, input, settings, S, characterFill, hqSec,
+    intrude(why) { if (hqSec) hqSec.start(why || 'test'); return !!hqSec; },
     pose(pos, yaw, pitch) { player.seated = null; player.pos = pos.slice(); player.vel = [0, 0, 0]; player.mode = 'walk'; player.traverse = null; input.yaw = yaw || 0; input.pitch = pitch || 0; player.yaw = input.yaw; },
     drive(inp, seconds) {
       const n = Math.round(seconds / DT);

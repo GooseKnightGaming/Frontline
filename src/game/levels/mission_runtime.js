@@ -2,7 +2,7 @@
 // the terminal, breaching and bullet time, the hints, and the end.
 // main.js calls in at a handful of points; the rules live in src/sim/play/mission.js.
 
-import { Mission, kickOpens, SLOWMO, hotelTrophies, factoryTrophies, casinoTrophies, clearTrophies, awardsButton } from '../../sim/play/mission.js';
+import { Mission, kickOpens, SLOWMO, hotelTrophies, factoryTrophies, casinoTrophies, clearTrophies, hackTrophies, awardsButton } from '../../sim/play/mission.js';
 import { Operative } from '../draw/character.js';
 import { NavGrid } from '../../sim/world/nav.js';
 import { shove, standable, inStreetZone } from '../../sim/people/hostage.js';
@@ -20,7 +20,10 @@ import { inTrain, inCoach, nearestSeat, FLOOR as FLOOR_Y, HIJACK, HIJACK_TALK, S
 import * as Trophies from '../core/trophies.js';
 import * as Saves from '../core/saves.js';
 import { rewardFor } from '../../sim/play/rewards.js';
-import { Device, stepDevice, setMode, Trace, HACK, MODES } from '../../sim/world/devices.js';
+import { deviceView } from '../draw/devices_view.js';
+import { makeTarget } from '../../sim/arms/weapons.js';
+import { markIntrusion } from './hq_security.js';
+import { Device, stepDevice, setMode, Trace, HACK, MODES, SIREN, darkAt, sirenFor, syncLocks, modeSays, lightsOut } from '../../sim/world/devices.js';
 
 
 const RED = [1.9, 0.72, 0.66];          // the reds' uniform: the field kit, tinted
@@ -672,6 +675,7 @@ export function setupMission(ctx) {
   const alarm = (from, pos, opts) => {
     if (neutral(from)) return [];                            // a Yellow at peace with you calls no one about you
     const answered = raiseAlarm(guards, from, pos, opts);
+    if (!(opts && opts.rival)) siren(from.faction, pos);
     if (answered.length) {
       later.push({ t: 1.4, fn: () => bark(from, lineFor('backup'), 'backup') });
       const first = answered.find((g) => g.temper === 'bold') || answered[0];
@@ -682,13 +686,105 @@ export function setupMission(ctx) {
   // ── defence systems: cameras and turrets (sim/world/devices.js) ─────────────────────────────
   const devices = (level.devices || []).map((d) => new Device(d));
   level.liveDevices = devices;                             // (the EMP finds them here)
+  // (M6.28) a camera or turret can be shot out: a small target round its head (no score, not a person)
+  for (const d of devices) {
+    if (d.kind !== 'camera' && d.kind !== 'turret') continue;
+    const r = d.kind === 'camera' ? 0.14 : 0.3;
+    d.shot = makeTarget(level.world, [d.pos[0] - r, d.pos[1] - r * 0.8, d.pos[2] - r], [d.pos[0] + r, d.pos[1] + r * 0.8, d.pos[2] + r], { hp: d.kind === 'camera' ? 12 : 70, score: 0, respawn: 1e9 });
+    d.shot.device = d;
+  }
+  // (M6.29) the specialists: an engineer puts a hacked network back on at its terminal; a radio
+  // operator, once he has seen you, calls the whole place in - unless he is stopped first
+  const SPEC = { fix: 6, radio: 6, order: 3 };
+  const specials = { fixT: {}, sentT: 0, radioed: false };
+  const live = (g) => g && !g.dead && !g.dormant && !(g.target && g.target.down) && g.state !== 'flee';
+  const specialists = (dt) => {
+    specials.sentT -= dt;
+    for (const t of level.terminals || []) {
+      if (!t.net) continue;
+      const net = netDevices(t.net), hacked = net.some((d) => !d.broken && d.mode !== 'on');
+      if (!hacked) { delete specials.fixT[t.net]; continue; }
+      const owner = (net[0] || {}).owner || 'red';
+      const eng = guards.filter((g) => g.role === 'engineer' && g.faction === owner && live(g) && g.state !== 'alert')
+        .sort((a, b) => Math.hypot(a.pos[0] - t.pos[0], a.pos[2] - t.pos[2]) - Math.hypot(b.pos[0] - t.pos[0], b.pos[2] - t.pos[2]))[0];
+      if (!eng) { delete specials.fixT[t.net]; continue; }
+      const at = Math.hypot(eng.pos[0] - t.pos[0], eng.pos[2] - t.pos[2]) < 1.9 && Math.abs(eng.pos[1] - t.pos[1]) < 1.5;
+      if (!at) {
+        delete specials.fixT[t.net];
+        if (specials.sentT <= 0) {
+          specials.sentT = SPEC.order;
+          if (!eng.fixing) { eng.fixing = true; bark(eng, lineFor('fixing'), 'fixing'); showHint('An engineer is on his way to ' + (t.label || 'the security terminal') + ' to put the system back on.'); }
+          eng.stim = [t.pos[0], t.pos[1], t.pos[2]]; eng.since = 0; eng.state = 'search'; eng.stateT = 0; eng.path = null; eng.pursuit = false;
+        }
+        continue;
+      }
+      specials.fixT[t.net] = (specials.fixT[t.net] || 0) + dt;
+      if (specials.fixT[t.net] >= SPEC.fix) {
+        delete specials.fixT[t.net];
+        for (const d of net) if (!d.broken) { d.mode = 'on'; d.owner = owner; d.jammed = 0; }
+        syncLocks(devices); nav.syncDoors(level.swingDoors);
+        t.done = false; eng.fixing = false;
+        bark(eng, lineFor('fixed'), 'fixed');
+        showHint('The engineer has put the security system back on - cameras, turrets' + (net.some((d) => d.kind === 'lock') ? ', locks' : '') + ' and all.');
+      }
+    }
+    // the radio operator: seen you, and still standing - a few seconds and he has called it in
+    for (const g of guards) {
+      if (g.role !== 'radio' || g.radioed) continue;
+      if (!live(g) || g.state !== 'alert') { g.radioT = 0; continue; }
+      if (!g.radioT) { bark(g, lineFor('radio'), 'radio'); showHint('The radio operator is calling it in - stop him!'); }
+      g.radioT = (g.radioT || 0) + dt;
+      if (g.radioT >= SPEC.radio) {
+        g.radioed = true;
+        const came = raiseAlarm(guards, { pos: g.pos, rank: 'officer', faction: g.faction }, player.pos.slice(), { everywhere: true });
+        showHint('He got through. Every ' + (g.faction === 'yellow' ? 'Yellow' : 'red') + ' in the place is coming' + (came.length ? ' - ' + came.length + ' of them.' : '.'));
+      }
+    }
+  };
+  const brokenWatch = () => {
+    for (const d of devices) if (d.shot && d.shot.down && !d.broken) {
+      d.broken = true; d.mode = 'off';
+      showHint((d.kind === 'camera' ? 'Camera' : 'Turret') + ' shot out.');
+      noises.push({ pos: d.pos.slice(), loud: 0.6 });
+    }
+  };
   const trace = new Trace();
   const netDevices = (net) => devices.filter((d) => d.net === net);
+  // (M6.28) the alarm: while one is on, a shout or a camera sets off the siren - and every guard of
+  // its side, anywhere in the place, comes to where you were seen
+  const sir = { cool: 0, t: 0 };
+  const siren = (faction, pos) => {
+    if (!devices.length || sir.cool > 0) return;
+    const bell = sirenFor(devices, faction || null);
+    if (!bell) return;
+    sir.cool = SIREN.again; sir.t = SIREN.secs;
+    const came = raiseAlarm(guards, { pos: bell.pos, rank: 'officer', faction: bell.owner }, pos, { everywhere: true });
+    if (audio.siren) audio.siren(SIREN.secs);
+    showHint('The alarm is sounding - ' + (came.length ? came.length + ' more on the way.' : 'the whole place knows.') + (devices.some((d) => d.kind === 'alarm' && d.net) ? ' (Hack the security system to silence it.)' : ''));
+  };
+  // (M6.28) the lights: where a circuit is out, it is dark - for the guards (only what is close, or
+  // what night vision shows them) and for you (level.blackout: your screen goes dark there too)
+  const dark = devices.some((d) => d.kind === 'lights') ? (p) => !!darkAt(devices, p) : null;
+  level.blackout = dark;
+  const wasOut = new Set();
+  const lightsWatch = () => {
+    for (const d of devices) {
+      if (d.kind !== 'lights') continue;
+      const out = lightsOut(d);
+      if (out && !wasOut.has(d)) {
+        wasOut.add(d);
+        // the guards under it: what was that?
+        for (const g of guards) if (!g.dead && d.area && g.pos[0] >= d.area[0][0] && g.pos[0] <= d.area[1][0] && g.pos[2] >= d.area[0][2] && g.pos[2] <= d.area[1][2] && Math.abs(g.pos[1] - d.area[0][1]) < 3) g.awareness = Math.max(g.awareness || 0, 0.45);
+        showHint('The lights are out' + (d.name ? ' in ' + d.name : '') + '. In the dark they see only what is close.');
+      } else if (!out && wasOut.has(d)) { wasOut.delete(d); showHint('The lights are back on' + (d.name ? ' in ' + d.name : '') + '.'); }
+    }
+  };
   // a camera that sees you calls it in: the guards near it come to where you were
   const deviceAlarm = (dev, pos) => {
     const answered = raiseAlarm(guards, { pos: dev.pos, rank: 'officer', faction: dev.owner }, pos);
     audio.deny && audio.deny();
     showHint('A camera has seen you' + (answered.length ? ' - ' + answered.length + (answered.length === 1 ? ' guard is' : ' guards are') + ' on the way.' : '.'));
+    siren(dev.owner, pos);
   };
   // a turret's round: at you, or (taken over) at a guard
   const deviceShot = (dev, ev) => {
@@ -702,7 +798,7 @@ export function setupMission(ctx) {
       if (ev.hit && !o.dead && !o.target.down) {
         o.target.hp -= ev.damage * GUNFIGHT;
         o.awareness = 1;
-        if (o.target.hp <= 0) { o.target.hp = 0; o.target.down = true; o.target.lethalHit = true; o.target.downBy = 'shot'; }
+        if (o.target.hp <= 0) { o.target.hp = 0; o.target.down = true; o.target.lethalHit = true; o.target.downBy = 'shot'; m.turretKills = (m.turretKills || 0) + 1; }
       }
       return;
     }
@@ -711,61 +807,53 @@ export function setupMission(ctx) {
   // the hack's choice, for a network or one device: disable, reprogram, take control
   const hackChoice = (list, said, then) => {
     audio.confirm();
-    rt.choose('HACKED', said + ' What do you want them to do?', Object.entries(MODES).map(([mode, label]) => [label, () => {
+    rt.choose('HACKED', said + ' What do you want them to do?', Object.entries(MODES).map(([mode, label]) => [label + (modeSays(list, mode) ? '  (' + modeSays(list, mode) + ')' : ''), () => {
       const n = setMode(list, mode);
+      m.hacked = (m.hacked || 0) + 1;
+      for (const d of list) d.known = true;
       if (then) then(mode);
-      showHint(mode === 'off' ? n + ' disabled.' : mode === 'friendly' ? n + ' reprogrammed: they ignore you now.' : n + ' taken over: the turrets fire on their owners.');
+      syncLocks(devices);
+      showHint(mode === 'off' ? n + ' disabled.' : mode === 'friendly' ? n + ' reprogrammed: they ignore you now.' : n + ' taken over' + (list.some((d) => d.kind === 'turret') ? ': the turrets fire on their owners.' : '.'));
     }]), true);
   };
   // the hacking kit: a camera or turret within reach, not already yours
+  // (M6.29) Q's Long-Arm Relay reaches further - in sight of it; his Skeleton Card opens a maglock's keypad
+  const gear = (k) => arsenal && arsenal.loadout && arsenal.loadout.gearTrait(k);
   const deviceNear = () => {
-    if (!(arsenal && arsenal.loadout && arsenal.loadout.gearTrait('hackKit'))) return null;
-    let best = null, bd = HACK.reach;
+    const kit = gear('hackKit'), card = gear('maglockCard');
+    if (!kit && !card) return null;
+    const far = kit ? gear('hackReach') || HACK.reach : HACK.reach;
+    let best = null, bd = far;
     for (const d of devices) {
-      if (d.mode !== 'on' || Math.abs(d.pos[1] - player.pos[1]) > 3.5) continue;
+      if (d.mode !== 'on' || d.broken || Math.abs(d.pos[1] - player.pos[1]) > (far > HACK.reach ? 5 : 3.5)) continue;
+      if (!kit && d.kind !== 'lock') continue;
       const h = Math.hypot(d.pos[0] - player.pos[0], d.pos[2] - player.pos[2]);
-      if (h < bd) { bd = h; best = d; }
+      if (h >= bd) continue;
+      if (h > HACK.reach) {
+        const e = player.eyePos, dx = d.pos[0] - e[0], dy = d.pos[1] - e[1], dz = d.pos[2] - e[2], dd = Math.hypot(dx, dy, dz);
+        const hit = level.world.raycast(e, [dx / dd, dy / dd, dz / dd], dd, (q) => q.person || q.target || q.glass);
+        if (hit && hit.t < dd - 0.5) continue;
+      }
+      bd = h; best = d;
     }
     return best;
   };
-  const deviceName = (d) => d.kind === 'camera' ? 'the camera' : 'the turret';
+  // the card at a maglock: quick, quiet, no trace
+  const byCard = (d) => d && d.kind === 'lock' && gear('maglockCard') && Math.hypot(d.pos[0] - player.pos[0], d.pos[2] - player.pos[2]) < HACK.reach;
+  const deviceName = (d) => ({ camera: 'the camera', turret: 'the turret', lock: 'the maglock', lights: 'the lighting panel' + (d.name ? ' (' + d.name + ')' : ''), alarm: 'the alarm' })[d.kind] || 'the device';
+  level.deviceName = deviceName;
   // the trace: hacking a network long enough tells its owners where you are
   const traced = (net, where) => {
-    if (!trace.add(net, simDtNow)) return;
+    if (!trace.add(net, simDtNow * (gear('traceMul') || 1))) return;
+    markIntrusion('traced');                     // (M6.29) and they know where to find Yard 7 now
+    m.traced = true;
     const answered = raiseAlarm(guards, { pos: where, rank: 'officer', faction: (netDevices(net)[0] || {}).owner || 'red' }, where);
     showHint('Traced! They know where the hack is coming from' + (answered.length ? ' - ' + answered.length + ' on the way.' : '.'));
   };
   let simDtNow = 0;
-  // how they look: a camera body on its bracket, a turret head on its pedestal, each with a light
-  // that says whose it is - red working for them, amber ignoring you, green yours, dark when off
-  const devMat = (r, g, b, glow) => { const mt = new pc.StandardMaterial(); mt.diffuse = new pc.Color(r, g, b); mt.useMetalness = true; mt.metalness = glow ? 0 : 0.5; mt.gloss = 0.5; if (glow) { mt.emissive = new pc.Color(r, g, b); mt.emissiveIntensity = 2.5; } mt.update(); return mt; };
-  const DEV_BODY = devMat(0.18, 0.19, 0.21), DEV_LIGHT = { on: devMat(1, 0.12, 0.08, true), friendly: devMat(1, 0.7, 0.1, true), ours: devMat(0.2, 1, 0.35, true), off: devMat(0.05, 0.05, 0.05) };
-  const devPart = (parent, sx, sy, sz, x, y, z, m) => {
-    const e = new pc.Entity(); e.addComponent('render', { type: 'box', material: m || DEV_BODY, castShadows: false });
-    e.setLocalScale(sx, sy, sz); e.setLocalPosition(x, y, z); parent.addChild(e); return e;
-  };
-  for (const d of devices) {
-    const e = new pc.Entity('device-' + d.id); e.setPosition(d.pos[0], d.pos[1], d.pos[2]); app.root.addChild(e);
-    const head = new pc.Entity(); e.addChild(head);
-    if (d.kind === 'camera') {
-      devPart(head, 0.16, 0.14, 0.34, 0, 0, -0.05);
-      devPart(head, 0.1, 0.1, 0.04, 0, 0, -0.23, devMat(0.05, 0.08, 0.12));
-      d.light = devPart(head, 0.035, 0.035, 0.02, 0.05, 0.05, -0.23, DEV_LIGHT.on);
-    } else {
-      devPart(head, 0.5, 0.32, 0.55, 0, 0, 0);
-      devPart(head, 0.07, 0.07, 0.55, -0.1, -0.02, -0.5); devPart(head, 0.07, 0.07, 0.55, 0.1, -0.02, -0.5);
-      d.light = devPart(head, 0.14, 0.06, 0.02, 0, 0.1, -0.28, DEV_LIGHT.on);
-    }
-    d.head = head;
-  }
-  const drawDevices = () => {
-    for (const d of devices) {
-      if (!d.head) continue;
-      d.head.setLocalEulerAngles(d.kind === 'camera' ? -22 : 0, d.facing * 180 / Math.PI, 0);
-      const want = d.live ? DEV_LIGHT[d.mode] || DEV_LIGHT.on : DEV_LIGHT.off;
-      if (d.light.render.material !== want) d.light.render.material = want;
-    }
-  };
+  // how they look (draw/devices_view.js): each with a light that says whose it is
+  const devView = deviceView(pc, app, devices);
+  const drawDevices = () => devView.draw(S.playing ? S.vision : 'normal');
   const detect = $('detect').getContext('2d');
   // one uniform for the side; the officer's a shade darker; rank in the hat
   const bodies = guards.map((g) => new Operative(pc, app, null,
@@ -1233,7 +1321,7 @@ export function setupMission(ctx) {
       nav.syncDoors(level.swingDoors);          // a locked reinforced door is a wall to guards
       const ctxG = {
         world: level.world, nav, guards, doors: level.swingDoors, bark, alarm, noises, seats: level.seats || null, yellowLines: !!rel,
-        pathBudget: { left: 1 }, dark: !!level.dark, chaseMax: level.chaseMax || 0,
+        pathBudget: { left: 1 }, dark: level.dark ? true : dark || false, chaseMax: level.chaseMax || 0,
         alerted: m.spotted > 0 || m.shotsFired > 0 || m.breaches > 0 || m.kills > 0,
         lastLine,
         smokes: smokes.filter((c) => c.until > m.time),
@@ -1265,11 +1353,32 @@ export function setupMission(ctx) {
       simDtNow = simDt;
       { const tn = terminalNear(); if (tn && !tn.done && input.held('interact') && player.mode !== 'dead' && !S.dialog) { rt.hackT = (rt.hackT || 0) + simDt * ((arsenal && arsenal.loadout && arsenal.loadout.gearTrait('hackSpeed')) || 1); if (tn.net) { traced(tn.net, tn.pos); if (Math.random() < simDt * 1.5) noises.push({ pos: tn.pos, loud: 0.35 }); } if (rt.hackT >= tn.time) { rt.hackT = 0; hacked(tn); } } else if (!tn) rt.hackT = 0; }
       // the hacking kit, at a camera or turret: slower, the same choice for that one
-      { const dn = !terminalNear() && deviceNear(); if (dn && input.held('interact') && player.mode !== 'dead' && !S.dialog) { if (rt.kitDev !== dn) { rt.kitDev = dn; rt.kitT = 0; } rt.kitT += simDt * ((arsenal.loadout.gearTrait('hackSpeed')) || 1); if (dn.net) traced(dn.net, player.pos.slice()); if (rt.kitT >= HACK.kit) { rt.kitT = 0; rt.kitDev = null; hackChoice([dn], 'Hacking kit: ' + deviceName(dn) + '.'); } } else if (!dn) { rt.kitT = 0; rt.kitDev = null; } }
+      { const dn = !terminalNear() && deviceNear(); if (dn && input.held('interact') && player.mode !== 'dead' && !S.dialog) { if (rt.kitDev !== dn) { rt.kitDev = dn; rt.kitT = 0; } const card = byCard(dn); rt.kitT += simDt * ((arsenal.loadout.gearTrait('hackSpeed')) || 1); if (dn.net && !card) traced(dn.net, player.pos.slice()); if (card && rt.kitT >= 2) { rt.kitT = 0; rt.kitDev = null; setMode([dn], 'friendly'); syncLocks(devices); dn.known = true; audio.confirm(); showHint('Skeleton Card: the maglock lets go.'); } else if (!card && rt.kitT >= HACK.kit) { rt.kitT = 0; rt.kitDev = null; hackChoice([dn], (gear('hackReach') ? 'Long-Arm Relay: ' : 'Hacking kit: ') + deviceName(dn) + '.'); } } else if (!dn) { rt.kitT = 0; rt.kitDev = null; } }
       // cameras and turrets
       if (devices.length) {
         const you = { pos: player.pos, chest: [player.pos[0], player.pos[1] + 1.15, player.pos[2]], dead: player.mode === 'dead' };
-        for (const d of devices) stepDevice(d, simDt, { world: level.world, rel, you, guards, alarm: deviceAlarm, shoot: deviceShot });
+        const camSlow = gear('camSlow') || 1;
+        for (const d of devices) stepDevice(d, simDt, { world: level.world, rel, you, guards, alarm: deviceAlarm, shoot: deviceShot, camSlow });
+        brokenWatch();
+        specialists(simDt);
+        if (syncLocks(devices)) nav.syncDoors(level.swingDoors);
+        lightsWatch();
+        if (sir.cool > 0) sir.cool -= simDt;
+        if (sir.t > 0) sir.t -= simDt;
+        // what you know of them, for the radar: seen from near enough, or on a network you have hacked
+        if ((rt.knowT = (rt.knowT || 0) + simDt) > 0.25) {
+          rt.knowT = 0;
+          const eye = player.eyePos;
+          for (const d of devices) {
+            if (d.known) continue;
+            const dx = d.pos[0] - eye[0], dy = d.pos[1] - eye[1], dz = d.pos[2] - eye[2], dd = Math.hypot(dx, dy, dz);
+            if (dd > 24) continue;
+            if (S.vision === 'emf' || dd < 2) { d.known = true; continue; }
+            if (d.hidden) continue;                     // a pinhole camera: only EMF finds it
+            const h = level.world.raycast(eye, [dx / dd, dy / dd, dz / dd], dd, (q) => q.person || q.glass);
+            if (!h || h.t > dd - 0.6) d.known = true;
+          }
+        }
         drawDevices();
       }
       if (job) {
@@ -1670,7 +1779,8 @@ export function setupMission(ctx) {
       }
       if (player.seated) return 'Seated  -  move to stand up';
       const dk = !terminalNear() && deviceNear();
-      if (dk) return rt.kitT > 0 && rt.kitDev === dk ? 'Hacking ' + deviceName(dk) + '...  ' + Math.round(rt.kitT / HACK.kit * 100) + '%' + (dk.net && trace.level(dk.net) > 0 ? '   (trace ' + Math.round(trace.level(dk.net) * 100) + '%)' : '') : 'Hold E  Hack ' + deviceName(dk) + ' (hacking kit)';
+      if (dk && byCard(dk)) return rt.kitT > 0 && rt.kitDev === dk ? 'Swiping the card...  ' + Math.round(rt.kitT / 2 * 100) + '%' : 'Hold E  Swipe the Skeleton Card';
+      if (dk) return rt.kitT > 0 && rt.kitDev === dk ? 'Hacking ' + deviceName(dk) + '...  ' + Math.round(rt.kitT / HACK.kit * 100) + '%' + (dk.net && trace.level(dk.net) > 0 ? '   (trace ' + Math.round(trace.level(dk.net) * 100) + '%)' : '') : 'Hold E  Hack ' + deviceName(dk) + (gear('hackReach') ? ' (Long-Arm Relay)' : ' (hacking kit)');
       const tn = terminalNear();
       if (tn && tn.net && !tn.done && rt.hackT > 0) return 'Hacking ' + (tn.label || 'the security terminal') + '...  ' + Math.round(rt.hackT / tn.time * 100) + '%' + (trace.level(tn.net) > 0 ? '   (trace ' + Math.round(trace.level(tn.net) * 100) + '%)' : '');
       if (tn) { const tnm = tn.label || 'the security terminal'; return tn.done ? tnm[0].toUpperCase() + tnm.slice(1) + ': done' : rt.hackT > 0 ? (tn.doing || 'Hacking') + ' ' + tnm + '...  ' + Math.round(rt.hackT / tn.time * 100) + '%' : 'Hold E  ' + (tn.verb || 'Hack') + ' ' + tnm; }
@@ -1910,6 +2020,7 @@ export function setupMission(ctx) {
       const ok = m.result === 'success';
       // (Rhys: the train makes you wait for its events - "no accolade for quick completion"; none yet)
       const all = L0 ? m.trophies() : B ? [] : level.trainRun ? [] : level.draft ? clearTrophies(m, targets, level.draft, level.title, level.spec.place || 'the ' + level.title, 'enemy') : level.factory ? factoryTrophies(m, guards) : level.casino ? casinoTrophies(m, targets) : hotelTrophies(m, hostages, guards.length);
+      if (devices.length && level.draft) all.push(...hackTrophies(m, level.draft, level.title));
       const fresh = Trophies.earn(all);
       const isNew = new Set(fresh.map((x) => x.id));
       // the enemy's weapons you took and brought out (not when it failed): yours from now on, at Logistics
@@ -1923,6 +2034,12 @@ export function setupMission(ctx) {
       const tick = (b) => b ? '<b class="ok">&#10003;</b>' : '<b class="no">&#10007;</b>';
       const row = (k, v) => '<div>' + k + ' <b>' + v + '</b></div>';
       const fav = m.favourite, favName = fav === 'hands' ? 'Bare hands' : fav === 'knife' ? 'Knife (takedowns)' : (ITEMS[fav] && ITEMS[fav].name) || '\u2014';
+      // (M6.28) onto the run's service record (the Trophies page shows it)
+      if (!rt.recorded) {
+        rt.recorded = true;
+        Saves.addRecord(Saves.currentSlot(), B ? { battles: 1, battlesWon: ok ? 1 : 0, battleKills: m.kills, kills: m.kills, knockouts: m.knockouts, deaths: B.youDown || 0, shotsFired: m.shotsFired, shotsHit: m.shotsHit, headshots: m.headshots, secs: m.time, fav: fav && fav !== 'hands' ? fav : null }
+          : { missions: 1, won: ok ? 1 : 0, partial: m.result === 'partial' ? 1 : 0, failed: m.result === 'failed' ? 1 : 0, kills: m.kills, knockouts: m.knockouts, takedowns: m.takedowns, shotsFired: m.shotsFired, shotsHit: m.shotsHit, headshots: m.headshots, spotted: m.spotted, secs: m.time, hacked: m.hacked || 0, traced: m.traced ? 1 : 0, rescued: hostages.length ? rescued() : 0, fav: fav && fav !== 'hands' ? fav : null });
+      }
       $('mend-title').textContent = 'DEBRIEF';
       { const w = document.querySelector('#mend .brief-where'); if (w) w.innerHTML = L0 ? 'Level 0 &middot; Training Mission' : level.draft ? 'Level ' + level.spec.no + ' &middot; ' + level.title + ' (first draft)' : level.factory ? 'Level 2 &middot; Derelict Factory' : level.casino ? 'Level 3 &middot; Casino' : level.trainRun ? 'Level 4 &middot; The Night Train' : 'Level 1 &middot; Riverside Hotel'; }   // (the train's said the hotel)   // (it said Level 0 at the hotel)
       if (B) $('mend-result').innerHTML = B.retreated ? '<span class="part">WITHDREW</span> &mdash; a battle you leave is neither won nor lost'
@@ -1938,6 +2055,7 @@ export function setupMission(ctx) {
       $('mend-stats').innerHTML =
         row('Time', mm + ':' + ss) +
         row('Enemy casualties', m.kills) +
+        (B ? row('K/D', m.kills + ' / ' + (B.youDown || 0) + (B.youDown ? ' (' + (m.kills / B.youDown).toFixed(2) + ')' : '')) : '') +
         row('Knocked out', m.knockouts) +
         row('Takedowns', m.takedowns) +
         row('Times spotted', m.spotted) +
@@ -1945,6 +2063,8 @@ export function setupMission(ctx) {
         (m.kills ? row('Headshots', m.headshots + ' of ' + m.kills) : '') +
         row('Favourite weapon', favName) +
         row('Doors breached', m.breaches) +
+        (devices.length ? row('Security hacked', (m.hacked || 0) + (m.hacked === 1 ? ' time' : ' times') + (m.traced ? ' &mdash; <span class="no">traced</span>: they know where Yard 7 is' : m.hacked ? ' &mdash; never traced' : '')) : '') +
+        (m.turretKills ? row('Downed by their own turrets', m.turretKills) : '') +
         (earned.length ? row('Weapon earned', ITEMS[earned[0]].name + ' &mdash; at Logistics in Ghost HQ') : '') +
         (homeNew.length ? row('Weapons captured', homeNew.map((id) => ITEMS[id].name).join(', ') + ' &mdash; at Logistics in Ghost HQ') : '') +
         (taken.length && m.result === 'failed' ? row('Weapons captured', 'none brought home') : '') +

@@ -104,6 +104,8 @@ export function draw(ctx, size, level, player, opts) {
     const wary = c.state === 'suspicious' || c.state === 'search';
     // a Yellow at peace with you: yellow, a diamond
     if (c.kind === 'neutral') { blip(p, '#f2d43a', 'diamond'); continue; }
+    // (M6.28) a camera, turret, lock, lighting panel or alarm: small, coloured by whose it is
+    if (c.kind === 'device') { ctx.globalAlpha = 0.9; deviceBlip(ctx, p, c.device, DEVICE_COLOURS[c.mode] || DEVICE_COLOURS.on); ctx.globalAlpha = 1; continue; }
     const colour = c.kind === 'ally' ? COLOURS.ally : c.kind === 'enemy' ? (c.how === 'heat' ? COLOURS.heat : wary ? '#e8b423' : c.state === 'alert' ? '#ff3030' : COLOURS.enemy) : COLOURS.interest;
     if (c.state === 'alert' && !remembered) { ctx.strokeStyle = '#ff3030'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(p[0], p[1], 7, 0, Math.PI * 2); ctx.stroke(); }
     if (c.kind === 'ally') blip(p, colour, 'chevron');
@@ -145,4 +147,18 @@ export function heading(yaw) {
   if (deg < 0) deg += 360;
   const names = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
   return { deg: Math.round(deg) % 360 || 0, name: names[Math.round(deg / 45) % 8] };
+}
+
+// the defence systems (M6.28): red working for them, amber ignoring you, green yours, grey off
+export const DEVICE_COLOURS = { on: '#ff5040', friendly: '#f0b030', ours: '#50e070', off: '#6a7078' };
+// a camera a small triangle (its lens), a turret a cross, a lock a bar, the lights a ring, the alarm a dot
+export function deviceBlip(ctx, p, kind, colour) {
+  ctx.fillStyle = colour; ctx.strokeStyle = colour; ctx.lineWidth = 1.4;
+  ctx.save(); ctx.translate(p[0], p[1]);
+  if (kind === 'camera') { ctx.beginPath(); ctx.moveTo(0, -3.5); ctx.lineTo(3.2, 2.8); ctx.lineTo(-3.2, 2.8); ctx.closePath(); ctx.fill(); }
+  else if (kind === 'turret') { ctx.beginPath(); ctx.moveTo(-3.5, -3.5); ctx.lineTo(3.5, 3.5); ctx.moveTo(3.5, -3.5); ctx.lineTo(-3.5, 3.5); ctx.stroke(); }
+  else if (kind === 'lock') ctx.fillRect(-1.5, -3.5, 3, 7);
+  else if (kind === 'lights') { ctx.beginPath(); ctx.arc(0, 0, 3, 0, Math.PI * 2); ctx.stroke(); }
+  else { ctx.beginPath(); ctx.arc(0, 0, 2.2, 0, Math.PI * 2); ctx.fill(); }
+  ctx.restore();
 }
