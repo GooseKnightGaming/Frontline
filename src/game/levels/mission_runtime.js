@@ -1098,7 +1098,7 @@ export function setupMission(ctx) {
     g.stripped = true; rt.disguise = g.faction; audio.pickup(); disguiseTag();
     showHint('His uniform: from a way off, the ' + (g.faction === 'yellow' ? 'Yellows' : 'reds') + ' take you for one of them. Close to, they look twice - officers from further. Do not crouch or run; a shot gives you away.');
   };
-  const dropDisguise = (why) => { if (!rt.disguise) return; rt.disguise = null; if (why) showHint(why); disguiseTag(); };
+  const dropDisguise = (why) => { if (!rt.disguise) return; rt.disguise = null; rt.disguiseBlown = true; if (why) showHint(why); disguiseTag(); };
   // a small tag on the screen while you wear one
   const disguiseTag = () => {
     let el = document.getElementById('disguise-tag');
@@ -2173,6 +2173,8 @@ export function setupMission(ctx) {
       // (Rhys: the train makes you wait for its events - "no accolade for quick completion"; none yet)
       const all = L0 ? m.trophies() : B ? [] : level.trainRun ? [] : level.draft ? clearTrophies(m, targets, level.draft, level.title, level.spec.place || 'the ' + level.title, 'enemy') : level.factory ? factoryTrophies(m, guards) : level.casino ? casinoTrophies(m, targets) : hotelTrophies(m, hostages, guards.length);
       if (devices.length && level.draft) all.push(...hackTrophies(m, level.draft, level.title));
+      // (M6.30) in a mission begun in disguise, the whole of it without anyone seeing through it
+      if (level.spec && level.spec.startDisguise && !rt.disguiseBlown && (m.result === 'success' || m.result === 'partial')) all.push({ id: level.draft + '_plain_sight', name: 'In Plain Sight: ' + level.title, about: 'Done in disguise, from the door and back - no one saw through it.' });
       // (Level 35) LANTERN turned round: no trace finds Yard 7 again, this run
       if (level.draft === 'listening' && m.result !== 'failed' && (level.terminals || []).some((q) => q.id === 'mainframe' && q.done)) downLantern(Saves.currentSlot());
       const fresh = Trophies.earn(all);
@@ -2254,5 +2256,7 @@ export function setupMission(ctx) {
       ctx.endMission();
     },
   };
+  // (M6.30) a mission that starts you in their uniform (spec.startDisguise)
+  if (level.spec && level.spec.startDisguise) { rt.disguise = level.spec.startDisguise; later.push({ t: 0.5, fn: () => disguiseTag() }); }
   return rt;
 }

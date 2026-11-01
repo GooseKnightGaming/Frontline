@@ -26,6 +26,10 @@ game into the repository's root.
   off (`DISGUISE` in guard.js: 0.12 of what they would); within 4 m (an officer, 8) they look twice; crouching or running
   makes it worse; cameras of his side take four times as long. A shot (a suppressed one only if it hits someone), or one
   of them going for you, ends it.
+- **Level 40, the Embassy** (`drafts/embassy.js`, built round the disguise): the reds' embassy on its reception night; you
+  go in already in a red officer's uniform (`spec.startDisguise`), with a suppressed pistol, smoke and remote cameras. The
+  reception hall, the cipher room and the ambassador's office (both maglocked) upstairs, the security room and archive
+  below; a dog on the back gate. A trophy, **In Plain Sight**, for doing it with no one seeing through the disguise.
 - **The Snake Camera** (Q Branch, `QSNAKE`; the roadmap's "peeking under or through" a door): crouched at a shut door, E
   slides a camera under it - the other side, through the CCTV view (the mouse looks about); E or moving stops it.
 
