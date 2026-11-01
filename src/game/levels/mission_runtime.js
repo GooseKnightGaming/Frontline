@@ -2282,6 +2282,9 @@ export function setupMission(ctx) {
       // (Rhys: the train makes you wait for its events - "no accolade for quick completion"; none yet)
       const all = L0 ? m.trophies() : B ? [] : level.trainRun ? [] : level.draft ? clearTrophies(m, targets, level.draft, level.title, level.spec.place || 'the ' + level.title, 'enemy') : level.factory ? factoryTrophies(m, guards) : level.casino ? casinoTrophies(m, targets) : hotelTrophies(m, hostages, guards.length);
       if (devices.length && level.draft) all.push(...hackTrophies(m, level.draft, level.title));
+      // (M6.33) the end of the case: Kaldberg done
+      if (level.spec && level.spec.epilogue && (m.result === 'success' || m.result === 'partial')) all.push({ id: 'case_closed', name: 'Case Closed', about: 'From the first clue to the council at Kaldberg: the reds\' council, on tape.' });
+      if (level.spec && level.spec.epilogue && m.result === 'success' && guards.some((g) => g.tied)) all.push({ id: 'kaldberg_rope', name: 'Tied Up Loose Ends', about: 'At Kaldberg, a man held up, questioned - and tied.' });
       // (M6.30) in a mission begun in disguise, the whole of it without anyone seeing through it
       if (level.spec && level.spec.startDisguise && !rt.disguiseBlown && (m.result === 'success' || m.result === 'partial')) all.push({ id: level.draft + '_plain_sight', name: 'In Plain Sight: ' + level.title, about: 'Done in disguise, from the door and back - no one saw through it.' });
       // (Level 35) LANTERN turned round: no trace finds Yard 7 again, this run
@@ -2331,7 +2334,10 @@ export function setupMission(ctx) {
           '<div>' + tick(ok) + ' Get back to the van</div>'
         // each hostage by name, and the captain: what became of them
         : rules.lines(rt.outcome || outcome()).map((l) => '<div>' + (l.neutral ? '<span style="color:#9aa">\u2013</span>' : tick(l.ok)) + ' ' + l.text + '</div>').join('');
+      // (M6.33) a mission that ends a story says how it ended
+      const epi = level.spec && level.spec.epilogue && m.result !== 'failed' ? level.spec.epilogue[m.result === 'success' ? 'success' : 'partial'] : null;
       $('mend-stats').innerHTML =
+        (epi ? '<div style="font-style:italic;line-height:1.5;margin:0 0 10px;color:#e8d9a8">' + epi + '</div>' : '') +
         row('Time', mm + ':' + ss) +
         row('Enemy casualties', m.kills) +
         (B ? row('K/D', m.kills + ' / ' + (B.youDown || 0) + (B.youDown ? ' (' + (m.kills / B.youDown).toFixed(2) + ')' : '')) : '') +

@@ -30,13 +30,13 @@ Version numbers are **M‹milestone›.‹feature›.‹patch›**.
   `{ thermal: true }` and reports `heat`, which the radar draws orange; the
   one-wall-deep rule goes in there. Rhys: what you see on thermal shows on the
   radar while you can see it, then fades to a last-known mark.
-- **Firing modes**: 0 cycles auto → burst → single where a weapon has them.
+- **Firing modes**: 0 cycles auto → burst → single where a weapon has them. (Done, M6.33.0.)
 - **Scope view** through optics; specialist night/thermal scopes.
 - **Camera follows movement**: hold a direction and the view turns towards it.
 - **Body clipping** when swimming, prone and on ladders.
-- **Weapon stats sheet**, as a side document like the controls page.
+- **Weapon stats sheet**, as a side document like the controls page. (Done, M6.32.0: weapons.html.)
 - **Character in the pause menu**, showing the loadout.
-- **Glass that breaks**: panes currently let rounds through but stay whole.
+- **Glass that breaks**: panes currently let rounds through but stay whole. (Done for kit windows, M6.33.0.)
   Belongs with the physics sessions (ragdoll, trajectories, impact force).
 
 ## After the character swap (done in M5.16.0)
@@ -300,7 +300,7 @@ facades arrived in M6.0.4); ceiling tiles; glass that breaks.
 - **Tactical takedown**: quiet and unseen, from behind — lethal and
   non-lethal. **Taught in a mission, not in training**: it needs a person to
   creep up on, and plastic targets will not do.
-- **Dialogue**: 2–4 options per exchange; one NPC in Yard 7 to start.
+- **Dialogue**: 2–4 options per exchange; one NPC in Yard 7 to start. (Questioning a held-up man, M6.32.0.)
 - **Weapons taken from downed enemies.**
 - Uniform variety from Rhys's sheets (Ghost Squad, police, military, criminal,
   civilian); the 21 Quaternius characters share one skeleton and animations.

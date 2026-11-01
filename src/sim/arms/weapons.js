@@ -228,6 +228,27 @@ export class Arsenal {
     return true;
   }
   get weapon() { return this.current ? this.def(this.current) : null; }
+  // (M6.33; the roadmap's "firing modes: 0 cycles auto - burst - single where a weapon has them") an automatic
+  // gun fires full-auto, three-round bursts or single rounds; a burst gun (the V-27C), bursts or single rounds.
+  // Beams, launchers and the rest have one way of firing. Remembered a weapon at a time.
+  modesOf(id) {
+    const w = this.def(id || this.current);
+    if (!w || w.kind !== 'gun' || w.energy || w.launcher || w.beam) return ['single'];
+    if (w.auto) return ['auto', 'burst', 'single'];
+    if (w.burst) return ['burst', 'single'];
+    return ['single'];
+  }
+  modeOf(id) { const ms = this.modesOf(id); const m = (this.fireModes || {})[baseId(id || this.current)]; return ms.includes(m) ? m : ms[0]; }
+  cycleMode() {
+    const ms = this.modesOf(); if (ms.length < 2) return false;
+    this.fireModes = this.fireModes || {};
+    const next = ms[(ms.indexOf(this.modeOf()) + 1) % ms.length];
+    this.fireModes[baseId(this.current)] = next; this.burstLeft = 0;
+    this.events.push({ type: 'firemode', id: this.current, mode: next });
+    return true;
+  }
+  // full-auto now: the trigger held keeps it firing
+  get autoNow() { const w = this.weapon; return !!(w && (w.auto && (w.energy || w.beam || w.launcher || this.modeOf() === 'auto'))); }
   get ammoNow() { return this.ammo[this.current] || null; }
 
   select(id) {
@@ -316,10 +337,15 @@ export class Arsenal {
       return null;
     }
     a.mag--;
-    if (w.burst) {
-      this.burstLeft = cont ? this.burstLeft - 1 : w.burst - 1;
+    const mode = this.modeOf();
+    const burstN = mode === 'single' ? 0 : w.burst ? w.burst : mode === 'burst' ? 3 : 0;
+    if (burstN) {
+      this.burstLeft = cont ? this.burstLeft - 1 : burstN - 1;
       if (a.mag <= 0) this.burstLeft = 0;
-      this.cool = this.burstLeft > 0 ? w.burstGap : w.rate;
+      // a burst from an automatic: its own rate between rounds, then a beat before the next
+      this.cool = this.burstLeft > 0 ? (w.burstGap || w.rate) : (w.burst ? w.rate : Math.max(w.rate * 3, 0.24));
+    } else if (mode === 'single' && w.burst) {
+      this.cool = Math.max(w.rate * 0.6, 0.12);
     } else {
       this.cool = w.rate;
       // (Rhys: the MP2 - "single-shots... from a machinegun?") a machine

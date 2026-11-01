@@ -73,8 +73,9 @@ import { hqSecurity, takeIntrusion } from './levels/hq_security.js';
 import { effects as skillEffects, SKILLS, pointsLeft, train as trainSkill, XP } from '../sim/play/skills.js';
 import { CASE, CASE_NEEDS, FINAL, caseOpen } from '../sim/play/caseboard.js';
 import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './core/input.js';
+import { isTouchDevice, touchControls } from './core/touch.js';
 
-const VERSION = 'M6.32.0';
+const VERSION = 'M6.34.0';
 const $ = (id) => document.getElementById(id);
 const TEST = /[?&]test\b/.test(location.search);
 // Level 0, the training mission, is its own page load: index.html?level=0
@@ -1027,7 +1028,9 @@ function boot() {
     if ($('app').style.filter !== filt) $('app').style.filter = filt;
     // weapon panel
     const w = arsenal.weapon, am = arsenal.ammoNow;
-    $('w-name').textContent = w ? w.name : '';
+    // (M6.33) the firing mode, where it has more than one
+    const fms = w ? arsenal.modesOf() : [];
+    $('w-name').textContent = w ? w.name + (fms.length > 1 ? '  [' + arsenal.modeOf().toUpperCase() + ']' : '') : '';
     // an energy weapon: its heat, not its rounds
     $('w-ammo').textContent = !am ? '\u2014' : am.count !== undefined ? String(am.count)
       : w && w.energy ? (arsenal.reloading > 0 ? 'COOLING' : 'HEAT ' + Math.round((1 - am.mag / w.mag) * 100) + '%')
@@ -1163,6 +1166,18 @@ function boot() {
   // (not over another screen: the mission's debrief lets go of the mouse too -
   // and the pause menu used to cover it, which is why Rhys never saw it)
   input.onUnlock = () => { if (player.mode !== 'dead' && !openCrate && !S.menu && !S.dialog) openMenu(); };
+  // (M6.34) a touch screen: no mouse to capture - the screen is the controls (core/touch.js)
+  let touch = null;
+  if (isTouchDevice() && !TEST) {
+    S.touch = true; S.dragLook = true; input.locked = true;
+    input.requestLock = () => { input.locked = true; };
+    touch = touchControls(input, {
+      active: () => S.playing && !S.menu && !openCrate && !S.dialog && player.mode !== 'dead',
+      onMenu: () => { if (S.playing && !S.menu) openMenu(); },
+      swap: () => { const prim = loadout && loadout.keyOf('primary'); input.pressed.add(arsenal.current && arsenal.current === prim ? 'slot2' : 'slot1'); },
+    });
+    document.body.classList.add('touch');
+  }
   document.addEventListener('pointerlockerror', () => {
     // some browsers (or embedded pages) refuse mouse capture: fall back to drag-to-look
     S.dragLook = true; input.locked = true;
@@ -2114,9 +2129,10 @@ function boot() {
         } else { const c = crateNear(); if (c) showCrate(c); else if ((level.remoteCams || []).length) viewRemote(0); }
       }
       if (inp.reloadPressed) arsenal.reload();
+      if (inp.firemodePressed) arsenal.cycleMode();
       // firing: a single press for everything except the rifle, which holds
       // a burst, once begun, fires its rounds by itself
-      const wantFire = arsenal.burstLeft > 0 || (arsenal.weapon && arsenal.weapon.auto ? inp.fire : inp.firePressed);
+      const wantFire = arsenal.burstLeft > 0 || (arsenal.autoNow ? inp.fire : inp.firePressed);
       // F at a shut door on a mission is a kick; anywhere else, a strike
       if (inp.bashPressed) { if (!((missionRt && missionRt.kick()) || (!MISSION && kickDoor()))) arsenal.bash(player.eyePos, aimDir()); }
       else if (wantFire && player.mode !== 'dead' && player.mode !== 'traverse') {
@@ -2259,6 +2275,17 @@ function boot() {
         S.noteT = 3; audio.confirm();
       }
       if (ev.type === 'lure') audio.lure(Math.hypot(ev.pos[0] - player.pos[0], ev.pos[1] - player.pos[1], ev.pos[2] - player.pos[2]));
+      // (M6.33) a window pane a round goes through: ordinary glass shatters, toughened at its third - and the noise
+      if (ev.type === 'pierce' && ev.solid && ev.solid.pane && !ev.solid.pane.hidden) {
+        const pn = ev.solid.pane, dist = Math.hypot(ev.point[0] - player.pos[0], ev.point[2] - player.pos[2]);
+        pn.hits++;
+        if (pn.hits >= pn.takes) {
+          pn.hidden = true; ev.solid.disabled = true;
+          audio.glassware(dist); audio.glassware(dist * 0.6);
+          if (missionRt && MISSION) missionRt.hear({ type: 'lure', pos: pn.pos, noise: 0.9 });
+          shards(pn.pos);
+        } else audio.glassware(dist);
+      }
       if (ev.type === 'pierce' && ev.solid && ev.solid.glassware) audio.glassware(Math.hypot(ev.point[0] - player.pos[0], ev.point[2] - player.pos[2]));
       if (missionRt && ev.type === 'shot') missionRt.fired(ev);
       if (ev.type === 'shot') { audio.shot(arsenal.weapon); if (ev.hit) { if (ev.hit.target) audio.hitFlesh(); else audio.hitHard(ev.hit.dist, surfaceOf(ev.hit.solid)); } }
@@ -2268,6 +2295,7 @@ function boot() {
       }
       if (ev.type === 'draw' && arsenal.weapon && arsenal.weapon.kind === 'melee') audio.drawKnife();
       if (ev.type === 'empty') audio.dryFire();
+      if (ev.type === 'firemode') audio.click();
       if (ev.type === 'reload') audio.reload('start');
       if (ev.type === 'reloaded' || ev.type === 'autoreload') audio.reload('done');
       if (ev.type === 'roundIn') audio.roundIn();                 // a round into the revolver's cylinder
@@ -2396,6 +2424,7 @@ function boot() {
     for (const d of level.swingDoors || []) d.step(dt);
     if (view.tickSwingDoors) view.tickSwingDoors();
     if (view.tickProps) view.tickProps();
+    if (touch) touch.tick();
     if (level.lift) level.lift.alpha = S.alpha;     // drawn in step with you
     if (level.helicopter) level.helicopter.t += dt;   // its rotor turns, it bobs
     if (view.tickMovers) view.tickMovers();
@@ -2403,6 +2432,17 @@ function boot() {
     S.doorMsg = Math.max(0, (S.doorMsg || 0) - dt);
     if (missionRt) missionRt.draw(dt);
     wview.tickTargets(dt, player.eyePos);
+    // (M6.33) a broken pane's shards, falling
+    if (S.shards && S.shards.length) {
+      for (const k of S.shards) {
+        k.t += dt; k.v[1] -= 9.8 * dt;
+        k.p[0] += k.v[0] * dt; k.p[1] += k.v[1] * dt; k.p[2] += k.v[2] * dt;
+        if (k.p[1] < k.floor) { k.p[1] = k.floor; k.v = [0, 0, 0]; }
+        k.e.setPosition(k.p[0], k.p[1], k.p[2]); k.e.rotate(k.spin * dt, k.spin * 0.7 * dt, 0);
+        if (k.t > 6) k.e.destroy();
+      }
+      S.shards = S.shards.filter((k) => k.t <= 6);
+    }
     // (M6.30) weather: rain or wind - its sound, duller indoors; rain falling about you where you are open to the sky
     if (level.weather && S.playing) {
       S.wxT = (S.wxT || 0) - dt;
@@ -2556,6 +2596,20 @@ function boot() {
   }
 
   // ── test hooks (used by the automated browser tests) ────────────────────
+  // (M6.33) the shards of a broken pane: a handful of glints, falling to the floor either side of the sill
+  let shardMat = null;
+  function shards(pos) {
+    if (!shardMat) { shardMat = new pc.StandardMaterial(); shardMat.diffuse = new pc.Color(0.7, 0.85, 0.9); shardMat.emissive = new pc.Color(0.25, 0.3, 0.32); shardMat.opacity = 0.6; shardMat.blendType = pc.BLEND_NORMAL; shardMat.depthWrite = false; shardMat.update(); }
+    S.shards = S.shards || [];
+    const floor = pos[1] - 1.65;
+    for (let i = 0; i < 16; i++) {
+      const e = new pc.Entity('shard'); e.addComponent('render', { type: 'box', material: shardMat, castShadows: false });
+      const sz = 0.03 + Math.random() * 0.07; e.setLocalScale(sz, 0.004, sz * (0.5 + Math.random()));
+      app.root.addChild(e);
+      const p = [pos[0] + (Math.random() - 0.5) * 1.2, pos[1] + (Math.random() - 0.5) * 1.1, pos[2] + (Math.random() - 0.5) * 1.2];
+      S.shards.push({ e, p, v: [(Math.random() - 0.5) * 2.4, Math.random() * 1.2, (Math.random() - 0.5) * 2.4], floor, spin: 200 + Math.random() * 400, t: 0 });
+    }
+  }
   window.FL = {
     app, pc, player, level, view, input, settings, S, characterFill, hqSec,
     intrude(why) { if (hqSec) hqSec.start(why || 'test'); return !!hqSec; },

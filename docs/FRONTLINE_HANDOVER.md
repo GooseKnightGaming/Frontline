@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.32.0)
+# Frontline — Handover (M6.34.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,27 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.34.0 — touch controls, Kaldberg's ending
+- **Touch controls** (`src/game/core/touch.js`; Rhys could not play on his phone): on a touch screen (`pointer: coarse`,
+  or `?touch=1` to force it, `?touch=0` to refuse) there is no pointer lock - `input.requestLock` just says locked, and
+  drag-look is on. A stick wherever your left thumb lands (left 42% of the screen; pushed to its edge, forward, you
+  sprint), look by dragging on the right, FIRE (which looks as you drag it), JUMP, DUCK, E, R, AIM (a toggle), F; along
+  the top II (the menu), 1/2, Z, X, MODE, V, MAP. Each button holds its action's first bound key in `input.down` and
+  counts as a press, so hold-E and hold-Z work. Shown only while playing; "turn your phone sideways" in portrait. The
+  radar is smaller and the weapon panel moves to the bottom middle (`body.touch`). `test/touch.test.mjs`.
+- **Kaldberg's ending**: a draft's `epilogue: { success, partial }` heads its debrief. Trophies: Case Closed (Kaldberg
+  done), Tied Up Loose Ends (a man questioned and tied there).
+
+## M6.33.0 — firing modes, glass that breaks
+- **Firing modes** (the roadmap's "0 cycles auto - burst - single"): `Arsenal.modesOf/modeOf/cycleMode/autoNow` in
+  weapons.js. An automatic: auto, three-round bursts (its own rate between rounds, then a beat), single. A burst gun (the
+  V-27C): bursts, single. Beams, launchers, pistols: one way. Remembered a weapon at a time; shown on the HUD by the
+  weapon's name ([AUTO]); the key is 0 (a binding, `firemode`). Default modes are what each fired before.
+- **Glass that breaks** (the roadmap's): every kit window (`W`) is a pane of its own (`level.panes`, `level.paneN`,
+  its solid's `.pane`; drawn as a prop piece so it can vanish). A round of yours through it: ordinary glass shatters at
+  the first, toughened at the third, bulletproof never. Broken: its solid `disabled` (rounds, looks and you go through -
+  over the sill), a crash (heard by the guards, as a lure), shards falling either side. `test/glass.test.mjs`.
 
 ## M6.32.0 — questioning, the weapons sheet
 - **Questioning** (the roadmap's "dialogue: 2-4 options an exchange"): a held-up man, E, is now an exchange (the `choose`

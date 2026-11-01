@@ -14,6 +14,11 @@ export default {
     ['Security', 'All of it, run from the security room: cameras (and pinholes - EMF), lasers across the gallery, the two maglocks, turrets on the drive, the great hall\'s lights, the alarm. A <b>radio</b>, an <b>engineer</b>, a <b>medic</b>, a <b>shield</b> at the study door, a <b>marksman</b> on the gallery, two <b>dogs</b> on the drive, a <b>reserve</b> in the garage. The Chairman carries a keycard.'],
     ['Objectives', '<b>Record the council</b> (the terminal on the gallery over the great hall). Take the <b>strike order</b> from the Chairman\'s study. Optionally, stop <b>the Chairman</b>. Out by the helipad on the ridge.'],
   ],
+  // (M6.33) how the case ends (the debrief)
+  epilogue: {
+    success: 'The tape goes out at dawn - every name on it, every order. By noon the guidance units are seized at the border, the embassy on Linden Row is closed, and the strike force for the twenty-first never leaves its barracks. The council at Kaldberg will not meet again. Case closed.',
+    partial: 'You are out, and the council will never sit easy at Kaldberg again. But not everything came home with you - and somewhere, men with money and a strike force are counting what they still have. The case is not quite closed.',
+  },
   time: { date: [20, 12, 2026], hour: 23, minute: 0 }, night: true, faction: 'red', requires: 'HACKKIT', startGear: 'MULTIVIS', weather: 'snow',
   atmos: { fog: [0.6, 0.63, 0.7, 30, 220], ambient: [0.36, 0.38, 0.46] },
   extractName: 'the helipad on the ridge', extract: { x: 27, y: 3, floor: 'G' },

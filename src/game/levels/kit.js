@@ -282,6 +282,7 @@ export function buildKitLevel(spec) {
     if (opts.solid !== false) s = world.addSolid(min, max, opts.tag || mat, { noClimb: opts.noClimb, glass: opts.glass, shootThrough: opts.shootThrough, tough: opts.tough });
     return opts.wantSolid ? s : p;
   };
+  const panes = level.panes = [];
   const mid = (i) => (i + 0.5) * CELL;
   const floors = spec.floors;
   const keys = Object.keys(floors).sort((a, b) => floors[a].y - floors[b].y);
@@ -388,7 +389,13 @@ export function buildKitLevel(spec) {
         box([min[0], min[1], min[2]], [max[0], y0 + 1.0, max[2]], wallMat, { tint: F.wallTint });
         // (Rhys: Rusk "behind bulletproof glass") ordinary glass: a round goes through it (F.glassTough: tougher)
         const tg = F.glassTough === undefined ? 0 : F.glassTough;
-        box([min[0], y0 + 1.0, min[2]], [max[0], y0 + 2.3, max[2]], tg >= 3 ? 'glassB' : tg >= 1 ? 'glassT' : 'glass', { glass: true, tough: tg });
+        // (M6.33; the roadmap's "glass that breaks") a pane of its own: ordinary glass shatters at the first round
+        // through it, toughened at the third; bulletproof never. A broken pane is a way through, over the sill.
+        const pg = box([min[0], y0 + 1.0, min[2]], [max[0], y0 + 2.3, max[2]], tg >= 3 ? 'glassB' : tg >= 1 ? 'glassT' : 'glass', { glass: true, tough: tg, wantSolid: true });
+        if (tg < 3 && pg) {
+          const name = 'pane' + panes.length, pane = { solid: pg, takes: tg >= 1 ? 3 : 1, hits: 0, hidden: false, pos: [(min[0] + max[0]) / 2, y0 + 1.65, (min[2] + max[2]) / 2] };
+          pg.pane = pane; panes.push(pane); level[name] = pane; pieces[pieces.length - 1].prop = name;
+        }
         // bulletproof glass sits in a heavy steel frame
         if (tg >= 3) { const along = max[0] - min[0] > max[2] - min[2]; for (const yy of [y0 + 1.0, y0 + 2.22]) box([min[0] - (along ? 0 : 0.03), yy, min[2] - (along ? 0.03 : 0)], [max[0] + (along ? 0 : 0.03), yy + 0.08, max[2] + (along ? 0.03 : 0)], 'metal', { tint: [0.25, 0.27, 0.28], solid: false }); }
         box([min[0], y0 + 2.3, min[2]], [max[0], max[1], max[2]], wallMat, { tint: F.wallTint });

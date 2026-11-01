@@ -1101,6 +1101,31 @@ T('the Revolver: loaded a round at a time - each heard - and a press mid-load fi
   A(/w && w\.revolver &&/.test(au) && /roundIn\(\) \{/.test(au) && /ev\.type === 'roundIn'\) audio\.roundIn\(\)/.test(main), 'no revolver sounds');
   A(/wview\.onShot\(arsenal\.weapon && arsenal\.weapon\.recoil/.test(main), 'the kick is the same for every gun');
 });
+// (M6.33) firing modes: 0 cycles auto - burst - single
+T('firing modes: an automatic cycles auto, burst, single; a burst gun burst, single; a pistol has one', () => {
+  const a = new Arsenal(range(), { loadout: new Loadout({ primary: 'K7', backup: 'V27C' }), start: 'K7' });
+  A(a.modesOf().join() === 'auto,burst,single' && a.modeOf() === 'auto' && a.autoNow, 'K7: ' + a.modesOf());
+  A(a.cycleMode() && a.modeOf() === 'burst' && !a.autoNow, 'to burst');
+  // a burst: three rounds from one press, and no more
+  runA(a, 1); const m0 = a.ammoNow.mag;
+  a.fire([0, 1.6, 0], N, { fresh: true });
+  for (let i = 0; i < 40; i++) { runA(a, DT); if (a.burstLeft > 0) a.fire([0, 1.6, 0], N, {}); }
+  A(m0 - a.ammoNow.mag === 3, 'a burst is three rounds: ' + (m0 - a.ammoNow.mag));
+  A(a.cycleMode() && a.modeOf() === 'single', 'to single');
+  const m1 = a.ammoNow.mag; a.fire([0, 1.6, 0], N, { fresh: true }); runA(a, 0.5);
+  A(m1 - a.ammoNow.mag === 1 && a.burstLeft === 0, 'single is one round');
+  A(a.cycleMode() && a.modeOf() === 'auto', 'round to auto');
+  a.cycleMode(); a.select('V27C');
+  A(a.modesOf().join() === 'burst,single' && a.modeOf() === 'burst', 'V-27C: ' + a.modesOf());
+  a.cycleMode(); A(a.modeOf() === 'single', 'V-27C single');
+  const m2 = a.ammoNow.mag; runA(a, 1); a.fire([0, 1.6, 0], N, { fresh: true }); runA(a, 0.5);
+  A(m2 - a.ammoNow.mag === 1, 'the V-27C on single fires one');
+  a.select('K7'); A(a.modeOf() === 'burst', 'remembered a weapon at a time');
+  const p = new Arsenal(range(), { loadout: new Loadout({ backup: 'PX9' }), start: 'PX9' });
+  A(p.modesOf().join() === 'single' && !p.cycleMode(), 'a pistol has one way of firing');
+  const main = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8');
+  A(/arsenal\.autoNow \? inp\.fire : inp\.firePressed/.test(main) && /firemodePressed\) arsenal\.cycleMode\(\)/.test(main), 'wired to the key');
+});
 console.log('\n' + '='.repeat(50));
 console.log(fails.length ? 'FAILURES (' + fails.length + '):\n' + fails.map((f) => '  * ' + f).join('\n') : 'ALL ' + pass + ' PASSED');
 process.exit(fails.length ? 1 : 0);

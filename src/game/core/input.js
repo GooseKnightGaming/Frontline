@@ -6,7 +6,7 @@
 export const ACTIONS = [
   ['forward', 'Move forward'], ['back', 'Move back'], ['left', 'Move left'], ['right', 'Move right'],
   ['jump', 'Jump / vault / climb'], ['sprint', 'Sprint'], ['crouch', 'Crouch / dive'],
-  ['interact', 'Interact'], ['reload', 'Reload'], ['equipment', 'Equipment'], ['command', 'Command wheel'],
+  ['interact', 'Interact'], ['reload', 'Reload'], ['firemode', 'Firing mode: auto / burst / single'], ['equipment', 'Equipment'], ['command', 'Command wheel'],
   ['aim', 'Aim / focus'], ['vision', 'Vision mode: normal / night vision (thermal, UV, EMF - coming)'],
   ['use1', 'Use Utility 1 (tap: throw / place / use; hold: set off what you placed)'], ['use2', 'Use Utility 2 (tap: throw / place / use; hold: set off what you placed)'],
   ['detonate', 'Set off placed charges (the kind in your hand)'],
@@ -17,7 +17,7 @@ export const ACTIONS = [
 export const DEFAULT_BINDINGS = {
   forward: ['KeyW', 'ArrowUp'], back: ['KeyS', 'ArrowDown'], left: ['KeyA', 'ArrowLeft'], right: ['KeyD', 'ArrowRight'],
   jump: ['Space'], sprint: ['ShiftLeft', 'ShiftRight'], crouch: ['KeyC'],
-  interact: ['KeyE'], reload: ['KeyR'], equipment: ['KeyG'], command: ['KeyQ'],
+  interact: ['KeyE'], reload: ['KeyR'], firemode: ['Digit0'], equipment: ['KeyG'], command: ['KeyQ'],
   // (Rhys: "Z and X ... trigger them independently") Z and X use what is in
   // utility slots 1 and 2 without putting your weapon away; holding one sets off what you placed
   aim: ['AltLeft', 'AltRight'], vision: ['KeyV'], use1: ['KeyZ'], use2: ['KeyX'], detonate: [],
@@ -77,6 +77,7 @@ export class Input {
     this.capture = null;            // callback while rebinding a key
     this.onUnlock = null;
     this.debugPressed = false;
+    this.touchMove = null;          // (M6.34) the touch stick: { x, z, sprint }
 
     window.addEventListener('keydown', (e) => this.keyDown(e), true);
     window.addEventListener('keyup', (e) => this.keyUp(e), true);
@@ -164,16 +165,18 @@ export class Input {
     this.mouse.dx = 0; this.mouse.dy = 0;
     const crouch = this.held('crouch');   // presses cycle stance in the simulation
     const out = {
-      moveX: (this.held('right') ? 1 : 0) - (this.held('left') ? 1 : 0),
-      moveZ: (this.held('forward') ? 1 : 0) - (this.held('back') ? 1 : 0),
+      // (M6.34) the touch stick adds to the keys (touch.js)
+      moveX: Math.max(-1, Math.min(1, (this.held('right') ? 1 : 0) - (this.held('left') ? 1 : 0) + (this.touchMove ? this.touchMove.x : 0))),
+      moveZ: Math.max(-1, Math.min(1, (this.held('forward') ? 1 : 0) - (this.held('back') ? 1 : 0) + (this.touchMove ? this.touchMove.z : 0))),
       jump: this.held('jump'), jumpPressed: this.pressed.has('jump'),
-      sprint: this.held('sprint'), sprintPressed: this.pressed.has('sprint'), crouch,
+      sprint: this.held('sprint') || !!(this.touchMove && this.touchMove.sprint), sprintPressed: this.pressed.has('sprint'), crouch,
       crouchCycle: true, crouchPressed: this.pressed.has('crouch'),
       aim: this.held('aim') || this.mouse.aimButton,
       fire: this.mouse.fire, firePressed: this.mouse.firePressed,
       visionPressed: this.pressed.has('vision'),
       interactPressed: this.pressed.has('interact'),
       reloadPressed: this.pressed.has('reload'),
+      firemodePressed: this.pressed.has('firemode'),
       bashPressed: this.pressed.has('bash'),
       detonatePressed: this.pressed.has('detonate'),
       mapPressed: this.pressed.has('map'),
