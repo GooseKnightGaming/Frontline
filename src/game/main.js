@@ -2094,6 +2094,12 @@ function boot() {
         settings.mapZoom = z; saveSettings(settings); S.mapT = 1;
         $('map-wrap').style.display = settings.map ? 'block' : 'none';
       }
+      // (M6.52) a whistle: a little noise where you are - the nearest of them who hears it comes to look (once in
+      // three seconds; not much use once they are already after you)
+      if (inp.whistlePressed && (S.whistleT || 0) <= S.time && player.mode !== 'dead') {
+        S.whistleT = S.time + 3; audio.whistle();
+        if (missionRt && missionRt.hear) missionRt.hear({ type: 'lure', pos: player.pos.slice(), noise: 0.45 });
+      }
       // (M6.49) the mission map: B (or PLAN) shows the floor plan of where you are
       if (inp.planPressed) {
         if (!level.plan) { S.noteText = 'No map of this place'; S.noteT = 2; }

@@ -37,5 +37,6 @@ W('E  Open the door  (hold E: slip through and shut it)', 'E  Open the door  (ho
 W('Cameras, Carbines and CCTV: a Clear Case', 'Cameras, Carbines and CCTV: a Clear Case');
 W('', '');
 ok(/g\.state === 'alert' && g\.faction !== 'yellow'/.test(main), 'auto-fire only at a man already fighting you, never a Yellow');
+ok(/inp\.whistlePressed/.test(main) && /type: 'lure', pos: player\.pos\.slice\(\), noise: 0\.45/.test(main), 'the whistle draws them as a lure would');
 console.log(bad ? `${bad} of ${n} FAILED` : `ALL ${n} PASSED`);
 if (bad) process.exit(1);

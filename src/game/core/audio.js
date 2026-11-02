@@ -351,6 +351,8 @@ export class Audio {
     this.burst({ length: 0.12, from: 1000, to: 360, gain: g * 0.9, q: 3, delay: 0.22 });
     this.tone({ wave: 'sawtooth', from: 400, to: 250, length: 0.11, gain: g * 0.3, delay: 0.22 });
   }
+  // (M6.52) a whistle: two notes, the second rising
+  whistle() { this.tone({ wave: 'sine', from: 1500, to: 1650, length: 0.16, gain: 0.07 }); this.tone({ wave: 'sine', from: 1300, to: 1900, length: 0.24, gain: 0.07, delay: 0.2 }); }
   bite() { this.burst({ length: 0.25, from: 300, to: 120, gain: 0.18, q: 2 }); this.burst({ length: 0.05, from: 2500, gain: 0.2, q: 1, delay: 0.2 }); }
   // the alarm (M6.28): a two-tone wail, rising and falling, for secs
   siren(secs) {

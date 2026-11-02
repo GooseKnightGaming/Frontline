@@ -10,7 +10,7 @@ export const ACTIONS = [
   ['aim', 'Aim / focus'], ['vision', 'Vision mode: normal / night vision (thermal, UV, EMF - coming)'],
   ['use1', 'Use Utility 1 (tap: throw / place / use; hold: set off what you placed)'], ['use2', 'Use Utility 2 (tap: throw / place / use; hold: set off what you placed)'],
   ['detonate', 'Set off placed charges (the kind in your hand)'],
-  ['bash', 'Strike with the weapon'], ['map', 'Radar: range / off'], ['plan', 'Mission map: on / off'],
+  ['bash', 'Strike with the weapon'], ['map', 'Radar: range / off'], ['plan', 'Mission map: on / off'], ['whistle', 'Whistle (the nearest of them comes to look)'],
   ['mapIn', 'Radar: closer'], ['mapOut', 'Radar: wider'],
   ['slot1', 'Primary'], ['slot2', 'Secondary'], ['slot3', 'Utility 1'], ['slot4', 'Utility 2'], ['slot5', 'Gear'],
 ];
@@ -21,7 +21,7 @@ export const DEFAULT_BINDINGS = {
   // (Rhys: "Z and X ... trigger them independently") Z and X use what is in
   // utility slots 1 and 2 without putting your weapon away; holding one sets off what you placed
   aim: ['AltLeft', 'AltRight'], vision: ['KeyV'], use1: ['KeyZ'], use2: ['KeyX'], detonate: [],
-  bash: ['KeyF'], map: ['KeyM'], plan: ['KeyB'], mapIn: ['Comma'], mapOut: ['Period'],
+  bash: ['KeyF'], map: ['KeyM'], plan: ['KeyB'], whistle: ['KeyT'], mapIn: ['Comma'], mapOut: ['Period'],
   slot1: ['Digit1'], slot2: ['Digit2'], slot3: ['Digit3'], slot4: ['Digit4'], slot5: ['Digit5'],
 };
 // Keys we refuse to bind: the browser or the operating system owns them.
@@ -181,7 +181,7 @@ export class Input {
       firemodePressed: this.pressed.has('firemode'),
       bashPressed: this.pressed.has('bash'),
       detonatePressed: this.pressed.has('detonate'),
-      mapPressed: this.pressed.has('map'), planPressed: this.pressed.has('plan'),
+      mapPressed: this.pressed.has('map'), planPressed: this.pressed.has('plan'), whistlePressed: this.pressed.has('whistle'),
       mapInPressed: this.pressed.has('mapIn'), mapOutPressed: this.pressed.has('mapOut'),
       slotPressed: [1, 2, 3, 4, 5].find((n) => this.pressed.has('slot' + n)) || 0,
       strafePressed: this.pressed.has('right') ? 'right' : this.pressed.has('left') ? 'left' : null,
