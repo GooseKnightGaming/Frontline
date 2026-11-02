@@ -105,6 +105,11 @@ export default {
     { id: 'plans', name: 'the planning terminal', at: [48, 41, 'G'], face: [0, -1], time: 8, reveal: 25, verb: 'Photograph the plans on', doing: 'Photographing',
       said: 'The training plans: who they are training, for what, and when it is to be. The camp\'s radios put every red on your radar for 25 seconds.' },
   ],
+  // (M6.59) papers to read: lore, not needed to finish
+  intel: [
+    { id: "mess", at: [24, 8, "G"], kind: "Notice", title: "Notice - the mess hall", text: ["The strike company will parade at 05:00 on the twenty-first, full kit.", "Destination will be given on the trucks. No letters home this week."] },
+    { id: "schedule", at: [48, 36, "G"], kind: "Schedule", title: "Training schedule - the HQ office", text: ["Week 1: drills. Week 2: the course, by night. Week 3: \"the lodge exercise\" - to be run as if for real.", "Signed for the council. The signature is a single initial."] },
+  ],
   objectives: [
     { id: 'o1', kind: 'hack', ref: 'plans', text: 'Photograph the training plans (the headquarters hut\'s planning office)' },
     { id: 'o2', kind: 'take', ref: 'rifle', text: 'Take the prototype rifle (the armoury)' },

@@ -153,6 +153,11 @@ export default {
     { id: 'a-bell', kind: 'alarm', at: [36, 11, '1'], face: [0, 1], net: 'crown' },
   ],
   terminals: [{ id: 'sec', name: 'the bridge\'s security console', at: [39, 12, '2'], face: [0, 1], time: 6, net: 'crown' }],
+  // (M6.59) papers to read: lore, not needed to finish
+  intel: [
+    { id: "seating", at: [34, 12, "1"], kind: "Seating plan", title: "Tonight's seating plan", text: ["Mr Corwen at the head. On his right, \"the gentleman from Varn\". On his left, an empty chair - \"for the council's guest, if he comes\".", "Ms Quill is not to be seated anywhere."] },
+    { id: "crew", at: [24, 11, "G"], kind: "Crew notice", title: "Notice - the crew mess", text: ["The owner has guests aboard. Crew stay below decks unless called.", "Whoever is in the end cabin is to be fed twice a day and not spoken to."] },
+  ],
   objectives: [
     { id: 'o1', kind: 'take', ref: 'files', text: 'Take Corwen\'s files (the panic room, the upper deck)' },
     { id: 'o2', kind: 'rescue', ref: 'quill', text: 'Bring Mara Quill out (the crew\'s cabins, the lower deck)' },

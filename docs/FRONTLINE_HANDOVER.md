@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.58.0)
+# Frontline — Handover (M6.59.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,11 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.59.0 — more papers
+- Two papers each at the Listening Station, the Megayacht, the Archive, the Tower, the Embassy and the Barracks (the
+  case's levels): what they knew about LANTERN, Corwen's table, the courier's route, Varn's board, the cipher room and
+  the strike company.
 
 ## M6.58.0 — papers to read
 - **Intel in the first drafts** (a spec's `intel: [{ id, at, kind, title, text, h }]`, kit.js -> `level.intel`, read

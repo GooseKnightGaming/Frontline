@@ -124,6 +124,11 @@ export default {
     { id: 'keys', name: 'the cipher machine', at: [9, 24, '1'], face: [0, -1], time: 8, reveal: 20, verb: 'Copy the keys from', doing: 'Copying',
       said: 'The cipher keys, copied: every message this embassy sends this month, ours to read. The cameras put every red on your radar for 20 seconds.' },
   ],
+  // (M6.59) papers to read: lore, not needed to finish
+  intel: [
+    { id: "card", at: [8, 8, "G"], kind: "Card", title: "A reception card", text: ["The Ambassador requests the pleasure... Autumn reception, Linden Row.", "On the back, in a hurried hand: \"Cipher room after midnight. Bring the new keys.\""] },
+    { id: "telex", at: [10, 9, "1"], kind: "Telex", title: "A telex, torn off", text: ["FROM KALDBERG. ACCOUNTS TO BE CLOSED BEFORE THE TWENTIETH. NOTHING ON PAPER AFTER THAT.", "Someone has written underneath: \"Then why is this on paper?\""] },
+  ],
   objectives: [
     { id: 'o1', kind: 'hack', ref: 'keys', text: 'Copy the cipher keys (the cipher room, the first floor)' },
     { id: 'o2', kind: 'take', ref: 'ledger', text: 'Take the ambassador\'s ledger (his office, the first floor)' },

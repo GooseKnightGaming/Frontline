@@ -131,6 +131,11 @@ export default {
     { id: 'mail', name: 'Mr Varn\'s computer', at: [37, 10, '2'], face: [0, -1], time: 8, reveal: 25, verb: 'Copy the mail from', doing: 'Copying',
       said: 'Varn\'s mail, copied: every payment, and who it went to. The building\'s cameras put every red on your radar for 25 seconds.' },
   ],
+  // (M6.59) papers to read: lore, not needed to finish
+  intel: [
+    { id: "memo", at: [5, 5, "1"], kind: "Memo", title: "Memo - all Varn staff", text: ["From Monday the eighteenth floor is closed to all but the board and its guests.", "Staff are reminded that the company's contracts with the Ministry are not to be discussed outside the building."] },
+    { id: "minutes", at: [7, 6, "2"], kind: "Minutes", title: "Board minutes - extract", text: ["Item 4: the guidance contract. Delivered on time. Payment through the usual embassy account.", "Item 5: \"the agricultural project\". Deferred to a closed session. No minutes taken."] },
+  ],
   objectives: [
     { id: 'o1', kind: 'hack', ref: 'bug', text: 'Plant a bug in the boardroom (the top floor)' },
     { id: 'o2', kind: 'hack', ref: 'mail', text: 'Copy Varn\'s mail (his office, the top floor)' },

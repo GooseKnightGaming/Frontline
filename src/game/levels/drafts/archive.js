@@ -125,6 +125,11 @@ export default {
     { id: 'film', name: 'the microfilm reader', at: [9, 33, 'B'], face: [0, -1], time: 8, reveal: 20, verb: 'Copy', doing: 'Copying',
       said: 'The microfilm, copied: the courier\'s whole route, every drop and every name. The cameras put every Yellow on your radar for 20 seconds.' },
   ],
+  // (M6.59) papers to read: lore, not needed to finish
+  intel: [
+    { id: "archivist", at: [8, 5, "G"], kind: "Note", title: "A note on the archivist's desk", text: ["The courier came again on Tuesday. Same reels, same boxes, same \"do not catalogue\".", "I have started keeping a list of what they take out. It is not in this drawer."] },
+    { id: "timetable", at: [14, 34, "B"], kind: "Timetable", title: "The courier's timetable", text: ["Monday - the archive. Wednesday - the tower. Friday - the embassy, Linden Row.", "Every third week, a drive north: Kaldberg. No stops."] },
+  ],
   objectives: [
     { id: 'o1', kind: 'take', ref: 'codex', text: 'Take the Halloran Codex (the rare books vault)' },
     { id: 'o2', kind: 'hack', ref: 'film', text: 'Copy the microfilm (the stacks\' microfilm room)' },

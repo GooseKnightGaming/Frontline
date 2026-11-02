@@ -149,6 +149,11 @@ export default {
     { id: 'mainframe', name: 'the mainframe', at: [45, 26, 'B'], face: [-1, 0], time: 9, reveal: 30, verb: 'Turn round', doing: 'Turning LANTERN round',
       said: 'LANTERN turned round: its next trace goes back down the reds\' own lines. Whoever listens to them is listening to us now. Every red on your radar for 30 seconds.' },
   ],
+  // (M6.59) papers to read: lore, not needed to finish
+  intel: [
+    { id: "seclog", at: [26, 13, "G"], kind: "Security log", title: "The security office log", text: ["22:00 - LANTERN running hot again. Engineers say it is \"listening harder\" since the new orders came.", "23:15 - nobody is to go into the mainframe hall without two of us. Nobody says why."] },
+    { id: "canteen", at: [12, 26, "G"], kind: "Notice", title: "Notice - the canteen", text: ["Leave is cancelled until further notice. Letters home will be read before they go.", "Under it, in pencil: \"Read by LANTERN, more like.\""] },
+  ],
   objectives: [
     { id: 'o1', kind: 'hack', ref: 'archive', text: 'Wipe Ghost\'s file (the archive terminal, the basement)' },
     { id: 'o2', kind: 'hack', ref: 'mainframe', text: 'Turn LANTERN round (the mainframe, the server hall)' },
