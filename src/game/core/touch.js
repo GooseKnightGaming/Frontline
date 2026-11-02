@@ -49,7 +49,7 @@ export function touchControls(input, opts) {
   const { active, onMenu, swap } = opts;
   const root = document.createElement('div');
   root.id = 'touch';
-  root.style.cssText = 'position:fixed;inset:0;z-index:4;display:none;touch-action:none;user-select:none;-webkit-user-select:none';
+  root.style.cssText = 'position:fixed;inset:0;z-index:12;display:none;touch-action:none;user-select:none;-webkit-user-select:none';
   const btnCss = 'position:absolute;width:58px;height:58px;border-radius:50%;border:2px solid rgba(255,255,255,0.45);background:rgba(20,26,32,0.38);color:#fff;font:700 13px sans-serif;display:flex;align-items:center;justify-content:center;touch-action:none;letter-spacing:1px;';
   const els = {}, where = {};
   for (const [id, label, , where] of TOUCH_BUTTONS) {

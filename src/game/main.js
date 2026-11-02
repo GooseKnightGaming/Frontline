@@ -77,7 +77,7 @@ import { boardOf, describe as contractText, TERMS } from '../sim/play/contracts.
 import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './core/input.js';
 import { isTouchDevice, touchControls, retext } from './core/touch.js';
 
-const VERSION = 'M6.48.0';
+const VERSION = 'M6.49.0';
 const $ = (id) => document.getElementById(id);
 const TEST = /[?&]test\b/.test(location.search);
 // Level 0, the training mission, is its own page load: index.html?level=0
@@ -109,6 +109,7 @@ function boot() {
   const canvas = $('app');
   const settings = loadSettings();
   if (settings.textSize === 'large') document.body.classList.add('bigtext');      // (M6.49)
+  { const pm = document.getElementById('planmap'); if (pm) document.body.appendChild(pm); }    // (M6.49) the map over the game, under the touch buttons
   // (M6.35) a phone or tablet starts on low quality (until you choose otherwise): its graphics are a fraction of a
   // laptop's, and a smooth game matters more than a pretty one
   try { if (isTouchDevice() && !TEST && !/"quality"/.test(localStorage.getItem('frontline.settings.v1') || '')) settings.quality = 'low'; } catch (e) { /* private mode */ }
@@ -2484,7 +2485,7 @@ function boot() {
         const w = window.innerWidth, h = window.innerHeight;
         if (pm.width !== w || pm.height !== h) { pm.width = w; pm.height = h; }
         drawPlan(pm.getContext('2d'), w, h, level.plan, player.pos[1], {
-          you: { x: player.pos[0], z: player.pos[2], yaw: input.yaw },
+          you: { x: player.pos[0], z: player.pos[2], yaw: input.yaw }, top: S.touch ? 64 : 0,
           objectives: missionRt && missionRt.objectivesLeft ? missionRt.objectivesLeft() : [],
           out: level.extraction ? [level.extraction.pos[0], level.extraction.pos[2]] : null,
           devices: (level.liveDevices || []).filter((d) => d.known).map((d) => ({ x: d.pos[0], y: d.floorY !== undefined ? d.floorY : d.pos[1] - 2.2, z: d.pos[2] })),

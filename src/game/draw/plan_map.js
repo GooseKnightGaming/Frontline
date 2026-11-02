@@ -30,7 +30,8 @@ export function floorAt(plan, y) {
 export function drawPlan(ctx, W, H, plan, y, marks) {
   const f = floorAt(plan, y), rows = f.rows, nx = Math.max(...rows.map((r) => r.length)), ny = rows.length;
   const ground = f.y === Math.min(...plan.floors.map((q) => q.y));
-  const s = Math.max(2, Math.floor(Math.min((W - 20) / nx, (H - 44) / ny))), ox = Math.floor((W - s * nx) / 2), oy = 34 + Math.floor((H - 44 - s * ny) / 2);
+  const top = marks.top || 0;      // (room for the touch screen's top row of buttons)
+  const s = Math.max(2, Math.floor(Math.min((W - 20) / nx, (H - 54 - top) / ny))), ox = Math.floor((W - s * nx) / 2), oy = top + 34 + Math.floor((H - 54 - top - s * ny) / 2);
   ctx.fillStyle = 'rgba(10,13,17,0.92)'; ctx.fillRect(0, 0, W, H);
   for (let r = 0; r < ny; r++) for (let c = 0; c < rows[r].length; c++) {
     const col = cellColour(rows[r][c], ground);
@@ -50,6 +51,10 @@ export function drawPlan(ctx, W, H, plan, y, marks) {
   }
   ctx.fillStyle = '#e8b423'; ctx.font = '600 13px sans-serif'; ctx.textAlign = 'left';
   const names = { G: 'GROUND FLOOR', B: 'BASEMENT' };
-  ctx.fillText((names[f.key] || 'FLOOR ' + f.key) + '   -   you (yellow), still to do (red), the way out (green), devices you know of (blue)', 12, 20);
+  const fname = (q) => names[q.key] || 'FLOOR ' + q.key;
+  // what is left to do on other floors, said
+  const else_ = [...new Set((marks.objectives || []).filter((o) => !onFloor(o[1])).map((o) => fname(floorAt(plan, o[1]))))];
+  ctx.fillText(fname(f) + '   -   you (yellow), still to do (red), the way out (green), devices you know of (blue)', 12, top + 20);
+  if (else_.length) { ctx.fillStyle = '#e05050'; ctx.fillText('Still to do elsewhere: ' + else_.join(', ').toLowerCase(), 12, H - 10); }
   return f;
 }
