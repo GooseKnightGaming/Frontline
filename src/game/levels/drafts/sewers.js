@@ -76,6 +76,10 @@ export default {
   ],
   hostages: [{ id: 'engineer', name: 'Dalia Brennan', she: true, at: [30, 26, 'S'] }],
   pickups: [{ id: 'manifest', name: 'The shipment manifest', what: 'the manifest', at: [14, 26, 'S'], table: false, h: 0.8 }],
+  // (M6.68) papers to read: lore, not needed to finish
+  intel: [
+    { id: 'shift', at: [16, 28, 'S'], h: 0.78, kind: 'Log', title: 'The depot\'s shift log', text: ['The city crews have been told the tunnels past the outfall are closed for repairs. There are no repairs.', 'The last entry in the city\'s hand: "D. Brennan went down to look anyway."'] },
+  ],
   objectives: [
     { id: 'o1', kind: 'rescue', ref: 'engineer', text: 'Bring Dalia Brennan out' },
     { id: 'o2', kind: 'take', ref: 'manifest', text: 'Take the shipment manifest' },

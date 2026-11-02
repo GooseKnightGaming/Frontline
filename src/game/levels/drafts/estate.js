@@ -122,6 +122,10 @@ export default {
   ],
   hostages: [{ id: 'adeyemi', name: 'Mrs Adeyemi', she: true, at: [22, 27, 'G'] }],
   pickups: [{ id: 'plans', name: 'The bomb plans', what: 'the plans', at: [30, 13, '1'], table: false, h: 0.8, colour: [0.55, 0.65, 0.85] }],
+  // (M6.68) papers to read: lore, not needed to finish
+  intel: [
+    { id: 'card', at: [23, 31, 'G'], h: 0.78, kind: 'Card', title: 'A birthday card on the side table', text: ['"To Mum, love from all of us." It came the day they took over her house.', 'It is still in its envelope. Nobody has let her open it.'] },
+  ],
   objectives: [
     { id: 'o1', kind: 'take', ref: 'plans', text: 'Take the bomb plans (Number 7, upstairs)' },
     { id: 'o2', kind: 'kill', ref: 'ferris', text: 'Stop Ferris, the bomb-maker (Number 11, the attic)' },

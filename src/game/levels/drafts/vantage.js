@@ -104,6 +104,10 @@ export default {
     { id: 'rusk', at: [45, 24, '2'], route: [[45, 24, 9], [43, 25, 12]], arms: 'pistol', rank: 'officer', temper: 'steady', name: 'Colonel Draven Rusk', tint: [1.75, 1.75, 1.8] },      // (his white dress uniform - the one to look for)
   ],
   pickups: [{ id: 'book', name: 'The visitors\' book', what: 'the visitors\' book', at: [45, 22, 'G'], table: false, h: 1.12, colour: [0.25, 0.3, 0.5] }],
+  // (M6.68) papers to read: lore, not needed to finish
+  intel: [
+    { id: 'diary', at: [45, 25, '2'], h: 0.78, kind: 'Diary', title: 'Colonel Rusk\'s desk diary', text: ['10:00 the consul. 10:20 the balcony - the square to see me. 11:00 the car.', 'In the margin, underlined: "Same as every Tuesday."'] },
+  ],
   objectives: [
     { id: 'o1', kind: 'reach', ref: 'vantage', text: 'Get to the vantage point (the Halloran Building, top floor)' },
     { id: 'o2', kind: 'kill', ref: 'rusk', text: 'Stop Colonel Rusk' },

@@ -239,6 +239,11 @@ export default {
     { id: 's3', at: [bx1(0), bx0(1) + 5, 'G'], route: [[bx1(0), bx0(1) + 1], [bx1(0), bx1(1) - 1]], arms: 'pistol' },
   ],
   pickups: [{ id: 'ledger', name: 'The Kessel ledger', what: 'the ledger', at: [KX + 11, KY + 9, '2'], h: 0.8, colour: [0.55, 0.25, 0.2] }],
+  // (M6.68) papers to read: lore, not needed to finish
+  intel: [
+    { id: 'receipt', at: [29, 51, 'G'], h: 0.78, kind: 'Receipt', title: 'A receipt, left under a saucer', text: ['Two coffees, Caffe Corso, 12:10. On the back, a time and a word: "13:05 - Kessel."'] },
+    { id: 'invoice', at: [39, 37, '2'], h: 0.78, kind: 'Invoice', title: 'An invoice, Kessel Freight', text: ['"Machine parts", forty crates, paid in cash, collected by a customer who gave no name.', 'Someone has written "again" on it and filed it under nothing.'] },
+  ],
   objectives: [
     { id: 'o1', kind: 'stop', ref: 'van', text: 'Stop the courier\'s van before it leaves the city' },
     { id: 'o2', kind: 'take', ref: 'ledger', text: 'Take the ledger (Kessel Tower, the second floor)' },

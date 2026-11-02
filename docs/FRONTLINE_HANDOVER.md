@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.67.0)
+# Frontline — Handover (M6.68.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,11 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.68.0 — papers in six more
+- The Bank (a note to Mr Osei, the counting room's tally), the Manor (a place card, the cook's list), the Sewers
+  (the depot's shift log), the Assassination (Rusk's desk diary), the Busy City (a receipt at Caffe Corso, a Kessel
+  invoice), the Estate (a card for Mrs Adeyemi). Twenty-five levels have papers now.
 
 ## M6.67.0 — more papers
 - Papers in five more first drafts: the Mega-Prison (the governor's memo, the staff rota), the Theatre (a bar bill,

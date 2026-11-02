@@ -174,6 +174,11 @@ export default {
   ],
   terminals: [{ id: 'pantry', name: 'the terminal in the butler\'s pantry', at: [57, 34, 'C'], face: [0, -1], time: 5, reveal: 25,
     said: 'The pantry terminal: the strongroom door is unlocked, and the house cameras put every red on your radar for 25 seconds.' }],
+  // (M6.68) papers to read: lore, not needed to finish
+  intel: [
+    { id: 'menu', at: [34, 37, 'G'], h: 0.78, kind: 'Card', title: 'A place card from the drawing room', text: ['"Sir Julian Harrow requests the pleasure." Six names below, four of them crossed out and written in again with titles added.', 'On the back: "The buyers arrive at nine. Sir Julian shows the ledger, nothing else."'] },
+    { id: 'cook', at: [44, 36, 'C'], h: 0.78, kind: 'List', title: 'The cook\'s list', text: ['Dinner for eight. The guests\' drivers to be fed in the kitchen and kept there.', 'Underlined twice: "Nobody below stairs goes near the pantry door tonight."'] },
+  ],
   objectives: [
     { id: 'o1', kind: 'take', ref: 'ledger', text: 'Take the sales ledger (the library)' },
     { id: 'o2', kind: 'hack', ref: 'pantry', text: 'Hack the terminal in the butler\'s pantry (the cellars)' },

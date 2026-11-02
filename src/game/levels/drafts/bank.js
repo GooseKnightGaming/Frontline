@@ -93,6 +93,11 @@ export default {
   pickups: [{ id: 'dossier', name: 'The dossier from box 114', what: 'the dossier', at: [28, 8, 'B'], colour: [0.75, 0.2, 0.15] }],
   terminals: [{ id: 'security', name: 'the security terminal', at: [9, 12, '1'], face: [0, -1], time: 6, reveal: 30,
     said: 'Security terminal: the vault\'s steel doors are open, and the cameras put every Yellow on your radar for 30 seconds.' }],
+  // (M6.68) papers to read: lore, not needed to finish
+  intel: [
+    { id: 'rota', at: [10, 21, 'G'], h: 0.78, kind: 'Note', title: 'A note on the manager\'s desk', text: ['Mr Osei - the gentlemen from the Exchange will call after closing to "inspect" box 114. Let them in and stay in your office.', 'You will be paid for the extra hours. Do not put them on your timesheet.'] },
+    { id: 'count', at: [8, 16, 'B'], h: 0.78, kind: 'Tally', title: 'The counting room\'s tally', text: ['Tonight\'s count, signed by two clerks. A third line, in a different pen: "Box 114 - not to be counted."'] },
+  ],
   objectives: [
     { id: 'o1', kind: 'hack', ref: 'security', text: 'Hack the security terminal (first floor)' },
     { id: 'o2', kind: 'take', ref: 'dossier', text: 'Take the dossier from box 114 (the vault)' },
