@@ -27,5 +27,9 @@ ok(!a.events.some((e) => e.solid === s), 'broken, nothing meets it');
 ok(!L.world.raycast(from, dir, 3, null) || L.world.raycast(from, dir, 3, null).solid !== s, 'nor does a look');
 const main = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8');
 ok(/pn\.hits >= pn\.takes/.test(main) && /ev\.solid\.disabled = true/.test(main), 'main breaks it');
+// (M6.52) a spec's own glass: the museum's display cases are panes too (kit.pane)
+const M = buildKitLevel(DRAFTS.find((d) => d.id === 'museum'));
+const cases = M.panes.filter((q) => q.solid.max[1] - q.solid.min[1] < 0.9);
+ok(cases.length >= 12, 'the museum\'s cases are panes: ' + cases.length);
 console.log(bad ? `${bad} of ${n} FAILED` : `ALL ${n} PASSED`);
 if (bad) process.exit(1);

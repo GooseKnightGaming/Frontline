@@ -9,7 +9,7 @@ export default {
   brief: [
     ['The job', 'The reds paid for the blight with something they did not own: the <b>Halvard Codex</b>, a neighbour\'s, on loan to the museum - and sold. It leaves tomorrow. Take it back. And find out who it was sold to: the <b>loan register</b> in the curator\'s office.'],
     ['The place', 'You come in by the <b>loading dock</b> at the back (north). Ground floor: the <b>great hall</b> (its statues; a gallery round it upstairs), the east and west galleries, the <b>security office</b> by the front doors. Upstairs: the gallery round the hall, the <b>curator\'s office</b> (west), and the <b>special exhibition</b> (east - maglocked) where the Codex is, in its case.'],
-    ['Security', 'Laser tripwires across the galleries (on your belly under them, or hack them), cameras (a pinhole in the special exhibition - EMF), the maglock, the alarm - all from the security office. The night staff are reds tonight; one has a radio, one is an engineer.'],
+    ['Security', 'Laser tripwires across the galleries (on your belly under them, or hack them); the display cases are glass, and a round through one breaks it - loudly; cameras (a pinhole in the special exhibition - EMF), the maglock, the alarm - all from the security office. The night staff are reds tonight; one has a radio, one is an engineer.'],
     ['Objectives', 'Take the <b>Halvard Codex</b> (the special exhibition). Copy the <b>loan register</b> (the curator\'s office). Out by the loading dock.'],
   ],
   time: { date: [8, 1, 2027], hour: 2, minute: 30 }, night: true, faction: 'red', requires: 'HACKKIT', startGear: 'MULTIVIS',
@@ -56,7 +56,7 @@ export default {
     c(k, x, y, f) {
       const [cx, cy, cz] = k.at(x, y, f);
       k.box([cx - 0.45, cy, cz - 0.45], [cx + 0.45, cy + 0.9, cz + 0.45], 'wood', { tint: [0.35, 0.25, 0.18] });
-      k.box([cx - 0.4, cy + 0.9, cz - 0.4], [cx + 0.4, cy + 1.6, cz + 0.4], 'glass', { glass: true, tough: 0 });
+      k.pane([cx - 0.4, cy + 0.9, cz - 0.4], [cx + 0.4, cy + 1.6, cz + 0.4], 0);      // (a round through it, and it goes - loudly)
     },
   },
   stairs: [{ x: 31, y: 26, dir: 'N', len: 4, w: 1, from: 'G', to: '1' }],      // the hall's stair, up to the gallery (its south-east corner)

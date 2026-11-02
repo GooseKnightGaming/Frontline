@@ -283,6 +283,16 @@ export function buildKitLevel(spec) {
     return opts.wantSolid ? s : p;
   };
   const panes = level.panes = [];
+  // (M6.33) a pane of glass that breaks: ordinary at the first round through it, toughened at the third, bulletproof
+  // never (M6.52: a spec's own glass too - kit.pane - the museum's display cases)
+  const paneBox = (min, max, tg) => {
+    const pg = box(min, max, tg >= 3 ? 'glassB' : tg >= 1 ? 'glassT' : 'glass', { glass: true, tough: tg, wantSolid: true });
+    if (tg < 3 && pg) {
+      const name = 'pane' + panes.length, pane = { solid: pg, takes: tg >= 1 ? 3 : 1, hits: 0, hidden: false, pos: [(min[0] + max[0]) / 2, (min[1] + max[1]) / 2, (min[2] + max[2]) / 2] };
+      pg.pane = pane; panes.push(pane); level[name] = pane; pieces[pieces.length - 1].pane = name;
+    }
+    return pg;
+  };
   const mid = (i) => (i + 0.5) * CELL;
   const floors = spec.floors;
   const keys = Object.keys(floors).sort((a, b) => floors[a].y - floors[b].y);
@@ -295,7 +305,7 @@ export function buildKitLevel(spec) {
   // what only a vision shows: kind 'uv' | 'emf' | 'heat' (warm: dimmer) | 'mist' (seen through by thermal)
   level.marks = [];
   const mark = (kind, a, b, opts) => { level.marks.push(Object.assign({ kind, min: [0, 1, 2].map((i) => Math.min(a[i], b[i])), max: [0, 1, 2].map((i) => Math.max(a[i], b[i])) }, opts || {})); };
-  const kit = { spec, level, world, box, CELL, mid, at, floors, S, W, D, mark };
+  const kit = { spec, level, world, box, CELL, mid, at, floors, S, W, D, mark, pane: paneBox };
 
   // ── the ground: outdoors round it all ──
   const og = spec.outside || {};
@@ -391,11 +401,7 @@ export function buildKitLevel(spec) {
         const tg = F.glassTough === undefined ? 0 : F.glassTough;
         // (M6.33; the roadmap's "glass that breaks") a pane of its own: ordinary glass shatters at the first round
         // through it, toughened at the third; bulletproof never. A broken pane is a way through, over the sill.
-        const pg = box([min[0], y0 + 1.0, min[2]], [max[0], y0 + 2.3, max[2]], tg >= 3 ? 'glassB' : tg >= 1 ? 'glassT' : 'glass', { glass: true, tough: tg, wantSolid: true });
-        if (tg < 3 && pg) {
-          const name = 'pane' + panes.length, pane = { solid: pg, takes: tg >= 1 ? 3 : 1, hits: 0, hidden: false, pos: [(min[0] + max[0]) / 2, y0 + 1.65, (min[2] + max[2]) / 2] };
-          pg.pane = pane; panes.push(pane); level[name] = pane; pieces[pieces.length - 1].pane = name;
-        }
+        paneBox([min[0], y0 + 1.0, min[2]], [max[0], y0 + 2.3, max[2]], tg);
         // bulletproof glass sits in a heavy steel frame
         if (tg >= 3) { const along = max[0] - min[0] > max[2] - min[2]; for (const yy of [y0 + 1.0, y0 + 2.22]) box([min[0] - (along ? 0 : 0.03), yy, min[2] - (along ? 0.03 : 0)], [max[0] + (along ? 0 : 0.03), yy + 0.08, max[2] + (along ? 0.03 : 0)], 'metal', { tint: [0.25, 0.27, 0.28], solid: false }); }
         box([min[0], y0 + 2.3, min[2]], [max[0], max[1], max[2]], wallMat, { tint: F.wallTint });

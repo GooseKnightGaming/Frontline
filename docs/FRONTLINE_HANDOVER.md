@@ -14,6 +14,8 @@ game into the repository's root.
   security office off the foyer (the console, the radio), upstairs the gallery round the hall, the curator's office
   (the loan register) and the special exhibition (maglocked; a pinhole camera) where the Halvard Codex sits on its
   plinth. Take the Codex; copy the register.
+- **A spec's own breakable glass** (`kit.pane(min, max, tough)`, the window's code made a helper): the museum's
+  display cases break as windows do - and shards fall to whatever is under them (`groundBelow`).
 
 ## M6.50.0 — Level 47, the Halvard Embankment; a turned start
 - **Level 47, the Halvard Embankment** (`drafts/embankment.js`; after the Ministry): a long shot. You are on a ridge

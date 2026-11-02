@@ -2689,7 +2689,7 @@ function boot() {
   function shards(pos) {
     if (!shardMat) { shardMat = new pc.StandardMaterial(); shardMat.diffuse = new pc.Color(0.7, 0.85, 0.9); shardMat.emissive = new pc.Color(0.25, 0.3, 0.32); shardMat.opacity = 0.6; shardMat.blendType = pc.BLEND_NORMAL; shardMat.depthWrite = false; shardMat.update(); }
     S.shards = S.shards || [];
-    const floor = pos[1] - 1.65;
+    const gb = level.world.groundBelow(pos[0], pos[1] - 0.2, pos[2], 0.1), floor = gb > -Infinity ? gb : pos[1] - 1.65;      // (a window's sill, a case's stand)
     for (let i = 0; i < 16; i++) {
       const e = new pc.Entity('shard'); e.addComponent('render', { type: 'box', material: shardMat, castShadows: false });
       const sz = 0.03 + Math.random() * 0.07; e.setLocalScale(sz, 0.004, sz * (0.5 + Math.random()));
