@@ -7,7 +7,7 @@ export default {
   id: 'embankment', no: 47, title: 'The Halvard Embankment', place: 'the Halvard ridge',
   where: 'The ridge over the Halvard embankment. 06:40, first light, still and cold.',
   brief: [
-    ['The shot', 'The <b>Deputy Minister</b> is running for the border. His car comes along the <b>embankment road</b> across the river - from the east, an escort jeep behind it - in about a minute and a half. You are on the <b>ridge</b>, north of the river, with an <b>LR7 and an 8x scope</b>: the road is a hundred and ten metres off. Aim a little high - the rounds drop.'],
+    ['The shot', 'The <b>Deputy Minister</b> is running for the border. His car comes along the <b>embankment road</b> across the river - from the east, a bodyguard beside his driver - in about a minute and a half. You are on the <b>ridge</b>, north of the river, with an <b>LR7 and an 8x scope</b>: the road is a hundred and ten metres off. Aim a little high - the rounds drop.'],
     ['The far bank', 'A checkpoint on the road, a watchtower with a marksman in it, men along the river wall. A footbridge crosses the river at its middle: when you fire, they will come over it. Shoot the driver and the car stops; shoot the minister and the job is done.'],
     ['Objectives', '<b>Stop the Deputy Minister</b>. Then back to the van behind the ridge, north.'],
   ],
@@ -56,10 +56,7 @@ export default {
   vehicles: [
     { id: 'car', kind: 'car', model: 'policeCar', paint: 'black', at: [W + 4, 86.5], yaw: Math.PI / 2, path: [[W + 4, 86.5], [W - 2, 86.5], [30, 86.5], [0, 86.5], [-7, 86.5]],
       speed: 8, goal: 'escape', wait: 90, hp: 480, name: 'The Deputy Minister\'s car',
-      crew: [{ id: 'drv', at: [-0.42, 0.15] }, { id: 'dm', at: [0.42, 0.9] }] },
-    { id: 'esc', kind: 'jeep', model: 'armouredJeep', paint: 'olive', at: [W + 9, 86.5], yaw: Math.PI / 2, path: [[W + 9, 86.5], [W - 2, 86.5], [30, 86.5], [0, 86.5], [-4, 86.5]],
-      speed: 8, wait: 90, hp: 700, name: 'The escort',
-      crew: [{ id: 'e1', at: [-0.45, 0.1] }, { id: 'e2', at: [0.45, 0.1] }] },
+      crew: [{ id: 'drv', at: [-0.42, 0.15] }, { id: 'e1', at: [0.42, 0.15] }, { id: 'dm', at: [0.42, 0.95] }] },
   ],
   start: { x: 32, y: 26, floor: 'R', yaw: Math.PI },
   zones: [
@@ -73,7 +70,7 @@ export default {
     { id: 'dm', at: [W - 3, 88, 'G'], arms: 'pistol', rank: 'officer', temper: 'cowardly', name: 'The Deputy Minister', tint: [0.95, 0.95, 1.0] },
     { id: 'drv', at: [W - 3, 86, 'G'], arms: 'pistol', temper: 'steady' },
     { id: 'e1', at: [W - 3, 90, 'G'], arms: 'carbine', temper: 'steady' },
-    { id: 'e2', at: [W - 2, 90, 'G'], arms: 'smg', temper: 'steady' },
+    { id: 'e2', at: [30, 90, 'G'], arms: 'smg', temper: 'steady' },
     { id: 'tw', at: [52, 92, '1'], arms: 'dmr', rank: 'specialist', temper: 'steady' },
     { id: 'ck1', at: [28, 86, 'G'], arms: 'carbine', rank: 'sergeant', temper: 'steady' },
     { id: 'ck2', at: [33, 85, 'G'], arms: 'carbine' },

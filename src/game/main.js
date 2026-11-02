@@ -1138,12 +1138,12 @@ function boot() {
   canvas.addEventListener('mousedown', () => audio.start());
   window.addEventListener('keydown', () => audio.start());
   function deploy() {
-    // (M6.50) going in: no mouse movement left over from the menus (a click on Begin turned the view)
-    S.lastYaw = undefined; input.mouse.dx = 0; input.mouse.dy = 0;      // (and nothing the mouse did on the menus)
     // a fresh parachute each time you go in - (Rhys: it "got
     // fully repacked on just one press") going in, not coming back from the
     // pause menu: Resume runs this too, and had repacked it for you
     if (!S.startedOnce) S.chute = { used: false, repack: 0 };
+    // (M6.50) going in: no mouse movement left over from the menus (a click on Begin turned the view)
+    S.lastYaw = undefined; input.mouse.dx = 0; input.mouse.dy = 0;      // (and nothing the mouse did on the menus)
     wview.setThird(S.third, body);                  // first or third person, as Settings says
     audio.start();
     S.musicT = 9;

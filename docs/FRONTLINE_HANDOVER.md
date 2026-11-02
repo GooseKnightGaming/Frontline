@@ -10,7 +10,7 @@ game into the repository's root.
 ## M6.50.0 — Level 47, the Halvard Embankment; a turned start
 - **Level 47, the Halvard Embankment** (`drafts/embankment.js`; after the Ministry): a long shot. You are on a ridge
   (its own floor, `R`, 3.2 m up, on a hill of rock) with an LR7 and an 8x scope; the Deputy Minister's car comes
-  along the embankment road across the river, ~110 m off, after a minute and a half (an escort jeep behind). A
+  along the embankment road across the river, ~110 m off, after a minute and a half (a bodyguard beside the driver). A
   checkpoint, a watchtower with a marksman (a ladder up), men on the river wall, a footbridge they come over, a path
   up the ridge. Stop him; back down the ridge's back to the van.
 - **Fixed: a start facing anything but north could be turned on the first frame** - with drag-look (a touch screen,
