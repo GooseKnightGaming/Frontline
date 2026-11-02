@@ -11,7 +11,7 @@ export default {
     ['The far bank', 'A checkpoint on the road, a watchtower with a marksman in it, men along the river wall. A footbridge crosses the river at its middle: when you fire, they will come over it. Shoot the driver and the car stops; shoot the minister and the job is done.'],
     ['Objectives', '<b>Stop the Deputy Minister</b>. Then back to the van behind the ridge, north.'],
   ],
-  time: { date: [6, 1, 2027], hour: 6, minute: 40 }, faction: 'red',
+  time: { date: [6, 1, 2027], hour: 6, minute: 40 }, faction: 'red', weather: 'wind',
   atmos: { fog: [0.62, 0.66, 0.72, 60, 420], ambient: [0.46, 0.48, 0.52] },
   startLoadout: { primary: 'LR7', backup: 'V27C', utility1: 'SMOKE', utility2: 'FRAG', gear: 'LENSES', mods: { primary: ['SCOPE8'] } },
   extractName: 'the van behind the ridge', extract: { x: 40, y: 1, floor: 'G' },

@@ -10,6 +10,8 @@ game into the repository's root.
 ## M6.60.0 — trophies for reading, and for the Codex
 - Trophies: Read Everything: <level> (every paper at a first draft read, the mission not failed), and Returned (the
   Villa Merrow done).
+- Kit and weather: the Museum and St Brannoc's start you with a silenced MP2 and V-27C (quiet jobs); rain at St
+  Brannoc's, wind on the Halvard ridge.
 
 ## M6.59.0 — more papers
 - Two papers each at the Listening Station, the Megayacht, the Archive, the Tower, the Embassy and the Barracks (the

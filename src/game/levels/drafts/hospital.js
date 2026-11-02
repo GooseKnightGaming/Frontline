@@ -12,7 +12,8 @@ export default {
     ['Security', 'Cameras in the corridors, a maglock on the side rooms (the guard sergeant\'s keycard), the alarm - from the porters\' office by the bay, where the reds have put their radio. They have a medic of their own with them.'],
     ['Objectives', '<b>Bring Tobias Marle out</b> (Ward 4\'s side rooms, upstairs). Take his <b>case notes</b> (the ward office). Out by the ambulance bay.'],
   ],
-  time: { date: [9, 1, 2027], hour: 3, minute: 50 }, night: true, faction: 'red', requires: 'HACKKIT',
+  time: { date: [9, 1, 2027], hour: 3, minute: 50 }, night: true, faction: 'red', requires: 'HACKKIT', weather: 'rain',
+  startLoadout: { primary: 'MP2', backup: 'V27C', utility1: 'SMOKE', utility2: 'FLASH', gear: 'LENSES', mods: { primary: ['SILENCER'], backup: ['SILENCER'] } },
   extractName: 'the ambulance bay', extract: { x: 46, y: 16, floor: 'G' },
   outside: { backdrop: 'city', mat: 'asphalt', margin: 14 },
   floors: {

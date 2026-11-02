@@ -13,6 +13,7 @@ export default {
     ['Objectives', 'Take the <b>Halvard Codex</b> (the special exhibition). Copy the <b>loan register</b> (the curator\'s office). Out by the loading dock.'],
   ],
   time: { date: [8, 1, 2027], hour: 2, minute: 30 }, night: true, faction: 'red', requires: 'HACKKIT', startGear: 'MULTIVIS',
+  startLoadout: { primary: 'MP2', backup: 'V27C', utility1: 'SMOKE', utility2: 'LURE', gear: 'MULTIVIS', mods: { primary: ['SILENCER'], backup: ['SILENCER'] } },
   extractName: 'the loading dock', extract: { x: 22, y: 1, floor: 'G' },
   outside: { backdrop: 'city', mat: 'asphalt', margin: 14 },
   floors: {
