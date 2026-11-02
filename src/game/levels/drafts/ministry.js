@@ -95,6 +95,13 @@ export default {
     { id: 'o2', at: [34, 27, '1'], arms: 'smg', temper: 'steady' },
     { id: 'rec', at: [8, 14, '1'], arms: 'carbine', temper: 'steady' },
   ],
+  // (M6.54) the Ministry at work: clerks who take you for one of the officers
+  civilians: [
+    { id: 'clerk1', at: [10, 22, '1'], yaw: 0, title: 'A clerk', tint: [1.1, 1.05, 0.95], says: ['Sir.', 'The Deputy Minister is in a meeting, sir. He doesn\'t like to be disturbed.'] },
+    { id: 'clerk2', at: [30, 22, '1'], yaw: Math.PI, title: 'A clerk', tint: [0.95, 1.0, 1.1], says: ['Records are on the north side, sir - you\'ll need a reason to go in.', 'Sir.'] },
+    { id: 'recept', at: [17, 19, 'G'], yaw: Math.PI, title: 'The receptionist', tint: [1.2, 1.0, 1.05], says: ['Good afternoon, sir. Sign the book on your way out.', 'Second floor is by the back stair, sir.'] },
+    { id: 'cook', at: [35, 26, 'G'], yaw: Math.PI, title: 'The canteen cook', tint: [1.35, 1.35, 1.3], says: ['Soup\'s off. There\'s bread.', 'Officers eat upstairs, usually.'] },
+  ],
   pickups: [{ id: 'order', name: 'The supply order', what: 'the order', at: [38, 16, '2'], table: false, h: 0.85, colour: [0.85, 0.75, 0.4] }],
   devices: [
     { id: 'c-hall', kind: 'camera', at: [14, 18, 'G'], face: [1, 1], net: 'ministry' },

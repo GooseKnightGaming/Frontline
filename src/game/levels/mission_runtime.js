@@ -405,6 +405,8 @@ export function setupMission(ctx) {
   const PRICES = { coffee: 15, tea: 12, sandwich: 30, paper: 40 };
   const pay = (n) => { if (rt.grosh === undefined) rt.grosh = 400; if (rt.grosh < n) { showHint('Not enough money on you.'); return false; } rt.grosh -= n; audio.click && audio.click(); return true; };
   const refresh = (k) => { player.buffs = player.buffs || { awake: 0, fed: 0 }; player.buffs[k] = 600; };
+  // (M6.54) what a civilian says, if their spec gives them nothing of their own
+  const CIVILIAN_SAYS = ['Please - I don\'t want any trouble.', 'I didn\'t see anything. I won\'t see anything.', 'They told us to keep working and keep quiet.', 'Are you... are you with them?'];
   const talkNpc = (n) => {
     if (!n.sitting) n.yaw = Math.atan2(-(player.pos[0] - n.pos[0]), -(player.pos[2] - n.pos[2]));   // (seated, he stays facing his table)
     if (n.kind === 'inspector') {
@@ -448,6 +450,11 @@ export function setupMission(ctx) {
         }],
         ['Nothing, thanks.', () => {}],
       ]);
+    } else if (n.kind === 'civilian') {
+      // (M6.54) a civilian: a line of their own, said (no voice), a different one each time
+      const says = n.says && n.says.length ? n.says : CIVILIAN_SAYS;
+      n.saidI = ((n.saidI === undefined ? -1 : n.saidI) + 1) % says.length;
+      showHint(n.title + ': \u201c' + says[n.saidI] + '\u201d');
     } else if (n.kind === 'vendor') {
       // (Rhys) the first time, in Severian; once you have answered him (in English), English
       const first = !rt.kioskMet; rt.kioskMet = true;
@@ -2201,6 +2208,7 @@ export function setupMission(ctx) {
       const tn = !takedownTarget() && takedownNpc();
       if (tn) {
         tn.down = true; tn.fell = S.time; tn.solid.disabled = true; m.takedowns++;
+        if (tn.kind === 'civilian') m.civiliansHit = (m.civiliansHit || 0) + 1;       // (M6.54) the debrief remembers
         S.strike = { kind: knifeOut() ? 'knife' : 'punch', n: ((S.strike && S.strike.n) || 0) + 1, t: 0.55 };
         audio.punch();
         return true;
@@ -2397,6 +2405,7 @@ export function setupMission(ctx) {
         (B ? row('K/D', m.kills + ' / ' + (B.youDown || 0) + (B.youDown ? ' (' + (m.kills / B.youDown).toFixed(2) + ')' : '')) : '') +
         row('Knocked out', m.knockouts) +
         row('Takedowns', m.takedowns) +
+        (m.civiliansHit ? row('Civilians knocked down', '<span class="no">' + m.civiliansHit + '</span>') : '') +
         row('Times spotted', m.spotted) +
         row('Accuracy', m.shotsFired ? Math.round(m.accuracy * 100) + '% (' + m.shotsHit + ' of ' + m.shotsFired + ' rounds)' : 'no shots fired') +
         (m.kills ? row('Headshots', m.headshots + ' of ' + m.kills) : '') +

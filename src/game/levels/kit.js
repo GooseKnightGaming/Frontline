@@ -932,6 +932,13 @@ export function buildKitLevel(spec) {
     if (g.target) g.target.solid.rider = v;
     if (g.moveBody) g.moveBody();
   }
+  // (M6.54) people who are not guards (spec.civilians: [{ id, at: [x, y, floor], yaw, title, tint, says: [...] }]):
+  // standing at their work, solid, to talk to (a line of their own) - or to knock down, which they will not forget
+  level.npcs = level.npcs || [];
+  for (const c of spec.civilians || []) {
+    const F = floors[c.at[2] || K0];
+    level.npcs.push({ id: c.id, kind: 'civilian', title: c.title || 'A civilian', pos: [mid(c.at[0]), F.y, mid(c.at[1])], yaw: c.yaw || 0, tint: c.tint || [1.25, 1.25, 1.25], says: c.says || null, sitting: !!c.sitting });
+  }
   // (M6.49) the floor plans, for the mission map: each floor's rows as built
   level.plan = { cell: CELL, floors: Object.keys(floors).map((k) => ({ key: k, y: floors[k].y, rows: floors[k].rows.slice() })) };
   if (spec.extra) spec.extra(kit);

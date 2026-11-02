@@ -79,6 +79,12 @@ export default {
     { id: 'ae1', at: [24, 25, 'G'], arms: 'smg', temper: 'steady' },
     { id: 'st', at: [26, 8, 'G'], arms: 'carbine', temper: 'steady' },
   ],
+  // (M6.54) the night staff: they will not stop you, and they would rather not be noticed
+  civilians: [
+    { id: 'nurse', at: [36, 9, '1'], yaw: Math.PI, title: 'The night sister', tint: [0.75, 0.95, 1.3], says: ['Side room one. They\'ve kept him sedated - more than he needs.', 'The sergeant has the card for his door. He never puts it down.', 'Go. I was in the sluice room. I saw nothing.'] },
+    { id: 'doc', at: [30, 26, 'G'], yaw: 0, title: 'The duty doctor', tint: [1.35, 1.35, 1.35], says: ['If you are taking Marle, he cannot walk fast. Mind the stairs.', 'They brought him in with a broken arm and a story nobody believed.'] },
+    { id: 'pt', at: [13, 23, '1'], yaw: Math.PI / 2, title: 'A patient', tint: [0.95, 0.9, 1.05], says: ['Is it morning yet?', 'The men in red keep walking up and down. Can\'t sleep.'] },
+  ],
   hostages: [{ id: 'marle', name: 'Tobias Marle', at: [7, 8, '1'] }],
   pickups: [{ id: 'notes', name: 'Marle\'s case notes', what: 'the case notes', at: [38, 6, '1'], table: true, colour: [0.85, 0.85, 0.75] }],
   devices: [
