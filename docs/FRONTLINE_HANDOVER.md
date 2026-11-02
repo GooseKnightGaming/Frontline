@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.70.0)
+# Frontline — Handover (M6.71.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,13 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.71.0 — the papers, filed; papers in five more
+- Every paper read on a mission is kept with the save (saves.js `markPaper` / `loadPapers`, key
+  `frontline.papers.<slot>`, cleared with the slot). The case board files them under PAPERS (n OF total): a
+  mission a line, opened to read them again.
+- Papers in the Shipyard (a notice in the mess), the Desolated City (Radio Drosk's last log), the Drop (a letter on
+  a bunk), Bunkers (the duty book), the Fortress (the roll call). Thirty-six levels have papers.
 
 ## M6.70.0 — a patrol launch that goes round
 - The Pilot (drive.js) skipped a point behind it within 30 m so a wide turn would not circle back - and on a short

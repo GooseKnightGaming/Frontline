@@ -801,6 +801,14 @@ function boot() {
           : '<div class="rec-row" style="display:block;opacity:0.45">? ? ?  <span>(Level ' + lvl(b.level).no + ', ' + lvl(b.level).title + ')</span></div>').join('')
         + (trailDone(tr, have) ? '<div style="margin:12px auto 4px;width:max-content;padding:5px 16px;border:4px double ' + tr.colour + ';color:' + tr.colour + ';font:700 22px/1 \'Courier New\',monospace;letter-spacing:5px;transform:rotate(-4deg)">' + tr.stamp + '</div>' : '');
     }
+    // (M6.71) the papers read, filed: each mission's, opened to read again
+    const papers = Saves.loadPapers(slotNo), filed = DRAFTS.filter((d) => d.intel && d.intel.length && (papers[d.id] || []).length);
+    if (filed.length) {
+      const total = DRAFTS.reduce((t, d) => t + (d.intel || []).length, 0), got = filed.reduce((t, d) => t + d.intel.filter((q) => papers[d.id].includes(q.id)).length, 0);
+      $('case-list').innerHTML += '<h3 style="margin:18px 0 6px;letter-spacing:3px;color:var(--amber);font-size:13px">PAPERS (' + got + ' OF ' + total + ')</h3>'
+        + filed.map((d) => '<details class="rec-row" style="display:block"><summary><b>Level ' + d.no + ', ' + d.title + '</b> <span style="opacity:0.7">(' + d.intel.filter((q) => papers[d.id].includes(q.id)).length + ' of ' + d.intel.length + ')</span></summary>'
+          + d.intel.filter((q) => papers[d.id].includes(q.id)).map((q) => '<div style="margin:6px 0 0 10px"><b>' + q.title + '</b><br>' + q.text.map((t) => '<span style="opacity:0.85">' + t + '</span>').join('<br>') + '</div>').join('') + '</details>').join('');
+    }
     // (M6.41) and the contracts: replay work, three at a time
     const levels = DRAFTS.filter((d) => !d.battle && d.id !== FINAL && d.objectives && d.objectives.length).map((d) => d.id);
     const b = boardOf(Saves.loadContracts(slotNo), levels);
@@ -1518,7 +1526,7 @@ function boot() {
     const iv = intelNear();
     if (iv) {
       if (S.readingIntel === iv) S.readingIntel = null;
-      else { S.readingIntel = iv; if (!iv.found) { iv.found = true; audio.pickup ? audio.pickup() : audio.click(); } else audio.click(); }
+      else { S.readingIntel = iv; if (!iv.found) { iv.found = true; if (level.draft && iv.id && ON_MISSION) Saves.markPaper(Saves.currentSlot(), level.draft, iv.id); audio.pickup ? audio.pickup() : audio.click(); } else audio.click(); }
       return true;
     }
     const n = noteNear();

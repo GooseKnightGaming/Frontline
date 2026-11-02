@@ -208,6 +208,10 @@ export default {
   pickups: [{ id: 'blackbox', name: 'LANTERN\'s black box', what: 'the black box', at: [HX + 8, HY + 2, '1'], h: 0.8, colour: [0.9, 0.5, 0.15] }],
   reach: [{ id: 'lantern', name: 'LANTERN\'s vehicle', at: [PX + 5, PY + 6, PX + 9, PY + 9] }],
   terminals: [{ id: 'tx', name: 'the transmitter', at: [RX + 9, RY + 5, '1'], face: [0, -1], time: 8, reveal: 25, said: 'The transmitter: LANTERN\'s log goes home - and their last message comes back to you: "Yellows have the bridge. Do not come in from the east."' }],
+  // (M6.71) papers to read: lore, not needed to finish
+  intel: [
+    { id: 'log', at: [53, 27, 'G'], h: 0.78, kind: 'Log', title: 'Radio Drosk\'s last log', text: ['The last broadcast, word for word: "Stay indoors. Help is coming." Then the date, and nothing after it.', 'Someone has been in since and written: "Transmitter still works. Power from the roof panels."'] },
+  ],
   objectives: [
     { id: 'o1', kind: 'reach', ref: 'lantern', text: 'Find LANTERN\'s vehicle (the park)' },
     { id: 'o2', kind: 'take', ref: 'blackbox', text: 'Take the black box (the Meridian, the first floor)' },

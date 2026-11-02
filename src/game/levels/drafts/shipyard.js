@@ -109,6 +109,10 @@ export default {
   pickups: [{ id: 'codes', name: 'The warhead arming codes', what: 'the codes', at: [39, 46, 'G'], table: false, h: 1.12, colour: [0.9, 0.2, 0.2] }],
   terminals: [{ id: 'dock', name: 'the dock control terminal', at: [68, 6, '2'], face: [0, -1], time: 6, reveal: 30,
     said: 'Dock controls: the Ardent\'s citadel blast doors are open, and the yard cameras put every red on your radar for 30 seconds.' }],
+  // (M6.71) papers to read: lore, not needed to finish
+  intel: [
+    { id: 'mess', at: [26, 52, 'G'], h: 0.78, kind: 'Notice', title: 'A notice in the crew\'s mess', text: ['Shore leave cancelled for all hands until the captain says otherwise.', 'Underneath, scratched in with a knife: "Volkov\'s ship. Volkov\'s rules. Volkov\'s funeral."'] },
+  ],
   objectives: [
     { id: 'o1', kind: 'take', ref: 'codes', text: 'Take the warhead arming codes (the citadel)' },
     { id: 'o2', kind: 'hack', ref: 'dock', text: 'Hack the dock controls (the tower)', optional: true },

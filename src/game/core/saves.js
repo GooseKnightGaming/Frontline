@@ -45,7 +45,7 @@ export function saveSlot(n, data) {
 export function loadSlot(n) { return listSlots()[n]; }
 // erasing a slot ends its run: the save, its story and its trophies
 export function clearSlot(n) {
-  try { for (const k of [KEY(n), STORY(n), TROPHIES(n), ARMOURY(n), GADGET(n), RECORD(n), SKILLS(n), CASEB(n), CONTRACTS(n), DONE(n), 'frontline.lantern.' + n]) localStorage.removeItem(k); return true; } catch (e) { return false; }
+  try { for (const k of [KEY(n), STORY(n), TROPHIES(n), ARMOURY(n), GADGET(n), RECORD(n), SKILLS(n), CASEB(n), CONTRACTS(n), DONE(n), PAPERS(n), 'frontline.lantern.' + n]) localStorage.removeItem(k); return true; } catch (e) { return false; }
 }
 // the first slot with no run in it, or -1
 export function freeSlot() {
@@ -185,6 +185,14 @@ export function saveContracts(n, st) { try { localStorage.setItem(CONTRACTS(n), 
 const DONE = (n) => 'frontline.done.' + n;
 const RANK = { failed: 1, partial: 2, success: 3 };
 export function loadDone(n) { try { return JSON.parse(localStorage.getItem(DONE(n)) || '{}') || {}; } catch (e) { return {}; } }
+// (M6.71) the papers read, kept: { levelId: [paperId, ...] } - the case board's file of them
+const PAPERS = (n) => 'frontline.papers.' + n;
+export function loadPapers(n) { try { return JSON.parse(localStorage.getItem(PAPERS(n)) || '{}') || {}; } catch (e) { return {}; } }
+export function markPaper(n, level, id) {
+  const d = loadPapers(n), l = d[level] || (d[level] = []);
+  if (!l.includes(id)) { l.push(id); try { localStorage.setItem(PAPERS(n), JSON.stringify(d)); } catch (e) { /* private window */ } }
+  return d;
+}
 export function markDone(n, id, result) {
   const d = loadDone(n);
   if ((RANK[result] || 0) > (RANK[d[id]] || 0)) { d[id] = result; try { localStorage.setItem(DONE(n), JSON.stringify(d)); } catch (e) { /* private window */ } }

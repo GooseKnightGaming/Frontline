@@ -107,6 +107,10 @@ export default {
   pickups: [{ id: 'keys', name: 'The launch keys', what: 'the keys', at: [35, 30, 'G'], table: false, h: 1.12, colour: [0.95, 0.8, 0.2] }],
   terminals: [{ id: 'signals', name: 'the signals terminal', at: [48, 17, 'G'], face: [0, 1], time: 6, reveal: 35,
     said: 'Signals terminal: the fort\'s radio is down, and the guard rota puts every red on your radar for 35 seconds.' }],
+  // (M6.71) papers to read: lore, not needed to finish
+  intel: [
+    { id: 'roll', at: [31, 28, 'G'], h: 0.78, kind: 'Roll', title: 'The yard\'s roll call', text: ['Every name answered but two, both marked "gone over the wall". Commander Brask has written beside them: "Find them."'] },
+  ],
   objectives: [
     { id: 'o1', kind: 'take', ref: 'keys', text: 'Take the launch keys (the command bunker)' },
     { id: 'o2', kind: 'hack', ref: 'signals', text: 'Hack the signals terminal (the armoury)', optional: true },

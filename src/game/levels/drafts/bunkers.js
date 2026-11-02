@@ -147,6 +147,10 @@ export default {
     { id: 'comms', name: 'the comms desk', at: [34, 48, 'B'], face: [0, -1], time: 6, reveal: 25, said: 'The comms desk: the strongroom\'s blast door unlocks - and the line\'s radio net puts every Yellow on your radar for 25 seconds.' },
     { id: 'radar', name: 'the radar\'s control desk', at: [63, 10, 'G'], face: [1, 0], time: 5, reveal: 0.01, verb: 'Plant a charge on', doing: 'Planting a charge on', said: 'The charge is set - and it goes: the radar\'s desk is smoke, and the dish stops turning.' },
   ],
+  // (M6.71) papers to read: lore, not needed to finish
+  intel: [
+    { id: 'duty', at: [44, 60, 'B'], h: 0.78, kind: 'Duty book', title: 'The command bunker\'s duty book', text: ['Watches doubled since the reds were seen in the valley. Nobody has slept above ground for a week.', 'The last entry: "Radar on the knoll reports nothing. Radar on the knoll always reports nothing."'] },
+  ],
   objectives: [
     { id: 'o1', kind: 'hack', ref: 'comms', text: 'Open the strongroom (the comms room, in the bunker)' },
     { id: 'o2', kind: 'take', ref: 'codes', text: 'Take the launch codes (the strongroom)' },

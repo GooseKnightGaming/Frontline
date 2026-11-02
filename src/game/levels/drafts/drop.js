@@ -99,6 +99,10 @@ export default {
   pickups: [{ id: 'plans', name: 'The coastal defence plans', what: 'the plans', at: [45, 24, 'G'], table: false, h: 0.8, colour: [0.5, 0.7, 0.9] }],
   terminals: [{ id: 'radar', name: 'the radar control terminal', at: [43, 28, 'G'], face: [0, -1], time: 7, reveal: 30,
     said: 'Radar control: Skarra is blind - and its own screens put every red on your radar for 30 seconds.' }],
+  // (M6.71) papers to read: lore, not needed to finish
+  intel: [
+    { id: 'post', at: [55, 27, 'G'], h: 0.78, kind: 'Letter', title: 'A letter on a bunk', text: ['Six months on this rock and the relief boat late again. The chief says the radar matters more than any of us.', 'If you get this before I do, keep the stove lit.'] },
+  ],
   objectives: [
     { id: 'o1', kind: 'hack', ref: 'radar', text: 'Hack the radar control terminal (the control building)' },
     { id: 'o2', kind: 'take', ref: 'plans', text: 'Take the coastal defence plans (the station chief\'s office)' },

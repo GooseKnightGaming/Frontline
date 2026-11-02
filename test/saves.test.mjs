@@ -113,6 +113,13 @@ T('the mission list remembers your best result at each first draft, a run at a t
   A(!S.loadDone(4).embassy, 'leaked into another run');
   S.clearSlot(3); A(!S.loadDone(3).embassy, 'not erased');
 });
+T('the papers read are kept per slot, each once, and go with the slot when it is cleared (M6.71)', () => {
+  S.markPaper(3, 'lock', 'log'); S.markPaper(3, 'lock', 'log'); S.markPaper(3, 'lock', 'orders'); S.markPaper(3, 'pens', 'orders');
+  const p = S.loadPapers(3);
+  A(p.lock.join() === 'log,orders' && p.pens.join() === 'orders', JSON.stringify(p));
+  A(!Object.keys(S.loadPapers(4)).length, 'another slot');
+  S.clearSlot(3); A(!Object.keys(S.loadPapers(3)).length, 'cleared');
+});
 console.log('\n' + '='.repeat(50));
 console.log(fails.length ? 'FAILURES (' + fails.length + ')' : 'ALL ' + pass + ' PASSED');
 process.exit(fails.length ? 1 : 0);
