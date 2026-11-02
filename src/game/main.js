@@ -1293,6 +1293,7 @@ function boot() {
     $('set-text').value = settings.textSize || 'normal';
     $('set-tlook').value = settings.touchLook; $('set-tlook-v').textContent = (+settings.touchLook).toFixed(2);
     if ($('set-tturn')) $('set-tturn').checked = settings.touchTurn !== false;
+    if ($('set-tbuzz')) $('set-tbuzz').checked = settings.touchBuzz !== false;
     if ($('set-tauto')) $('set-tauto').checked = !!settings.touchAutoFire;
     $('set-tsize').value = String(settings.touchSize); $('set-tassist').checked = settings.touchAssist !== false;
 
@@ -1314,6 +1315,7 @@ function boot() {
   $('set-tlook').oninput = (e) => { settings.touchLook = +e.target.value; $('set-tlook-v').textContent = settings.touchLook.toFixed(2); saveSettings(settings); };
   $('set-tsize').onchange = (e) => { settings.touchSize = +e.target.value; saveSettings(settings); if (touch) touch.resize(); };
   $('set-tauto').onchange = (e) => { settings.touchAutoFire = e.target.checked; saveSettings(settings); };
+  $('set-tbuzz').onchange = (e) => { settings.touchBuzz = e.target.checked; saveSettings(settings); };
   $('set-tturn').onchange = (e) => { settings.touchTurn = e.target.checked; saveSettings(settings); };
   $('set-tassist').onchange = (e) => { settings.touchAssist = e.target.checked; saveSettings(settings); };
   $('set-sens').oninput = (e) => { settings.sensitivity = +e.target.value; $('set-sens-v').textContent = settings.sensitivity.toFixed(2); saveSettings(settings); };
@@ -1950,7 +1952,7 @@ function boot() {
       if (ev.type === 'climb' || ev.type === 'over') audio.vault(true);
       // a run-up: two quick footfalls on the wall
       if (ev.type === 'wallkick') { audio.step(surfaceUnder(), true); setTimeout(() => audio.step(surfaceUnder(), true), 110); }
-      if (ev.type === 'hurt') { S.hurt = Math.min(1, 0.35 + ev.amount / 40); S.lastHurt = S.time; if (ev.amount > 3) audio.hurt(); }
+      if (ev.type === 'hurt') { S.hurt = Math.min(1, 0.35 + ev.amount / 40); S.lastHurt = S.time; if (ev.amount > 3) audio.hurt(); buzz(Math.min(120, 30 + ev.amount * 3)); }
       if (ev.type === 'died') {
         audio.died();
         const why = { fell: 'The fall was too much.', drowned: 'You ran out of air.', bitten: 'The dog got you.' }[ev.why] || 'Operative down.';
@@ -2366,7 +2368,7 @@ function boot() {
       }
       if (ev.type === 'pierce' && ev.solid && ev.solid.glassware) audio.glassware(Math.hypot(ev.point[0] - player.pos[0], ev.point[2] - player.pos[2]));
       if (missionRt && ev.type === 'shot') missionRt.fired(ev);
-      if (ev.type === 'shot') { audio.shot(arsenal.weapon); if (ev.hit) { if (ev.hit.target) audio.hitFlesh(); else audio.hitHard(ev.hit.dist, surfaceOf(ev.hit.solid)); } }
+      if (ev.type === 'shot') { buzz(10); audio.shot(arsenal.weapon); if (ev.hit) { if (ev.hit.target) audio.hitFlesh(); else audio.hitHard(ev.hit.dist, surfaceOf(ev.hit.solid)); } }
       // a blow that lands: a punch or a butt thuds; a knife slices
       if ((ev.type === 'swing' || ev.type === 'bash') && ev.hit && ev.hit.target) {
         if (ev.type === 'swing' && !ev.fists) audio.knife(true); else audio.punch();
@@ -2732,6 +2734,8 @@ function boot() {
   }
 
   // ── test hooks (used by the automated browser tests) ────────────────────
+  // (M6.64) a touch screen's buzz (Settings: Touch: vibration; phones that can): a shot of yours, a hit on you
+  function buzz(ms) { if (S.touch && settings.touchBuzz !== false && navigator.vibrate) { try { navigator.vibrate(ms); } catch (e) { /* not allowed */ } } }
   // (M6.33) the shards of a broken pane: a handful of glints, falling to the floor either side of the sill
   let shardMat = null;
   function shards(pos) {

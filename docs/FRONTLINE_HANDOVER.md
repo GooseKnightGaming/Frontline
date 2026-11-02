@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.63.0)
+# Frontline — Handover (M6.64.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,10 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.64.0 — vibration
+- **Touch: vibration** (Settings, on by default; phones that allow `navigator.vibrate` - Android, not iPhones): a short
+  buzz for each of your shots, a longer one when you are hit (`buzz()` in main.js).
 
 ## M6.63.0 — marking
 - **Marking**: aim (AIM held) at one of theirs for 0.9 s and he is marked - `g.tracked`, as the Tracker gadget does:
