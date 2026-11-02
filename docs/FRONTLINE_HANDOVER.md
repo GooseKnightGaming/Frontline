@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.64.0)
+# Frontline — Handover (M6.65.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,9 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.65.0 — the overnight summary
+- The roadmap lists what was done overnight (M6.43 - M6.64); the controls page names the vibration setting.
 
 ## M6.64.0 — vibration
 - **Touch: vibration** (Settings, on by default; phones that allow `navigator.vibrate` - Android, not iPhones): a short
