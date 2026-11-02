@@ -2761,6 +2761,7 @@ function boot() {
   window.FL = {
     app, pc, player, level, view, input, settings, S, characterFill, hqSec,
     intrude(why) { if (hqSec) hqSec.start(why || 'test'); return !!hqSec; },
+    openCase() { if (typeof openCase === 'function') openCase(); },      // (M6.71) for the tests: the case board
     pose(pos, yaw, pitch) { player.seated = null; player.pos = pos.slice(); player.vel = [0, 0, 0]; player.mode = 'walk'; player.traverse = null; input.yaw = yaw || 0; input.pitch = pitch || 0; player.yaw = input.yaw; },
     drive(inp, seconds) {
       const n = Math.round(seconds / DT);
