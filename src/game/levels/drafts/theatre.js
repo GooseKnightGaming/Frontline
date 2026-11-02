@@ -141,6 +141,11 @@ export default {
   ],
   hostages: [{ id: 'okafor', name: 'Mr Okafor', at: [17, 53, 'S'] }],
   pickups: [{ id: 'manifest', name: 'Daskova\'s manifest', what: 'the manifest', at: [24, 54, 'S'], colour: [0.9, 0.85, 0.6] }],
+  // (M6.67) papers to read: lore, not needed to finish
+  intel: [
+    { id: 'bill', at: [22, 10, '1'], h: 0.78, kind: 'Bar bill', title: 'A bar bill, unpaid', text: ['Twelve guests, the circle bar, "the rehearsal party". Champagne. Charged to an account in the name of D.', 'The barman has written on the back: "Again. Who do I send this to?"'] },
+    { id: 'note', at: [12, 53, 'S'], h: 0.78, kind: 'Note', title: 'A note in the stage manager\'s hand', text: ['They come in through the stage door after the house is closed, and they are gone before the cleaners. Daskova does the talking.', 'I have kept a list of the dates. It is behind the fuse board. - J. Okafor'] },
+  ],
   objectives: [
     { id: 'o1', kind: 'kill', ref: 'daskova', text: 'Stop Daskova (the right-hand box)' },
     { id: 'o2', kind: 'take', ref: 'manifest', text: 'Take the manifest (backstage, the stage manager\'s office)' },

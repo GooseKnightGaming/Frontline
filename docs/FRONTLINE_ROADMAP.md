@@ -893,3 +893,8 @@ St Brannoc's, the Villa Merrow, the Kessin Pens, the Rooftops); the case board's
 checkpoints; touch auto-fire, turning with the stick, vibration; the mission map (B); text size; the objective
 marker; the whistle (T); marking; civilians; papers to read in fourteen missions; breakable display cases; the
 mission list in its stories with ticks. See the handover for each.
+
+## The morning after (2 November 2026, M6.66 on)
+- M6.66: Level 53, Varnholm Lock - the end of the river trail (the Pens, the Rooftops, the Lock), stamped RIVER OPEN.
+- Candidates next: a patrol boat that turns in a tight reach (the Pilot skips waypoints closer than 6 m, so short
+  loops stall); papers in the levels that still have none; the river's epilogue feeding a later mission.

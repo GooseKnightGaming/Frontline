@@ -176,6 +176,11 @@ export default {
   terminals: [{ id: 'sec', name: 'the security terminal', at: [40, 43, '1'], face: [0, -1], time: 6, net: 'awing' },
     { id: 'control', name: 'the control desk', at: [33, 42, '1'], face: [0, -1], time: 7, reveal: 30,
     said: 'The control desk: every cell door on A Wing unlocks with a crash of bolts - and the wing\'s cameras put every red on your radar for 30 seconds.' }],
+  // (M6.67) papers to read: lore, not needed to finish
+  intel: [
+    { id: 'memo', at: [32, 43, '3'], h: 0.78, kind: 'Memo', title: 'A memo on the governor\'s desk', text: ['Prisoner VENN, top tier, east: no visits, no letters, no exercise with the others. He does not leave the wing for any reason.', 'Any enquiry about him comes to me. - The Governor'] },
+    { id: 'rota', at: [30, 43, '2'], h: 0.78, kind: 'Rota', title: 'The staff rota, pinned up', text: ['Night shift doubled "until further notice". Someone has written underneath: "Who signs for the overtime?"', 'And under that, in another hand: "Not us. The men in red pay it."'] },
+  ],
   objectives: [
     { id: 'o1', kind: 'hack', ref: 'control', text: 'Hack the control desk (the control room, the second tier, south)' },
     { id: 'o2', kind: 'rescue', ref: 'venn', text: 'Bring Sergeant Venn out (the top tier, east gallery)' },

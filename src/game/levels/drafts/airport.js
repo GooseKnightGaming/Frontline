@@ -167,6 +167,11 @@ export default {
   terminals: [{ id: 'sec', name: 'the security office\'s console', at: [27, 10, '1'], face: [0, -1], time: 6, net: 'varnholm' },
     { id: 'tower', name: 'the ground control desk', at: [4, 29, 'T'], face: [0, 1], time: 6, reveal: 25, verb: 'Take over', doing: 'Taking over',
     said: 'Ground control: every departure is held - Rourke\'s jet stops where it is - and the airfield\'s cameras put every red on your radar for 25 seconds.' }],
+  // (M6.67) papers to read: lore, not needed to finish
+  intel: [
+    { id: 'slot', at: [32, 8, '1'], h: 0.78, kind: 'Flight plan', title: 'A flight plan, filed late', text: ['One private jet, departing 23:59, "cargo: personal effects". No passengers named.', 'Approved by telephone. Whoever took the call has not written down who made it.'] },
+    { id: 'card', at: [43, 19, '1'], h: 0.78, kind: 'Card', title: 'A card, left on the table', text: ['"Mr Rourke - the lounge is yours for the night. With the compliments of the management."', 'On the back, in pencil, a sum of money and a date. The date is tomorrow.'] },
+  ],
   objectives: [
     { id: 'o1', kind: 'stop', ref: 'jet', text: 'Stop Rourke\'s jet before it takes off' },
     { id: 'o2', kind: 'take', ref: 'contracts', text: 'Take the contracts (the VIP lounge, upstairs)' },

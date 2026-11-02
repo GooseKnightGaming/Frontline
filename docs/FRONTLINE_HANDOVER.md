@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.66.0)
+# Frontline — Handover (M6.67.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,11 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.67.0 — more papers
+- Papers in five more first drafts: the Mega-Prison (the governor's memo, the staff rota), the Theatre (a bar bill,
+  Okafor's note), the Nightclub (the guest list), the Airport (a late flight plan, a card for Rourke), the Cemetery
+  (Brother Teodor's rule). Each on a table that has nothing else on it (the intel test checks they lie on something).
 
 ## M6.66.0 — Level 53, Varnholm Lock; the river trail
 - `drafts/lock.js`: the codes case from the Rooftops opens the reds' signal station at the lock. Send the stand-down

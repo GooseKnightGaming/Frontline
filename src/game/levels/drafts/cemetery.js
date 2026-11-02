@@ -99,6 +99,10 @@ export default {
     { id: 'teodor', at: [5, 21, 'C'], arms: 'revolver', rank: 'officer', temper: 'cowardly', fleeOn: 'hurt', name: 'Brother Teodor' },
   ],
   pickups: [{ id: 'cipher', name: 'The Yellows\' cipher book', what: 'the cipher book', at: [4, 20, 'C'], table: false, h: 0.8, colour: [0.8, 0.1, 0.08] }],      // (M6.19.7, Rhys: it "blends into the table" - red-bound now)
+  // (M6.67) papers to read: lore, not needed to finish
+  intel: [
+    { id: 'rule', at: [6, 22, 'C'], h: 0.78, kind: 'Rule', title: 'The rule of the house, in Brother Teodor\'s hand', text: ['Brothers meet below on the night of the full moon. Nobody comes up the chapel steps after midnight.', 'The book stays in the crypt. It does not leave with anyone - not even with me.'] },
+  ],
   objectives: [
     { id: 'o1', kind: 'take', ref: 'cipher', text: 'Take the cipher book (the crypt)' },
     { id: 'o2', kind: 'kill', ref: 'teodor', text: 'Stop Brother Teodor' },

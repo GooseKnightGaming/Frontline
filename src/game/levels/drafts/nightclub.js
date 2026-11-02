@@ -124,6 +124,10 @@ export default {
   ],
   pickups: [{ id: 'ledger', name: 'Saint\'s ledger', what: 'the ledger', at: [7, 10, 'G'], table: false, h: 0.8, colour: [0.7, 0.2, 0.5] }],
   terminals: [{ id: 'power', name: 'the DJ\'s desk', at: [22, 13, 'G'], face: [0, -1], time: 4, reveal: 20, verb: 'Kill the power at', doing: 'Killing the power at', said: 'The power dies - the music cuts out, the lights go dark; in the dark they are on your radar for 20 seconds.' }],
+  // (M6.67) papers to read: lore, not needed to finish
+  intel: [
+    { id: 'guest', at: [9, 22, 'G'], h: 0.78, kind: 'Guest list', title: 'Tonight\'s guest list', text: ['Twenty names, every one crossed through as they came in. Three have "S." beside them and a booth number.', 'At the bottom: "Nobody on the mezzanine without Saint\'s say-so. Nobody."'] },
+  ],
   objectives: [
     { id: 'o1', kind: 'kill', ref: 'saint', text: 'Stop Saint (his booth, the mezzanine)' },
     { id: 'o2', kind: 'take', ref: 'ledger', text: 'Take the ledger (the office, behind the stage)' },
