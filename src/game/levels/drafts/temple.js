@@ -136,6 +136,10 @@ export default {
   pickups: [{ id: 'tablet', name: 'The Tolun tablet', what: 'the tablet', at: [30, 16, 'B'], table: false, h: 0.95, colour: [0.85, 0.7, 0.35] }],
   terminals: [{ id: 'wheel', name: 'the glyph wheel', at: [30, 23, 'T2'], face: [0, 1], time: 5, reveal: 0.01, verb: 'Turn', doing: 'Turning', look: 'stone',
     said: 'The glyph wheel turns - far below, stone grinds on stone: the sanctum\'s door is open.' }],
+  // (M6.69) papers to read: lore, not needed to finish
+  intel: [
+    { id: 'diary', at: [15, 16, 'G'], h: 0.78, kind: 'Diary', title: 'Calder\'s camp diary', text: ['Day 9. Rook will read the glyphs or we will find someone who will. The buyer in Varnholm wants the tablet by the end of the month.', 'Day 11. The rain has stopped. Tomorrow we open the tomb.'] },
+  ],
   objectives: [
     { id: 'o1', kind: 'hack', ref: 'wheel', text: 'Turn the glyph wheel (the shrine, on the top)' },
     { id: 'o2', kind: 'take', ref: 'tablet', text: 'Take the Tolun tablet (the tomb, under the sanctum)' },

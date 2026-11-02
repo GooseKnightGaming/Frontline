@@ -127,6 +127,10 @@ export default {
   ],
   hostages: [{ id: 'kovac', name: 'Dr Mira Kovač', she: true, at: [57, 44, 'M'] }],
   pickups: [{ id: 'manifest', name: 'The Yellows\' arms manifest', what: 'the manifest', at: [62, 53, 'G'], table: false, h: 0.8, colour: [0.85, 0.75, 0.3] }],
+  // (M6.69) papers to read: lore, not needed to finish
+  intel: [
+    { id: 'wages', at: [65, 55, 'G'], h: 0.78, kind: 'Wages', title: 'The quarry\'s wage book', text: ['The quarrymen paid off a week early, every one, "the quarry closed for survey".', 'The only survey booked is Dr Kovač\'s. She is not on the list of those paid off.'] },
+  ],
   objectives: [
     { id: 'o1', kind: 'take', ref: 'manifest', text: 'Take the arms manifest (the site office)' },
     { id: 'o2', kind: 'rescue', ref: 'kovac', text: 'Bring Dr Mira Kovač out' },

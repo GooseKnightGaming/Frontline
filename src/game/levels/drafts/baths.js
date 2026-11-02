@@ -137,6 +137,11 @@ export default {
   ],
   hostages: [{ id: 'lund', name: 'Ms Lund', she: true, at: [5, 22, 'G'] }],
   pickups: [{ id: 'drive', name: 'The hard drive', what: 'the drive', at: [12, 18, 'B'], colour: [0.3, 0.75, 0.95] }],
+  // (M6.69) papers to read: lore, not needed to finish
+  intel: [
+    { id: 'book', at: [8, 33, '1'], h: 0.78, kind: 'Bookings', title: 'The bookings ledger', text: ['"Private hire, the whole building, after hours." Paid a month in advance, in cash, by a Mr Teague.', 'The manager has added: "Ms Lund on nights as usual - she will not mind."'] },
+    { id: 'lost', at: [12, 33, 'G'], h: 0.78, kind: 'Note', title: 'A note at reception', text: ['Lund - if anyone asks, the pool is closed for cleaning. Do not go down to the plant room. Do not go anywhere near the plant room.'] },
+  ],
   objectives: [
     { id: 'o1', kind: 'take', ref: 'drive', text: 'Take the drive (the plant room, underneath)' },
     { id: 'o2', kind: 'kill', ref: 'teague', text: 'Stop Teague (the manager\'s office, upstairs)' },

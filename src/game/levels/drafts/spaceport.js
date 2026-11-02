@@ -171,6 +171,11 @@ export default {
   terminals: [{ id: 'sec', name: 'the range-safety console', at: [22, 17, 'G'], face: [0, 1], time: 6, net: 'teskel' },
     { id: 'arming', name: 'the payload\'s arming unit', at: [RX - 1, RY + 1, 'P3'], face: [1, 0], time: 7, reveal: 20, verb: 'Pull', doing: 'Pulling',
     said: 'The arming unit comes out of the payload in your hands - the count stops at T-38 minutes, and the pad\'s cameras put every red on your radar for 20 seconds.' }],
+  // (M6.69) papers to read: lore, not needed to finish
+  intel: [
+    { id: 'memo', at: [21, 11, 'G'], h: 0.78, kind: 'Memo', title: 'A memo to Director Halvorsen', text: ['The client asks that the launch go ahead tonight, whatever the weather. The client will pay the penalty clauses himself.', 'The client asks that no one outside mission control knows what the satellite is for.'] },
+    { id: 'count', at: [20, 19, 'G'], h: 0.78, kind: 'Checklist', title: 'A countdown checklist', text: ['Every line ticked to T-40. Beside "range safety officer": "sent home - not needed".'] },
+  ],
   objectives: [
     { id: 'o1', kind: 'hack', ref: 'arming', text: 'Pull the arming unit (the gantry\'s top platform)' },
     { id: 'o2', kind: 'take', ref: 'program', text: 'Take the flight program (the director\'s office, mission control)' },

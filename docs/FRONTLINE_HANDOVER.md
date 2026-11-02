@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.68.0)
+# Frontline — Handover (M6.69.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,11 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.69.0 — papers in six more
+- The Swimming Baths (the bookings ledger, a note at reception), the Research Facility (the night rota, the gate
+  log), the Mineshaft (the wage book), the Space Port (a memo to Halvorsen, the countdown checklist), the Ancient
+  Temple (Calder's camp diary), the Desert Outpost (a letter home, Rask's orders). Thirty-one levels have papers.
 
 ## M6.68.0 — papers in six more
 - The Bank (a note to Mr Osei, the counting room's tally), the Manor (a place card, the cook's list), the Sewers

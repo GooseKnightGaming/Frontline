@@ -141,6 +141,11 @@ export default {
   hostages: [{ id: 'pilot', name: 'Lieutenant Osei-Brandt', at: [52, 38, 'G'] }],
   terminals: [{ id: 'dump', name: 'the stack of drums', at: [51, 19, 'G'], face: [0, 1], time: 5, reveal: 0.01, verb: 'Set a charge on', doing: 'Setting a charge on',
     said: 'The charge is set on the drums - and they go up: the dump is fire and smoke, and the compound with it.' }],
+  // (M6.69) papers to read: lore, not needed to finish
+  intel: [
+    { id: 'letter', at: [29, 24, 'G'], h: 0.78, kind: 'Letter', title: 'A letter home, unfinished', text: ['The pay is good and nobody asks where it comes from. The commander says the pilot is "worth more than the whole outpost".', 'Do not tell Mother where I am.'] },
+    { id: 'order', at: [42, 22, 'G'], h: 0.78, kind: 'Orders', title: 'Rask\'s orders', text: ['Hold the pilot until the buyers come. If the dust storm comes first, hold him anyway.'] },
+  ],
   objectives: [
     { id: 'o1', kind: 'rescue', ref: 'pilot', text: 'Bring the pilot out (the cell block)' },
     { id: 'o2', kind: 'hack', ref: 'dump', text: 'Blow the dump (a charge on its drums)' },

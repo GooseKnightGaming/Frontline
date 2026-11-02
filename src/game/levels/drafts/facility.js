@@ -149,6 +149,11 @@ export default {
   terminals: [{ id: 'sec', name: 'the security terminal', at: [3, 23, 'G'], face: [1, 0], time: 6, net: 'halden' },
     { id: 'data', name: 'the data terminal', at: [44, 8, 'G'], face: [0, -1], time: 8, reveal: 30,
     said: 'Data terminal: the station\'s research is copied to your device - and the cameras put every red on your radar for 30 seconds.' }],
+  // (M6.69) papers to read: lore, not needed to finish
+  intel: [
+    { id: 'rota', at: [23, 20, 'G'], h: 0.78, kind: 'Rota', title: 'The night rota, the staff room', text: ['Night staff: Dr I. Brandt, two technicians, one guard. Someone has crossed out "one guard" and written "six - theirs".', 'Brandt\'s mug is still on the table. It is cold.'] },
+    { id: 'gate', at: [16, 21, 'G'], h: 0.78, kind: 'Log', title: 'The gate log', text: ['02:55 - three vehicles, no plates, waved through "on the director\'s say-so". The director has been abroad all month.'] },
+  ],
   objectives: [
     { id: 'o1', kind: 'rescue', ref: 'brandt', text: 'Find Dr Ilse Brandt and bring her out' },
     { id: 'o2', kind: 'take', ref: 'samples', text: 'Take the sample case (the cold store)' },
