@@ -915,7 +915,7 @@ export function buildKitLevel(spec) {
     const F = floors[at[2] || K0];
     let yaw = vd.yaw;
     if (yaw === undefined && vd.path) { const q = vd.path.find((p) => Math.hypot(p[0] - at[0], p[1] - at[1]) > 0.5) || vd.path[0]; yaw = Math.atan2(-(q[0] - at[0]), -(q[1] - at[1])); }
-    const v = new Drivable(world, { id: vd.id, kind: vd.kind, pos: [mid(at[0]), F.y, mid(at[1])], yaw: yaw || 0, model: vd.model, paint: vd.paint, hp: vd.hp });
+    const v = new Drivable(world, { id: vd.id, kind: vd.kind, pos: [mid(at[0]), F.y, mid(at[1])], yaw: yaw || 0, model: vd.model, paint: vd.paint, hp: vd.hp, tune: vd.tune });      // (M6.70) tune: a vehicle's own handling (a nimble launch)
     v.path = vd.path ? vd.path.map(([x, y]) => [mid(x), mid(y)]) : null;
     v.pathSpeed = vd.speed || 14; v.pathLoop = !!vd.loop; v.traffic = !!vd.traffic; v.wait = vd.wait || 0; v.holdOn = vd.holdOn || null; v.crew = (vd.crew || []).map((c) => ({ id: c.id, at: c.at.slice() })); v.goal = vd.goal || null; v.name = vd.name || null;
     // (boats on their own ways do not foul each other - they pass, as if they had seen each other coming)

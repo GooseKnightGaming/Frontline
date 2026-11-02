@@ -194,7 +194,10 @@ export class Pilot {
     let p = this.path[this.i];
     const f = fwd(v.yaw);
     // (on to the next point once this one is close - or already behind it, so a wide turn does not circle back)
-    const passed = (q) => { const dx = q[0] - v.pos[0], dz = q[1] - v.pos[2], dd = Math.hypot(dx, dz); return dd < Math.max(6, Math.abs(v.speed) * 0.6) || (dd < 30 && dx * f[0] + dz * f[1] < 0 && this.i + 1 < this.path.length); };
+    const passed = (q) => { const dx = q[0] - v.pos[0], dz = q[1] - v.pos[2], dd = Math.hypot(dx, dz); return dd < Math.max(6, Math.abs(v.speed) * 0.6) || (dd < 30 && dx * f[0] + dz * f[1] < 0 && this.i + 1 < this.path.length && ahead(this.path[this.i + 1])); };
+    // (M6.70) ...but only a missed corner: the point after it ahead. A point behind with the next behind too is the way
+    // back (a short loop's return leg) - turn round for it, do not skip the lot
+    function ahead(q) { return (q[0] - v.pos[0]) * f[0] + (q[1] - v.pos[2]) * f[1] > 0; }
     while (p && passed(p)) {
       this.i++;
       if (this.i >= this.path.length) { if (this.loop) this.i = 0; else { this.done = true; return { throttle: 0, steer: 0, brake: true }; } }

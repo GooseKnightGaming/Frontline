@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.69.0)
+# Frontline — Handover (M6.70.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,14 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.70.0 — a patrol launch that goes round
+- The Pilot (drive.js) skipped a point behind it within 30 m so a wide turn would not circle back - and on a short
+  loop that skipped the whole return leg, and the boat ran into the bank. Now it skips one only when the point after
+  it is ahead (a missed corner); with the next behind too, it turns round for it.
+- A vehicle spec's `tune` (e.g. `{ turn: 1.7 }`) reaches the Drivable through the kit - its own handling over its
+  kind's. Varnholm Lock's patrol launch turns tight and goes round the west reach (a boat's own turning circle is
+  about 12.5 m across - wider than the reach).
 
 ## M6.69.0 — papers in six more
 - The Swimming Baths (the bookings ledger, a note at reception), the Research Facility (the night rota, the gate

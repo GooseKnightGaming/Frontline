@@ -118,6 +118,16 @@ for (const d of DRAFTS.filter((q) => (q.vehicles || []).some((v) => v.path))) {
   });
 }
 
+// (M6.70) a short loop: the Pilot turns round for its return leg rather than skipping it; a launch's own helm
+T('Varnholm Lock: the patrol launch turns tight (its own tune) and goes round its short loop more than once', () => {
+  const L = buildKitLevel(DRAFTS.find((q) => q.id === 'lock')), v = L.drivables.find((q) => q.id === 'patrol');
+  A(v.K.turn > 1.5, 'tune: ' + v.K.turn);
+  v.driver = 'ai'; const pl = new Pilot(v, v.path, { speed: v.pathSpeed, loop: true });
+  let laps = 0, last = 0;
+  for (let t = 0; t < 90; t += 1 / 60) { v.step(1 / 60, pl.control()); if (pl.i < last) laps++; last = pl.i; }
+  A(laps >= 2, 'laps: ' + laps);
+});
+
 console.log('\n' + '='.repeat(50));
 if (fails.length) { console.log('FAILURES (' + fails.length + '):'); for (const f of fails) console.log('  * ' + f); process.exit(1); }
 console.log('ALL ' + pass + ' PASSED');

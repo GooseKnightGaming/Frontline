@@ -10,7 +10,7 @@ export default {
   brief: [
     ['The job', 'The codes case from the roofs held the reds\' <b>river signal codes</b>. Their <b>signal station</b> at Varnholm Lock gives every patrol boat its orders, and works the lock. Use the codes: send their boats a <b>stand-down</b> for tonight, then <b>open the lock gates</b>. Ghost\'s boats go through to the sea while the reds\' boats sit at their moorings.'],
     ['The place', 'The river runs east to west through the lock: one chamber, a gate at each end, and a walkway on top of each gate. These are the only ways across. North bank: the <b>control house</b> (the gate controls downstairs, the <b>signal room</b> upstairs), the radio hut, the barracks hut. South bank: the <b>lock-keeper\'s cottage</b> and a warehouse.'],
-    ['Security', 'Cameras on the north bank, the control house maglocked (the lockmaster\'s keycard), the alarm. The radio is in the radio hut, and there\'s an engineer with it. A patrol boat moored on the west reach, its crew aboard. The lock-keeper and his wife are not reds; they\'re told to stay indoors.'],
+    ['Security', 'Cameras on the north bank, the control house maglocked (the lockmaster\'s keycard), the alarm. The radio is in the radio hut, and there\'s an engineer with it. A patrol launch goes round the west reach with a man on its bow. The lock-keeper and his wife are not reds; they\'re told to stay indoors.'],
     ['Objectives', 'Send the <b>stand-down</b> (the signal room, upstairs in the control house). <b>Open the lock gates</b> (the control house, downstairs). Out by Ghost\'s boat, at the west jetty on the south bank.'],
   ],
   epilogue: {
@@ -74,8 +74,9 @@ export default {
     for (const [x, y] of [[18, 14], [37, 14], [21, 25], [36, 25], [4, 26], [52, 13]]) level.lights.push({ pos: [mid(x), 5, mid(y)], range: 13, intensity: 0.9, color: [1, 0.85, 0.6], street: true });
   },
   vehicles: [
-    // the patrol boat, moored on the west reach with its crew aboard (the stand-down keeps it there)
-    { id: 'patrol', kind: 'boat', at: [10, 18], yaw: -Math.PI / 2, paint: 'olive', hp: 600,
+    // the patrol launch: round and round the west reach, a man on its bow (a small launch: it turns tight)
+    { id: 'patrol', kind: 'boat', at: [6, 17], yaw: -Math.PI / 2, paint: 'olive', hp: 600, loop: true, speed: 4, tune: { turn: 1.7 },
+      path: [[6, 17], [15, 17], [18, 19.5], [15, 22], [6, 22], [3, 19.5], [6, 17]],
       crew: [{ id: 'pb_helm', at: [-0.4, 0.6] }, { id: 'pb_bow', at: [0, -2.2] }] },
   ],
   start: { x: 53, y: 30, floor: 'G', yaw: 0 },
@@ -91,8 +92,8 @@ export default {
     { id: 'out', label: 'Varnholm Lock', at: [0, 0, W - 1, H - 1] },
   ],
   guards: [
-    { id: 'pb_helm', at: [10, 18, 'G'], arms: 'smg', temper: 'steady' },
-    { id: 'pb_bow', at: [10, 19, 'G'], arms: 'carbine', temper: 'steady' },
+    { id: 'pb_helm', at: [6, 17, 'G'], arms: 'smg', temper: 'steady' },
+    { id: 'pb_bow', at: [6, 18, 'G'], arms: 'carbine', temper: 'steady' },
     { id: 'lm', at: [30, 9, 'G'], arms: 'pistol', rank: 'officer', temper: 'steady', card: 'lock', name: 'The lockmaster' },
     { id: 'sig', at: [27, 7, '1'], arms: 'pistol', rank: 'specialist', temper: 'cowardly', name: 'The signaller' },
     { id: 'sig2', at: [32, 9, '1'], arms: 'carbine', temper: 'steady' },
