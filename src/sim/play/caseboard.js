@@ -32,6 +32,7 @@ export const BLIGHT = [
   { level: 'grain', title: 'The Grain Terminal', text: 'The van stopped; the manifest names the Dalmar Star, for Kessin.' },
   { level: 'dalmar', title: 'The Dalmar Star', text: 'The blight off her, and her radio log: the buyer named.' },
   { level: 'ministry', title: 'The Ministry of Supply', text: 'The order that bought it, signed - and the supply records that say why.' },
+  { level: 'embankment', title: 'The Halvard Embankment', text: 'The man who signed for it, stopped on his way to the border.' },
 ];
 export const blightMark = (level) => 'blight:' + level;
 export const blightStep = (level) => BLIGHT.some((b) => b.level === level) ? blightMark(level) : null;

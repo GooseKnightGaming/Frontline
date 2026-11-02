@@ -12,7 +12,7 @@ game into the repository's root.
   (its own floor, `R`, 3.2 m up, on a hill of rock) with an LR7 and an 8x scope; the Deputy Minister's car comes
   along the embankment road across the river, ~110 m off, after a minute and a half (a bodyguard beside the driver). A
   checkpoint, a watchtower with a marksman (a ladder up), men on the river wall, a footbridge they come over, a path
-  up the ridge. Stop him; back down the ridge's back to the van.
+  up the ridge. Stop him; back down the ridge's back to the van. The blight's fifth (last) step on the board.
 - **Fixed: a start facing anything but north could be turned on the first frame** - with drag-look (a touch screen,
   or a browser that refuses mouse capture) the mouse's moves on the menus (a click on Begin) were counted as a look.
   Going in now clears them, and a touch screen never takes the mouse's drags as looks (it has its own).
