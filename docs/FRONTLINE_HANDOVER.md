@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.71.0)
+# Frontline — Handover (M6.72.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,15 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.72.0 — Level 54, Hollin Mill; the Archivist
+- `drafts/mill.js`: the reds' forged papers come from a paper mill on a millrace. Jam the press (the press hall), take
+  the printing plates (the engraver's shop, maglocked - a back door east), optionally bring the engraver, Mr Pell,
+  out of the warehouse; out by the gate, south. One footbridge over the millrace; a drying loft over the press hall
+  (a stair up); two printers (civilians); three papers; an epilogue; rain.
+- Lanes between buildings are two squares wide: tidyRows fills a one-square slot between two walls (the first try's
+  doors opened onto it, and the shop was walled in).
+- The trophy The Archivist: every paper in every first draft read (filed with the save).
 
 ## M6.71.0 — the papers, filed; papers in five more
 - Every paper read on a mission is kept with the save (saves.js `markPaper` / `loadPapers`, key

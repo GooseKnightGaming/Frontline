@@ -20,6 +20,7 @@ import { spokenVoice, SPOKEN, SPOKEN_SETS } from '../core/spoken.js';
 import { inTrain, inCoach, nearestSeat, FLOOR as FLOOR_Y, HIJACK, HIJACK_TALK, STAFF_TALK, NEWSPAPER, RUN as TRAIN_RUN } from './train.js';
 import * as Trophies from '../core/trophies.js';
 import * as Saves from '../core/saves.js';
+import { DRAFTS } from './drafts/index.js';
 import { rewardFor } from '../../sim/play/rewards.js';
 import { deviceView } from '../draw/devices_view.js';
 import { makeTarget } from '../../sim/arms/weapons.js';
@@ -2332,6 +2333,11 @@ export function setupMission(ctx) {
       // (M6.60) a first draft's papers, every one of them read; and the Codex home
       if (level.draft && level.intel && level.intel.length && level.intel.every((q) => q.found) && m.result !== 'failed') all.push({ id: level.draft + '_papers', name: 'Read Everything: ' + level.title, about: 'Every paper at ' + (level.spec.place || level.title) + ' read.' });
       if (level.draft === 'villa' && m.result === 'success') all.push({ id: 'codex_returned', name: 'Returned', about: 'The bill of sale and the catalogue out of the Villa Merrow: the Codex goes home.' });
+      // (M6.72) every paper in every first draft read, and filed (saves.js loadPapers)
+      if (level.draft && level.intel && level.intel.length) {
+        const pp = Saves.loadPapers(Saves.currentSlot());
+        if (DRAFTS.every((d) => !(d.intel || []).length || d.intel.every((q) => (pp[d.id] || []).includes(q.id)))) all.push({ id: 'archivist', name: 'The Archivist', about: 'Every paper in every mission read - the whole file, on the case board.' });
+      }
       // (M6.66) the river open: Varnholm Lock
       if (level.draft === 'lock' && m.result === 'success') all.push({ id: 'river_open', name: 'River Open', about: 'The stand-down sent and the lock opened: Ghost\'s boats through to the sea.' });
       // (M6.44) the blight's end: the Dalmar Star

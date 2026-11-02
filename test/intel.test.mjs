@@ -1,3 +1,4 @@
+import { readFileSync } from 'fs';
 // FRONTLINE - papers to read in the first drafts (M6.58): each on something, on a real floor, with words.
 import { DRAFTS } from '../src/game/levels/drafts/index.js';
 import { buildKitLevel } from '../src/game/levels/kit.js';
@@ -15,5 +16,10 @@ for (const d of DRAFTS.filter((q) => q.intel && q.intel.length)) {
   }
 }
 ok(count >= 16, 'papers: ' + count);
+// (M6.71 - 72) filed on the case board; the Archivist for the whole file; paper ids unique in a level
+{ const src = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8'), rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
+  ok(/Saves\.markPaper\(Saves\.currentSlot\(\), level\.draft, iv\.id\)/.test(src) && /PAPERS \(/.test(src), 'filed');
+  ok(/id: 'archivist'/.test(rt), 'the Archivist');
+  for (const d of DRAFTS) if (d.intel) ok(new Set(d.intel.map((q) => q.id)).size === d.intel.length, d.id + ': paper ids unique'); }
 console.log(bad ? `${bad} of ${n} FAILED` : `ALL ${n} PASSED`);
 if (bad) process.exit(1);
