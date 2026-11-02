@@ -14,6 +14,7 @@ game into the repository's root.
 - **Civilians** (a first draft's `civilians: [{ id, at, yaw, title, tint, says }]`, kit.js -> `level.npcs`, kind
   'civilian'): people at their work - the hospital's night staff, the Ministry's clerks, the Embassy's guests. Solid; E talks to them (a
   line of their own, as a hint - no voice); F knocks one down, and the debrief counts it (Civilians knocked down).
+  A loud shot within 30 m and they get down and stay down (`n.cower`: crouched, and begging if spoken to).
 
 ## M6.53.0 — Level 49, St Brannoc's
 - **Level 49, St Brannoc's** (`drafts/hospital.js`; after the museum): the night curator who signed the Codex out is

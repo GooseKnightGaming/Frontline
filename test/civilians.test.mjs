@@ -17,5 +17,6 @@ for (const d of DRAFTS.filter((q) => q.civilians && q.civilians.length)) {
 }
 const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
 ok(/n\.kind === 'civilian'/.test(rt) && /m\.civiliansHit/.test(rt), 'talked to, and counted when knocked down');
+ok(/n\.kind === 'civilian' && Math\.hypot\(n\.pos\[0\] - ev\.from\[0\], n\.pos\[2\] - ev\.from\[2\]\) < 30\) n\.cower = true/.test(rt) && /stance: o\.cower \? 1 : 0/.test(rt), 'a shot near them and they get down');
 console.log(bad ? `${bad} of ${n} FAILED` : `ALL ${n} PASSED`);
 if (bad) process.exit(1);

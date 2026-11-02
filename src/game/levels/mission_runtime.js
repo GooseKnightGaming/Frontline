@@ -385,7 +385,7 @@ export function setupMission(ctx) {
   // Ticket Inspector? you should be ABLE to, but that causes the others to turn on you") to knock down
   const npcs = (level.npcs || []).map((n) => {
     const o = Object.assign({ faction: 'staff', voice: 'st1', down: false }, n);
-    o.animState = () => ({ mode: 'walk', stance: 0, speed: 0, forward: 0, strafe: 0, onGround: true, vy: 0, armed: false, melee: false, aiming: false, firing: false, dashing: false, hurt: false, dead: o.down, slump: null, sitting: !!o.sitting, seated: !!(o.sitting && o.down) });
+    o.animState = () => ({ mode: 'walk', stance: o.cower ? 1 : 0, speed: 0, forward: 0, strafe: 0, onGround: true, vy: 0, armed: false, melee: false, aiming: false, firing: false, dashing: false, hurt: false, dead: o.down, slump: null, sitting: !!o.sitting, seated: !!(o.sitting && o.down) });
     o.solid = level.world.addSolid([o.pos[0] - 0.25, o.pos[1], o.pos[2] - 0.25], [o.pos[0] + 0.25, o.pos[1] + 1.8, o.pos[2] + 0.25], 'npc');
     o.solid.person = true;                       // (as a guard's: seen past by a witness, not stood on)
     o.home = o.pos.slice();
@@ -454,7 +454,7 @@ export function setupMission(ctx) {
       // (M6.54) a civilian: a line of their own, said (no voice), a different one each time
       const says = n.says && n.says.length ? n.says : CIVILIAN_SAYS;
       n.saidI = ((n.saidI === undefined ? -1 : n.saidI) + 1) % says.length;
-      showHint(n.title + ': \u201c' + says[n.saidI] + '\u201d');
+      showHint(n.title + ': \u201c' + (n.cower ? 'Please - please don\'t shoot. I\'ll stay down.' : says[n.saidI]) + '\u201d');
     } else if (n.kind === 'vendor') {
       // (Rhys) the first time, in Severian; once you have answered him (in English), English
       const first = !rt.kioskMet; rt.kioskMet = true;
@@ -2103,6 +2103,8 @@ export function setupMission(ctx) {
     hear(ev) {
       if (ev.type === 'shot') {
         noises.push({ pos: ev.from, loud: ev.noise === undefined ? 1 : ev.noise });
+        // (M6.54) civilians who hear it get down, and stay down
+        if ((ev.noise === undefined ? 1 : ev.noise) > 0.5) for (const n of npcs) if (n.kind === 'civilian' && Math.hypot(n.pos[0] - ev.from[0], n.pos[2] - ev.from[2]) < 30) n.cower = true;
         // a round that just misses a guard: he knows he is being shot at
         const reach = ev.hit && ev.hit.dist ? ev.hit.dist : 80;
         for (const g of guards) {
