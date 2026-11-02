@@ -1,3 +1,4 @@
+import { readFileSync } from 'fs';
 // FRONTLINE - the case (sim/play/caseboard.js): every clue points at a real level and a real terminal or pickup;
 // the final mission exists and is gated.
 import { CASE, CASE_NEEDS, FINAL, cluesFrom, caseOpen, caseClosed, CLOSED, BLIGHT, blightMark, blightStep, blightDone, TRAILS, trailSteps, trailDone, trailMark } from '../src/sim/play/caseboard.js';
@@ -35,6 +36,10 @@ ok(TRAILS.every((t) => t.steps.every((b) => byId[b.level])), 'every trail\'s ste
 ok(JSON.stringify(trailSteps('museum')) === '["codex:museum"]' && trailSteps('grain')[0] === 'blight:grain' && !trailSteps('embassy').length, 'a mission\'s marks');
 const cx = TRAILS.find((t) => t.id === 'codex');
 ok(!trailDone(cx, ['codex:museum']) && trailDone(cx, cx.steps.map((b) => trailMark(cx, b.level))), 'the Codex done when all its steps are');
+// (M6.66) the river: the pens, the roofs, the lock - and the lock's trophy
+const rv = TRAILS.find((t) => t.id === 'river');
+ok(rv && rv.steps.map((b) => b.level).join() === 'pens,rooftops,lock' && trailSteps('lock')[0] === 'river:lock', 'the river\'s steps');
+ok(/level\.draft === 'lock' && m\.result === 'success'\) all\.push\(\{ id: 'river_open'/.test(readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8')), 'River Open');
 const k = byId[FINAL];
 ok(k && k.guards.some((g) => g.card) && k.guards.some((g) => g.dog) && k.guards.some((g) => g.reserve) && k.guards.some((g) => g.shield), 'Kaldberg uses the specialists');
 ok(k && ['camera', 'turret', 'lock', 'laser', 'lights', 'alarm'].every((kind) => k.devices.some((d) => d.kind === kind)), 'Kaldberg has every kind of device');

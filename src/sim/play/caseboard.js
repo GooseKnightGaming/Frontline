@@ -45,9 +45,16 @@ export const CODEX = [
   { level: 'hospital', title: 'St Brannoc\'s', text: 'Tobias Marle, brought out - and with him the name of the man who bought it.' },
   { level: 'villa', title: 'The Villa Merrow', text: 'The bill of sale from the Count\'s safe, and his catalogue of everything else.' },
 ];
+// (M6.66) the river: the pens' schedules, the codes off the roofs, and the lock opened with them
+export const RIVER = [
+  { level: 'pens', title: 'The Kessin Pens', text: 'The patrol schedules: every boat on the river, and where they never go.' },
+  { level: 'rooftops', title: 'The Rooftops', text: 'The codes case, taken from the courier on the tallest roof.' },
+  { level: 'lock', title: 'Varnholm Lock', text: 'The stand-down sent in their own codes, and the lock opened to the sea.' },
+];
 export const TRAILS = [
   { id: 'blight', title: 'THE BLIGHT', steps: BLIGHT, stamp: 'HARVEST SAVED', colour: '#5a9a3a' },
   { id: 'codex', title: 'THE CODEX', steps: CODEX, stamp: 'RETURNED', colour: '#3a7ab0' },
+  { id: 'river', title: 'THE RIVER', steps: RIVER, stamp: 'RIVER OPEN', colour: '#2a8a8a' },
 ];
 export const trailMark = (trail, level) => trail.id + ':' + level;
 // the marks a mission's being done adds (any trail it is a step of)

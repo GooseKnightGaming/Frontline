@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.65.0)
+# Frontline — Handover (M6.66.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,17 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.66.0 — Level 53, Varnholm Lock; the river trail
+- `drafts/lock.js`: the codes case from the Rooftops opens the reds' signal station at the lock. Send the stand-down
+  (signal room, upstairs) and open the gates (control house, downstairs); out by Ghost's boat at the west jetty.
+  The river crosses the map east-west; the two gate walkways (x 21 and x 34) are the only ways over. A moored patrol
+  boat with its crew (a looping one had no room to turn on the reach - the Pilot skips waypoints within 6 m). The
+  lock-keeper and his wife (civilians), two papers, an epilogue. Mist (fog 12 - 95 m).
+- Room ops: the coordinates are the room's inside; its walls are one square out. Doors and windows go on the wall
+  squares (the first try had them inside, and nothing was reachable).
+- The case board's third trail, THE RIVER (pens, rooftops, lock; stamped RIVER OPEN); the trophy River Open; the
+  mission list's last group is now THE RIVER.
 
 ## M6.65.0 — the overnight summary
 - The roadmap lists what was done overnight (M6.43 - M6.64); the controls page names the vibration setting.

@@ -48,5 +48,6 @@ import hospital from './hospital.js';
 import villa from './villa.js';
 import pens from './pens.js';
 import rooftops from './rooftops.js';
+import lock from './lock.js';
 
-export const DRAFTS = [sewers, bank, cemetery, estate, manor, mine, facility, vantage, ward, campus, shipyard, fortress, drop, beachhead, factoryBattle, riverboat, city, ruins, wasteland, theatre, baths, temple, prison, bunkers, arena, nightclub, airport, outpost, spaceport, subway, listening, yacht, archive, tower, testrange, embassy, barracks, kaldberg, glasshouse, grain, dalmar, ministry, embankment, museum, hospital, villa, pens, rooftops];
+export const DRAFTS = [sewers, bank, cemetery, estate, manor, mine, facility, vantage, ward, campus, shipyard, fortress, drop, beachhead, factoryBattle, riverboat, city, ruins, wasteland, theatre, baths, temple, prison, bunkers, arena, nightclub, airport, outpost, spaceport, subway, listening, yacht, archive, tower, testrange, embassy, barracks, kaldberg, glasshouse, grain, dalmar, ministry, embankment, museum, hospital, villa, pens, rooftops, lock];
