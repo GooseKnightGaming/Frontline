@@ -127,6 +127,11 @@ export default {
     { id: 'sale', name: 'the study\'s safe', at: [42, 14, '1'], face: [-1, 0], time: 10, reveal: 20, verb: 'Open and copy', doing: 'Copying',
       said: 'The bill of sale: the Halvard Codex, for grain and a "treatment" - signed by the Count and a man from the Ministry of Supply. Every red here on your radar for 20 seconds.' },
   ],
+  // (M6.58) papers to read: lore, not needed to finish
+  intel: [
+    { id: "cat", at: [38, 14, "G"], kind: "Auction notice", title: "An auction notice, marked up", text: ["Lot 112 withdrawn at the vendor's request. Lot 113 withdrawn at the vendor's request. Lot 114 - \"acquired privately\".", "In the margin, in the Count's hand: \"Never buy at auction what you can buy in the dark.\""] },
+    { id: "guests", at: [24, 13, "G"], kind: "Guest list", title: "Tonight's guest list", text: ["Forty names. Two of them are officers of the reds, \"as a courtesy\".", "At the bottom: \"Gallery tours, one at a time. Study - nobody.\""] },
+  ],
   objectives: [
     { id: 'o1', kind: 'hack', ref: 'sale', text: 'Copy the bill of sale (the Count\'s study, upstairs)' },
     { id: 'o2', kind: 'take', ref: 'cat', text: 'Take the catalogue (the gallery, upstairs)' },

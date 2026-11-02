@@ -101,6 +101,11 @@ export default {
     { id: 'research', name: 'the research server', at: [36, 23, 'G'], face: [0, -1], time: 9, reveal: 25, verb: 'Copy', doing: 'Copying',
       said: 'The research, copied: not guidance systems this time - a blight, for crops, bred to order. Ghost will want to know who for. Every red here on your radar for 25 seconds.' },
   ],
+  // (M6.58) papers to read: lore, not needed to finish
+  intel: [
+    { id: "lab", at: [34, 11, "G"], kind: "Rota", title: "Night rota - the growing room", text: ["Two on the lab door, one on the server room, all night. Nobody in after midnight without the head of research.", "Scrawled underneath: \"Since when do greenhouses need guards with rifles?\""] },
+    { id: "office", at: [33, 7, "1"], kind: "Letter", title: "Letter - unsigned, on Varn paper", text: ["The money stops at the end of the month. The work does not. You will be paid from another account.", "A van will come for the first consignment. Do not be there when it does."] },
+  ],
   objectives: [
     { id: 'o1', kind: 'take', ref: 'sample', text: 'Take the sample (the growing room)' },
     { id: 'o2', kind: 'hack', ref: 'research', text: 'Copy the research server (the server room)' },

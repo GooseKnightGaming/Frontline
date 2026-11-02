@@ -121,6 +121,11 @@ export default {
     { id: 'log', name: 'the radio log', at: [15, 11, '2'], face: [0, 1], time: 8, reveal: 25, verb: 'Copy', doing: 'Copying',
       said: 'The radio log: Rook\'s traffic, and the buyer named in it. Ghost has it. Every red aboard on your radar for 25 seconds.' },
   ],
+  // (M6.58) papers to read: lore, not needed to finish
+  intel: [
+    { id: "notice", at: [14, 12, "1"], kind: "Crew notice", title: "Notice - the crew mess", text: ["By order of the Master: no crew in No. 2 hold while the special cargo is aboard.", "Mr Rook and his men have the run of the ship. Do not ask them anything."] },
+    { id: "log", at: [13, 12, "2"], kind: "Log page", title: "A page from the deck log", text: ["04:20 - Mr Rook aboard with two men. Inspected the hold. Satisfied.", "04:45 - Radio traffic for Mr Rook from Varnholm, in code. Logged as \"private\"."] },
+  ],
   objectives: [
     { id: 'o1', kind: 'take', ref: 'blight', text: 'Take the blight (the hold)' },
     { id: 'o2', kind: 'hack', ref: 'log', text: 'Copy the radio log (the bridge)' },

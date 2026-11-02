@@ -112,6 +112,11 @@ export default {
     { id: 'register', name: 'the loan register', at: [7, 13, '1'], face: [0, 1], time: 8, reveal: 20, verb: 'Copy', doing: 'Copying',
       said: 'The loan register: the Codex, "returned to lender" in a hand that is not the curator\'s - and the buyer\'s name under it. Every red here on your radar for 20 seconds.' },
   ],
+  // (M6.58) papers to read: lore, not needed to finish
+  intel: [
+    { id: "night", at: [29, 30, "G"], kind: "Night log", title: "The night security log", text: ["01:00 - all galleries checked. 01:30 - the curator in the special exhibition again, \"cataloguing\".", "02:00 - told to leave the special exhibition off the round tonight. By whom? Not written down."] },
+    { id: "letter", at: [9, 13, "1"], kind: "Letter", title: "Letter - to the night curator", text: ["Tobias - the lender wants the Codex home by spring. Please make sure the paperwork is in order.", "Under it, in another hand: \"It will be returned. To someone.\""] },
+  ],
   objectives: [
     { id: 'o1', kind: 'take', ref: 'codex', text: 'Take the Halvard Codex (the special exhibition, upstairs)' },
     { id: 'o2', kind: 'hack', ref: 'register', text: 'Copy the loan register (the curator\'s office, upstairs)' },

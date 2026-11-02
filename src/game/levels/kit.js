@@ -939,6 +939,17 @@ export function buildKitLevel(spec) {
     const F = floors[c.at[2] || K0];
     level.npcs.push({ id: c.id, kind: 'civilian', title: c.title || 'A civilian', pos: [mid(c.at[0]), F.y, mid(c.at[1])], yaw: c.yaw || 0, tint: c.tint || [1.25, 1.25, 1.25], says: c.says || null, sitting: !!c.sitting });
   }
+  // (M6.58) papers to read (spec.intel: [{ id, at: [x, y, floor], kind, title, text: [...], h }]): lore, not needed to
+  // finish - E reads one, the debrief counts them (main.js's intel, as at the Riverside Hotel). On a table (h 0.78)
+  // unless h says otherwise; a sheet of paper drawn where it lies.
+  if (spec.intel && spec.intel.length) {
+    level.intel = level.intel || [];
+    for (const it of spec.intel) {
+      const F = floors[it.at[2] || K0], h = it.h === undefined ? 0.78 : it.h, x = mid(it.at[0]), z = mid(it.at[1]);
+      box([x - 0.15, F.y + h, z - 0.11], [x + 0.15, F.y + h + 0.02, z + 0.11], 'paper', { solid: false });
+      level.intel.push({ id: it.id, kind: it.kind || 'Paper', title: it.title, text: it.text, pos: [x, F.y + h, z], floorY: F.y, found: false, room: it.room || it.title });
+    }
+  }
   // (M6.49) the floor plans, for the mission map: each floor's rows as built
   level.plan = { cell: CELL, floors: Object.keys(floors).map((k) => ({ key: k, y: floors[k].y, rows: floors[k].rows.slice() })) };
   if (spec.extra) spec.extra(kit);

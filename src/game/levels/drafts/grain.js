@@ -85,6 +85,11 @@ export default {
     { id: 'manifest', name: 'the shipping office\'s manifest', at: [40, 21, 'G'], face: [0, 1], time: 7, reveal: 25, verb: 'Copy', doing: 'Copying',
       said: 'The manifest: the van\'s load to go aboard the Dalmar Star, for Kessin - and the next consignment already booked, for the spring. Every red here on your radar for 25 seconds.' },
   ],
+  // (M6.58) papers to read: lore, not needed to finish
+  intel: [
+    { id: "docket", at: [40, 22, "G"], kind: "Shipping docket", title: "Shipping docket - Terminal 3", text: ["Consignment 4471: twelve drums, \"agricultural\". Not to be opened before loading.", "Vessel: the Dalmar Star. Port of discharge: Kessin. Consignee: left blank - \"to be advised by the Ministry\"."] },
+    { id: "rota", at: [42, 22, "G"], kind: "Duty rota", title: "Night rota - the shipping office", text: ["Gate: one man, all night. Van crew: at the loading door by three.", "Pencilled at the bottom: \"Whatever is in those drums, nobody here asks. Orders from the top.\""] },
+  ],
   objectives: [
     { id: 'o1', kind: 'stop', ref: 'van', text: 'Stop the blight van before it is out of the east gate' },
     { id: 'o2', kind: 'hack', ref: 'manifest', text: 'Copy the manifest (the shipping office)' },

@@ -118,6 +118,11 @@ export default {
     { id: 'records', name: 'the supply records', at: [16, 9, '1'], face: [-1, 0], time: 9, reveal: 20, verb: 'Copy', doing: 'Copying',
       said: 'The supply records: every tonne of grain the reds expect to have next year - and the blight, ordered to make sure their neighbours have none. Every red here on your radar for 20 seconds.' },
   ],
+  // (M6.58) papers to read: lore, not needed to finish
+  intel: [
+    { id: "diary", at: [24, 15, "2"], kind: "Diary", title: "The secretary's desk diary", text: ["Tuesday: the Deputy Minister - lunch with Count M. No note to be kept.", "Thursday: the invoice to go through Supply, not Agriculture. Do NOT copy to the Minister."] },
+    { id: "memo", at: [8, 25, "1"], kind: "Memo", title: "Memo - to all staff, first floor", text: ["Visitors to the records room must be signed in by a section head. No exceptions.", "Someone has added in pencil: \"except for the Deputy Minister, apparently\"."] },
+  ],
   objectives: [
     { id: 'o1', kind: 'hack', ref: 'records', text: 'Copy the supply records (the records room, the first floor)' },
     { id: 'o2', kind: 'take', ref: 'order', text: 'Take the supply order (the Deputy Minister\'s office, the second floor)' },

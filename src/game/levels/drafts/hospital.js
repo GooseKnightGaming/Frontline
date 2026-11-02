@@ -96,6 +96,11 @@ export default {
     { id: 'a-corr', kind: 'alarm', at: [24, 18, 'G'], face: [0, -1], net: 'brannoc' },
   ],
   terminals: [{ id: 'sec', name: 'the porters\' office console', at: [40, 6, 'G'], face: [-1, 0], time: 6, net: 'brannoc' }],
+  // (M6.58) papers to read: lore, not needed to finish
+  intel: [
+    { id: "chart", at: [34, 6, "1"], kind: "Chart", title: "A drug chart - side room one", text: ["Patient: T. Marle. Admitted with a broken arm and bruising \"from a fall\".", "Sedation increased twice, by order of \"the gentlemen from the Ministry\". The night sister has written: \"Not on my ward.\""] },
+    { id: "note", at: [9, 10, "1"], kind: "Note", title: "A note, folded small", text: ["If anyone reads this who is not one of them: the man who bought it is Merrow. The Count. Lake road.", "- T.M."] },
+  ],
   objectives: [
     { id: 'o1', kind: 'rescue', ref: 'marle', text: 'Bring Tobias Marle out (Ward 4\'s side rooms, upstairs)' },
     { id: 'o2', kind: 'take', ref: 'notes', text: 'Take his case notes (the ward office, upstairs)' },

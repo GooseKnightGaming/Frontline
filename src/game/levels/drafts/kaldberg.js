@@ -128,6 +128,11 @@ export default {
     { id: 'rec', name: 'the gallery\'s recorder', at: [27, 10, '1'], face: [0, 1], time: 10, reveal: 30, verb: 'Record the council at', doing: 'Recording',
       said: 'The council, on tape: every name, every order - LANTERN, the guidance units, the money, the strike tomorrow. Ghost has them. Every red in the lodge on your radar for 30 seconds.' },
   ],
+  // (M6.58) papers to read: lore, not needed to finish
+  intel: [
+    { id: "roster", at: [41, 16, "G"], kind: "Duty roster", title: "Duty roster - the lodge", text: ["Drive: two men and the dogs. Gallery: the marksman. Study door: the shield.", "The council is not to be disturbed for any reason between eleven and one."] },
+    { id: "agenda", at: [24, 17, "G"], kind: "Agenda", title: "The council's agenda", text: ["1. The guidance units - delivery. 2. The embassy's accounts. 3. Tomorrow.", "Item 3 has no notes beside it. Someone has underlined it twice."] },
+  ],
   objectives: [
     { id: 'o1', kind: 'hack', ref: 'rec', text: 'Record the council (the recorder on the gallery)' },
     { id: 'o2', kind: 'take', ref: 'order', text: 'Take the strike order (the Chairman\'s study)' },
