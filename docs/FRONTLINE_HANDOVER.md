@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.60.0)
+# Frontline — Handover (M6.61.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,14 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.61.0 — Level 51, the Kessin Pens
+- **Level 51, the Kessin Pens** (`drafts/pens.js`; built round swimming): the reds' patrol-boat base in Kessin
+  harbour. A rebreather and silenced kit; in from the south quay, across a deep basin (`channel: 4.5`) while a patrol
+  boat (a looping `boat` with a helmsman and a man on the bow) goes round; climb out through the gaps in the north
+  rail at the pens - the boat shed (slips), the duty office (maglocked: the duty officer's card; the console, the
+  radio, the patrol schedules), the workshop (an engineer), the barracks room (the codebook). A crane and a dog on the
+  east quay. Copy the schedules; take the codebook; back into the water and south.
 
 ## M6.60.0 — trophies for reading, and for the Codex
 - Trophies: Read Everything: <level> (every paper at a first draft read, the mission not failed), and Returned (the
