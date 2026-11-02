@@ -14,6 +14,8 @@ game into the repository's root.
   upstairs the gallery (his collection in breakable cases, a laser, the catalogue), the bedrooms, and his study
   (maglocked, his keycard; a pinhole camera; the safe). Copy the bill of sale; take the catalogue; optionally stop the
   Count. Its own epilogue; the Codex trail's third step (RETURNED wants all three).
+- The mission list is in its stories now: headings FIRST DRAFTS (5-34), THE CASE (35-42), THE BLIGHT (43-47),
+  THE CODEX (48-50) - `GROUPS` in main.js's `drawDrafts`.
 
 ## M6.55.0 — the Embassy's guests; civilians get down
 - The Embassy's reception has guests and a waiter now (civilians, below); and civilians who hear a loud shot within
