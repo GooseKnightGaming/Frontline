@@ -40,7 +40,7 @@ export default {
         ['cells', [[35, 11], [37, 11], [39, 11], [41, 11], [35, 17], [37, 17], [39, 17], [41, 17]], 'H'], ['cells', [[38, 14]], 'T'],
         ['cells', [[4, 5]], 'M'],
         // the terrace (south, open, to the lake's edge): its balustrade; lanterns in extra; the lake below it
-        ['room', 16, 28, 34, 28, '.'], ['room', 16, 31, 34, 31, '='], ['cells', [[16, 29], [16, 30], [34, 29], [34, 30]], '='],
+        ['room', 16, 31, 34, 31, '='], ['cells', [[16, 29], [16, 30], [34, 29], [34, 30]], '='],
         ['room', 0, 33, W - 1, H - 1, '~'], ['room', 4, 30, 9, 33, '.'],                         // the lake; the boathouse's slip
         ['cells', [[2, 12], [2, 22], [46, 6], [46, 24], [12, 3], [38, 3], [12, 26], [40, 28]], 't'],
         ['room', 0, 2, 22, 2, 'f'], ['room', 28, 2, W - 1, 2, 'f'],                             // the railings along the road, the gate between

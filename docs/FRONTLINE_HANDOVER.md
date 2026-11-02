@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.55.0)
+# Frontline — Handover (M6.56.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,14 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.56.0 — Level 50, the Villa Merrow
+- **Level 50, the Villa Merrow** (`drafts/villa.js`; the Codex's end): Count Merrow's winter party on the lake, snow
+  falling. In disguise by the front gate; the hall, the salon, the terrace over the frozen lake (the Count and his
+  bodyguards, guests - civilians - and a waiter), the kitchen, the library, the gatehouse (the console, the radio);
+  upstairs the gallery (his collection in breakable cases, a laser, the catalogue), the bedrooms, and his study
+  (maglocked, his keycard; a pinhole camera; the safe). Copy the bill of sale; take the catalogue; optionally stop the
+  Count. Its own epilogue; the Codex trail's third step (RETURNED wants all three).
 
 ## M6.55.0 — the Embassy's guests; civilians get down
 - The Embassy's reception has guests and a waiter now (civilians, below); and civilians who hear a loud shot within
