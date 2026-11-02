@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.61.0)
+# Frontline — Handover (M6.62.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,15 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.62.0 — Level 52, the Rooftops
+- **Level 52, the Rooftops** (`drafts/rooftops.js`; built round the Grappling Line, issued as the mission's
+  `requires`): four roofs in the old quarter, each its own floor (9, 12, 7 and 15 m), the buildings solid `J` on the
+  street with their brick drawn in `extra`. Planks and ladders between the roofs (gaps in the parapets), or the line
+  up any wall; rain on the roofs (wet: slippery). The courier and his men on the tallest roof, a marksman on the high
+  one, patrols in the streets. Take the codes case; down the fire ladder to the van. Mission list: MORE WORK from 51.
+- **Learned**: two floors within about a metre of each other's height confuse the nav (it takes a point's floor by
+  its height) - roofs at 9 and 9, or 9 and 8.4, left one unreachable. Keep floors' heights well apart.
 
 ## M6.61.0 — Level 51, the Kessin Pens
 - **Level 51, the Kessin Pens** (`drafts/pens.js`; built round swimming): the reds' patrol-boat base in Kessin

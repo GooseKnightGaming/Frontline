@@ -4,7 +4,7 @@
 // up any wall you can see the top of. Rain on the roofs - they are slippery.
 const W = 52, H = 30;
 // the buildings: footprint (cells) and roof height
-const B = { A: [2, 8, 12, 20, 9], B: [15, 6, 24, 22, 12], C: [27, 8, 36, 20, 9], D: [39, 5, 48, 23, 15] };
+const B = { A: [2, 8, 12, 20, 9], B: [15, 6, 24, 22, 12], C: [27, 8, 36, 20, 7], D: [39, 5, 48, 23, 15] };      // (no two roofs within a metre or so of each other's height: the nav takes the floor by it)
 const roofFloor = (k, extra) => {
   const [x0, y0, x1, y1, y] = B[k];
   return { y, wallH: 1.1, roof: false, lamps: false, floor: 'concrete2', floorTint: [0.42, 0.42, 0.44], windows: false,
@@ -33,7 +33,7 @@ export default {
       y: 0, wallH: 3, wall: 'brick', floor: 'asphalt', lampPower: 0.6, lamps: false, windows: false,
       carve: { size: [W, H], walls: false, ops: [], after: [
         ...Object.values(B).map(([x0, y0, x1, y1]) => ['room', x0, y0, x1, y1, 'J']),
-        ['cells', [[13, 24], [26, 4], [38, 25], [50, 10]], 'v'], ['cells', [[1, 24], [25, 26], [49, 2]], 'C'],
+        ['cells', [[26, 4], [38, 25], [50, 10]], 'v'], ['cells', [[1, 24], [25, 26], [49, 2]], 'C'],
       ] },
     },
     A: roofFloor('A', [['room', 12, 14, 14, 14, '.'], ['cells', [[5, 11], [9, 17]], 'C']]),          // a gap in the parapet, and a plank east, towards B
@@ -61,8 +61,8 @@ export default {
     }
     // the planks over the gaps
     box([13 * C, 8.9, 14 * C + 0.2], [15 * C, 9.0, 15 * C - 0.2], 'wood', { tint: [0.45, 0.35, 0.25], solid: false });
-    box([25 * C, 8.9, 10 * C + 0.2], [27 * C, 9.0, 11 * C - 0.2], 'wood', { tint: [0.45, 0.35, 0.25], solid: false });
-    box([37 * C, 8.9, 14 * C + 0.2], [39 * C, 9.0, 15 * C - 0.2], 'wood', { tint: [0.45, 0.35, 0.25], solid: false });
+    box([25 * C, 6.9, 10 * C + 0.2], [27 * C, 7.0, 11 * C - 0.2], 'wood', { tint: [0.45, 0.35, 0.25], solid: false });
+    box([37 * C, 6.9, 14 * C + 0.2], [39 * C, 7.0, 15 * C - 0.2], 'wood', { tint: [0.45, 0.35, 0.25], solid: false });
     for (const [x, y] of [[14, 2], [26, 25], [38, 2], [51, 18]]) level.lights.push({ pos: [mid(x), 5, mid(y)], range: 14, intensity: 0.9, color: [1, 0.85, 0.6], street: true });
   },
   zones: [
