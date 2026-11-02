@@ -43,5 +43,6 @@ import grain from './grain.js';
 import dalmar from './dalmar.js';
 import ministry from './ministry.js';
 import embankment from './embankment.js';
+import museum from './museum.js';
 
-export const DRAFTS = [sewers, bank, cemetery, estate, manor, mine, facility, vantage, ward, campus, shipyard, fortress, drop, beachhead, factoryBattle, riverboat, city, ruins, wasteland, theatre, baths, temple, prison, bunkers, arena, nightclub, airport, outpost, spaceport, subway, listening, yacht, archive, tower, testrange, embassy, barracks, kaldberg, glasshouse, grain, dalmar, ministry, embankment];
+export const DRAFTS = [sewers, bank, cemetery, estate, manor, mine, facility, vantage, ward, campus, shipyard, fortress, drop, beachhead, factoryBattle, riverboat, city, ruins, wasteland, theatre, baths, temple, prison, bunkers, arena, nightclub, airport, outpost, spaceport, subway, listening, yacht, archive, tower, testrange, embassy, barracks, kaldberg, glasshouse, grain, dalmar, ministry, embankment, museum];
