@@ -2329,6 +2329,9 @@ export function setupMission(ctx) {
       // (M6.33) the end of the case: Kaldberg done
       if (level.draft === FINAL && (m.result === 'success' || m.result === 'partial')) all.push({ id: 'case_closed', name: 'Case Closed', about: 'From the first clue to the council at Kaldberg: the reds\' council, on tape.' });
       if (level.draft === FINAL && m.result === 'success' && guards.some((g) => g.tied)) all.push({ id: 'kaldberg_rope', name: 'Tied Up Loose Ends', about: 'At Kaldberg, a man held up, questioned - and tied.' });
+      // (M6.60) a first draft's papers, every one of them read; and the Codex home
+      if (level.draft && level.intel && level.intel.length && level.intel.every((q) => q.found) && m.result !== 'failed') all.push({ id: level.draft + '_papers', name: 'Read Everything: ' + level.title, about: 'Every paper at ' + (level.spec.place || level.title) + ' read.' });
+      if (level.draft === 'villa' && m.result === 'success') all.push({ id: 'codex_returned', name: 'Returned', about: 'The bill of sale and the catalogue out of the Villa Merrow: the Codex goes home.' });
       // (M6.44) the blight's end: the Dalmar Star
       if (level.draft === 'dalmar' && m.result === 'success') all.push({ id: 'blight_ended', name: 'Harvest Saved', about: 'The blight off the Dalmar Star, and the radio log in Ghost\'s hands.' });
       // (M6.30) in a mission begun in disguise, the whole of it without anyone seeing through it

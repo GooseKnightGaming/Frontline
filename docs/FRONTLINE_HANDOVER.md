@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.59.0)
+# Frontline — Handover (M6.60.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,10 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.60.0 — trophies for reading, and for the Codex
+- Trophies: Read Everything: <level> (every paper at a first draft read, the mission not failed), and Returned (the
+  Villa Merrow done).
 
 ## M6.59.0 — more papers
 - Two papers each at the Listening Station, the Megayacht, the Archive, the Tower, the Embassy and the Barracks (the
