@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.50.0)
+# Frontline — Handover (M6.51.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,14 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.51.0 — Level 48, the Varnholm Museum
+- **Level 48, the Varnholm Museum** (`drafts/museum.js`): a night heist. In by the loading dock at the back; the
+  great hall (statues on plinths, drawn in `extra` on `J` squares), the east and west galleries (display cases - its
+  own legend square, `c`: a stand and a glass box), lasers across both galleries and the special exhibition, the
+  security office off the foyer (the console, the radio), upstairs the gallery round the hall, the curator's office
+  (the loan register) and the special exhibition (maglocked; a pinhole camera) where the Halvard Codex sits on its
+  plinth. Take the Codex; copy the register.
 
 ## M6.50.0 — Level 47, the Halvard Embankment; a turned start
 - **Level 47, the Halvard Embankment** (`drafts/embankment.js`; after the Ministry): a long shot. You are on a ridge
