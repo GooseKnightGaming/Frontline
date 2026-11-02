@@ -37,3 +37,19 @@ export const BLIGHT = [
 export const blightMark = (level) => 'blight:' + level;
 export const blightStep = (level) => BLIGHT.some((b) => b.level === level) ? blightMark(level) : null;
 export const blightDone = (have) => BLIGHT.every((b) => (have || []).includes(blightMark(b.level)));
+
+// (M6.54) the trails on the board: the blight, and the Codex after it. Each a list of missions done, marked
+// '<trail>:<level>'; stamped when every step is. TRAILS[0] is the blight above.
+export const CODEX = [
+  { level: 'museum', title: 'The Varnholm Museum', text: 'The Halvard Codex taken back; the loan register says who it was "returned" to.' },
+  { level: 'hospital', title: 'St Brannoc\'s', text: 'Tobias Marle, brought out - and with him the name of the man who bought it.' },
+];
+export const TRAILS = [
+  { id: 'blight', title: 'THE BLIGHT', steps: BLIGHT, stamp: 'HARVEST SAVED', colour: '#5a9a3a' },
+  { id: 'codex', title: 'THE CODEX', steps: CODEX, stamp: 'RETURNED', colour: '#3a7ab0' },
+];
+export const trailMark = (trail, level) => trail.id + ':' + level;
+// the marks a mission's being done adds (any trail it is a step of)
+export const trailSteps = (level) => TRAILS.filter((t) => t.steps.some((b) => b.level === level)).map((t) => trailMark(t, level));
+export const trailDone = (trail, have) => trail.steps.every((b) => (have || []).includes(trailMark(trail, b.level)));
+export const trailBegun = (trail, have) => trail.steps.some((b) => (have || []).includes(trailMark(trail, b.level)));

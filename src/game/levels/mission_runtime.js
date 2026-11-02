@@ -26,7 +26,7 @@ import { makeTarget } from '../../sim/arms/weapons.js';
 import { makeDog, DOG } from '../../sim/people/dog.js';
 import { markIntrusion, downLantern } from './hq_security.js';
 import { xpFor, pointsAt } from '../../sim/play/skills.js';
-import { CASE, cluesFrom, caseOpen, FINAL, CLOSED, blightStep } from '../../sim/play/caseboard.js';
+import { CASE, cluesFrom, caseOpen, FINAL, CLOSED, trailSteps } from '../../sim/play/caseboard.js';
 import { settle as settleContracts, TERMS as CONTRACT_TERMS, describe as contractText } from '../../sim/play/contracts.js';
 import { Device, stepDevice, setMode, Trace, HACK, MODES, SIREN, darkAt, sirenFor, syncLocks, modeSays, lightsOut, breaks } from '../../sim/world/devices.js';
 
@@ -2359,7 +2359,7 @@ export function setupMission(ctx) {
           // (M6.40) the last of it: the case closed
           if (level.draft === FINAL && m.result === 'success') Saves.addCase(Saves.currentSlot(), [CLOSED]);
           // (M6.45) the blight's trail, a step at a time
-          if (blightStep(level.draft)) Saves.addCase(Saves.currentSlot(), [blightStep(level.draft)]);
+          if (trailSteps(level.draft).length) Saves.addCase(Saves.currentSlot(), trailSteps(level.draft));      // (M6.54) every trail it is a step of
         }
         // (M6.48) the mission list's tick: this draft's best result
         if (level.draft) Saves.markDone(Saves.currentSlot(), level.draft, m.result);

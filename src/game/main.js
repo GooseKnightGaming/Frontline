@@ -72,7 +72,7 @@ import { DoorMove } from '../sim/world/doors.js';
 import { kickOpens } from '../sim/play/mission.js';
 import { hqSecurity, takeIntrusion } from './levels/hq_security.js';
 import { effects as skillEffects, SKILLS, pointsLeft, train as trainSkill, XP } from '../sim/play/skills.js';
-import { CASE, CASE_NEEDS, FINAL, caseOpen, caseClosed, BLIGHT, blightMark, blightDone } from '../sim/play/caseboard.js';
+import { CASE, CASE_NEEDS, FINAL, caseOpen, caseClosed, TRAILS, trailMark, trailDone, trailBegun } from '../sim/play/caseboard.js';
 import { boardOf, describe as contractText, TERMS } from '../sim/play/contracts.js';
 import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './core/input.js';
 import { isTouchDevice, touchControls, retext } from './core/touch.js';
@@ -790,12 +790,13 @@ function boot() {
       + (caseClosed(have) ? '<div style="margin:14px auto 4px;width:max-content;padding:6px 18px;border:4px double #c0392b;color:#c0392b;font:700 26px/1 \'Courier New\',monospace;letter-spacing:6px;transform:rotate(-6deg)">CASE CLOSED</div><p style="text-align:center;opacity:0.8">The council at Kaldberg is finished. Ghost thanks you.</p>' : '')
       + '<p style="margin-top:10px">' + (caseClosed(have) ? '' : caseOpen(have) ? '<b>The case is made: the council meets at Kaldberg. Level 42 is on the operations table.</b>' : 'Find ' + (CASE_NEEDS - have.length) + ' more, and Ghost will know where the council meets.') + '</p>';
     // (M6.45) the second case: the blight's trail, once it is begun
-    if (BLIGHT.some((b) => have.includes(blightMark(b.level)))) {
-      $('case-list').innerHTML += '<h3 style="margin:18px 0 6px;letter-spacing:3px;color:var(--amber);font-size:13px">THE BLIGHT</h3>'
-        + BLIGHT.map((b) => have.includes(blightMark(b.level))
+    for (const tr of TRAILS) {
+      if (!trailBegun(tr, have)) continue;
+      $('case-list').innerHTML += '<h3 style="margin:18px 0 6px;letter-spacing:3px;color:var(--amber);font-size:13px">' + tr.title + '</h3>'
+        + tr.steps.map((b) => have.includes(trailMark(tr, b.level))
           ? '<div class="rec-row" style="display:block"><b>' + b.title + '</b> <span style="opacity:0.7">(Level ' + lvl(b.level).no + ')</span><br>' + b.text + '</div>'
           : '<div class="rec-row" style="display:block;opacity:0.45">? ? ?  <span>(Level ' + lvl(b.level).no + ', ' + lvl(b.level).title + ')</span></div>').join('')
-        + (blightDone(have) ? '<div style="margin:12px auto 4px;width:max-content;padding:5px 16px;border:4px double #5a9a3a;color:#5a9a3a;font:700 22px/1 \'Courier New\',monospace;letter-spacing:5px;transform:rotate(-4deg)">HARVEST SAVED</div>' : '');
+        + (trailDone(tr, have) ? '<div style="margin:12px auto 4px;width:max-content;padding:5px 16px;border:4px double ' + tr.colour + ';color:' + tr.colour + ';font:700 22px/1 \'Courier New\',monospace;letter-spacing:5px;transform:rotate(-4deg)">' + tr.stamp + '</div>' : '');
     }
     // (M6.41) and the contracts: replay work, three at a time
     const levels = DRAFTS.filter((d) => !d.battle && d.id !== FINAL && d.objectives && d.objectives.length).map((d) => d.id);

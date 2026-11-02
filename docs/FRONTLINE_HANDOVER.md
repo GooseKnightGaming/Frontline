@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.53.0)
+# Frontline — Handover (M6.54.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,11 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.54.0 — trails on the board
+- The case board's trails are a list now (`TRAILS` in caseboard.js: id, title, steps, stamp, colour; marks
+  '<trail>:<level>'; `trailSteps`, `trailDone`, `trailBegun`): THE BLIGHT (HARVEST SAVED), and THE CODEX - the
+  museum and St Brannoc's - stamped RETURNED.
 
 ## M6.53.0 — Level 49, St Brannoc's
 - **Level 49, St Brannoc's** (`drafts/hospital.js`; after the museum): the night curator who signed the Codex out is
