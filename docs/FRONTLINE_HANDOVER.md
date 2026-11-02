@@ -12,7 +12,7 @@ game into the repository's root.
   '<trail>:<level>'; `trailSteps`, `trailDone`, `trailBegun`): THE BLIGHT (HARVEST SAVED), and THE CODEX - the
   museum and St Brannoc's - stamped RETURNED.
 - **Civilians** (a first draft's `civilians: [{ id, at, yaw, title, tint, says }]`, kit.js -> `level.npcs`, kind
-  'civilian'): people at their work - the hospital's night staff, the Ministry's clerks. Solid; E talks to them (a
+  'civilian'): people at their work - the hospital's night staff, the Ministry's clerks, the Embassy's guests. Solid; E talks to them (a
   line of their own, as a hint - no voice); F knocks one down, and the debrief counts it (Civilians knocked down).
 
 ## M6.53.0 — Level 49, St Brannoc's

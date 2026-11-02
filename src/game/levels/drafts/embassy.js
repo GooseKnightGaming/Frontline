@@ -101,6 +101,13 @@ export default {
     { id: 'eng', at: [20, 17, 'B'], arms: 'pistol', temper: 'cowardly', role: 'engineer' },
     { id: 'ar', at: [8, 8, 'B'], arms: 'carbine' },
   ],
+  // (M6.54) the reception's guests
+  civilians: [
+    { id: 'gst1', at: [9, 10, 'G'], yaw: 1.2, title: 'A guest', tint: [0.4, 0.4, 0.5], says: ['Marvellous party. The ambassador knows how to pour.', 'Have you tried the little fish things? Don\'t.'] },
+    { id: 'gst2', at: [13, 14, 'G'], yaw: -2.0, title: 'A guest', tint: [1.2, 0.5, 0.55], says: ['Is it true about the trade talks?', 'My husband is somewhere near the bar. He usually is.'] },
+    { id: 'gst3', at: [19, 10, 'G'], yaw: 2.5, title: 'A guest', tint: [0.35, 0.45, 0.4], says: ['Officer. Quite a turnout.', 'The ambassador went upstairs an hour ago. Business, he said.'] },
+    { id: 'wait', at: [9, 20, 'G'], yaw: Math.PI, title: 'A waiter', tint: [1.35, 1.35, 1.35], says: ['Champagne, sir?', 'Kitchen\'s through the side door, sir, if you\'re looking for the service stair.'] },
+  ],
   pickups: [{ id: 'ledger', name: 'The ambassador\'s ledger', what: 'the ledger', at: [34, 8, '1'], table: false, h: 0.8, colour: [0.5, 0.15, 0.12] }],
   devices: [
     { id: 'c-hall', kind: 'camera', at: [4, 4, 'G'], face: [1, 1], net: 'linden' },
