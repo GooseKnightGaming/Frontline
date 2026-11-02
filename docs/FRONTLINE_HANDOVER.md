@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.56.0)
+# Frontline — Handover (M6.57.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,12 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.57.0 — the objective marker; the list in its stories
+- **Objective marker** (Settings, off by default): the nearest thing still to do (`objectivesLeft()`), on screen as a
+  red diamond with its distance (and an arrow if it is a floor up or down); pinned to the screen's edge when it is
+  off to the side or behind you. Hidden while the mission map is up.
+- The mission list's story headings (see M6.56.0).
 
 ## M6.56.0 — Level 50, the Villa Merrow
 - **Level 50, the Villa Merrow** (`drafts/villa.js`; the Codex's end): Count Merrow's winter party on the lake, snow

@@ -1289,6 +1289,7 @@ function boot() {
     $('set-fov').value = settings.fov; $('set-fov-v').textContent = settings.fov;
     $('set-invert').checked = settings.invertY;
     $('set-diff').value = settings.difficulty || 'operative';
+    $('set-wp').checked = !!settings.waypoint;
     $('set-text').value = settings.textSize || 'normal';
     $('set-tlook').value = settings.touchLook; $('set-tlook-v').textContent = (+settings.touchLook).toFixed(2);
     if ($('set-tturn')) $('set-tturn').checked = settings.touchTurn !== false;
@@ -1307,6 +1308,7 @@ function boot() {
     $('set-music-v').textContent = Math.round((settings.music === undefined ? 0.35 : settings.music) * 100) + '%';
   }
   $('set-text').onchange = (e) => { settings.textSize = e.target.value; saveSettings(settings); document.body.classList.toggle('bigtext', settings.textSize === 'large'); };
+  $('set-wp').onchange = (e) => { settings.waypoint = e.target.checked; saveSettings(settings); };      // (M6.57)
   $('set-diff').onchange = (e) => { settings.difficulty = e.target.value; saveSettings(settings); };      // (M6.39)
   // (M6.36) touch settings
   $('set-tlook').oninput = (e) => { settings.touchLook = +e.target.value; $('set-tlook-v').textContent = settings.touchLook.toFixed(2); saveSettings(settings); };
@@ -2489,6 +2491,30 @@ function boot() {
     for (const d of level.swingDoors || []) d.step(dt);
     if (view.tickSwingDoors) view.tickSwingDoors();
     if (view.tickProps) view.tickProps();
+    // (M6.57) the objective marker (Settings, off by default): the nearest thing still to do, on screen, with its
+    // distance; at the screen's edge when it is behind you or off to the side
+    {
+      const wp = $('waypoint');
+      let show = false;
+      if (settings.waypoint && S.playing && !S.menu && missionRt && missionRt.objectivesLeft && !S.plan) {
+        const left = missionRt.objectivesLeft();
+        if (left.length) {
+          let best = left[0], bd = Infinity;
+          for (const q of left) { const d = Math.hypot(q[0] - player.pos[0], q[1] - player.pos[1], q[2] - player.pos[2]); if (d < bd) { bd = d; best = q; } }
+          const sp = new pc.Vec3();
+          const p3 = new pc.Vec3(best[0], best[1] + 1.2, best[2]);
+          cam.camera.worldToScreen(p3, sp);
+          const W = window.innerWidth, H = window.innerHeight, f = cam.forward, toward = (p3.x - cam.getPosition().x) * f.x + (p3.y - cam.getPosition().y) * f.y + (p3.z - cam.getPosition().z) * f.z;
+          let x = sp.x, y = sp.y;
+          if (toward < 0) { x = W - x; y = H - 40; }
+          x = Math.max(24, Math.min(W - 24, x)); y = Math.max(70, Math.min(H - 40, y));
+          wp.style.left = x + 'px'; wp.style.top = y + 'px';
+          wp.querySelector('span').textContent = Math.round(bd) + ' m' + (Math.abs(best[1] - player.pos[1]) > 2.5 ? (best[1] > player.pos[1] ? ' \u2191' : ' \u2193') : '');
+          show = true;
+        }
+      }
+      if ((wp.style.display === 'block') !== show) wp.style.display = show ? 'block' : 'none';
+    }
     // (M6.49) the mission map, while it is up (redrawn a few times a second)
     {
       const pm = $('planmap'), on = !!(S.plan && level.plan && S.playing && !S.menu);
