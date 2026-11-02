@@ -77,7 +77,7 @@ import { boardOf, describe as contractText, TERMS } from '../sim/play/contracts.
 import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './core/input.js';
 import { isTouchDevice, touchControls, retext } from './core/touch.js';
 
-const VERSION = 'M6.56.0';
+const VERSION = 'M6.57.0';
 const $ = (id) => document.getElementById(id);
 const TEST = /[?&]test\b/.test(location.search);
 // Level 0, the training mission, is its own page load: index.html?level=0
@@ -2506,8 +2506,9 @@ function boot() {
           cam.camera.worldToScreen(p3, sp);
           const W = window.innerWidth, H = window.innerHeight, f = cam.forward, toward = (p3.x - cam.getPosition().x) * f.x + (p3.y - cam.getPosition().y) * f.y + (p3.z - cam.getPosition().z) * f.z;
           let x = sp.x, y = sp.y;
-          if (toward < 0) { x = W - x; y = H - 40; }
-          x = Math.max(24, Math.min(W - 24, x)); y = Math.max(70, Math.min(H - 40, y));
+          // behind you: at the side it is nearer, half way up (clear of the radar and the touch buttons)
+          if (toward < 0) { x = sp.x > W / 2 ? 36 : W - 36; y = H * 0.42; }
+          x = Math.max(36, Math.min(W - 36, x)); y = Math.max(160, Math.min(H * 0.6, y));
           wp.style.left = x + 'px'; wp.style.top = y + 'px';
           wp.querySelector('span').textContent = Math.round(bd) + ' m' + (Math.abs(best[1] - player.pos[1]) > 2.5 ? (best[1] > player.pos[1] ? ' \u2191' : ' \u2193') : '');
           show = true;
