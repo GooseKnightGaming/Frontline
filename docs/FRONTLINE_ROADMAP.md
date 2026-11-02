@@ -886,3 +886,10 @@ the Train off duty between assignments; the Ward a story event. Battles: B(i) no
 quick-selects (done, M6.20.9).
 Almost all are Ghost assignments; the Train is off duty; the drugged level is outside the real world.
 **Remind Rhys:** the real Severian language, when he has it, replaces the placeholder Severian.
+
+## Done overnight, 1-2 November 2026 (M6.43 - M6.64)
+Levels 44-52 (the Grain Terminal, the Dalmar Star, the Ministry of Supply, the Halvard Embankment, the Varnholm Museum,
+St Brannoc's, the Villa Merrow, the Kessin Pens, the Rooftops); the case board's trails (the blight, the Codex);
+checkpoints; touch auto-fire, turning with the stick, vibration; the mission map (B); text size; the objective
+marker; the whistle (T); marking; civilians; papers to read in fourteen missions; breakable display cases; the
+mission list in its stories with ticks. See the handover for each.
