@@ -466,7 +466,7 @@ export function setupMission(ctx) {
       ]);
     }
   };
-  const npcPrompt = (n) => n.kind === 'trainguard' ? 'E  Talk to the guard' : n.kind === 'minister' ? 'E  Talk to the Minister' : n.kind === 'steward' ? (level.hijacked ? 'E  Talk to the steward' : 'E  Tea - coffee - sandwiches') : n.kind === 'inspector' ? (n.platform === '3' && level.ticketGate && !level.ticketGate.open ? 'E  Show your ticket' : n.platform !== '3' && !level.gates[n.platform].open ? 'E  Show your ticket' : 'E  Talk to the ticket inspector') : n.kind === 'vendor' ? 'E  Coffee - newspapers' : 'E  Talk';
+  const npcPrompt = (n) => n.kind === 'trainguard' ? 'E  Talk to the guard' : n.kind === 'minister' ? 'E  Talk to the Minister' : n.kind === 'steward' ? (level.hijacked ? 'E  Talk to the steward' : 'E  Tea - coffee - sandwiches') : n.kind === 'inspector' ? (n.platform === '3' && level.ticketGate && !level.ticketGate.open ? 'E  Show your ticket' : n.platform !== '3' && !level.gates[n.platform].open ? 'E  Show your ticket' : 'E  Talk to the ticket inspector') : n.kind === 'vendor' ? 'E  Coffee - newspapers' : n.kind === 'civilian' ? 'E  Talk to ' + n.title.replace(/^(The|A) /, (w) => w.toLowerCase()) : 'E  Talk';
   // knocked down: his body falls; anyone of them who can see it shouts for the police,
   // and the station's police come for you - unless the train has taken you out of their reach
   const seesNpc = (a, b) => {
