@@ -43,6 +43,7 @@ export const blightDone = (have) => BLIGHT.every((b) => (have || []).includes(bl
 export const CODEX = [
   { level: 'museum', title: 'The Varnholm Museum', text: 'The Halvard Codex taken back; the loan register says who it was "returned" to.' },
   { level: 'hospital', title: 'St Brannoc\'s', text: 'Tobias Marle, brought out - and with him the name of the man who bought it.' },
+  { level: 'villa', title: 'The Villa Merrow', text: 'The bill of sale from the Count\'s safe, and his catalogue of everything else.' },
 ];
 export const TRAILS = [
   { id: 'blight', title: 'THE BLIGHT', steps: BLIGHT, stamp: 'HARVEST SAVED', colour: '#5a9a3a' },

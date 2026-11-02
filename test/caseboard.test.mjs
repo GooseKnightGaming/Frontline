@@ -34,7 +34,7 @@ ok(!caseOpen(BLIGHT.map((b) => blightMark(b.level)).concat(CASE.slice(0, 2).map(
 ok(TRAILS.every((t) => t.steps.every((b) => byId[b.level])), 'every trail\'s steps are levels');
 ok(JSON.stringify(trailSteps('museum')) === '["codex:museum"]' && trailSteps('grain')[0] === 'blight:grain' && !trailSteps('embassy').length, 'a mission\'s marks');
 const cx = TRAILS.find((t) => t.id === 'codex');
-ok(!trailDone(cx, ['codex:museum']) && trailDone(cx, cx.steps.map((b) => trailMark(cx, b.level))), 'the Codex done when both are');
+ok(!trailDone(cx, ['codex:museum']) && trailDone(cx, cx.steps.map((b) => trailMark(cx, b.level))), 'the Codex done when all its steps are');
 const k = byId[FINAL];
 ok(k && k.guards.some((g) => g.card) && k.guards.some((g) => g.dog) && k.guards.some((g) => g.reserve) && k.guards.some((g) => g.shield), 'Kaldberg uses the specialists');
 ok(k && ['camera', 'turret', 'lock', 'laser', 'lights', 'alarm'].every((kind) => k.devices.some((d) => d.kind === kind)), 'Kaldberg has every kind of device');
