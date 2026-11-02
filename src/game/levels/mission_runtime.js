@@ -2338,6 +2338,8 @@ export function setupMission(ctx) {
         const pp = Saves.loadPapers(Saves.currentSlot());
         if (DRAFTS.every((d) => !(d.intel || []).length || d.intel.every((q) => (pp[d.id] || []).includes(q.id)))) all.push({ id: 'archivist', name: 'The Archivist', about: 'Every paper in every mission read - the whole file, on the case board.' });
       }
+      // (M6.73) the forgers' papers worth nothing: the Holm Bridge
+      if (level.draft === 'holm' && m.result === 'success') all.push({ id: 'papers_void', name: 'Not Valid', about: 'The register, the passes and the agent\'s car: the reds\' papers are worth nothing now.' });
       // (M6.66) the river open: Varnholm Lock
       if (level.draft === 'lock' && m.result === 'success') all.push({ id: 'river_open', name: 'River Open', about: 'The stand-down sent and the lock opened: Ghost\'s boats through to the sea.' });
       // (M6.44) the blight's end: the Dalmar Star

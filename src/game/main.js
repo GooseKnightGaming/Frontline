@@ -77,7 +77,7 @@ import { boardOf, describe as contractText, TERMS } from '../sim/play/contracts.
 import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './core/input.js';
 import { isTouchDevice, touchControls, retext } from './core/touch.js';
 
-const VERSION = 'M6.72.0';
+const VERSION = 'M6.73.0';
 const $ = (id) => document.getElementById(id);
 const TEST = /[?&]test\b/.test(location.search);
 // Level 0, the training mission, is its own page load: index.html?level=0
@@ -744,7 +744,7 @@ function boot() {
       const done = Saves.loadDone(slotNo), clues = Saves.loadCase(slotNo).filter((id) => CASE.some((c) => c.id === id)).length;
       const mark = (id) => done[id] === 'success' ? '  \u2713' : done[id] === 'partial' ? '  \u00bd' : '';
       // (M6.56) in their stories: a heading where each begins
-      const GROUPS = [[5, 'FIRST DRAFTS'], [35, 'THE CASE'], [43, 'THE BLIGHT'], [48, 'THE CODEX'], [51, 'THE RIVER'], [54, 'MORE WORK']];
+      const GROUPS = [[5, 'FIRST DRAFTS'], [35, 'THE CASE'], [43, 'THE BLIGHT'], [48, 'THE CODEX'], [51, 'THE RIVER'], [54, 'THE FORGERS']];
       const head = (no) => { const g = GROUPS.find((q) => q[0] === no); return g ? '<div style="grid-column:1/-1;margin:12px 0 2px;letter-spacing:3px;color:var(--amber);font-size:12px;text-align:left">' + g[1] + '</div>' : ''; };
       list.innerHTML = DRAFTS.map((d) => head(d.no) + (d.id === FINAL && !open ? '<button class="btn" disabled>Level ' + d.no + ': ? ? ?  (the case is not made yet - ' + clues + ' of ' + CASE_NEEDS + ' clues)</button>'
         : '<button class="btn" data-id="' + d.id + '">Level ' + d.no + ': ' + d.title + mark(d.id) + '</button>')).join('');

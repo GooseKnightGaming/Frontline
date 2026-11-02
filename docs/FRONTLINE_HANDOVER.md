@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.72.0)
+# Frontline — Handover (M6.73.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,15 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.73.0 — Level 55, the Holm Bridge; the forgers on the board
+- `drafts/holm.js`: after the mill. A road north-south over a river by its one bridge; the checkpoint's customs house
+  and barrier hut at the north end, the guard hut and barracks at the south. You start disguised as a checkpoint
+  inspector (pistol only). Stop the agent's car (it waits 150 s in the queue, then south over the bridge and off the
+  map), copy the register, take the forged passes; out on foot, south-west. Two people in the queue (civilians), two
+  papers, an epilogue.
+- The case board's fourth trail, THE FORGERS (mill, holm; stamped NOT VALID); the trophy Not Valid; the mission
+  list's last group is THE FORGERS (54 on).
 
 ## M6.72.0 — Level 54, Hollin Mill; the Archivist
 - `drafts/mill.js`: the reds' forged papers come from a paper mill on a millrace. Jam the press (the press hall), take

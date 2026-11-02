@@ -51,10 +51,16 @@ export const RIVER = [
   { level: 'rooftops', title: 'The Rooftops', text: 'The codes case, taken from the courier on the tallest roof.' },
   { level: 'lock', title: 'Varnholm Lock', text: 'The stand-down sent in their own codes, and the lock opened to the sea.' },
 ];
+// (M6.73) the forgers: the mill that printed the reds' papers, and the bridge where Pell's flaw read them
+export const FORGERS = [
+  { level: 'mill', title: 'Hollin Mill', text: 'The press jammed, the plates taken - and Mr Pell\'s flaw in every one of them.' },
+  { level: 'holm', title: 'The Holm Bridge', text: 'The register copied: three hundred forged passes, read by the flaw.' },
+];
 export const TRAILS = [
   { id: 'blight', title: 'THE BLIGHT', steps: BLIGHT, stamp: 'HARVEST SAVED', colour: '#5a9a3a' },
   { id: 'codex', title: 'THE CODEX', steps: CODEX, stamp: 'RETURNED', colour: '#3a7ab0' },
   { id: 'river', title: 'THE RIVER', steps: RIVER, stamp: 'RIVER OPEN', colour: '#2a8a8a' },
+  { id: 'forgers', title: 'THE FORGERS', steps: FORGERS, stamp: 'NOT VALID', colour: '#9a6a2a' },
 ];
 export const trailMark = (trail, level) => trail.id + ':' + level;
 // the marks a mission's being done adds (any trail it is a step of)
