@@ -2294,6 +2294,17 @@ function boot() {
     if (active) S.rangeT = (S.rangeT || 0) + dt;
     stepRanges(level, player, arsenal, active ? dt : 0, S.rangeT || 0);
     S.aimNow = { aim: !!(lastInput && lastInput.aim), dir: aimDir() };      // for the Yellows: is a gun held on them?
+    // (M6.63) marking: aim at one of theirs for a second and he is marked - on your radar wherever he goes, as a
+    // tracker would have him (not one who is already down, nor a Yellow or one of the staff)
+    if (S.playing && !S.menu && lastInput && lastInput.aim && level.guards && level.guards.length) {
+      const h = level.world.raycast(player.eyePos, S.aimNow.dir, 70, (q) => q.glass || q.shootThrough);
+      const g = h && h.solid && h.solid.target && h.solid.target.guard;
+      if (g && !g.dead && !g.tracked && g.faction !== 'yellow' && g.faction !== 'staff' && !g.neutral) {
+        if (S.markG !== g) { S.markG = g; S.markT = 0; }
+        S.markT += dt;
+        if (S.markT > 0.9) { g.tracked = true; S.markG = null; S.noteText = 'Marked: ' + (g.name || 'he') + ' is on your radar now'; S.noteT = 1.6; audio.click(); }
+      } else S.markG = null;
+    } else S.markG = null;
     if (missionRt) missionRt.tick(dt, active ? dt * missionRt.timeScale() : 0, active);
     if (hqSec) {
       if (hqSec.pending && S.playing && !S.menu) { hqSec.start(hqSec.pending); hqSec.pending = null; }

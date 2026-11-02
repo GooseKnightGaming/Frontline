@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.62.0)
+# Frontline — Handover (M6.63.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,10 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.63.0 — marking
+- **Marking**: aim (AIM held) at one of theirs for 0.9 s and he is marked - `g.tracked`, as the Tracker gadget does:
+  on your radar wherever he goes. Not a downed man, a Yellow, staff or the neutral. A note says so.
 
 ## M6.62.0 — Level 52, the Rooftops
 - **Level 52, the Rooftops** (`drafts/rooftops.js`; built round the Grappling Line, issued as the mission's
