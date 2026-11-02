@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.49.0)
+# Frontline — Handover (M6.50.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,16 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.50.0 — Level 47, the Halvard Embankment; a turned start
+- **Level 47, the Halvard Embankment** (`drafts/embankment.js`; after the Ministry): a long shot. You are on a ridge
+  (its own floor, `R`, 3.2 m up, on a hill of rock) with an LR7 and an 8x scope; the Deputy Minister's car comes
+  along the embankment road across the river, ~110 m off, after a minute and a half (an escort jeep behind). A
+  checkpoint, a watchtower with a marksman (a ladder up), men on the river wall, a footbridge they come over, a path
+  up the ridge. Stop him; back down the ridge's back to the van.
+- **Fixed: a start facing anything but north could be turned on the first frame** - with drag-look (a touch screen,
+  or a browser that refuses mouse capture) the mouse's moves on the menus (a click on Begin) were counted as a look.
+  Going in now clears them, and a touch screen never takes the mouse's drags as looks (it has its own).
 
 ## M6.49.0 — the mission map
 - **The mission map** (`src/game/draw/plan_map.js`; the roadmap's "mission maps"): B (a binding, `plan`; PLAN on a

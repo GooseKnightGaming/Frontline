@@ -14,15 +14,13 @@ export default {
   time: { date: [6, 1, 2027], hour: 6, minute: 40 }, faction: 'red',
   atmos: { fog: [0.62, 0.66, 0.72, 60, 420], ambient: [0.46, 0.48, 0.52] },
   startLoadout: { primary: 'LR7', backup: 'V27C', utility1: 'SMOKE', utility2: 'FRAG', gear: 'LENSES', mods: { primary: ['SCOPE8'] } },
-  extractName: 'the van behind the ridge', extract: { x: 32, y: 2, floor: 'G' },
+  extractName: 'the van behind the ridge', extract: { x: 40, y: 1, floor: 'G' },
   outside: { backdrop: 'hills', mat: 'grass', margin: 16 },
   floors: {
     G: {
       y: 0, wallH: 3.2, wall: 'concrete2', floor: 'concrete', ceil: 'concrete2', lampPower: 0.6,
       carve: { size: [W, H], walls: false, ops: [], after: [
-        // the ridge: trees and rocks along its crest (cover to shoot from)
-        ['cells', [[4, 10], [9, 12], [15, 9], [21, 13], [27, 10], [37, 11], [43, 9], [49, 13], [55, 10], [60, 12], [6, 18], [18, 19], [46, 19], [58, 18]], 't'],
-        ['cells', [[12, 15], [24, 16], [31, 15], [33, 15], [40, 16], [52, 15]], 'r'],
+        ['room', 0, 5, W - 1, 33, 'J'],                // under the ridge: the hill itself (extra, below); behind it, the lane
         // the river, its walls, the footbridge at its middle
         ['room', 0, 62, W - 1, 76, '~'], ['room', 31, 62, 32, 76, '.'],
         ['room', 0, 61, 30, 61, '='], ['room', 33, 61, W - 1, 61, '='], ['room', 0, 77, 30, 77, 'w'], ['room', 33, 77, W - 1, 77, 'w'],
@@ -33,12 +31,28 @@ export default {
         ['cells', [[5, 96], [15, 97], [38, 97], [60, 96]], 't'],
       ] },
     },
+    // the ridge: a shelf of hill three metres over the valley floor, trees and rocks along its crest
+    R: {
+      y: 3.2, wallH: 3, roof: false, lamps: false, floor: 'grass', floorTint: [0.45, 0.55, 0.35],
+      carve: { size: [W, H], walls: false, ops: [['room', 0, 4, W - 1, 34]], after: [
+        ['cells', [[4, 10], [9, 12], [15, 9], [21, 13], [27, 10], [37, 11], [43, 9], [49, 13], [55, 10], [60, 12], [6, 18], [18, 19], [46, 19], [58, 18]], 't'],
+        ['cells', [[12, 15], [24, 16], [31, 15], [33, 15], [40, 16], [52, 15], [29, 30], [35, 30], [18, 31], [46, 31]], 'r'],      // (rocks along the crest: cover to shoot from)
+      ] },
+    },
     1: {
       y: 6, wallH: 1.2, roof: false, lamps: false, floor: 'wood', floorTint: [0.5, 0.42, 0.32],
       carve: { size: [W, H], walls: false, ops: [['room', 50, 90, 54, 94]], after: [['room', 50, 90, 54, 90, '='], ['room', 50, 94, 54, 94, '='], ['room', 50, 91, 50, 93, '='], ['room', 54, 91, 54, 93, '=']] },
     },
   },
   ladders: [{ x: 52, y: 95, from: 'G', to: '1', back: [0, -1], off: [52, 93] }],     // up the watchtower
+  stairs: [
+    { x: 32, y: 37, dir: 'N', len: 3, w: 2, from: 'G', to: 'R' },          // a path up the ridge from the valley (they will come up it)
+    { x: 20, y: 1, dir: 'S', len: 3, w: 2, from: 'G', to: 'R' },           // and down its back to the lane and the van
+  ],
+  extra(kit) {
+    const { box, CELL: C } = kit;
+    box([0, 0, 5 * C], [W * C, 3.2, 34 * C], 'rock', { tint: [0.42, 0.45, 0.36] });      // the hill under the ridge
+  },
   vehicles: [
     { id: 'car', kind: 'car', model: 'policeCar', paint: 'black', at: [W + 4, 86.5], yaw: Math.PI / 2, path: [[W + 4, 86.5], [W - 2, 86.5], [30, 86.5], [0, 86.5], [-7, 86.5]],
       speed: 8, goal: 'escape', wait: 90, hp: 480, name: 'The Deputy Minister\'s car',
@@ -47,9 +61,9 @@ export default {
       speed: 8, wait: 90, hp: 700, name: 'The escort',
       crew: [{ id: 'e1', at: [-0.45, 0.1] }, { id: 'e2', at: [0.45, 0.1] }] },
   ],
-  start: { x: 32, y: 14, floor: 'G', yaw: Math.PI },
+  start: { x: 32, y: 26, floor: 'R', yaw: Math.PI },
   zones: [
-    { id: 'ridge', label: 'The Halvard ridge', at: [0, 0, W - 1, 30] },
+    { id: 'ridge', label: 'The Halvard ridge', at: [0, 0, W - 1, 34], floor: 'R' },
     { id: 'river', label: 'The Halvard river', at: [0, 61, W - 1, 77] },
     { id: 'check', label: 'The embankment - the checkpoint', at: [26, 84, 34, 89] },
     { id: 'tower', label: 'The embankment - the watchtower', at: [50, 90, 54, 94], floor: '1' },

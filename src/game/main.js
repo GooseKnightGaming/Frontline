@@ -77,7 +77,7 @@ import { boardOf, describe as contractText, TERMS } from '../sim/play/contracts.
 import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './core/input.js';
 import { isTouchDevice, touchControls, retext } from './core/touch.js';
 
-const VERSION = 'M6.49.0';
+const VERSION = 'M6.50.0';
 const $ = (id) => document.getElementById(id);
 const TEST = /[?&]test\b/.test(location.search);
 // Level 0, the training mission, is its own page load: index.html?level=0
@@ -1138,6 +1138,8 @@ function boot() {
   canvas.addEventListener('mousedown', () => audio.start());
   window.addEventListener('keydown', () => audio.start());
   function deploy() {
+    // (M6.50) going in: no mouse movement left over from the menus (a click on Begin turned the view)
+    S.lastYaw = undefined; input.mouse.dx = 0; input.mouse.dy = 0;      // (and nothing the mouse did on the menus)
     // a fresh parachute each time you go in - (Rhys: it "got
     // fully repacked on just one press") going in, not coming back from the
     // pause menu: Resume runs this too, and had repacked it for you
@@ -1211,7 +1213,8 @@ function boot() {
     $('lock-note').style.display = 'block';
   });
   document.addEventListener('mousemove', (e) => {
-    if (S.dragLook && e.buttons && S.playing && !S.menu) { input.mouse.dx += e.movementX || 0; input.mouse.dy += e.movementY || 0; }
+    // (a touch screen looks by its own drags: touch.js)
+    if (S.dragLook && !S.touch && e.buttons && S.playing && !S.menu) { input.mouse.dx += e.movementX || 0; input.mouse.dy += e.movementY || 0; }
   });
   window.addEventListener('keydown', (e) => {
     if (!S.playing) return;
