@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.51.0)
+# Frontline — Handover (M6.53.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,16 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.53.0 — Level 49, St Brannoc's
+- **Level 49, St Brannoc's** (`drafts/hospital.js`; after the museum): the night curator who signed the Codex out is
+  "recovering" under red guard in a hospital side room. In by the ambulance bay; the ground floor's corridor, the
+  pharmacy, A&E, the porters' office (the reds' radio, the console); up the main stair to Ward 4 - its long corridor,
+  the ward office (his case notes), the bays, and the side rooms (one door, maglocked: the guard sergeant's card).
+  Bring Tobias Marle out; take the notes.
+
+## M6.52.0 — the whistle; breakable display cases
+- (See the whistle and `kit.pane` notes under M6.51.0.)
 
 ## M6.51.0 — Level 48, the Varnholm Museum
 - **Level 48, the Varnholm Museum** (`drafts/museum.js`): a night heist. In by the loading dock at the back; the
