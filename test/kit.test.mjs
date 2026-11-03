@@ -120,5 +120,14 @@ T('the drafts\' crates are plain freight, not Ghost Logistics; railings are bars
 });
 
 console.log('\n' + '='.repeat(50));
+// (M6.75) following a man: the Old Market's Controller walks to the café's back room and stays (his last point's
+// pause), and the runtime counts the objective
+T('the Old Market: a man to follow - a route that ends where he stays, and the runtime knows the objective', () => {
+  const d = DRAFTS.find((q) => q.id === 'market'), o = d.objectives.find((q) => q.kind === 'tail'), g = d.guards.find((q) => q.id === o.ref);
+  const last = g.route[g.route.length - 1];
+  A(last[2] >= 1e6 && last[0] >= 41 && last[0] <= 48 && last[1] >= 4 && last[1] <= 10, 'he ends in the back room, and stays: ' + last);
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
+  A(/o\.kind === 'tail'/.test(rt) && /he made you/.test(rt) && /you lost him/.test(rt), 'the runtime');
+});
 console.log(fails.length ? 'FAILURES (' + fails.length + '):\n' + fails.map((f) => '  * ' + f).join('\n') : 'ALL ' + pass + ' PASSED');
 process.exit(fails.length ? 1 : 0);

@@ -1408,6 +1408,10 @@ export function setupMission(ctx) {
       } else if (o.kind === 'reach') {
         const z = level.reach.find((q) => q.id === o.ref);
         r.done = !!(z && z.done); r.status = r.done ? 'reached' : 'not reached';
+      } else if (o.kind === 'tail') {
+        const t = (rt.tails || {})[o.id];
+        r.done = !!(t && t.done); r.failed = !!(t && t.failed);
+        r.status = r.done ? 'followed there' : r.failed ? t.why : t && t.lost > 0.5 ? 'losing him (' + Math.max(0, Math.ceil((o.lose || 15) - t.lost)) + ' s)' : t && t.d !== undefined ? Math.round(t.d) + ' m behind him' : 'follow him';
       } else if (o.kind === 'stop') {
         // a vehicle to stop: its driver down, or it wrecked - before it gets where it is going
         const v = (level.drivables || []).find((q) => q.id === o.ref);
@@ -1815,6 +1819,27 @@ export function setupMission(ctx) {
         }
         m.events.length = 0;
         if (level.draft) {
+          // (M6.75) a man to follow (objective kind 'tail'): within range of him (o.range, 40 m) - not too close (o.near,
+          // 4 m, for 3 s), not seen (his awareness of you past 0.7, or alerted) - until he is at his route's last point.
+          // Out of range for o.lose (15 s) and you have lost him.
+          for (const o of level.objectives || []) {
+            if (o.kind !== 'tail') continue;
+            const g = guards.find((q) => q.id === o.ref); if (!g) continue;
+            const tl = rt.tails || (rt.tails = {}), s = tl[o.id] || (tl[o.id] = { lost: 0, close: 0, done: false, failed: false, why: '' });
+            if (s.done || s.failed) continue;
+            const who = g.name || 'He';
+            if (g.dead) { s.failed = true; s.why = 'he is down'; showHint(who + ' is down - and where he was going, nobody will know now.'); continue; }
+            const d = Math.hypot(g.pos[0] - player.pos[0], g.pos[2] - player.pos[2]) + Math.abs(g.pos[1] - player.pos[1]) * 2;
+            s.d = d;
+            s.lost = d > (o.range || 40) ? s.lost + dt : Math.max(0, s.lost - dt);
+            s.close = d < (o.near || 4) ? s.close + dt : Math.max(0, s.close - dt * 0.5);
+            const end = g.route && g.route[g.route.length - 1];
+            if (g.awareness > 0.7 || g.state === 'alert' || g.state === 'flee' || s.close > 3) { s.failed = true; s.why = 'he made you'; showHint(who + ' has seen you following him.'); }
+            else if (s.lost > (o.lose || 15)) { s.failed = true; s.why = 'you lost him'; showHint('You have lost ' + (g.name || 'him') + '.'); }
+            else if (end && g.leg === g.route.length - 1 && Math.hypot(g.pos[0] - end[0], g.pos[2] - end[1]) < 0.8) { s.done = true; audio.confirm(); showHint(o.said || who + ' is where he was going - and now you know where that is.'); }
+            else if (s.lost > 0 && !s.warned) { s.warned = true; showHint('You are losing ' + (g.name || 'him') + ' - closer.'); }
+            else if (s.lost === 0) s.warned = false;
+          }
           // the vehicles others drive: along their way, their crews riding them
           for (const v of level.drivables || []) {
             if (!v.path && !(v.crew && v.crew.length)) continue;
@@ -2271,7 +2296,7 @@ export function setupMission(ctx) {
         if (!r || r.done || r.failed) continue;
         const t = o.kind === 'hack' ? level.terminals.find((q) => q.id === o.ref) : o.kind === 'take' ? level.pickups.find((q) => q.id === o.ref)
           : o.kind === 'kill' ? guards.find((q) => q.id === o.ref && !q.dead) : o.kind === 'rescue' ? hostages.find((h) => (!o.ref || h.id === o.ref) && h.state !== 'rescued' && h.state !== 'dead')
-          : o.kind === 'reach' ? (level.reach || []).find((q) => q.id === o.ref) : null;
+          : o.kind === 'reach' ? (level.reach || []).find((q) => q.id === o.ref) : o.kind === 'tail' ? guards.find((q) => q.id === o.ref && !q.dead) : null;
         const p = t && (t.pos || (t.box && [(t.box[0][0] + t.box[1][0]) / 2, t.box[0][1], (t.box[0][2] + t.box[1][2]) / 2]));
         if (p) out.push(p);
       }
@@ -2290,6 +2315,7 @@ export function setupMission(ctx) {
       return [level.terminal.pos[0], level.terminal.pos[2]];
     },
 
+    objectives() { return level.draft ? draftObjectives() : null; },      // (M6.75) as they stand, for the tests
     finish() { rt.debrief(); },
     // the hotel ends at the jeep, however it went: graded, and remembered
     endHotel(o) {

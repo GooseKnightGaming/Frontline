@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.74.0)
+# Frontline — Handover (M6.75.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,19 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.75.0 — following a man; Level 57, the Old Market
+- A new objective kind, `tail` (mission_runtime.js): `{ kind: 'tail', ref: <guard id>, range: 40, near: 4, lose: 15,
+  said }`. Keep within `range` m of him; closer than `near` for 3 s, his awareness of you past 0.7, or him alerted /
+  fleeing - he has made you (failed); out of range for `lose` s - you have lost him (failed); at his route's last point
+  (give it a long pause: `[x, y, 1e9]`, and he stays) - done. A hint as you start to lose him; the objective's status
+  shows how far behind you are. The radar's objective marker follows him.
+- `drafts/market.js`: after the Town Hall. Daylight, disguised as a red, pistol only. Follow the Controller through
+  the market (a word at two stalls) to the Café Lindqvist's back room; take the handler's orders; optionally stop the
+  handler. Four stallholders, two papers, an epilogue. The mission list's new group THE HANDLER (57 on).
+- Tested in a browser by stepping the runtime (`FL.mission().tick`, and `objectives()` - new, for the tests): left
+  behind, he is lost at ~73 s; at his last point, done. Caution: any guard's shout (raiseAlarm) brings the man you
+  follow to 0.7 and a search - he wanders off his route and back, but it does not fail the tail.
 
 ## M6.74.0 — Level 56, Varnholm Town Hall; the forgers' trail ends
 - `drafts/townhall.js`: the reds' Office of Movement in the old town hall: three storeys (the basement at -3.6, the
