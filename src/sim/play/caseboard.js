@@ -57,11 +57,18 @@ export const FORGERS = [
   { level: 'holm', title: 'The Holm Bridge', text: 'The register copied: three hundred forged passes, read by the flaw.' },
   { level: 'townhall', title: 'Varnholm Town Hall', text: 'The quartermaster\'s ledger, and the real passes out of the vault - back to their owners.' },
 ];
+// (M6.76) the handler: followed from the market, and his orders undone one by one
+export const HANDLER = [
+  { level: 'market', title: 'The Old Market', text: 'The Controller followed to the café\'s back room - and the handler\'s orders taken.' },
+  { level: 'power', title: 'Holm Power Station', text: 'The grid locked out: no blackout. And the blackout order, naming the cargo.' },
+  { level: 'docks', title: 'The Docks Yard', text: 'Both lorries stopped, the city\'s gold back - and the loading list, naming a ship.' },
+];
 export const TRAILS = [
   { id: 'blight', title: 'THE BLIGHT', steps: BLIGHT, stamp: 'HARVEST SAVED', colour: '#5a9a3a' },
   { id: 'codex', title: 'THE CODEX', steps: CODEX, stamp: 'RETURNED', colour: '#3a7ab0' },
   { id: 'river', title: 'THE RIVER', steps: RIVER, stamp: 'RIVER OPEN', colour: '#2a8a8a' },
   { id: 'forgers', title: 'THE FORGERS', steps: FORGERS, stamp: 'NOT VALID', colour: '#9a6a2a' },
+  { id: 'handler', title: 'THE HANDLER', steps: HANDLER, stamp: 'DISMISSED', colour: '#7a3a8a' },
 ];
 export const trailMark = (trail, level) => trail.id + ':' + level;
 // the marks a mission's being done adds (any trail it is a step of)

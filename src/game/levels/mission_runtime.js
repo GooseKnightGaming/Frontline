@@ -2368,6 +2368,9 @@ export function setupMission(ctx) {
       if (level.draft === 'holm' && m.result === 'success') all.push({ id: 'papers_void', name: 'Not Valid', about: 'The register, the passes and the agent\'s car: the reds\' papers are worth nothing now.' });
       // (M6.74) the passes home: Varnholm Town Hall
       if (level.draft === 'townhall' && m.result === 'success') all.push({ id: 'passes_home', name: 'Returned to Owner', about: 'The ledger out, and the confiscated passes with it: back to the people they were taken from.' });
+      // (M6.76) the lights on, and the gold home
+      if (level.draft === 'power' && m.result === 'success') all.push({ id: 'lights_on', name: 'Lights On', about: 'Holm Power Station\'s grid locked out: Varnholm does not go dark.' });
+      if (level.draft === 'docks' && m.result === 'success') all.push({ id: 'gold_home', name: 'The Gold Stays', about: 'Both lorries stopped in the docks yard: the Exchange\'s reserve goes home.' });
       // (M6.66) the river open: Varnholm Lock
       if (level.draft === 'lock' && m.result === 'success') all.push({ id: 'river_open', name: 'River Open', about: 'The stand-down sent and the lock opened: Ghost\'s boats through to the sea.' });
       // (M6.44) the blight's end: the Dalmar Star

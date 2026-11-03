@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.75.0)
+# Frontline — Handover (M6.76.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,16 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.76.0 — Levels 58 and 59, the handler's first two orders; THE HANDLER on the board
+- `drafts/power.js` (58, Holm Power Station): lock out the grid controls (the control room, upstairs over the office
+  block), take the blackout order (the shift office), optionally bring out the chief engineer (the turbine hall's
+  store, maglocked - the sergeant's card). Three turbines, a switchyard, two of the station's own men (civilians).
+- `drafts/docks.js` (59, the Docks Yard): two lorries with the Exchange's gold leave by the east gate at about 3 and
+  4 minutes (wait 180 / 240 s), each on its own lane (y 21, y 24); stop both; take the loading list (the yard office);
+  optionally stop the handler, riding in the first. A quay with deep water along the south side.
+- The case board's fifth trail, THE HANDLER (market, power, docks - the ship to come; stamped DISMISSED). Trophies
+  Lights On and The Gold Stays.
 
 ## M6.75.0 — following a man; Level 57, the Old Market
 - A new objective kind, `tail` (mission_runtime.js): `{ kind: 'tail', ref: <guard id>, range: 40, near: 4, lose: 15,
