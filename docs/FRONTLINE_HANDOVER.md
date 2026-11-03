@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.77.0)
+# Frontline — Handover (M6.78.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,15 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.78.0 — men to mark; Level 61, Ravensholt Lodge
+- A new objective kind, `identify` (mission_runtime.js): `{ kind: 'identify', refs: [guard ids] }` - done when every
+  one is marked (main.js's marking, M6.63: aim at him for 0.9 s within 70 m, through glass; or a tracker on him);
+  failed if one is killed before he is marked. "n of 5 marked"; the radar's marker points at the nearest unmarked.
+- `drafts/lodge.js` (61): a hunting lodge in snowy woods (backdrop 'woods', pines drawn in extra). Five chiefs:
+  three at dinner in the great hall, one on the terrace, one in the study upstairs - mark them (the LR7 with an 8x
+  scope, through the windows); take the seating plan (the study); optionally tap the telephone. The trophy Five
+  Faces. The mission list's group MORE WORK (61 on).
 
 ## M6.77.0 — taking a man alive; Level 60, the Varna Star; THE HANDLER ends
 - A new objective kind, `capture` (mission_runtime.js): `{ kind: 'capture', ref: <guard id> }` - done when he is tied

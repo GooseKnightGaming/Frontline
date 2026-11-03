@@ -135,5 +135,11 @@ T('the Varna Star: a man wanted alive (objective kind capture) - the runtime cou
   const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/o\.kind === 'capture'/.test(rt) && /g\.tied \|\| \(g\.dead && g\.knockedOut\)/.test(rt), 'the runtime');
 });
+T('Ravensholt Lodge: men to mark (objective kind identify) - every ref a guard, the runtime counts the marked', () => {
+  const d = DRAFTS.find((q) => q.id === 'lodge'), o = d.objectives.find((q) => q.kind === 'identify');
+  A(o && o.refs.length === 5 && o.refs.every((id) => d.guards.some((g) => g.id === id)), 'the chiefs');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
+  A(/o\.kind === 'identify'/.test(rt) && / marked'/.test(rt), 'the runtime');
+});
 console.log(fails.length ? 'FAILURES (' + fails.length + '):\n' + fails.map((f) => '  * ' + f).join('\n') : 'ALL ' + pass + ' PASSED');
 process.exit(fails.length ? 1 : 0);

@@ -1408,6 +1408,12 @@ export function setupMission(ctx) {
       } else if (o.kind === 'reach') {
         const z = level.reach.find((q) => q.id === o.ref);
         r.done = !!(z && z.done); r.status = r.done ? 'reached' : 'not reached';
+      } else if (o.kind === 'identify') {
+        // (M6.78) men to mark (main.js's marking: aim at one for a second, or a tracker on him) - every one, alive
+        const gs = (o.refs || []).map((id) => guards.find((q) => q.id === id)).filter(Boolean), n = gs.filter((g) => g.tracked).length;
+        const lost = gs.filter((g) => g.dead && !g.tracked).length;
+        r.done = gs.length > 0 && n === gs.length; r.failed = !r.done && lost > 0;
+        r.status = n + ' of ' + gs.length + ' marked' + (lost ? ' (' + lost + ' dead before he was)' : '');
       } else if (o.kind === 'capture') {
         // (M6.77) a man wanted alive: knocked out, or held up and tied - not killed
         const g = guards.find((q) => q.id === o.ref);
@@ -2301,6 +2307,7 @@ export function setupMission(ctx) {
         if (!r || r.done || r.failed) continue;
         const t = o.kind === 'hack' ? level.terminals.find((q) => q.id === o.ref) : o.kind === 'take' ? level.pickups.find((q) => q.id === o.ref)
           : (o.kind === 'kill' || o.kind === 'capture') ? guards.find((q) => q.id === o.ref && !q.dead) : o.kind === 'rescue' ? hostages.find((h) => (!o.ref || h.id === o.ref) && h.state !== 'rescued' && h.state !== 'dead')
+          : o.kind === 'identify' ? guards.find((q) => (o.refs || []).includes(q.id) && !q.dead && !q.tracked)
           : o.kind === 'reach' ? (level.reach || []).find((q) => q.id === o.ref) : o.kind === 'tail' ? guards.find((q) => q.id === o.ref && !q.dead) : null;
         const p = t && (t.pos || (t.box && [(t.box[0][0] + t.box[1][0]) / 2, t.box[0][1], (t.box[0][2] + t.box[1][2]) / 2]));
         if (p) out.push(p);
@@ -2378,6 +2385,8 @@ export function setupMission(ctx) {
       if (level.draft === 'docks' && m.result === 'success') all.push({ id: 'gold_home', name: 'The Gold Stays', about: 'Both lorries stopped in the docks yard: the Exchange\'s reserve goes home.' });
       // (M6.77) the handler, alive
       if (level.draft === 'varna' && m.result === 'success') all.push({ id: 'handler_taken', name: 'Taken Alive', about: 'The handler, tied up aboard the Varna Star, and his forty names with him.' });
+      // (M6.78) five faces on the file
+      if (level.draft === 'lodge' && m.result === 'success') all.push({ id: 'five_faces', name: 'Five Faces', about: 'All five of the reds\' chiefs marked at Ravensholt Lodge, and their names with them.' });
       // (M6.66) the river open: Varnholm Lock
       if (level.draft === 'lock' && m.result === 'success') all.push({ id: 'river_open', name: 'River Open', about: 'The stand-down sent and the lock opened: Ghost\'s boats through to the sea.' });
       // (M6.44) the blight's end: the Dalmar Star
