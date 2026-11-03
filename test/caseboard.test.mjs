@@ -42,7 +42,7 @@ ok(rv && rv.steps.map((b) => b.level).join() === 'pens,rooftops,lock' && trailSt
 ok(/level\.draft === 'lock' && m\.result === 'success'\) all\.push\(\{ id: 'river_open'/.test(readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8')), 'River Open');
 // (M6.73) the forgers: the mill, the bridge
 const fg = TRAILS.find((t) => t.id === 'forgers');
-ok(fg && fg.steps.map((b) => b.level).join() === 'mill,holm' && trailDone(fg, ['forgers:mill', 'forgers:holm']) && !trailDone(fg, ['forgers:mill']), 'the forgers');
+ok(fg && fg.steps.map((b) => b.level).join() === 'mill,holm,townhall' && trailDone(fg, ['forgers:mill', 'forgers:holm', 'forgers:townhall']) && !trailDone(fg, ['forgers:mill', 'forgers:holm']), 'the forgers');
 const k = byId[FINAL];
 ok(k && k.guards.some((g) => g.card) && k.guards.some((g) => g.dog) && k.guards.some((g) => g.reserve) && k.guards.some((g) => g.shield), 'Kaldberg uses the specialists');
 ok(k && ['camera', 'turret', 'lock', 'laser', 'lights', 'alarm'].every((kind) => k.devices.some((d) => d.kind === kind)), 'Kaldberg has every kind of device');

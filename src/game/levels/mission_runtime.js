@@ -2340,6 +2340,8 @@ export function setupMission(ctx) {
       }
       // (M6.73) the forgers' papers worth nothing: the Holm Bridge
       if (level.draft === 'holm' && m.result === 'success') all.push({ id: 'papers_void', name: 'Not Valid', about: 'The register, the passes and the agent\'s car: the reds\' papers are worth nothing now.' });
+      // (M6.74) the passes home: Varnholm Town Hall
+      if (level.draft === 'townhall' && m.result === 'success') all.push({ id: 'passes_home', name: 'Returned to Owner', about: 'The ledger out, and the confiscated passes with it: back to the people they were taken from.' });
       // (M6.66) the river open: Varnholm Lock
       if (level.draft === 'lock' && m.result === 'success') all.push({ id: 'river_open', name: 'River Open', about: 'The stand-down sent and the lock opened: Ghost\'s boats through to the sea.' });
       // (M6.44) the blight's end: the Dalmar Star

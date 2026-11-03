@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.73.0)
+# Frontline — Handover (M6.74.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,14 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.74.0 — Level 56, Varnholm Town Hall; the forgers' trail ends
+- `drafts/townhall.js`: the reds' Office of Movement in the old town hall: three storeys (the basement at -3.6, the
+  ground, the first floor at 3.6), a grand stair up and a plain one down side by side in the stair hall. Take the
+  quartermaster's ledger (first floor) and the confiscated passes (the basement vault, maglocked - the registrar's
+  card); optionally restore the records in the registry. Two of the hall's own staff (civilians), three papers,
+  an epilogue, snow.
+- THE FORGERS is three missions now (mill, holm, townhall); the trophy Returned to Owner.
 
 ## M6.73.0 — Level 55, the Holm Bridge; the forgers on the board
 - `drafts/holm.js`: after the mill. A road north-south over a river by its one bridge; the checkpoint's customs house

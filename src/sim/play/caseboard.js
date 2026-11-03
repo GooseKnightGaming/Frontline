@@ -55,6 +55,7 @@ export const RIVER = [
 export const FORGERS = [
   { level: 'mill', title: 'Hollin Mill', text: 'The press jammed, the plates taken - and Mr Pell\'s flaw in every one of them.' },
   { level: 'holm', title: 'The Holm Bridge', text: 'The register copied: three hundred forged passes, read by the flaw.' },
+  { level: 'townhall', title: 'Varnholm Town Hall', text: 'The quartermaster\'s ledger, and the real passes out of the vault - back to their owners.' },
 ];
 export const TRAILS = [
   { id: 'blight', title: 'THE BLIGHT', steps: BLIGHT, stamp: 'HARVEST SAVED', colour: '#5a9a3a' },
