@@ -1408,6 +1408,11 @@ export function setupMission(ctx) {
       } else if (o.kind === 'reach') {
         const z = level.reach.find((q) => q.id === o.ref);
         r.done = !!(z && z.done); r.status = r.done ? 'reached' : 'not reached';
+      } else if (o.kind === 'capture') {
+        // (M6.77) a man wanted alive: knocked out, or held up and tied - not killed
+        const g = guards.find((q) => q.id === o.ref);
+        r.done = !!(g && (g.tied || (g.dead && g.knockedOut))); r.failed = !!(g && g.dead && !g.knockedOut && !g.tied);
+        r.status = !g ? 'not here' : r.done ? (g.tied ? 'tied up' : 'knocked out') : r.failed ? 'killed' : 'still free';
       } else if (o.kind === 'tail') {
         const t = (rt.tails || {})[o.id];
         r.done = !!(t && t.done); r.failed = !!(t && t.failed);
@@ -2295,7 +2300,7 @@ export function setupMission(ctx) {
         const r = draftObjectives().find((q) => q.id === o.id);
         if (!r || r.done || r.failed) continue;
         const t = o.kind === 'hack' ? level.terminals.find((q) => q.id === o.ref) : o.kind === 'take' ? level.pickups.find((q) => q.id === o.ref)
-          : o.kind === 'kill' ? guards.find((q) => q.id === o.ref && !q.dead) : o.kind === 'rescue' ? hostages.find((h) => (!o.ref || h.id === o.ref) && h.state !== 'rescued' && h.state !== 'dead')
+          : (o.kind === 'kill' || o.kind === 'capture') ? guards.find((q) => q.id === o.ref && !q.dead) : o.kind === 'rescue' ? hostages.find((h) => (!o.ref || h.id === o.ref) && h.state !== 'rescued' && h.state !== 'dead')
           : o.kind === 'reach' ? (level.reach || []).find((q) => q.id === o.ref) : o.kind === 'tail' ? guards.find((q) => q.id === o.ref && !q.dead) : null;
         const p = t && (t.pos || (t.box && [(t.box[0][0] + t.box[1][0]) / 2, t.box[0][1], (t.box[0][2] + t.box[1][2]) / 2]));
         if (p) out.push(p);
@@ -2371,6 +2376,8 @@ export function setupMission(ctx) {
       // (M6.76) the lights on, and the gold home
       if (level.draft === 'power' && m.result === 'success') all.push({ id: 'lights_on', name: 'Lights On', about: 'Holm Power Station\'s grid locked out: Varnholm does not go dark.' });
       if (level.draft === 'docks' && m.result === 'success') all.push({ id: 'gold_home', name: 'The Gold Stays', about: 'Both lorries stopped in the docks yard: the Exchange\'s reserve goes home.' });
+      // (M6.77) the handler, alive
+      if (level.draft === 'varna' && m.result === 'success') all.push({ id: 'handler_taken', name: 'Taken Alive', about: 'The handler, tied up aboard the Varna Star, and his forty names with him.' });
       // (M6.66) the river open: Varnholm Lock
       if (level.draft === 'lock' && m.result === 'success') all.push({ id: 'river_open', name: 'River Open', about: 'The stand-down sent and the lock opened: Ghost\'s boats through to the sea.' });
       // (M6.44) the blight's end: the Dalmar Star

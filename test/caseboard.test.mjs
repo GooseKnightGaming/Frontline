@@ -45,7 +45,7 @@ const fg = TRAILS.find((t) => t.id === 'forgers');
 ok(fg && fg.steps.map((b) => b.level).join() === 'mill,holm,townhall' && trailDone(fg, ['forgers:mill', 'forgers:holm', 'forgers:townhall']) && !trailDone(fg, ['forgers:mill', 'forgers:holm']), 'the forgers');
 // (M6.76) the handler
 const hd = TRAILS.find((t) => t.id === 'handler');
-ok(hd && hd.steps.map((b) => b.level).join() === 'market,power,docks', 'the handler');
+ok(hd && hd.steps.map((b) => b.level).join() === 'market,power,docks,varna', 'the handler');
 const k = byId[FINAL];
 ok(k && k.guards.some((g) => g.card) && k.guards.some((g) => g.dog) && k.guards.some((g) => g.reserve) && k.guards.some((g) => g.shield), 'Kaldberg uses the specialists');
 ok(k && ['camera', 'turret', 'lock', 'laser', 'lights', 'alarm'].every((kind) => k.devices.some((d) => d.kind === kind)), 'Kaldberg has every kind of device');

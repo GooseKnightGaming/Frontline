@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.76.0)
+# Frontline — Handover (M6.77.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,14 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.77.0 — taking a man alive; Level 60, the Varna Star; THE HANDLER ends
+- A new objective kind, `capture` (mission_runtime.js): `{ kind: 'capture', ref: <guard id> }` - done when he is tied
+  (held up, then tied) or knocked out; failed if he is killed. The radar's marker follows him.
+- `drafts/varna.js` (60): a coaster at the Varnholm quay, built from rows like the Dalmar Star (hold and engine room,
+  main deck with the passenger saloon, the bridge deck). Take the handler alive (the saloon), copy the passenger
+  list (the bridge), optionally disable the engines (the engine room). The ship's cook (a civilian), two papers.
+- THE HANDLER is four missions (market, power, docks, varna; DISMISSED); the trophy Taken Alive.
 
 ## M6.76.0 — Levels 58 and 59, the handler's first two orders; THE HANDLER on the board
 - `drafts/power.js` (58, Holm Power Station): lock out the grid controls (the control room, upstairs over the office

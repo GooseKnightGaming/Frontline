@@ -62,6 +62,7 @@ export const HANDLER = [
   { level: 'market', title: 'The Old Market', text: 'The Controller followed to the café\'s back room - and the handler\'s orders taken.' },
   { level: 'power', title: 'Holm Power Station', text: 'The grid locked out: no blackout. And the blackout order, naming the cargo.' },
   { level: 'docks', title: 'The Docks Yard', text: 'Both lorries stopped, the city\'s gold back - and the loading list, naming a ship.' },
+  { level: 'varna', title: 'The Varna Star', text: 'The handler taken alive aboard her, and his forty names copied from her bridge.' },
 ];
 export const TRAILS = [
   { id: 'blight', title: 'THE BLIGHT', steps: BLIGHT, stamp: 'HARVEST SAVED', colour: '#5a9a3a' },
