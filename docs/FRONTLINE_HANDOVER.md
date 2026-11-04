@@ -7,6 +7,17 @@ GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
 
+## M6.116.0 — Levels 101 - 103: THE ISLANDS
+
+- `drafts/skerries.js` (no 101): mainland west, the strait (`~`, channel 3) with a red launch going round it on a loop, and the outer skerry east. Blind the radar (a terminal with verb Blind), take the codebook, optional quiet. Ghost's boat is by the mainland jetty. NB: the skerry touches the map's east edge, so you can also walk round the outside margin. To fix if it matters: sea along the edges too, and the kit test would then need a boat-aware path.
+- `drafts/seafort.js` (no 102): a sea fort on Holme Skerry, surrounded by sea, with a three-square tidal causeway from the outer skerry. The kit's reachability is on foot and deep water (-3) is not walkable, so an island needs a causeway or to touch the map's edge. Capture the commander (the keep, upstairs), take the roll (the barracks). The barracks and magazine were moved a square south, because the keep's door had opened onto a one-square lane.
+- `drafts/battery2.js` (no 103): Storm Skerry by day with Hale and Moss. Clear the nine die-hards (allies are not counted), and hoist the white flag (a terminal with verb Hoist).
+- Trail THE ISLANDS (stamp STRAIT OPEN), group [101]. Trophies: Blind Spot, The Keep, White Flag (Hale and Moss both alive).
+
+## M6.115.1 — the General renamed Brandt; papers in the Ward and the Campus
+
+- See the note under M6.115.0. The Ward has two papers (your chart, the turning room's note), and the Campus has one (the closure notice in the Main Building).
+
 ## M6.115.0 — Level 100, the Rising (a battle)
 
 - `drafts/hollen.js` (no 100): a battle (`battle` spec, as in the Factory and the Colosseum) on the Paper Run's Hollen grid. Ghost and the townspeople come from the south-west, the reds' garrison from the north-east, with 80 a side in reserve, 12 on the field and eight minutes on the clock. Four lanes a side: the west and north streets, the south and east streets, the middle streets, and the market square. Probed: both sides fight from the start and there are no page errors.

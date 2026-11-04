@@ -72,6 +72,8 @@ ok(TRAILS.find((t) => t.id === 'winter').steps.map((b) => b.level).join() === 'c
 ok(TRAILS.find((t) => t.id === 'press').steps.map((b) => b.level).join() === 'bakery,censor,paperrun', 'the press');
 // (M6.114) the general
 ok(TRAILS.find((t) => t.id === 'general').steps.map((b) => b.level).join() === 'opera,veyestate,drivesouth', 'the general');
+// (M6.116) the islands
+ok(TRAILS.find((t) => t.id === 'islands').steps.map((b) => b.level).join() === 'skerries,seafort,battery2', 'the islands');
 const k = byId[FINAL];
 ok(k && k.guards.some((g) => g.card) && k.guards.some((g) => g.dog) && k.guards.some((g) => g.reserve) && k.guards.some((g) => g.shield), 'Kaldberg uses the specialists');
 ok(k && ['camera', 'turret', 'lock', 'laser', 'lights', 'alarm'].every((kind) => k.devices.some((d) => d.kind === kind)), 'Kaldberg has every kind of device');

@@ -2487,6 +2487,9 @@ export function setupMission(ctx) {
       if (level.draft === 'veyestate' && m.result === 'success') all.push({ id: 'dressinggown', name: 'In His Dressing Gown', about: 'General Brandt taken from his own bed, with every order for the crosses in his box.' });
       if (level.draft === 'drivesouth' && m.result === 'success') all.push({ id: 'coastroad', name: 'The Coast Road', about: 'The General delivered to Ghost\'s lines through two roadblocks.' });
       if (level.draft === 'hollen' && m.result === 'success') all.push({ id: 'risen', name: 'Hollen Rises', about: 'The hundredth level: the reds\' garrison marched out of Hollen, and every bell in the town rung.' });
+      if (level.draft === 'skerries' && m.result === 'success') all.push({ id: 'blindspot', name: 'Blind Spot', about: 'The Skerry radar turning all night and seeing nothing.' });
+      if (level.draft === 'seafort' && m.result === 'success') all.push({ id: 'keeptaken', name: 'The Keep', about: 'The garrison commander out of Holme Skerry\'s keep, and his roll with him.' });
+      if (level.draft === 'battery2' && m.result === 'success' && guards.filter((g) => g.side === 'ally').every((g) => !g.dead)) all.push({ id: 'whiteflag', name: 'White Flag', about: 'Storm Skerry cleared and the white flag up, with Hale and Moss both still grumbling.' });
       // (M6.66) the river open: Varnholm Lock
       if (level.draft === 'lock' && m.result === 'success') all.push({ id: 'river_open', name: 'River Open', about: 'The stand-down sent and the lock opened: Ghost\'s boats through to the sea.' });
       // (M6.44) the blight's end: the Dalmar Star

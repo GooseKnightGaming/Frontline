@@ -138,6 +138,12 @@ export const GENERAL = [
   { level: 'veyestate', title: 'The Ravnsby Estate', text: 'The General taken from his own bed, and his dispatch box from his study.' },
   { level: 'drivesouth', title: 'The Drive South', text: 'The General driven down the coast road, through both roadblocks, to Ghost\'s lines.' },
 ];
+// (M6.116) the islands: the garrison's last stand on the Skerries, and the strait opened
+export const ISLANDS = [
+  { level: 'skerries', title: 'The Skerries', text: 'The radar on the outer skerry blinded, and its codebook taken.' },
+  { level: 'seafort', title: 'Holme Skerry', text: 'The garrison commander taken alive in his keep, and the garrison\'s roll with him.' },
+  { level: 'battery2', title: 'The Last Battery', text: 'The die-hards cleared from Storm Skerry, and the white flag hoisted for every island to see.' },
+];
 export const TRAILS = [
   { id: 'blight', title: 'THE BLIGHT', steps: BLIGHT, stamp: 'HARVEST SAVED', colour: '#5a9a3a' },
   { id: 'codex', title: 'THE CODEX', steps: CODEX, stamp: 'RETURNED', colour: '#3a7ab0' },
@@ -156,6 +162,7 @@ export const TRAILS = [
   { id: 'winter', title: 'THE WINTER ROAD', steps: WINTER, stamp: 'DELIVERED', colour: '#5a8aaa' },
   { id: 'press', title: 'THE PRESS', steps: PRESS, stamp: 'PRINTED', colour: '#3a3a3a' },
   { id: 'general', title: 'THE GENERAL', steps: GENERAL, stamp: 'ON TRIAL', colour: '#7a2a2a' },
+  { id: 'islands', title: 'THE ISLANDS', steps: ISLANDS, stamp: 'STRAIT OPEN', colour: '#2a6a8a' },
 ];
 export const trailMark = (trail, level) => trail.id + ':' + level;
 // the marks a mission's being done adds (any trail it is a step of)
