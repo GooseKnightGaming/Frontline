@@ -938,4 +938,10 @@ mission list in its stories with ticks. See the handover for each.
 - M6.114: THE GENERAL (the Opera in disguise, the Ravnsby Estate - the General from his bed, the Drive South - two
   roadblocks on the coast road; "ON TRIAL").
 - M6.115: Level 100, the Rising - a battle through Hollen's streets, Ghost and the town against the garrison.
-- Candidates next: papers in the older levels; the Campus start check; Rhys's own playtesting notes on any of these.
+- M6.115.1: the General renamed Brandt (Vey is the Subway's man); papers in the Ward and the Campus.
+- M6.116: THE ISLANDS (the Skerries by boat, Holme Skerry's sea fort, the Last Battery with Hale and Moss; "STRAIT OPEN").
+- M6.117: THE GOLD (the Mint, the Goods Yard - a lorry held from the signal box, Pier Four; "RETURNED TO SENDER").
+- M6.118: THE PEACE (the Treaty House - three microphones, the Clock Tower, the Signing - hold the great hall;
+  "SIGNED"). The war that began in Varnholm is over.
+- Candidates next: Rhys's own playtesting notes; a new case somewhere new; papers in the last few older levels
+  (the Riverboat, the Embankment, the Wasteland, the Subway, the Test Range).
