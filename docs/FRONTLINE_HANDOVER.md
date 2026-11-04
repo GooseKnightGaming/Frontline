@@ -7,6 +7,13 @@ GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
 
+## M6.119.0 — Levels 110 - 112: THE SMUGGLERS (a new case, Port Saren)
+
+- `drafts/customs.js` (no 110): a customs house (long room, the inspector's office, the bonded store), `windows: false`. Mark the inspector, take the seizure book, optional quiet.
+- `drafts/oldtown.js` (no 111): a `tail` through the old town's lanes. Lesson: the kit checks a patrol's closing leg (last point back to the first), and the tail is done only at the route's last point, so the route must end with a straight clear line back to its first point. The warehouse was put at the bottom of the x19 lane for that. Probed: he walks the whole route in about 100 s and waits at the door. Then mark the buyer and take the price list.
+- `drafts/smugcove.js` (no 112): a cove with a jetty and the sea south. Rescue the customs officer from the boathouse, and stop the smugglers' boat (`stop`, wait 180; probed: it gets away at 200 s). The boat's path must end inside the map: past the edge it ran aground on the outside margin and the drive test failed.
+- Trail THE SMUGGLERS (stamp SEIZED), group [110]. Trophies: Nothing to Declare, Friday Night, Seized.
+
 ## M6.118.0 — Levels 107 - 109: THE PEACE
 
 - `drafts/treaty.js` (no 107): the Ostberg house at Lake Morra, `windows: false`. Three microphones to take out (terminals with verb Remove, under the long table, in the salon lamp and in the library telephone), and the spy among the staff to mark. Optional quiet.

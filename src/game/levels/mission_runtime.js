@@ -2496,6 +2496,9 @@ export function setupMission(ctx) {
       if (level.draft === 'treaty' && m.result === 'success') all.push({ id: 'nobodylistening', name: 'Nobody Listening', about: 'Three microphones out of the Ostberg house before the talks, and the footman who planted them marked.' });
       if (level.draft === 'clocktower' && m.result === 'success') all.push({ id: 'coffeeatnine', name: 'Coffee at Nine', about: 'The marksman in Morra\'s clock tower taken alive, and the delegates none the wiser.' });
       if (level.draft === 'signing' && m.result === 'success') all.push({ id: 'signed', name: 'Signed, Sealed', about: 'The treaty signed at Lake Morra, and the war that began in Varnholm over.' });
+      if (level.draft === 'customs' && m.result === 'success') all.push({ id: 'declared', name: 'Nothing to Declare', about: 'The inspector marked and his seizure book taken, in Port Saren\'s own customs house.' });
+      if (level.draft === 'oldtown' && m.result === 'success') all.push({ id: 'fridaynight', name: 'Friday Night', about: 'The inspector followed to his paymasters through Saren\'s old town, unseen.' });
+      if (level.draft === 'smugcove' && m.result === 'success') all.push({ id: 'seized', name: 'Seized', about: 'The last boatload of the north\'s rifles stopped in Gull Cove, and an honest officer of customs freed.' });
       // (M6.66) the river open: Varnholm Lock
       if (level.draft === 'lock' && m.result === 'success') all.push({ id: 'river_open', name: 'River Open', about: 'The stand-down sent and the lock opened: Ghost\'s boats through to the sea.' });
       // (M6.44) the blight's end: the Dalmar Star

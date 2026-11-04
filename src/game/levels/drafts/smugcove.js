@@ -19,7 +19,7 @@ export default {
   time: { date: [12, 7, 2027], hour: 1, minute: 40 }, night: true, faction: 'red',
   startLoadout: { primary: 'LR7', backup: 'V27C', utility1: 'SMOKE', utility2: 'FLASH', gear: 'LENSES', mods: { primary: ['SCOPE8'], backup: ['SILENCER'] } },
   atmos: { fog: [0.1, 0.11, 0.15, 25, 180], ambient: [0.22, 0.23, 0.29] },
-  extractName: 'the cliff path, west', extract: { x: 2, y: 6, floor: 'G', van: [0, 6] },
+  extractName: 'the cliff path, west', extract: { x: 2, y: 6, floor: 'G', van: [6, -3] },
   outside: { backdrop: 'hills', mat: 'grass', margin: 14 },
   floors: {
     G: {
@@ -45,7 +45,7 @@ export default {
     for (const [x, y] of [[28, 24], [22, 30], [47, 12]]) level.lights.push({ pos: [mid(x), 3.2, mid(y)], range: 9, intensity: 0.75, color: [1, 0.85, 0.6], street: true });
   },
   vehicles: [
-    { id: 'smugboat', kind: 'boat', at: [34, 26], yaw: Math.PI, paint: 'white', hp: 560, path: [[34, 26], [34, 32], [34, 38], [34, 46]],
+    { id: 'smugboat', kind: 'boat', at: [34, 26], yaw: Math.PI, paint: 'white', hp: 560, path: [[34, 26], [34, 32], [34, 37], [34, 41]],
       speed: 8, goal: 'escape', wait: 180, name: 'The smugglers\' boat',
       crew: [{ id: 'bh', at: [-0.4, 0.6] }, { id: 'bm', at: [0, -2.2] }] },
   ],

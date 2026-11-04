@@ -156,6 +156,12 @@ export const PEACE = [
   { level: 'clocktower', title: 'The Clock Tower', text: 'The marksman taken in Morra\'s clock tower before the coffee was served.' },
   { level: 'signing', title: 'The Signing', text: 'The great hall held until the last signature, and the die-hards\' leader marked.' },
 ];
+// (M6.119) the smugglers: a new case in the south - the north's rifles coming ashore at Port Saren
+export const SMUGGLERS = [
+  { level: 'customs', title: 'The Customs House', text: 'The inspector who signed the crates through marked, and the seizure book taken.' },
+  { level: 'oldtown', title: 'Saren Old Town', text: 'The inspector followed through the lanes to the smugglers\' door, the buyer marked, the price list taken.' },
+  { level: 'smugcove', title: 'The Smugglers\' Cove', text: 'The honest customs officer freed, and the last boatload of rifles stopped in Gull Cove.' },
+];
 export const TRAILS = [
   { id: 'blight', title: 'THE BLIGHT', steps: BLIGHT, stamp: 'HARVEST SAVED', colour: '#5a9a3a' },
   { id: 'codex', title: 'THE CODEX', steps: CODEX, stamp: 'RETURNED', colour: '#3a7ab0' },
@@ -177,6 +183,7 @@ export const TRAILS = [
   { id: 'islands', title: 'THE ISLANDS', steps: ISLANDS, stamp: 'STRAIT OPEN', colour: '#2a6a8a' },
   { id: 'gold', title: 'THE GOLD', steps: GOLD, stamp: 'RETURNED TO SENDER', colour: '#b0902a' },
   { id: 'peace', title: 'THE PEACE', steps: PEACE, stamp: 'SIGNED', colour: '#4a8a4a' },
+  { id: 'smugglers', title: 'THE SMUGGLERS', steps: SMUGGLERS, stamp: 'SEIZED', colour: '#8a5a2a' },
 ];
 export const trailMark = (trail, level) => trail.id + ':' + level;
 // the marks a mission's being done adds (any trail it is a step of)
