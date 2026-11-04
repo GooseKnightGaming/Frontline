@@ -7,6 +7,11 @@ GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
 
+## M6.110.0 — Level 88, the Safe House (THE WARNING opens)
+
+- New draft `drafts/safehouse.js` (no 88): a farm at dusk, no devices. With Hale and Moss, hold the farmhouse 120 s (`reach` hold with no `after`) against three waves (north, east, west; probed: in at 0, 40 and 80 s), and capture the squad's leader, who comes with the last wave.
+- Case board: new trail THE WARNING (stamp HEEDED). Group [88]. Trophy "Holding the Ford".
+
 ## M6.109.0 — Level 87, the Studio (THE SAINTS closes)
 
 - New draft `drafts/studio.js` (no 87): a photographic studio over two floors (shop and back room; darkroom and files upstairs, stair in the back room), the yard behind with Major Kade's car. Objectives: take the files (upstairs), stop the car (`stop`, wait 240), optional quiet.

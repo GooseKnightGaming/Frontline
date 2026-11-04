@@ -114,6 +114,10 @@ export const SAINTS = [
   { level: 'express', title: 'The Night Express', text: 'The identifier taken off the night express at the frontier halt, and his album of saints\' faces with him.' },
   { level: 'studio', title: 'The Studio', text: 'The files behind the crosses taken from Kiln Street, and Major Kade\'s car stopped in the yard.' },
 ];
+// (M6.110) the warning: the saints got out, and the man who gave the reds their safe house found
+export const WARNING = [
+  { level: 'safehouse', title: 'The Safe House', text: 'Lindqvist\'s Ford held until the lorry came, and the squad\'s leader taken alive.' },
+];
 export const TRAILS = [
   { id: 'blight', title: 'THE BLIGHT', steps: BLIGHT, stamp: 'HARVEST SAVED', colour: '#5a9a3a' },
   { id: 'codex', title: 'THE CODEX', steps: CODEX, stamp: 'RETURNED', colour: '#3a7ab0' },
@@ -128,6 +132,7 @@ export const TRAILS = [
   { id: 'colonel', title: 'THE COLONEL', steps: COLONEL, stamp: 'STOOD DOWN', colour: '#5a5a7a' },
   { id: 'drops', title: 'THE DROPS', steps: DROPS, stamp: 'RUNG OUT', colour: '#8a6a3a' },
   { id: 'saints', title: 'THE SAINTS', steps: SAINTS, stamp: 'ABSOLVED', colour: '#6a5a8a' },
+  { id: 'warning', title: 'THE WARNING', steps: WARNING, stamp: 'HEEDED', colour: '#9a7a3a' },
 ];
 export const trailMark = (trail, level) => trail.id + ':' + level;
 // the marks a mission's being done adds (any trail it is a step of)

@@ -2474,6 +2474,7 @@ export function setupMission(ctx) {
       if (level.draft === 'monastery' && m.result === 'success') all.push({ id: 'sanctuary', name: 'Sanctuary', about: 'Brannoc out of Kelder Abbey, and the raid none the wiser.' });
       if (level.draft === 'express' && m.result === 'success') all.push({ id: 'facesoff', name: 'No Faces', about: 'The identifier off the night express, and every saint\'s face in his album with him.' });
       if (level.draft === 'studio' && m.result === 'success') all.push({ id: 'developed', name: 'Overexposed', about: 'The files behind the crosses taken, and Major Kade going nowhere.' });
+      if (level.draft === 'safehouse' && m.result === 'success') all.push({ id: 'ford', name: 'Holding the Ford', about: 'Eleven saints out of Lindqvist\'s Ford, and the squad\'s leader with them.' });
       // (M6.66) the river open: Varnholm Lock
       if (level.draft === 'lock' && m.result === 'success') all.push({ id: 'river_open', name: 'River Open', about: 'The stand-down sent and the lock opened: Ghost\'s boats through to the sea.' });
       // (M6.44) the blight's end: the Dalmar Star
