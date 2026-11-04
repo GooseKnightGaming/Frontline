@@ -144,6 +144,12 @@ export const ISLANDS = [
   { level: 'seafort', title: 'Holme Skerry', text: 'The garrison commander taken alive in his keep, and the garrison\'s roll with him.' },
   { level: 'battery2', title: 'The Last Battery', text: 'The die-hards cleared from Storm Skerry, and the white flag hoisted for every island to see.' },
 ];
+// (M6.117) the gold: the north's reserve kept in the north
+export const GOLD = [
+  { level: 'mint', title: 'The Mint', text: 'The treasurer marked, and the shipping manifest taken from the strongroom.' },
+  { level: 'goodsyard', title: 'The Goods Yard', text: 'Both lorries of "machine parts" stopped in the Kessin yard, eleven tons of gold aboard.' },
+  { level: 'pier', title: 'Pier Four', text: 'The treasurer taken off the reds\' freighter with the four hundred and sixth bar, and the ship\'s log with him.' },
+];
 export const TRAILS = [
   { id: 'blight', title: 'THE BLIGHT', steps: BLIGHT, stamp: 'HARVEST SAVED', colour: '#5a9a3a' },
   { id: 'codex', title: 'THE CODEX', steps: CODEX, stamp: 'RETURNED', colour: '#3a7ab0' },
@@ -163,6 +169,7 @@ export const TRAILS = [
   { id: 'press', title: 'THE PRESS', steps: PRESS, stamp: 'PRINTED', colour: '#3a3a3a' },
   { id: 'general', title: 'THE GENERAL', steps: GENERAL, stamp: 'ON TRIAL', colour: '#7a2a2a' },
   { id: 'islands', title: 'THE ISLANDS', steps: ISLANDS, stamp: 'STRAIT OPEN', colour: '#2a6a8a' },
+  { id: 'gold', title: 'THE GOLD', steps: GOLD, stamp: 'RETURNED TO SENDER', colour: '#b0902a' },
 ];
 export const trailMark = (trail, level) => trail.id + ':' + level;
 // the marks a mission's being done adds (any trail it is a step of)

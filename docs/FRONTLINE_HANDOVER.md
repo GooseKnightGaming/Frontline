@@ -7,6 +7,13 @@ GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
 
+## M6.117.0 — Levels 104 - 106: THE GOLD
+
+- `drafts/mint.js` (no 104): a mint with a maglocked strongroom (the vault officer has the card) and a second door from the treasurer's office. Mark the treasurer, take the manifest, optional quiet. `windows: false`, with the lobby's west window taken out (the lobby guard saw the start through it).
+- `drafts/goodsyard.js` (no 105): two gold lorries (`stop`). The first has `holdOn: 'barrier'`, a terminal in the signal box (verb Drop); probed, the lorry is held and its objective done. The second has to be stopped by hand (probed: it gets away at 250 s). The dog patrol was moved to the east side, because it saw the start.
+- `drafts/pier.js` (no 106): a freighter moored along a pier. Hold, mess and cabins on deck, and the bridge above the cabins up a stair. `windows: false` (a hold guard had seen the pier through an auto window). Capture the treasurer, take the ship's log, optional quiet.
+- Trail THE GOLD (stamp RETURNED TO SENDER), group [104]. Trophies: Counted Twice, Machine Parts, Bar Four Hundred and Six.
+
 ## M6.116.0 — Levels 101 - 103: THE ISLANDS
 
 - `drafts/skerries.js` (no 101): mainland west, the strait (`~`, channel 3) with a red launch going round it on a loop, and the outer skerry east. Blind the radar (a terminal with verb Blind), take the codebook, optional quiet. Ghost's boat is by the mainland jetty. NB: the skerry touches the map's east edge, so you can also walk round the outside margin. To fix if it matters: sea along the edges too, and the kit test would then need a boat-aware path.

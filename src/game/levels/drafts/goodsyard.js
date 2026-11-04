@@ -69,7 +69,7 @@ export default {
     { id: 'eng', at: [37, 10, 'G'], arms: 'pistol', temper: 'cowardly', role: 'engineer' },
     { id: 'wh1', at: [30, 10, 'G'], arms: 'smg' },
     { id: 'y1', at: [36, 22, 'G'], route: [[28, 22], [52, 22]], arms: 'carbine' },
-    { id: 'y2', at: [14, 22, 'G'], route: [[12, 17], [12, 27]], arms: 'carbine', dog: true },
+    { id: 'y2', at: [44, 22, 'G'], route: [[44, 16], [44, 28]], arms: 'carbine', dog: true },
   ],
   devices: [
     { id: 'c-yard', kind: 'camera', at: [45, 13, 'G'], face: [-1, 1], net: 'yard' },

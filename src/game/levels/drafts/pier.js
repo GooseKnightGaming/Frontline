@@ -5,7 +5,7 @@
 // port the reds have ever sent their money to.
 const W = 70, H = 30;
 export default {
-  id: 'pier', no: 106, title: 'Pier Four', place: 'pier four, the Skarn coast',
+  id: 'pier', no: 106, title: 'Pier Four', place: 'pier four, the Skarn coast', windows: false,
   where: 'Pier four, the Skarn coast. 04:50, the freighter\'s engines warming, the tide on the turn.',
   brief: [
     ['The job', 'The gold never left the Kessin yard, but the <b>treasurer</b> did. He is aboard the reds\' <b>freighter</b> at pier four, sailing at dawn with whatever he could carry. The Mint\'s tally said four hundred and five bars where there had been four hundred and six. Go aboard from the pier. <b>Take the treasurer alive</b> in his cabin. Take the <b>ship\'s log</b> from the bridge: it names every port the reds have ever sent their money to.'],

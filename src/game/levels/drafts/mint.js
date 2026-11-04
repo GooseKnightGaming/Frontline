@@ -4,7 +4,7 @@
 // Mark the treasurer, so that Ghost can follow him, and take the shipping manifest from the strongroom.
 const W = 50, H = 36;
 export default {
-  id: 'mint', no: 104, title: 'The Mint', place: 'the Hollen Mint',
+  id: 'mint', no: 104, title: 'The Mint', place: 'the Hollen Mint', windows: false,
   where: 'The Hollen Mint. 23:20, the counting hall lit, crates stacked to the ceiling.',
   brief: [
     ['The job', 'With the Skerries gone, the reds know that the north is lost, and they mean to take its <b>gold</b> with them: the reserve in the <b>Hollen Mint</b>, eleven tons of it, to be moved by night to somewhere nobody will find. <b>Mark the treasurer</b>, so that Ghost can follow him. Take the <b>shipping manifest</b> from the <b>strongroom</b>. If you can, <b>without the alarm</b>.'],
@@ -19,7 +19,7 @@ export default {
   time: { date: [6, 6, 2027], hour: 23, minute: 20 }, night: true, faction: 'red', requires: 'HACKKIT',
   startLoadout: { primary: 'MP2', backup: 'V27C', utility1: 'SMOKE', utility2: 'FLASH', gear: 'LENSES', mods: { primary: ['SILENCER'], backup: ['SILENCER'] } },
   atmos: { fog: [0.18, 0.18, 0.22, 25, 160], ambient: [0.28, 0.28, 0.32] },
-  extractName: 'the street, south-west', extract: { x: 2, y: 34, floor: 'G', van: [5, 0] },
+  extractName: 'the street, south-west', extract: { x: 2, y: 34, floor: 'G', van: [0, -7] },
   outside: { backdrop: 'city', mat: 'asphalt', margin: 14 },
   floors: {
     G: {
@@ -32,7 +32,7 @@ export default {
         ['room', 40, 18, 46, 26],                       // the guardroom
       ], after: [
         ['cells', [[20, 29], [20, 19], [31, 11], [35, 15], [31, 21], [39, 20], [43, 27]], 'D'],
-        ['cells', [[14, 29], [26, 29], [9, 13], [9, 24], [47, 22], [35, 23]], 'W'],
+        ['cells', [[14, 29], [26, 29], [9, 13], [47, 22], [35, 23]], 'W'],
         // the counting hall's crates and tables, the lobby's counter, the strongroom's shelves, the office, the guardroom
         ['room', 13, 10, 13, 16, 'C'], ['room', 17, 10, 17, 16, 'C'], ['room', 23, 10, 23, 16, 'C'], ['cells', [[12, 9], [27, 17]], 'T'],
         ['room', 13, 22, 17, 22, 'T'], ['room', 23, 22, 27, 22, 'T'],

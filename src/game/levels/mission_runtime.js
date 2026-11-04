@@ -2490,6 +2490,9 @@ export function setupMission(ctx) {
       if (level.draft === 'skerries' && m.result === 'success') all.push({ id: 'blindspot', name: 'Blind Spot', about: 'The Skerry radar turning all night and seeing nothing.' });
       if (level.draft === 'seafort' && m.result === 'success') all.push({ id: 'keeptaken', name: 'The Keep', about: 'The garrison commander out of Holme Skerry\'s keep, and his roll with him.' });
       if (level.draft === 'battery2' && m.result === 'success' && guards.filter((g) => g.side === 'ally').every((g) => !g.dead)) all.push({ id: 'whiteflag', name: 'White Flag', about: 'Storm Skerry cleared and the white flag up, with Hale and Moss both still grumbling.' });
+      if (level.draft === 'mint' && m.result === 'success') all.push({ id: 'counted', name: 'Counted Twice', about: 'The treasurer marked and the Mint\'s manifest taken, and the strongroom locked behind you.' });
+      if (level.draft === 'goodsyard' && m.result === 'success') all.push({ id: 'machineparts', name: 'Machine Parts', about: 'Both of the gold lorries stopped in the Kessin goods yard.' });
+      if (level.draft === 'pier' && m.result === 'success') all.push({ id: 'bar406', name: 'Bar Four Hundred and Six', about: 'The treasurer off the freighter, and the last bar of the north\'s gold home with him.' });
       // (M6.66) the river open: Varnholm Lock
       if (level.draft === 'lock' && m.result === 'success') all.push({ id: 'river_open', name: 'River Open', about: 'The stand-down sent and the lock opened: Ghost\'s boats through to the sea.' });
       // (M6.44) the blight's end: the Dalmar Star
