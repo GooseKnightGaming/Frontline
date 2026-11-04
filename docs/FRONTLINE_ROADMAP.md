@@ -916,3 +916,17 @@ mission list in its stories with ticks. See the handover for each.
 - M6.93 - M6.94: prisoners who fight once freed (Sergeant Venn at the Prison, the pilot at the Outpost).
 - Candidates next: more papers where there are none; the Campus's start (too big for the start check's time); the
   door check that fails with its parent under load (it passes on a rerun every time - worth making it wait longer).
+
+## The second day (4 November 2026, M6.95 on)
+- M6.95 - M6.97: THE COAST (the Counting House, the Harbour, the Shore Battery - "PAID OFF").
+- M6.98 - M6.100: HOLLIS (his Cove - followed home, the Cliff Cottage - taken alive, the Wrong Bridge - cleared with
+  three allies; "TURNED"); grades on the case board.
+- M6.101 - M6.103: THE COLONEL (the Hunting Party, Northern Headquarters - mark, send and hold, the Border Run - a
+  drive in a jeep against the clock; "STOOD DOWN").
+- M6.104 - M6.106: THE DROPS (the Funfair - a mirror maze that loops until you hold its plan, the Observatory - dark,
+  with the dome's lights on the console, St Aldric's Tower - a four-floor bell tower; "RUNG OUT").
+- M6.107 - M6.109: THE SAINTS (Kelder Abbey in the rain, the Night Express at a frontier halt in disguise, the Studio
+  - files upstairs and a car to stop in the yard; "ABSOLVED").
+- Lessons for drafting: guards never on stair cells; a window cell overwrites a door cell; open courtyards need a way
+  in at least two squares wide; a vehicle's crew must also be guards; keep the start out of a parked crew's view.
+- Candidates next: a new trail out of the Studio's files; papers in the older levels; the Campus start check.
