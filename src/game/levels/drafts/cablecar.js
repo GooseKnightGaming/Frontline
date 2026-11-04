@@ -26,15 +26,15 @@ export default {
       y: 0, wallH: 3.6, wall: 'wood', wallTint: [0.6, 0.45, 0.32], floor: 'wood', ceil: 'wood', lampPower: 0.55, lampColour: [1, 0.85, 0.6], lampEvery: 4,
       carve: { size: [W, H], ops: [
         ['room', 6, 16, 14, 24],                        // the top station
-        ['room', 6, 6, 12, 12],                         // the gear house
+        ['room', 6, 4, 12, 10],                         // the gear house
         ['room', 30, 10, 37, 20],                       // the chalet's hall
         ['room', 39, 10, 46, 20],                       // the study
         ['room', 30, 26, 36, 30],                       // the guardhouse
       ], after: [
-        ['cells', [[5, 20], [15, 20], [9, 13], [29, 15], [38, 15], [33, 25], [33, 21]], 'D'],
+        ['cells', [[5, 20], [15, 20], [9, 11], [29, 15], [38, 15], [33, 25], [33, 21]], 'D'],
         ['cells', [[10, 25], [33, 9], [42, 9], [47, 15], [37, 28]], 'W'],
         ['room', 7, 17, 7, 23, 'K'], ['cells', [[12, 17]], 'T'],
-        ['cells', [[8, 8]], 'M'], ['cells', [[11, 7]], 'T'],
+        ['cells', [[8, 6]], 'M'], ['cells', [[11, 5]], 'T'],
         ['room', 31, 11, 31, 14, 'H'], ['cells', [[34, 18]], 'T'], ['cells', [[36, 11]], 'Y'],
         ['cells', [[44, 12]], 'T'], ['room', 45, 16, 45, 19, 'H'], ['cells', [[41, 19]], 'Y'],
         ['cells', [[31, 27]], 'T'], ['cells', [[35, 29]], 'Y'],
@@ -53,7 +53,7 @@ export default {
   start: { x: 3, y: 20, floor: 'G', yaw: -Math.PI / 2 },
   zones: [
     { id: 'station', label: 'The Mountain - the top station', at: [6, 16, 14, 24] },
-    { id: 'gear', label: 'The Mountain - the gear house', at: [6, 6, 12, 12] },
+    { id: 'gear', label: 'The Mountain - the gear house', at: [6, 4, 12, 10] },
     { id: 'hall', label: 'The Mountain - the chalet\'s hall', at: [30, 10, 37, 20] },
     { id: 'study', label: 'The Mountain - Dancourt\'s study', at: [39, 10, 46, 20] },
     { id: 'guard', label: 'The Mountain - the guardhouse', at: [30, 26, 36, 30] },
@@ -64,7 +64,7 @@ export default {
     { id: 'sd', at: [36, 15, 'G'], arms: 'smg', temper: 'steady' },
     { id: 'hl1', at: [33, 13, 'G'], arms: 'pistol' },
     { id: 'st1', at: [11, 20, 'G'], arms: 'carbine', temper: 'steady', name: 'The station attendant' },
-    { id: 'eng', at: [10, 10, 'G'], arms: 'pistol', temper: 'cowardly', role: 'engineer' },
+    { id: 'eng', at: [10, 8, 'G'], arms: 'pistol', temper: 'cowardly', role: 'engineer' },
     { id: 'rad', at: [33, 28, 'G'], arms: 'pistol', rank: 'officer', temper: 'steady', role: 'radio' },
     { id: 'pt1', at: [22, 18, 'G'], route: [[18, 18], [27, 18]], arms: 'carbine' },
     { id: 'pt2', at: [40, 24, 'G'], route: [[28, 23], [50, 23]], arms: 'carbine', dog: true },
@@ -75,7 +75,7 @@ export default {
   ],
   terminals: [
     { id: 'sec', name: 'the guardhouse console', at: [31, 27, 'G'], face: [0, 1], time: 6, net: 'peak' },
-    { id: 'gear', name: 'the winding gear\'s brake', at: [11, 7, 'G'], face: [0, 1], time: 5, verb: 'Stop', doing: 'Stopping',
+    { id: 'gear', name: 'the winding gear\'s brake', at: [11, 5, 'G'], face: [0, 1], time: 5, verb: 'Stop', doing: 'Stopping',
       said: 'The winding gear groans and stops. Nothing goes up or down the Lessar mountain now until Ghost says so.' },
   ],
   intel: [
