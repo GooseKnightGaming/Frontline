@@ -261,6 +261,10 @@ export default {
     { id: 'u24', at: [76, 75, 'G'], arms: 'pistol' },
   ],
   hostages: [{ id: 'qureshi', name: 'Professor Amara Qureshi', she: true, at: [123, 73, 'C2'] }],
+  // (M6.115.1) papers
+  intel: [
+    { id: 'notice', at: [85, 70, 'G'], kind: 'Notice', title: 'A notice on a desk in the Main Building', text: ['Brookvale University is closed by order for the rest of term. All staff are to remain on campus. Under it, in pencil, someone has written: "Why remain?"'] },
+  ],
   pickups: [{ id: 'pathogen', name: 'The pathogen sample', what: 'the sample', at: [44, 27, '3'], table: false, h: 1.12, colour: [0.9, 0.3, 0.3] }],
   terminals: [{ id: 'security', name: 'the campus security terminal', at: [99, 70, 'G'], face: [0, -1], time: 6, reveal: 40,
     said: 'Campus security: the cameras put every red on your radar for 40 seconds.' }],

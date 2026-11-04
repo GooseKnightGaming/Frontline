@@ -125,6 +125,11 @@ export default {
     { id: 'w7', at: [31, 20, 'G'], arms: 'pistol', temper: 'steady' },
     { id: 'w8', at: [28, 20, '1'], arms: 'smg', temper: 'steady' },
   ],
+  // (M6.115.1) papers, at last: two of them, and neither of them helps
+  intel: [
+    { id: 'chart', at: [4, 9, 'G'], kind: 'Chart', title: 'The chart at the foot of your bed', text: ['Your name, in a hand you do not know. Under "dose", a number crossed out and written again, three times, each one larger.'] },
+    { id: 'four', at: [41, 18, 'G'], kind: 'Note', title: 'A note on the table in the turning room', text: ['"Four doors. Three of them lie. The one that does not lies only once."'] },
+  ],
   pickups: [{ id: 'antidote', name: 'The antidote', what: 'the antidote', at: [28, 19, '1'], table: false, h: 0.8, colour: [0.4, 0.95, 0.6] }],
   objectives: [
     { id: 'o1', kind: 'take', ref: 'antidote', text: 'Find the antidote (up the stairs)' },
