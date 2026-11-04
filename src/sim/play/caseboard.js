@@ -186,6 +186,12 @@ export const ESCAPE = [
   { level: 'vineyard', title: 'The Vineyard', text: 'Kray\'s false passport taken, and Varo\'s son followed through the vines to the mill.' },
   { level: 'oldbridge', title: 'The Old Bridge', text: 'Kray taken at the old bridge, and the boat that was to carry him away stopped.' },
 ];
+// (M6.123) the circus: the Circus Orlov, which carried messages across every border on the map
+export const CIRCUS = [
+  { level: 'bigtop', title: 'The Big Top', text: 'The ringmaster\'s contact marked in the front row, and the circus\'s route book taken.' },
+  { level: 'winterquarters', title: 'Winter Quarters', text: 'The steam organ\'s transmitter silenced, and Lena Pask brought out of the horse barn.' },
+  { level: 'lastshow', title: 'The Last Performance', text: 'The ringmaster taken in the middle of his own finale, and his ledger with him.' },
+];
 export const TRAILS = [
   { id: 'blight', title: 'THE BLIGHT', steps: BLIGHT, stamp: 'HARVEST SAVED', colour: '#5a9a3a' },
   { id: 'codex', title: 'THE CODEX', steps: CODEX, stamp: 'RETURNED', colour: '#3a7ab0' },
@@ -212,6 +218,7 @@ export const TRAILS = [
   { id: 'banker', title: 'THE BANKER', steps: BANKER, stamp: 'ACCOUNT CLOSED', colour: '#3a4a7a' },
   { id: 'witnesses', title: 'THE WITNESSES', steps: WITNESSES, stamp: 'GUILTY', colour: '#5a3a3a' },
   { id: 'escape', title: 'THE ESCAPE', steps: ESCAPE, stamp: 'RECAPTURED', colour: '#3a5a5a' },
+  { id: 'circus', title: 'THE CIRCUS', steps: CIRCUS, stamp: 'FINAL CURTAIN', colour: '#aa2a2a' },
 ];
 export const trailMark = (trail, level) => trail.id + ':' + level;
 // the marks a mission's being done adds (any trail it is a step of)

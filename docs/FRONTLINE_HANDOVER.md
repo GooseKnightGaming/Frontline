@@ -7,6 +7,15 @@ GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
 
+## M6.123.0 — Levels 125 - 127: THE CIRCUS (the last new levels: Rhys, 4 Nov 22:26, "stop writing more missions now")
+
+- `drafts/bigtop.js` (no 125): a circus in disguise. The big top (with the ring's low wall, which has gaps north and south: it had been closed all round, so the kit could not reach the ringmaster), the wagons, the menagerie and the ticket booth. Mark the contact, take the route book, optional quiet.
+- `drafts/winterquarters.js` (no 126): the circus's farm. Silence the steam organ's transmitter (verb Silence), rescue Lena Pask from the horse barn, optional quiet.
+- `drafts/lastshow.js` (no 127): the Big Top made by script with more guards. Capture the ringmaster in the ring, take his ledger.
+- Also: vans moved out of the starts' view at the Goods Yard and the Treaty House (from a static audit; levels before 73 were left as they are, with the van in front of you where it brought you). The Old Town inspector's route now starts at his post.
+- New doc: `docs/FRONTLINE_TESTING_GUIDE.md`, for what to play first in Levels 73 - 127.
+- Trail THE CIRCUS (stamp FINAL CURTAIN), group [125]. Trophies: The Front Row, The Organ Plays On, Final Curtain.
+
 ## M6.122.0 — Levels 119 - 124: THE WITNESSES and THE ESCAPE
 
 - `drafts/witnessflat.js` (no 119): Northern HQ's shell made a tenement by script. The hold is upstairs (`reach` with `floor: '1'`, hold 120, four waves; probed: done at 119 s), with Hale and Moss. You start in the flat.

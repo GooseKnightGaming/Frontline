@@ -2511,6 +2511,9 @@ export function setupMission(ctx) {
       if (level.draft === 'quarry' && m.result === 'success') all.push({ id: 'secondcar', name: 'The Second Car', about: 'The getaway car stopped in the quarry and the planner taken.' });
       if (level.draft === 'vineyard' && m.result === 'success') all.push({ id: 'grapes', name: 'Through the Vines', about: 'Varo\'s son followed unseen to Kray\'s hiding place.' });
       if (level.draft === 'oldbridge' && m.result === 'success') all.push({ id: 'midnight', name: 'Thursday, Midnight', about: 'Anselm Kray taken at the old bridge, this time for good.' });
+      if (level.draft === 'bigtop' && m.result === 'success') all.push({ id: 'frontrow', name: 'The Front Row', about: 'The ringmaster\'s contact marked, and the Circus Orlov\'s route book taken during the show.' });
+      if (level.draft === 'winterquarters' && m.result === 'success') all.push({ id: 'organ', name: 'The Organ Plays On', about: 'The steam organ\'s transmitter silenced, and Lena Pask out of the horse barn.' });
+      if (level.draft === 'lastshow' && m.result === 'success') all.push({ id: 'curtain', name: 'Final Curtain', about: 'The ringmaster taken in his own ring, and the band played on.' });
       // (M6.66) the river open: Varnholm Lock
       if (level.draft === 'lock' && m.result === 'success') all.push({ id: 'river_open', name: 'River Open', about: 'The stand-down sent and the lock opened: Ghost\'s boats through to the sea.' });
       // (M6.44) the blight's end: the Dalmar Star
