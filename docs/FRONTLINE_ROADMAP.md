@@ -908,5 +908,8 @@ mission list in its stories with ticks. See the handover for each.
 - The case board: seven trails, THE STORY SO FAR (epilogues - forty-five levels have one), VARNHOLM: FILE CLOSED.
   The debrief and the mission list show the trails' progress and stamps.
 - Every new level's start checked by standing still there for 15 s: five fixed where you were seen at once.
-- Candidates next: the same start check over the older levels; allies who follow and fight (the Yellows' escort,
-  for Ghost's own); more papers and epilogues where there are none.
+- M6.86 - M6.89: the older levels' starts checked (the Subway fixed); Never Rang trophies; allies (Hale and Moss -
+  they keep with you, hold their fire until a red wakes up, and fight); `quick` (against the clock); Levels 68 - 70,
+  THE CAMPS (the Arn Bridge, Camp Ostrava, the Relay Peaks).
+- Candidates next: a rescued soldier who becomes an ally (Sergeant Venn at the Prison); more papers where there are
+  none; the Campus's start (too big for the start check's time).
