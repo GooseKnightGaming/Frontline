@@ -128,6 +128,11 @@ export default {
     ['Objectives', 'Find <b>LANTERN\'s vehicle</b> in the park. Take the <b>black box</b> (the Meridian, upstairs). Send it home from the <b>radio station</b>\'s transmitter (east block, upstairs). Optionally, bring <b>Takacs</b> out.'],
     ['Watch your step', 'The Meridian\'s floors are blown through in places. Snipers in the high windows.'],
   ],
+  // (M6.83) how it ends (the debrief; the case board's story so far)
+  epilogue: {
+    success: "LANTERN's black box goes home over Radio Drosk's old transmitter. Whatever LANTERN saw in the dead city, Ghost has it now.",
+    partial: "The black box is found, but it is not all sent. Ghost has fragments, and the reds have the rest.",
+  },
   time: { date: [2, 11, 2026], hour: 18, minute: 20 }, faction: 'yellow',
   atmos: { fog: [0.5, 0.42, 0.33, 25, 210], ambient: [0.5, 0.45, 0.4], sun: [1, 0.7, 0.48, 1.1, 26, 250], sky: [0.85, 0.7, 0.55] },
   startLoadout: { primary: 'K7', backup: 'PX9', utility1: 'FRAG', utility2: 'REMOTE', gear: 'LENSES' },

@@ -10,6 +10,11 @@ export default {
     ['Objectives', 'Find <b>Dalia Brennan</b>, the city water engineer, and bring her back up to the van; take the reds\' <b>shipment manifest</b> from the depot office. Clearing the reds out is optional.'],
     ['Doors', 'The depot\'s back room is locked - kick it in.'],
   ],
+  // (M6.83) how it ends (the debrief; the case board's story so far)
+  epilogue: {
+    success: "Dalia Brennan is back above ground by two, wet to the knees and furious. The reds' manifest says what they have been moving through the city's tunnels, and which nights. Ghost will be waiting for the next one.",
+    partial: "Brennan or the manifest, not both. The reds will close up the tunnels they have been using.",
+  },
   time: { date: [18, 7, 2026], hour: 1, minute: 20 }, night: true, dark: true, startGear: 'NVG', faction: 'red',
   extractName: 'the van on Canal Street', safeName: 'the van on Canal Street',
   outside: { backdrop: 'city', mat: 'asphalt', margin: 18 },

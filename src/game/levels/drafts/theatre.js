@@ -74,6 +74,11 @@ export default {
     ['The reds', 'The house is closed tonight for a rehearsal that is not one. <b>Daskova</b>, the reds\' arms broker, is selling from the <b>right-hand box</b> (on the circle) while her men watch the doors, the stalls and the stage.'],
     ['Objectives', 'Stop <b>Daskova</b>. Take her <b>manifest</b> - what is sold, to whom - from the stage manager\'s office backstage. Optionally, bring out <b>Mr Okafor</b>, the stage manager - they have him in the prop store.'],
   ],
+  // (M6.83) how it ends (the debrief; the case board's story so far)
+  epilogue: {
+    success: "The Grand's rehearsal is over. Daskova's manifest says what she was selling and to whom, and Mr Okafor finally gets to show someone his list of dates.",
+    partial: "Daskova's buyers are warned, or Okafor stays in the prop store a while longer. The house reopens on Saturday as if nothing happened.",
+  },
   time: { date: [11, 10, 2026], hour: 20, minute: 15 }, faction: 'red', night: true,
   extractName: 'Opera Street, out of the front doors', navCap: 120000,
   outside: { backdrop: 'city', mat: 'asphalt', margin: 16 },

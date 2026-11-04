@@ -55,6 +55,11 @@ export default {
     ['The party', 'Shut tonight for <b>Saint</b> - the reds\' money man - and his guests: all of them his. Saint keeps to his own booth up on the mezzanine, over the store.'],
     ['Objectives', 'Stop <b>Saint</b> (his booth, the mezzanine\'s north-east corner). Take his <b>ledger</b> from the office behind the stage. Optionally, cut the club\'s power at the DJ\'s desk - lights out, they will not see you coming.'],
   ],
+  // (M6.83) how it ends (the debrief; the case board's story so far)
+  epilogue: {
+    success: "Saint's ledger comes out of Club Velvet with every name in it. By the next weekend the club is under new management, and nobody on the strip will say whose.",
+    partial: "The ledger, or Saint, not both. The party moves to another club.",
+  },
   time: { date: [17, 10, 2026], hour: 1, minute: 30 }, faction: 'red', night: true,
   atmos: { ambient: [0.22, 0.18, 0.3] },
   extractName: 'the street, out of the front doors', navCap: 120000,

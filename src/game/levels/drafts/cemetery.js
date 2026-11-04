@@ -13,6 +13,11 @@ export default {
     ['Objectives', 'Take the Yellows\' <b>cipher book</b> from the crypt, and stop <b>Brother Teodor</b> - killed or knocked out. Clearing the rest is optional.'],
     ['Doors', 'Some mausoleums are locked: kick them in, or leave them be.'],
   ],
+  // (M6.83) how it ends (the debrief; the case board's story so far)
+  epilogue: {
+    success: "The Yellows' cipher book is out of the crypt and Brother Teodor will not hold another meeting below St Aldric's. Their messages are Ghost's to read for a while.",
+    partial: "The book or the brother, not both. The Yellows will change their cipher before the next full moon.",
+  },
   time: { date: [2, 8, 2026], hour: 2, minute: 10 }, night: true, startGear: 'NVG', faction: 'yellow',
   extractName: 'the gate on Highgate Rise', safeName: 'the gate on Highgate Rise',
   outside: { backdrop: 'woods', mat: 'lawn', margin: 16, fenceMat: 'brick', fenceH: 2.4 },

@@ -67,6 +67,11 @@ export default {
     ['The looters', 'A ring of them (the reds), camped on the court\'s west side. They took <b>Dr Anaya Rook</b> from the university\'s dig to read the temple for them. Their boss is <b>Calder</b>.'],
     ['Objectives', 'Turn the glyph wheel. Take the <b>Tolun tablet</b> from the tomb before they do. Bring <b>Dr Rook</b> out (their camp). Optionally, stop Calder.'],
   ],
+  // (M6.83) how it ends (the debrief; the case board's story so far)
+  epilogue: {
+    success: "The Tolun tablet leaves the jungle in Ghost's hands, and Dr Rook leaves it with it. Calder's buyer in Varnholm is still waiting for a delivery that will never come.",
+    partial: "The tablet or Dr Rook, not both. Calder will be back for whatever he left behind.",
+  },
   time: { date: [6, 9, 2026], hour: 7, minute: 10 }, faction: 'red',
   atmos: { fog: [0.55, 0.62, 0.5, 18, 160], ambient: [0.42, 0.48, 0.4], sun: [1, 0.95, 0.8, 1.2, 40, 120], sky: [0.8, 0.92, 0.82] },
   extractName: 'the jungle path, south', navCap: 120000, windows: false,

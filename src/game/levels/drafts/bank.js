@@ -10,6 +10,11 @@ export default {
     ['Objectives', 'Hack the <b>security terminal</b> upstairs: it opens the vault\'s steel doors. Take the <b>dossier</b> from safe-deposit box 114 in the vault. Optionally, bring out <b>Mr Osei</b>, the night manager, held in his office.'],
     ['Doors', 'The vault door will not give to anything you carry: the terminal opens it. Other locked doors give to a kick.'],
   ],
+  // (M6.83) how it ends (the debrief; the case board's story so far)
+  epilogue: {
+    success: "Box 114's dossier leaves the Merchants' Exchange in Ghost's hands, not the Yellows'. Mr Osei is home by morning, and he says he never wants to work nights again.",
+    partial: "The Yellows have some of what they came for. Ghost will meet that dossier again somewhere.",
+  },
   time: { date: [24, 7, 2026], hour: 23, minute: 5 }, night: true, faction: 'yellow',
   extractName: 'the van on Corn Street', safeName: 'the van on Corn Street',
   outside: { backdrop: 'city', mat: 'asphalt', margin: 20 },

@@ -77,7 +77,7 @@ import { boardOf, describe as contractText, TERMS } from '../sim/play/contracts.
 import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './core/input.js';
 import { isTouchDevice, touchControls, retext } from './core/touch.js';
 
-const VERSION = 'M6.82.0';
+const VERSION = 'M6.83.0';
 const $ = (id) => document.getElementById(id);
 const TEST = /[?&]test\b/.test(location.search);
 // Level 0, the training mission, is its own page load: index.html?level=0
@@ -810,6 +810,8 @@ function boot() {
         + '<details class="rec-row" style="display:block"><summary><b>' + told.length + (told.length === 1 ? ' mission' : ' missions') + '</b> <span style="opacity:0.7">(open to read)</span></summary>'
         + told.map((d) => '<div style="margin:8px 0 0 10px"><b>Level ' + d.no + ', ' + d.title + '</b>' + (doneMap[d.id] === 'partial' ? ' <span style="opacity:0.6">(in part)</span>' : '') + '<br><span style="opacity:0.85">' + (d.epilogue[doneMap[d.id]] || d.epilogue.success) + '</span></div>').join('') + '</details>';
     }
+    // (M6.83) every trail stamped (and the case closed): Varnholm's file, closed
+    if (caseClosed(have) && TRAILS.every((tr) => trailDone(tr, have))) $('case-list').innerHTML += '<div style="margin:18px auto 6px;width:max-content;padding:6px 18px;border:4px double var(--amber);color:var(--amber);font:700 20px/1 \'Courier New\',monospace;letter-spacing:5px;transform:rotate(-3deg)">VARNHOLM: FILE CLOSED</div><p style="text-align:center;opacity:0.85">The council, the blight, the Codex, the river, the forgers, the handler and the five, every one of them done. Ghost thanks you, and has nothing left in Varnholm to ask of you. Yet.</p>';
     // (M6.71) the papers read, filed: each mission's, opened to read again
     const papers = Saves.loadPapers(slotNo), filed = DRAFTS.filter((d) => d.intel && d.intel.length && (papers[d.id] || []).length);
     if (filed.length) {

@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.82.0)
+# Frontline — Handover (M6.83.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,13 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.83.0 — epilogues for fifteen more; Varnholm's file closed
+- Epilogues for fifteen of the first drafts (5 - 34) that had none: the Sewers, the Bank, the Cemetery, the Manor,
+  the Mineshaft, the Assassination, the Drop, the Desolated City, the Theatre, the Baths, the Temple, the Prison, the
+  Nightclub, the Airport, the Outpost. Forty-four levels have one.
+- With the case closed and every trail stamped, the case board says so (VARNHOLM: FILE CLOSED), and the next
+  success after it earns the trophy Varnholm: File Closed.
 
 ## M6.82.0 — the story so far
 - The case board's THE STORY SO FAR: every first draft done (success or in part) that has an epilogue, in level

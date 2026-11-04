@@ -2408,6 +2408,8 @@ export function setupMission(ctx) {
       if (level.draft === 'gazette' && m.result === 'success' && hostages.every((h) => h.state === 'rescued')) all.push({ id: 'stop_press', name: 'Stop Press', about: 'The Courier\'s special edition printed with the press hall held, and every one of the staff brought out.' });
       // (M6.81) the last two
       if (level.draft === 'airfield' && m.result === 'success') all.push({ id: 'grounded', name: 'Grounded', about: 'The jet held on the apron at Kessin, and the chief from Kessin taken alive.' });
+      // (M6.83) the whole file: the case closed and every trail stamped, with this mission
+      if (level.draft && m.result === 'success') { const hv = Saves.loadCase(Saves.currentSlot()); if (hv.includes(CLOSED) && TRAILS.every((t) => trailDone(t, hv))) all.push({ id: 'file_closed', name: 'Varnholm: File Closed', about: 'The case closed and every story trail stamped on the case board.' }); }
       // (M6.66) the river open: Varnholm Lock
       if (level.draft === 'lock' && m.result === 'success') all.push({ id: 'river_open', name: 'River Open', about: 'The stand-down sent and the lock opened: Ghost\'s boats through to the sea.' });
       // (M6.44) the blight's end: the Dalmar Star

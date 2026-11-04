@@ -19,6 +19,11 @@ export default {
     ['Objectives', 'Take Harrow\'s <b>sales ledger</b> from the library. Hack the <b>terminal in the butler\'s pantry</b> (the cellars) to open the strongroom, and take the <b>prototype</b> from it. Optionally, stop <b>Sir Julian Harrow</b>.'],
     ['The back way', 'The servants\' stairs and passages go from the cellars to the first floor without crossing the family\'s rooms - and the kitchen door, round the back, is the servants\' own way in.'],
   ],
+  // (M6.83) how it ends (the debrief; the case board's story so far)
+  epilogue: {
+    success: "Harrow's sales ledger names every buyer of every prototype he has sold, and the latest one never left his strongroom. Sir Julian is very quiet at his club that weekend.",
+    partial: "Part of Harrow's business is exposed. He has friends who will make the rest go away.",
+  },
   time: { date: [21, 6, 2026], hour: 21, minute: 15 }, night: true, faction: 'red',
   extractName: 'the van outside the gatehouse',
   outside: { backdrop: 'woods', mat: 'lawn', margin: 14 },

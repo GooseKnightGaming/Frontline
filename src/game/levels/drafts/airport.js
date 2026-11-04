@@ -67,6 +67,11 @@ export default {
     ['Security', 'The terminal\'s <b>cameras</b> watch the halls and the VIP lounge; the VIP lounge is <b>maglocked</b>, with a <b>turret</b> of Rourke\'s inside; the departure lounge\'s <b>lights</b> and the <b>alarm</b> are on the same network - run from the <b>security office</b> upstairs. You carry a <b>hacking kit</b>. A man in the security lanes has the <b>radio</b>; the airfield\'s <b>engineer</b> (the check-in hall) will put a hacked system back on.'],
     ['Objectives', 'Stop Rourke\'s jet. Take his <b>contracts</b> from the VIP lounge (upstairs over the departure lounge). Optionally, stop Rourke himself - he boards when it goes.'],
   ],
+  // (M6.83) how it ends (the debrief; the case board's story so far)
+  epilogue: {
+    success: "Rourke's jet never leaves Varnholm Airfield, and his contracts are on a Ghost desk by morning. The VIP lounge goes back to being a lounge.",
+    partial: "Rourke got away, or his contracts did. Either way he will be doing business again by the summer.",
+  },
   time: { date: [22, 10, 2026], hour: 23, minute: 25 }, faction: 'red', night: true, requires: 'HACKKIT',
   startLoadout: { primary: 'K7', backup: 'PX9', utility1: 'FRAG', utility2: 'REMOTE', gear: 'LENSES' },
   extractName: 'the car park, landside', navCap: 120000, testNavCap: 600000, chaseMax: 70,

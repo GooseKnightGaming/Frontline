@@ -72,6 +72,11 @@ export default {
     ['Objectives', 'Take the <b>drive</b> from the plant room. Stop <b>Teague</b>. Optionally, bring out <b>Ms Lund</b>, the night attendant - they have her in the women\'s changing room.'],
     ['Water', 'The deep end is over your head: watch your breath under water. The pool has ladders up its sides.'],
   ],
+  // (M6.83) how it ends (the debrief; the case board's story so far)
+  epilogue: {
+    success: "Teague's drive comes out of the plant room dry. Ms Lund goes home and swears she will never work another night shift at the Corporation Baths.",
+    partial: "The drive, or Teague, but not both. The private hire will be cancelled, and booked again somewhere else.",
+  },
   time: { date: [4, 10, 2026], hour: 23, minute: 30 }, faction: 'red', night: true,
   atmos: { water: [0.35, 0.72, 0.88, 0.06, 0.2, 0.26], ambient: [0.32, 0.36, 0.42] },
   extractName: 'the front doors', navCap: 120000,

@@ -20,6 +20,11 @@ export default {
     ['Objectives', 'Take the Yellows\' <b>arms manifest</b> from the site office. Find <b>Dr Mira Kovač</b>, the surveyor they took, in the pumping station, and bring her up to the van. Clearing them out is optional.'],
     ['Watch your step', 'The terrace edges are four-metre drops. Underground it is dark: night vision is in your kit.'],
   ],
+  // (M6.83) how it ends (the debrief; the case board's story so far)
+  epilogue: {
+    success: "Dr Kova\u010d comes up out of Kessock Quarry blinking at the daylight. The Yellows' arms manifest tells Ghost where everything they dug up has gone.",
+    partial: "Kova\u010d or the manifest, not both. The quarry will be empty by the time anyone comes back.",
+  },
   time: { date: [6, 8, 2026], hour: 11, minute: 20 }, startGear: 'NVG', faction: 'yellow',
   extractName: 'the van at the quarry gate',
   outside: { backdrop: 'hills', mat: 'desert', margin: 14, holes: pitHoles },

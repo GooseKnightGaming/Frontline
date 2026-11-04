@@ -21,6 +21,11 @@ export default {
     ['The reds', 'Twelve, on the station and round the island.'],
     ['Objectives', 'Hack the <b>radar control terminal</b> (the control building) - the station goes blind. Take the <b>coastal defence plans</b> from the station chief\'s office. Then to the helicopter pad.'],
   ],
+  // (M6.83) how it ends (the debrief; the case board's story so far)
+  epilogue: {
+    success: "Skarra's radar goes blind and its coastal defence plans go with the helicopter. For a few days the northern sea is wide open to Ghost.",
+    partial: "The station is hurt but not blind, or blind but with its plans still in the chief's office. The reds will know where to look.",
+  },
   time: { date: [9, 9, 2026], hour: 5, minute: 50 }, faction: 'red',
   startLoadout: { primary: 'K7', backup: 'PX9', utility1: 'C5', utility2: 'SMOKE', gear: 'PARACHUTE' },
   extractName: 'the helicopter pad', vehicle: false,

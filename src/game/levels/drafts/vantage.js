@@ -13,6 +13,11 @@ export default {
     ['Your kit', 'An LR7 marksman rifle, a silenced V-27C, smoke and a flashbang. The top floor of the Halloran Building looks into his window across the square - about forty-five metres.'],
     ['Objectives', 'Get to the <b>vantage point</b> (the Halloran Building\'s top floor). <b>Stop Colonel Rusk</b>. Then get out: the shot will bring everyone in the square running. Optionally, take the consulate\'s <b>visitors\' book</b> from its front desk.'],
   ],
+  // (M6.83) how it ends (the debrief; the case board's story so far)
+  epilogue: {
+    success: "Colonel Rusk does not leave Market Square, and the consulate's visitors' book shows who else came to see him that morning. The square is quiet again by noon.",
+    partial: "The shot, or the getaway, went wrong. Varnholm will talk about that morning for a long time.",
+  },
   time: { date: [13, 8, 2026], hour: 10, minute: 15 }, faction: 'red',
   startLoadout: { primary: 'LR7', backup: 'V27C', utility1: 'SMOKE', utility2: 'FLASH', gear: 'LENSES' },
   extractName: 'the van in Tanner\'s Lane',

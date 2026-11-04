@@ -58,6 +58,11 @@ export default {
     ['The Yellows', 'Mercenaries, holding the canyon road. Two days ago they shot down a Ghost helicopter: its pilot, <b>Lieutenant Osei-Brandt</b>, is in the cell block. Their commander is <b>Rask</b>.'],
     ['Objectives', 'Bring the <b>pilot</b> out (the cell block). <b>Blow the dump</b> - set a charge at its stack of drums. Optionally, stop Rask (the ops room).'],
   ],
+  // (M6.83) how it ends (the debrief; the case board's story so far)
+  epilogue: {
+    success: "Lieutenant Osei-Brandt comes out of the Shael in the back of a Ghost truck, sunburnt and alive. Outpost Kharun will not be holding anyone for the buyers now.",
+    partial: "The pilot or the dump, not both. Rask will be bargaining again before the next dust storm.",
+  },
   time: { date: [3, 7, 2026], hour: 16, minute: 50 }, faction: 'yellow',
   atmos: { fog: [0.85, 0.66, 0.42, 30, 260], ambient: [0.55, 0.48, 0.38], sun: [1, 0.85, 0.6, 1.25, 30, 230], sky: [1.0, 0.8, 0.58] },
   startLoadout: { primary: 'K7', backup: 'PX9', utility1: 'FRAG', utility2: 'SMOKE', gear: 'LENSES' },

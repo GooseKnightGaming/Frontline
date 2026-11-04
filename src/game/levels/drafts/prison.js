@@ -78,6 +78,11 @@ export default {
     ['The specialists', 'The guard in the lobby carries the <b>radio</b>: if he sees you, a few seconds and the whole wing is coming - drop him first. The wing\'s <b>engineer</b> (in the staff room, third tier) goes to the security terminal to put a hacked system back on: stop him, or hack it again.'],
     ['Security', 'Cameras over the hall, the first tier and the entrance raise the alarm if they see you; a turret covers the lobby. The <b>security terminal</b> in the control room runs them all: hack it (hold E) to disable them, have them ignore you, or turn the turret on the reds. Hack too long and they trace you. Your <b>hacking kit</b> (this mission\'s Special) takes them one at a time, up close. The control room\'s own door is <b>maglocked</b> - use the kit on its keypad, or blow it - the hall\'s <b>lights</b> are on the system too (out, the reds see only what is close), and while the <b>alarm</b> is live one shout sets off the siren for the whole wing.'],
   ],
+  // (M6.83) how it ends (the debrief; the case board's story so far)
+  epilogue: {
+    success: "Every cell door on A Wing opens at once, and in the noise Sergeant Venn walks out of Greyhallow. The governor's memo about him goes to the newspapers.",
+    partial: "Venn is still on the top tier, or out without anything to show for it. The wing stays locked down.",
+  },
   time: { date: [24, 10, 2026], hour: 14, minute: 20 }, faction: 'red', requires: 'HACKKIT',
   atmos: { fog: [0.62, 0.64, 0.68, 40, 400], ambient: [0.45, 0.47, 0.52] },
   extractName: 'the yard gate', navCap: 150000,
