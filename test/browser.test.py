@@ -120,10 +120,12 @@ async def main():
         p1 = await pg.evaluate("FL.player.pos.slice()")
         dist = ((p1[0] - p0[0]) ** 2 + (p1[2] - p0[2]) ** 2) ** 0.5
         ok('and that input walks the operative forward', dist > 4.5, f'walked {dist:.2f} m')
-        await pg.keyboard.press('KeyV'); await frames()
-        third = await pg.evaluate("FL.S.third && (FL.opr.enabled || FL.app.root.findByName('operative').enabled)")
-        await pg.keyboard.press('KeyV'); await frames()
-        ok('V switches to third person and back', third and not await pg.evaluate("FL.S.third"))
+        # (M6.123.1) V is the vision modes now; first or third person is a setting (Settings - View)
+        sv = "(v) => { const e = document.getElementById('set-view'); e.value = v; e.onchange({ target: e }); }"
+        await pg.evaluate("(%s)('third')" % sv); await frames()
+        third = await pg.evaluate("FL.S.third")
+        await pg.evaluate("(%s)('first')" % sv); await frames()
+        ok('the View setting switches to third person and back', third and not await pg.evaluate("FL.S.third"))
         ctrl = await pg.evaluate("FL.input.actionFor('ControlLeft')")
         ok('Ctrl is not bound to anything', ctrl is None, str(ctrl))
         ok('C is crouch by default', await pg.evaluate("FL.settings.bindings.crouch[0]") == 'KeyC')
