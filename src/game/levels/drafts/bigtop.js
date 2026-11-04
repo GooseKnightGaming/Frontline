@@ -19,7 +19,7 @@ export default {
   time: { date: [9, 9, 2027], hour: 19, minute: 30 }, night: true, faction: 'red', requires: 'HACKKIT', startDisguise: 'red',
   startLoadout: { primary: null, backup: 'V27C', utility1: 'SMOKE', utility2: 'FLASH', gear: 'LENSES', mods: { backup: ['SILENCER'] } },
   atmos: { fog: [0.2, 0.15, 0.18, 25, 170], ambient: [0.34, 0.28, 0.3] },
-  extractName: 'the common, south', extract: { x: 28, y: 40, floor: 'G', van: [8, 0] },
+  extractName: 'the common, south', extract: { x: 28, y: 41, floor: 'G', van: [10, 0] },
   outside: { backdrop: 'city', mat: 'grass', margin: 14 },
   windows: false,
   floors: {
@@ -32,18 +32,18 @@ export default {
         ['room', 28, 4, 33, 8],                         // a wagon
         ['room', 37, 4, 44, 8],                         // the ringmaster's wagon
         ['room', 2, 16, 10, 26],                        // the menagerie
-        ['room', 24, 34, 32, 37],                       // the ticket booth
+        ['room', 24, 35, 32, 38],                       // the ticket booth
       ], after: [
-        ['cells', [[28, 13], [28, 31], [41, 22], [12, 9], [21, 9], [30, 9], [40, 9], [11, 21], [28, 33]], 'D'],
+        ['cells', [[28, 13], [28, 31], [41, 22], [12, 9], [21, 9], [30, 9], [40, 9], [11, 21], [28, 34]], 'D'],
         // the ring (low wall), the seats round it, the band's stand
         ['room', 24, 19, 32, 19, 'K'], ['room', 24, 25, 32, 25, 'K'], ['room', 24, 20, 24, 24, 'K'], ['room', 32, 20, 32, 24, 'K'],
         ['room', 18, 16, 22, 16, 'Y'], ['room', 34, 16, 38, 16, 'Y'], ['room', 18, 28, 22, 28, 'Y'], ['room', 34, 28, 38, 28, 'Y'],
         ['room', 17, 18, 17, 26, 'Y'], ['room', 39, 18, 39, 26, 'Y'], ['cells', [[28, 15]], 'T'],
         ['cells', [[11, 5], [20, 5], [29, 5]], 'Y'], ['cells', [[42, 5]], 'T'], ['cells', [[38, 7]], 'H'],
         ['room', 4, 18, 4, 24, 'K'], ['room', 8, 18, 8, 24, 'K'],
-        ['cells', [[25, 35]], 'T'], ['cells', [[31, 36]], 'Y'],
+        ['cells', [[25, 36]], 'T'], ['cells', [[31, 37]], 'Y'],
         // the generator lorry, the guy-ropes' pegs, the crowd's benches
-        ['cells', [[48, 12]], 'M'], ['cells', [[46, 30], [12, 32], [44, 36], [6, 34], [50, 22], [14, 12]], 'C'],
+        ['cells', [[48, 12]], 'M'], ['cells', [[46, 30], [12, 32], [44, 37], [6, 34], [50, 22], [14, 12]], 'C'],
       ] },
     },
   },
@@ -51,16 +51,16 @@ export default {
     const { box, level, mid, CELL: C } = kit;
     box([28 * C - 0.15, 6, 22 * C - 0.15], [28 * C + 0.15, 11, 22 * C + 0.15], 'wood', { tint: [0.5, 0.4, 0.3] });
     level.lights.push({ pos: [mid(28), 5.5, mid(22)], range: 14, intensity: 1.4, color: [1, 0.92, 0.8] });
-    for (const [x, y] of [[28, 10], [12, 14], [44, 14], [28, 38], [48, 30]]) level.lights.push({ pos: [mid(x), 4, mid(y)], range: 10, intensity: 0.9, color: [1, 0.8, 0.6], street: true });
+    for (const [x, y] of [[28, 10], [12, 14], [44, 14], [20, 38], [48, 30]]) level.lights.push({ pos: [mid(x), 4, mid(y)], range: 10, intensity: 0.9, color: [1, 0.8, 0.6], street: true });
     level.signs.push({ pos: [mid(28), 5, 31 * C + C + 0.13], yaw: 0, w: 6, h: 0.9, text: 'CIRCUS ORLOV', sub: 'Every Country - Every Night', col: '#6a1a1a' });
   },
-  start: { x: 28, y: 39, floor: 'G', yaw: 0 },
+  start: { x: 21, y: 40, floor: 'G', yaw: 0 },
   zones: [
     { id: 'tent', label: 'The Circus Orlov - the big top', at: [16, 14, 40, 30] },
     { id: 'wagons', label: 'The Circus Orlov - the wagons', at: [10, 4, 44, 8] },
     { id: 'rmwagon', label: 'The Circus Orlov - the ringmaster\'s wagon', at: [37, 4, 44, 8] },
     { id: 'zoo', label: 'The Circus Orlov - the menagerie', at: [2, 16, 10, 26] },
-    { id: 'booth', label: 'The Circus Orlov - the ticket booth', at: [24, 34, 32, 37] },
+    { id: 'booth', label: 'The Circus Orlov - the ticket booth', at: [24, 35, 32, 38] },
     { id: 'common', label: 'The Lessar common', at: [0, 0, W - 1, H - 1] },
   ],
   guards: [
@@ -69,7 +69,7 @@ export default {
     { id: 'ch1', at: [20, 22, 'G'], arms: 'pistol' },
     { id: 'ch2', at: [36, 22, 'G'], arms: 'pistol', temper: 'steady' },
     { id: 'wg1', at: [34, 10, 'G'], route: [[12, 10], [46, 10]], arms: 'carbine' },
-    { id: 'rad', at: [27, 36, 'G'], arms: 'pistol', rank: 'officer', temper: 'steady', role: 'radio' },
+    { id: 'rad', at: [27, 37, 'G'], arms: 'pistol', rank: 'officer', temper: 'steady', role: 'radio' },
     { id: 'eng', at: [48, 14, 'G'], arms: 'pistol', temper: 'cowardly', role: 'engineer' },
     { id: 'zk', at: [6, 21, 'G'], arms: 'carbine', temper: 'steady', dog: true },
   ],
@@ -82,9 +82,9 @@ export default {
   pickups: [{ id: 'route', name: 'The circus\'s route book', what: 'the route book', at: [42, 5, 'G'], table: true, colour: [0.6, 0.15, 0.15] }],
   devices: [
     { id: 'c-wag', kind: 'camera', at: [45, 9, 'G'], face: [-1, 1], net: 'orlov' },
-    { id: 'a-orlov', kind: 'alarm', at: [33, 35, 'G'], face: [1, 0], net: 'orlov' },
+    { id: 'a-orlov', kind: 'alarm', at: [33, 36, 'G'], face: [1, 0], net: 'orlov' },
   ],
-  terminals: [{ id: 'sec', name: 'the ticket booth console', at: [25, 35, 'G'], face: [0, 1], time: 6, net: 'orlov' }],
+  terminals: [{ id: 'sec', name: 'the ticket booth console', at: [25, 36, 'G'], face: [0, 1], time: 6, net: 'orlov' }],
   intel: [
     { id: 'letter', at: [28, 15, 'G'], kind: 'Letter', title: 'A letter on the bandstand', text: ['To the ringmaster, from a town further east: "The usual seats, the usual night. Bring the usual tickets."'] },
   ],
