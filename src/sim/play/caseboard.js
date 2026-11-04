@@ -108,6 +108,10 @@ export const DROPS = [
   { level: 'observatory', title: 'The Observatory', text: 'Dr Sauer brought down from Kessock Peak, and her star charts with her.' },
   { level: 'cathedral', title: 'St Aldric\'s Tower', text: 'The Sexton taken in his own clock room, and the month\'s drop from among the bells.' },
 ];
+// (M6.107) the saints: the couriers the reds no longer trust, reached before the reds reach them
+export const SAINTS = [
+  { level: 'monastery', title: 'Kelder Abbey', text: 'St Brannoc brought out of the abbey library under the raid\'s nose.' },
+];
 export const TRAILS = [
   { id: 'blight', title: 'THE BLIGHT', steps: BLIGHT, stamp: 'HARVEST SAVED', colour: '#5a9a3a' },
   { id: 'codex', title: 'THE CODEX', steps: CODEX, stamp: 'RETURNED', colour: '#3a7ab0' },
@@ -121,6 +125,7 @@ export const TRAILS = [
   { id: 'hollis', title: 'HOLLIS', steps: HOLLIS, stamp: 'TURNED', colour: '#8a3a4a' },
   { id: 'colonel', title: 'THE COLONEL', steps: COLONEL, stamp: 'STOOD DOWN', colour: '#5a5a7a' },
   { id: 'drops', title: 'THE DROPS', steps: DROPS, stamp: 'RUNG OUT', colour: '#8a6a3a' },
+  { id: 'saints', title: 'THE SAINTS', steps: SAINTS, stamp: 'ABSOLVED', colour: '#6a5a8a' },
 ];
 export const trailMark = (trail, level) => trail.id + ':' + level;
 // the marks a mission's being done adds (any trail it is a step of)

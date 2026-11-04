@@ -9,7 +9,7 @@ export default {
   where: 'Kelder Abbey, in the hills above Varnholm. 03:10, rain, the reds\' trucks in the gatehouse yard.',
   brief: [
     ['The job', 'The Sexton\'s roster put a cross beside every courier the reds no longer trust. One of the crosses is <b>St Brannoc</b>, who is Ghost\'s: an informant hiding with the brothers at <b>Kelder Abbey</b>. The reds got there first. Their raid holds the abbey tonight, and they have Brannoc in the <b>library</b>, waiting for someone who can tell them who he is. <b>Bring Brannoc out</b>. <b>Mark the raid\'s commander</b>. If you can, <b>without the alarm</b>.'],
-    ['The place', 'The <b>church</b> on the north side, the <b>library</b> west, the <b>refectory</b> east, where the reds keep the brothers, and the <b>dorter</b> south. The garth in the middle is open to the rain. The reds\' trucks and their console are in the <b>gatehouse</b>, south-east.'],
+    ['The place', 'The <b>church</b> on the north side, the <b>library</b> west, the <b>refectory</b> east, where the reds keep the brothers, and the <b>dorter</b> south. The garth in the middle is open to the rain, and a lane runs into it from the hill path, past the library. The reds\' trucks and their console are in the <b>gatehouse</b>, south-east.'],
     ['Security', 'The reds brought a camera for the gatehouse yard, and a field alarm. Both are on the console in the gatehouse, with their radio and their engineer. The commander walks the garth. The brothers are not reds, and they will not fight anyone.'],
     ['Objectives', '<b>Bring Brannoc out</b> (the library). <b>Mark the commander</b> (the garth). If you can, <b>without the alarm</b>. Out the way you came, south-west.'],
   ],
@@ -27,16 +27,16 @@ export default {
       y: 0, wallH: 4.2, wall: 'concrete2', wallTint: [0.7, 0.68, 0.6], floor: 'tile', ceil: 'wood', lampPower: 0.5, lampColour: [1, 0.85, 0.6], lampEvery: 5,
       carve: { size: [W, H], ops: [
         ['room', 10, 4, 34, 9],                         // the church
-        ['room', 4, 12, 10, 26],                        // the library
+        ['room', 4, 12, 10, 24],                        // the library
         ['room', 34, 12, 40, 26],                       // the refectory
         ['room', 12, 30, 32, 34],                       // the dorter
         ['room', 36, 30, 42, 34],                       // the gatehouse
       ], after: [
-        ['cells', [[22, 10], [11, 19], [33, 19], [22, 29], [39, 29]], 'D'],
-        ['cells', [[16, 3], [28, 3], [3, 16], [3, 22], [41, 16], [41, 22], [16, 35], [28, 35]], 'W'],
+        ['cells', [[22, 10], [11, 19], [33, 19], [22, 29], [39, 35]], 'D'],
+        ['cells', [[16, 3], [28, 3], [3, 16], [3, 21], [41, 16], [41, 22], [16, 35], [28, 35]], 'W'],
         // the church's altar and pews, the library's presses, the refectory's long tables, the dorter's beds
         ['cells', [[22, 5]], 'M'], ['room', 14, 7, 18, 7, 'Y'], ['room', 26, 7, 30, 7, 'Y'],
-        ['room', 5, 13, 5, 18, 'H'], ['room', 9, 21, 9, 25, 'H'], ['cells', [[7, 16]], 'T'],
+        ['room', 5, 13, 5, 18, 'H'], ['room', 9, 20, 9, 23, 'H'], ['cells', [[7, 16]], 'T'],
         ['room', 37, 14, 37, 20, 'T'], ['cells', [[39, 24]], 'T'],
         ['cells', [[14, 32], [18, 32], [26, 32], [30, 32]], 'Y'],
         ['cells', [[38, 31]], 'T'], ['cells', [[41, 33]], 'M'],
@@ -53,7 +53,7 @@ export default {
   start: { x: 4, y: 37, floor: 'G', yaw: 0 },
   zones: [
     { id: 'church', label: 'Kelder Abbey - the church', at: [10, 4, 34, 9] },
-    { id: 'lib', label: 'Kelder Abbey - the library', at: [4, 12, 10, 26] },
+    { id: 'lib', label: 'Kelder Abbey - the library', at: [4, 12, 10, 24] },
     { id: 'refec', label: 'Kelder Abbey - the refectory', at: [34, 12, 40, 26] },
     { id: 'dorter', label: 'Kelder Abbey - the dorter', at: [12, 30, 32, 34] },
     { id: 'gate', label: 'Kelder Abbey - the gatehouse', at: [36, 30, 42, 34] },
@@ -78,7 +78,7 @@ export default {
   ],
   hostages: [{ id: 'brannoc', name: 'Brannoc', at: [6, 23, 'G'] }],
   devices: [
-    { id: 'c-yard', kind: 'camera', at: [35, 29, 'G'], face: [-1, -1], net: 'raid' },
+    { id: 'c-yard', kind: 'camera', at: [35, 35, 'G'], face: [-1, 1], net: 'raid' },
     { id: 'a-raid', kind: 'alarm', at: [43, 32, 'G'], face: [1, 0], net: 'raid' },
   ],
   terminals: [{ id: 'sec', name: 'the raid\'s console', at: [38, 31, 'G'], face: [0, 1], time: 6, net: 'raid' }],

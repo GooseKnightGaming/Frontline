@@ -7,6 +7,12 @@ GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
 
+## M6.107.0 — Level 85, Kelder Abbey (THE SAINTS opens)
+
+- New draft `drafts/monastery.js` (no 85): an abbey under a red raid in the rain. Church, library, refectory, dorter round an open garth; the raid's console in the gatehouse. Objectives: rescue Brannoc (library), mark the commander (garth), optional quiet.
+- Case board: new trail THE SAINTS (so far just the abbey; stamp ABSOLVED). Mission list group [85] THE SAINTS. Trophy "Sanctuary".
+- Kit lessons: the garth had to be opened to the outside (a lane past the library), and the gatehouse door moved to the yard side, because a one-square lane is filled in.
+
 ## M6.106.0 — Level 84, St Aldric's Tower (THE DROPS closes)
 
 - New draft `drafts/cathedral.js` (no 84): a cathedral nave and vestry with a four-floor bell tower at the east end (G foot, 1 ringing chamber, 2 clock room, 3 bell chamber; stairs alternate x32 / x36 as in the Light). Objectives: capture the Sexton (clock room), take the drop (bell chamber), optional quiet.

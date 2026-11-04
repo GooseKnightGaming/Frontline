@@ -2471,6 +2471,7 @@ export function setupMission(ctx) {
       // (M6.105) Dr Sauer home
       if (level.draft === 'observatory' && m.result === 'success') all.push({ id: 'stargazer', name: 'Back to the Stars', about: 'Dr Sauer brought down from Kessock Peak, and six months of the reds\' traffic with her.' });
       if (level.draft === 'cathedral' && m.result === 'success') all.push({ id: 'rungout', name: 'Rung Out', about: 'The Sexton down his own tower, and every courier in Varnholm named.' });
+      if (level.draft === 'monastery' && m.result === 'success') all.push({ id: 'sanctuary', name: 'Sanctuary', about: 'Brannoc out of Kelder Abbey, and the raid none the wiser.' });
       // (M6.66) the river open: Varnholm Lock
       if (level.draft === 'lock' && m.result === 'success') all.push({ id: 'river_open', name: 'River Open', about: 'The stand-down sent and the lock opened: Ghost\'s boats through to the sea.' });
       // (M6.44) the blight's end: the Dalmar Star
