@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.91.0)
+# Frontline — Handover (M6.92.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,12 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.92.0 — Level 72, the Winter Ball
+- `drafts/ball.js` (72): the Opera House's winter ball, in a red officer's uniform among seven guests and staff
+  (civilians). Mark the paymaster (a private room upstairs) and his two agents (one dancing round the floor, one at the
+  bar) - identify; take the guest list (the manager's office). No security devices. The trophy The Last Dance (a
+  success without the disguise blown).
 
 ## M6.91.0 — Level 71, the Skarra Light
 - `drafts/light.js` (71): a lighthouse of four floors (0, 4, 8, 12) in one 7 x 7 tower, a flight to each - G to 1
