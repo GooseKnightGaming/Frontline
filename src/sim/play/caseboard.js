@@ -134,8 +134,8 @@ export const PRESS = [
 ];
 // (M6.114) the general: the man who signed the crosses, found, taken and driven south to his trial
 export const GENERAL = [
-  { level: 'opera', title: 'The Opera', text: 'General Vey\'s three bodyguards marked on opening night, and his diary taken from his coat.' },
-  { level: 'veyestate', title: 'The Vey Estate', text: 'The General taken from his own bed, and his dispatch box from his study.' },
+  { level: 'opera', title: 'The Opera', text: 'General Brandt\'s three bodyguards marked on opening night, and his diary taken from his coat.' },
+  { level: 'veyestate', title: 'The Ravnsby Estate', text: 'The General taken from his own bed, and his dispatch box from his study.' },
   { level: 'drivesouth', title: 'The Drive South', text: 'The General driven down the coast road, through both roadblocks, to Ghost\'s lines.' },
 ];
 export const TRAILS = [

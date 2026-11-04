@@ -11,6 +11,7 @@ game into the repository's root.
 
 - `drafts/hollen.js` (no 100): a battle (`battle` spec, as in the Factory and the Colosseum) on the Paper Run's Hollen grid. Ghost and the townspeople come from the south-west, the reds' garrison from the north-east, with 80 a side in reserve, 12 on the field and eight minutes on the clock. Four lanes a side: the west and north streets, the south and east streets, the middle streets, and the market square. Probed: both sides fight from the start and there are no page errors.
 - Group [100] THE RISING. Trophy "Hollen Rises".
+- (M6.115.1) The General renamed **Brandt**, and his house's village **Ravnsby**: "Vey" was already the reds' man in the Subway (Level 34). The level id stays `veyestate`, so saves are unchanged.
 
 ## M6.114.0 — Levels 97 - 99: THE GENERAL
 

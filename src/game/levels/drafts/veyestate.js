@@ -1,19 +1,19 @@
-// FRONTLINE - Level 98, the Vey Estate (first draft, M6.120; THE GENERAL, second). The General's diary said where he
-// sleeps: not his headquarters but his own house at Vey, an hour out of Hollen, behind its wall and its dogs. Go over
+// FRONTLINE - Level 98, the Ravnsby Estate (first draft, M6.120; THE GENERAL, second). The General's diary said where he
+// sleeps: not his headquarters but his own house at Ravnsby, an hour out of Hollen, behind its wall and its dogs. Go over
 // the wall at three in the morning. Take the General alive from his bed, and his dispatch box from the study, and get
 // him out to the car at the gate before the house knows.
 const W = 52, H = 40;
 export default {
-  id: 'veyestate', no: 98, title: 'The Vey Estate', place: 'the house at Vey, outside Hollen',
-  where: 'The house at Vey, outside Hollen. 03:00, a clear frost, the dogs loose in the grounds.',
+  id: 'veyestate', no: 98, title: 'The Ravnsby Estate', place: 'the house at Ravnsby, outside Hollen',
+  where: 'The house at Ravnsby, outside Hollen. 03:00, a clear frost, the dogs loose in the grounds.',
   brief: [
-    ['The job', 'The General\'s diary said where he sleeps: his own house at <b>Vey</b>, an hour out of Hollen, behind its wall and its dogs. Come in by the gate at three in the morning. <b>Take the General alive</b> from his bed. Take his <b>dispatch box</b> from the study. If you can, do it <b>without the alarm</b>.'],
+    ['The job', 'The General\'s diary said where he sleeps: his own house at <b>Ravnsby</b>, an hour out of Hollen, behind its wall and its dogs. Come in by the gate at three in the morning. <b>Take the General alive</b> from his bed. Take his <b>dispatch box</b> from the study. If you can, do it <b>without the alarm</b>.'],
     ['The place', 'A walled park with the gate on the south side. Downstairs in the house are the <b>hall</b>, the <b>study</b> and the dining room. Upstairs, the bedrooms, with the <b>General\'s</b> at the east end. The stables are east, the garage west.'],
     ['Security', 'Cameras on the drive and the hall and the house alarm, all on the console in the gatehouse with the radio. The engineer is in the garage. <b>Dogs</b> are loose in the grounds, and there is a man on the General\'s door.'],
     ['Objectives', '<b>Take the General alive</b> (his bedroom, upstairs). Take the <b>dispatch box</b> (the study). If you can, <b>without the alarm</b>. Out by the gate, south.'],
   ],
   epilogue: {
-    success: 'The General leaves Vey in his dressing gown, in the back of a car that is not his. His dispatch box has the orders for every cross, every one in his own hand. He will have plenty of time to read them again.',
+    success: 'The General leaves Ravnsby in his dressing gown, in the back of a car that is not his. His dispatch box has the orders for every cross, every one in his own hand. He will have plenty of time to read them again.',
     partial: 'The General or his dispatch box, not both. Without the other, it is his word against Ghost\'s, and his word has an army.',
   },
   time: { date: [24, 5, 2027], hour: 3, minute: 0 }, night: true, faction: 'red', requires: 'HACKKIT',
@@ -67,17 +67,17 @@ export default {
   vehicles: [{ id: 'vcar', kind: 'car', model: 'lightUtility', paint: 'black', at: [8, 24], yaw: 0, hp: 560 }],
   start: { x: 44, y: 39, floor: 'G', yaw: Math.PI / 2 },
   zones: [
-    { id: 'hall', label: 'Vey - the hall', at: [16, 8, 34, 14] },
-    { id: 'study', label: 'Vey - the study', at: [16, 16, 24, 22] },
-    { id: 'dining', label: 'Vey - the dining room', at: [26, 16, 34, 22] },
-    { id: 'upstairs', label: 'Vey - upstairs', at: [16, 8, 34, 22], floor: '1' },
-    { id: 'stables', label: 'Vey - the stables', at: [40, 10, 47, 22] },
-    { id: 'garage', label: 'Vey - the garage', at: [4, 12, 11, 20] },
-    { id: 'gate', label: 'Vey - the gatehouse', at: [20, 30, 26, 34] },
-    { id: 'park', label: 'Vey', at: [0, 0, W - 1, H - 1] },
+    { id: 'hall', label: 'Ravnsby - the hall', at: [16, 8, 34, 14] },
+    { id: 'study', label: 'Ravnsby - the study', at: [16, 16, 24, 22] },
+    { id: 'dining', label: 'Ravnsby - the dining room', at: [26, 16, 34, 22] },
+    { id: 'upstairs', label: 'Ravnsby - upstairs', at: [16, 8, 34, 22], floor: '1' },
+    { id: 'stables', label: 'Ravnsby - the stables', at: [40, 10, 47, 22] },
+    { id: 'garage', label: 'Ravnsby - the garage', at: [4, 12, 11, 20] },
+    { id: 'gate', label: 'Ravnsby - the gatehouse', at: [20, 30, 26, 34] },
+    { id: 'park', label: 'Ravnsby', at: [0, 0, W - 1, H - 1] },
   ],
   guards: [
-    { id: 'vey', at: [32, 19, '1'], arms: 'pistol', rank: 'officer', temper: 'cowardly', name: 'General Vey', tint: [0.6, 0.55, 0.5] },
+    { id: 'vey', at: [32, 19, '1'], arms: 'pistol', rank: 'officer', temper: 'cowardly', name: 'General Brandt', tint: [0.6, 0.55, 0.5] },
     { id: 'gd', at: [30, 10, '1'], arms: 'smg', rank: 'specialist', temper: 'steady' },
     { id: 'land', at: [22, 9, '1'], route: [[17, 9], [28, 9]], arms: 'pistol' },
     { id: 'hl1', at: [25, 11, 'G'], route: [[17, 11], [29, 11]], arms: 'carbine' },

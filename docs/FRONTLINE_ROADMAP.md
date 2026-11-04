@@ -935,7 +935,7 @@ mission list in its stories with ticks. See the handover for each.
   console, the Frozen Lake - flares to light, a snowcat to stop, a plane to meet; "DELIVERED").
 - M6.113: THE PRESS (the Bakery, the Censor's Office - the front page sent out on his own teleprinter, the Paper Run -
   three newsstands through the curfew; "PRINTED").
-- M6.114: THE GENERAL (the Opera in disguise, the Vey Estate - the General from his bed, the Drive South - two
+- M6.114: THE GENERAL (the Opera in disguise, the Ravnsby Estate - the General from his bed, the Drive South - two
   roadblocks on the coast road; "ON TRIAL").
 - M6.115: Level 100, the Rising - a battle through Hollen's streets, Ghost and the town against the garrison.
 - Candidates next: papers in the older levels; the Campus start check; Rhys's own playtesting notes on any of these.
