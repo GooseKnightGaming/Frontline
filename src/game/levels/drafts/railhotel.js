@@ -4,7 +4,7 @@
 // paymaster rings, take his payment ledger from his room upstairs, and mark the driver when he comes in for his money.
 const W = 52, H = 34;
 export default {
-  id: 'hotel2', no: 89, title: 'The Railway Hotel', place: 'the Railway Hotel, Varnholm',
+  id: 'railhotel', no: 89, title: 'The Railway Hotel', place: 'the Railway Hotel, Varnholm',
   where: 'The Railway Hotel, Varnholm. 22:15, the last train in, the bar full of red officers.',
   brief: [
     ['The job', 'The squad\'s leader said who gave the reds Lindqvist\'s Ford: one of Ghost\'s own <b>lorry drivers</b>, paid by the reds\' <b>paymaster</b>, who keeps a room at the <b>Railway Hotel</b> and meets his men in its bar. Go in as a waiter. Find out at the <b>switchboard</b> whom the paymaster rings. Take his <b>payment ledger</b> from his room upstairs. <b>Mark the driver</b> when he comes in for his money.'],
