@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.99.0)
+# Frontline — Handover (M6.100.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,9 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.100.0 — the grades on the case board
+- The case board counts the best grades kept (M6.90): S x n, A x n, B x n, C x n, of all the missions.
 
 ## M6.99.0 — Level 78, the Wrong Bridge
 - `drafts/wrongbridge.js` (78): daylight, three allies (Hale, Moss and Venn). The reds are dug in along a railway
