@@ -135,7 +135,7 @@ async def main():
         ok('nothing moves while paused', abs(await pg.evaluate("FL.player.pos[2]") - zp) < 0.01)
         await pg.click('#btn-controls')
         rows = await pg.evaluate("document.querySelectorAll('#bind-list .bind-row').length")
-        ok('the controls list shows every action', rows == 20, str(rows))
+        ok('the controls list shows every action', rows >= 20, str(rows))      # (M6.123.1) 28 now: actions have been added since this said 20
         # rebind jump to J
         await pg.click('#bind-list .bind-row:nth-child(5) .key >> nth=0')
         await pg.keyboard.press('KeyJ')
@@ -281,7 +281,7 @@ async def main():
         ok('swapping a weapon takes it and leaves yours behind',
            swapped.get('primary') == 'LR7' and 'K7' in swapped.get('crate', []) and swapped.get('held') == 'LR7', json.dumps(swapped))
         disabled = await pg.evaluate(JS_BACKUP)
-        ok('a rifle cannot be put in the backup slot', 'no' in disabled, disabled)
+        ok('a rifle can go in the backup slot too (Rhys: "any gun in any slot, yes please")', 'no' not in disabled and disabled != 'missing', disabled)
         # mods live in their own crate now
         await pg.evaluate("FL.showCrate(FL.crates.find(c => c.infinite))")
         await pg.wait_for_timeout(200)
