@@ -54,10 +54,10 @@ export default {
     { x: 30, y: 13, dir: 'S', len: 5, w: 2, from: '1', to: '2' },
   ],
   extra(kit) {
-    const { box, mid } = kit;
+    const { box, mid, CELL: C } = kit;
     // the clock's face on the tower's south side, and its roof
-    box([mid(29) - 1.1, 9, 19 * 1.5 + 0.02], [mid(29) + 1.1, 11.2, 19 * 1.5 + 0.1], 'paint', { tint: [0.95, 0.95, 0.9], solid: false });
-    box([26 * 1.5 - 0.4, 11.4, 12 * 1.5 - 0.4], [33 * 1.5 + 0.4, 11.8, 19 * 1.5 + 0.4], 'wood', { tint: [0.3, 0.22, 0.18] });
+    box([mid(29) - 1.1, 9, 19 * C + 0.02], [mid(29) + 1.1, 11.2, 19 * C + 0.1], 'paint', { tint: [0.95, 0.95, 0.9], solid: false });
+    box([26 * C - 0.4, 11.4, 12 * C - 0.4], [33 * C + 0.4, 11.8, 19 * C + 0.4], 'wood', { tint: [0.3, 0.22, 0.18] });
   },
   start: { x: 2, y: 27, floor: 'G', yaw: -Math.PI / 2 },
   zones: [
