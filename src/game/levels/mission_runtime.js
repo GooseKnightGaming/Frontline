@@ -889,7 +889,7 @@ export function setupMission(ctx) {
     if (!devices.length || sir.cool > 0) return;
     const bell = sirenFor(devices, faction || null);
     if (!bell) return;
-    sir.cool = SIREN.again; sir.t = SIREN.secs;
+    sir.cool = SIREN.again; sir.t = SIREN.secs; rt.sirenRung = true;      // (M6.84) for 'quiet': the alarm has sounded
     const came = raiseAlarm(guards, { pos: bell.pos, rank: 'officer', faction: bell.owner }, pos, { everywhere: true });
     callReserves(bell.owner, pos);
     if (audio.siren) audio.siren(SIREN.secs);
@@ -1408,6 +1408,9 @@ export function setupMission(ctx) {
       } else if (o.kind === 'reach') {
         const z = level.reach.find((q) => q.id === o.ref);
         r.done = !!(z && z.done); r.status = z && z.hold ? (r.done ? 'held' : Math.floor(z.held) + ' of ' + Math.round(z.hold) + ' s') : r.done ? 'reached' : 'not reached';
+      } else if (o.kind === 'quiet') {
+        // (M6.84) done the quiet way: the alarm never sounded (best as an optional one - it is 'done' until it rings)
+        r.done = !rt.sirenRung; r.failed = !!rt.sirenRung; r.status = rt.sirenRung ? 'the alarm sounded' : 'no alarm yet';
       } else if (o.kind === 'identify') {
         // (M6.78) men to mark (main.js's marking: aim at one for a second, or a tracker on him) - every one, alive
         const gs = (o.refs || []).map((id) => guards.find((q) => q.id === id)).filter(Boolean), n = gs.filter((g) => g.tracked).length;
@@ -2410,6 +2413,8 @@ export function setupMission(ctx) {
       if (level.draft === 'airfield' && m.result === 'success') all.push({ id: 'grounded', name: 'Grounded', about: 'The jet held on the apron at Kessin, and the chief from Kessin taken alive.' });
       // (M6.83) the whole file: the case closed and every trail stamped, with this mission
       if (level.draft && m.result === 'success') { const hv = Saves.loadCase(Saves.currentSlot()); if (hv.includes(CLOSED) && TRAILS.every((t) => trailDone(t, hv))) all.push({ id: 'file_closed', name: 'Varnholm: File Closed', about: 'The case closed and every story trail stamped on the case board.' }); }
+      // (M6.84) over the pass, and nobody rang
+      if (level.draft === 'pass' && m.result === 'success' && !rt.sirenRung) all.push({ id: 'over_quiet', name: 'Over the Wall', about: 'Through the Vashka Pass with the register, and the frontier never rang its alarm.' });
       // (M6.66) the river open: Varnholm Lock
       if (level.draft === 'lock' && m.result === 'success') all.push({ id: 'river_open', name: 'River Open', about: 'The stand-down sent and the lock opened: Ghost\'s boats through to the sea.' });
       // (M6.44) the blight's end: the Dalmar Star

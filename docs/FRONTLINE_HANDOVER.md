@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.83.0)
+# Frontline — Handover (M6.84.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,17 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.84.0 — done quietly; Levels 65 and 66, the Vashka Pass and Nordvik
+- A new objective kind, `quiet`: done while the alarm's siren has never sounded this mission (rt.sirenRung, set in
+  siren()); failed once it has. Use it as an optional one (it reads as done from the start).
+- `drafts/pass.js` (65): the first of THE NORTH. A frontier wall across a pass between rock walls (J cells, drawn in
+  extra), one gate; the guard post south (the radio, the console), the customs hut north (the register, the
+  engineer). Copy the register, reach the north side (a reach), optionally without the alarm. The trophy Over the
+  Wall (success, no alarm). The mission list's group THE NORTH (65 on).
+- `drafts/nordvik.js` (66): the first town of the north, daylight, disguised, pistol only. Follow the courier from
+  the station along the high street and up the hill to the council's gate (a tail; his last point waits for ever);
+  take the telegraph log (the station office). Four townsfolk, two papers.
 
 ## M6.83.0 — epilogues for fifteen more; Varnholm's file closed
 - Epilogues for fifteen of the first drafts (5 - 34) that had none: the Sewers, the Bank, the Cemetery, the Manor,
