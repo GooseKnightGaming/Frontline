@@ -30,7 +30,7 @@ export default {
         ['room', 6, 20, 16, 28, 'J'], ['room', 38, 20, 48, 28, 'J'],
         ['room', 6, 34, 16, 42, 'J'], ['room', 22, 34, 32, 42, 'J'], ['room', 38, 34, 48, 42, 'J'],
         // the three newsstands
-        ['cells', [[19, 10], [52, 24], [27, 31]], 'T'],
+        ['cells', [[19, 10], [52, 24], [27, 31], [56, 44]], 'T'],
         // the square's fountain, the benches, the bins
         ['cells', [[27, 24]], 'M'], ['cells', [[24, 21], [30, 27], [24, 27], [30, 21], [4, 12], [60, 40], [35, 44], [52, 8], [19, 38], [58, 18]], 'C'],
       ] },
@@ -65,7 +65,7 @@ export default {
     { id: 'standS', name: 'the square\'s stand', at: [27, 31, 'G'], face: [0, 1], time: 2, verb: 'Leave', doing: 'Leaving', said: 'A bundle of Couriers under the square\'s stand, right under the officer\'s nose.' },
   ],
   intel: [
-    { id: 'curfew', at: [52, 24, 'G'], kind: 'Notice', title: 'The curfew notice on the east stand', text: ['By order: nobody in the streets between ten and five. Newspapers to be sold only as passed. The notice has been pasted over the Courier\'s old masthead.'] },
+    { id: 'curfew', at: [56, 44, 'G'], kind: 'Notice', title: 'The curfew notice on a board by the east road', text: ['By order: nobody in the streets between ten and five. Newspapers to be sold only as passed. The notice has been pasted over the Courier\'s old masthead.'] },
   ],
   objectives: [
     { id: 'o1', kind: 'hack', ref: 'standN', text: 'Leave a bundle at the north stand (by the bank)' },
