@@ -217,8 +217,9 @@ async def main():
         ok('when badly hurt, blood fills the screen edges and colour drains', hurt['b'] > 0.7 and 'saturate' in hurt['f'], json.dumps(hurt))
         await snap(pg, '/tmp/fl/hurt.png')
         await pg.evaluate("FL.player.health = 100"); await frames(2)
-        faces = await pg.evaluate("FL.view.signs.length > 0 && FL.view.signs.every(s => s.e.children.some(c => c.render && c.render.material && c.render.material.cull === 0))")
-        ok('every sign reads from both sides (one double-sided panel)', faces)
+        # (M6.123.1) Rhys ("printed backwards"): each side its own face the right way round, not one two-sided panel
+        faces = await pg.evaluate("FL.view.signs.length > 0 && FL.view.signs.every(s => s.e.children.filter(c => c.children.some(f => f.render)).length >= 2)")
+        ok('every sign reads from both sides (a face each way, the right way round)', faces)
         print('\n-- SAVING PART-WAY THROUGH THE COURSE --')
         r = await pg.evaluate("""(() => {
           FL.startCourse();
