@@ -100,6 +100,7 @@ export const HOLLIS = [
 export const COLONEL = [
   { level: 'hunt', title: 'The Hunting Party', text: 'Colonel Strand taken alive in the Vashka woods, and his map case with him.' },
   { level: 'northhq', title: 'Northern Headquarters', text: 'His staff marked, and the spring plan stood down in his own name.' },
+  { level: 'borderrun', title: 'The Border Run', text: 'The spring plan driven down the valley road and over the frontier.' },
 ];
 export const TRAILS = [
   { id: 'blight', title: 'THE BLIGHT', steps: BLIGHT, stamp: 'HARVEST SAVED', colour: '#5a9a3a' },

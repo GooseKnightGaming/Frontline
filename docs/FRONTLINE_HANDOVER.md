@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.102.0)
+# Frontline — Handover (M6.103.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,12 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.103.0 — Level 81, the Border Run
+- `drafts/borderrun.js` (81): a drive. A jeep at the start (yours to drive: no path, no crew), a valley road between
+  rock walls, a roadblock halfway (sandbags with a gap, a turret, a camera) and the frontier at the east end (a reach);
+  optionally inside three minutes (quick). Checked in node with a Pilot along the road: through the gap and to the
+  frontier in about 11 s at 20 m/s. THE COLONEL is three missions. The trophy Foot Down.
 
 ## M6.102.0 — Level 80, Northern Headquarters; THE COLONEL ends
 - `drafts/northhq.js` (80): with Hale and Moss, in a walled headquarters. Mark the three staff officers in their
