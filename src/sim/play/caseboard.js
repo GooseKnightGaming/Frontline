@@ -77,6 +77,11 @@ export const NORTH = [
   { level: 'nordvik', title: 'Nordvik', text: 'The courier followed through the town to the council\'s gate on the hill.' },
   { level: 'council', title: 'The Council House', text: 'The four marked, the chairman "N" taken alive, the minutes taken.' },
 ];
+// (M6.88) the camps: the first camp's people over the Arn, the four out of Ostrava
+export const CAMPS = [
+  { level: 'arnbridge', title: 'The Arn Bridge', text: 'The north end held while four lorries crossed: two hundred people out of the first camp.' },
+  { level: 'camp', title: 'Camp Ostrava', text: 'Four out of the huts and into the lorry, and the camp\'s register with them.' },
+];
 export const TRAILS = [
   { id: 'blight', title: 'THE BLIGHT', steps: BLIGHT, stamp: 'HARVEST SAVED', colour: '#5a9a3a' },
   { id: 'codex', title: 'THE CODEX', steps: CODEX, stamp: 'RETURNED', colour: '#3a7ab0' },
@@ -85,6 +90,7 @@ export const TRAILS = [
   { id: 'handler', title: 'THE HANDLER', steps: HANDLER, stamp: 'DISMISSED', colour: '#7a3a8a' },
   { id: 'five', title: 'THE FIVE', steps: FIVE, stamp: 'EXPOSED', colour: '#b0503a' },
   { id: 'north', title: 'THE NORTH', steps: NORTH, stamp: 'ADJOURNED', colour: '#4a6a9a' },
+  { id: 'camps', title: 'THE CAMPS', steps: CAMPS, stamp: 'EMPTIED', colour: '#6a8a5a' },
 ];
 export const trailMark = (trail, level) => trail.id + ':' + level;
 // the marks a mission's being done adds (any trail it is a step of)

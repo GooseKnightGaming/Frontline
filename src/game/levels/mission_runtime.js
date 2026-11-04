@@ -2418,6 +2418,9 @@ export function setupMission(ctx) {
       if (level.draft === 'pass' && m.result === 'success' && !rt.sirenRung) all.push({ id: 'over_quiet', name: 'Over the Wall', about: 'Through the Vashka Pass with the register, and the frontier never rang its alarm.' });
       // (M6.85) the council, adjourned for good
       if (level.draft === 'council' && m.result === 'success') all.push({ id: 'adjourned', name: 'Meeting Adjourned', about: 'The council of the north marked, its chairman taken alive, its minutes taken.' });
+      // (M6.88) the camps
+      if (level.draft === 'arnbridge' && m.result === 'success' && guards.filter((g) => g.side === 'ally').every((g) => !g.dead)) all.push({ id: 'all_three', name: 'All Three Home', about: 'The Arn bridge held, and Hale and Moss on the last lorry with you.' });
+      if (level.draft === 'camp' && m.result === 'success') all.push({ id: 'ostrava', name: 'Nine Hundred Names', about: 'The four out of Camp Ostrava, and its register with them.' });
       // (M6.66) the river open: Varnholm Lock
       if (level.draft === 'lock' && m.result === 'success') all.push({ id: 'river_open', name: 'River Open', about: 'The stand-down sent and the lock opened: Ghost\'s boats through to the sea.' });
       // (M6.44) the blight's end: the Dalmar Star

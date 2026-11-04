@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.87.0)
+# Frontline — Handover (M6.88.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,13 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.88.0 — Level 69, Camp Ostrava; THE CAMPS on the board
+- `drafts/camp.js` (69): with Hale and Moss. A walled camp: three prisoners' huts maglocked (the warden's card),
+  four prisoners to bring out to the lorry at the gate (rescue, all), the register from the commandant's office;
+  optionally the commandant alive (capture).
+- The case board's eighth trail, THE CAMPS (arnbridge, camp; stamped EMPTIED). Trophies All Three Home (the Arn
+  Bridge with both allies alive) and Nine Hundred Names.
 
 ## M6.87.0 — Never Rang; allies; Level 68, the Arn Bridge
 - A trophy for every first draft with an alarm: Never Rang: <level>, a success without the siren ever sounding
