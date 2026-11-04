@@ -160,5 +160,15 @@ T('the Vashka Pass: done quietly (objective kind quiet) - the siren marks it, th
   const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/rt\.sirenRung = true/.test(rt) && /o\.kind === 'quiet'/.test(rt), 'the runtime');
 });
+T('a first draft with an alarm, done without it ringing, earns Never Rang (M6.87)', () => {
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
+  A(/_never_rang', name: 'Never Rang: '/.test(rt) && /!rt\.sirenRung && devices\.some\(\(d\) => d\.kind === 'alarm'\)/.test(rt), 'the trophy');
+});
+T('allies (M6.87): the Arn Bridge\'s Hale and Moss are yours - side ally, escorts, not objectives; their side at war with the reds', () => {
+  const d = DRAFTS.find((q) => q.id === 'arnbridge'), L = buildKitLevel(d);
+  const al = L.guards.filter((g) => g.side === 'ally');
+  A(al.length === 2 && al.every((g) => g.escort && g.escort.lead && g.objective === false && g.faction === 'ghost'), 'the allies');
+  A(L.relations && L.relations.ghost.red && L.relations.red.ghost && L.relations.ghost.you === false, 'relations');
+});
 console.log(fails.length ? 'FAILURES (' + fails.length + '):\n' + fails.map((f) => '  * ' + f).join('\n') : 'ALL ' + pass + ' PASSED');
 process.exit(fails.length ? 1 : 0);

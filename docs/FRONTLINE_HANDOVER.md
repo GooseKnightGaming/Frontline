@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.86.0)
+# Frontline — Handover (M6.87.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,18 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.87.0 — Never Rang; allies; Level 68, the Arn Bridge
+- A trophy for every first draft with an alarm: Never Rang: <level>, a success without the siren ever sounding
+  (rt.sirenRung, M6.84) - a reason to go back to each of them quietly.
+- Allies in a first draft: a guard spec with `ally: true` (and `faction: 'ghost'`, `name`) is one of yours - side
+  'ally' (blue on the radar, not to be taken down, marked or counted), an escort who keeps with you (lag 2.2 m, then
+  1.4 m more for each ally after the first) and fights whoever the level's `relations` say is his enemy (spec:
+  `relations: { red: { you: true, ghost: true }, ghost: { you: false, red: true } }`). One down: a hint (not the
+  train's guard's lines - those need level.hijack).
+- `drafts/arnbridge.js` (68): with Hale and Moss. Cut the post's telephone at the north end of the Arn bridge, then
+  hold the north end 90 s (three waves) while the camp's lorries cross. Tested in a browser by stepping the runtime:
+  they keep 2 - 3.5 m behind you as you walk, and a red put in front of them is down in six seconds.
 
 ## M6.86.0 — the older levels' starts checked
 - The same 15 s stand-still check over the older story levels (5 - 47, the Campus too big to load in the test's

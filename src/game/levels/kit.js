@@ -755,7 +755,10 @@ export function buildKitLevel(spec) {
     if (gd.dog) g.hasDog = true;
     // (M6.30) a reserve: not here yet - called in by the radio operator or the siren, from where he is placed
     if (gd.reserve) { g.reserve = true; g.dormant = true; g.target.solid.disabled = true; g.objective = false; }
-    if (gd.reserve && gd.wave) g.wave = gd.wave;          // (M6.79) a reserve that comes in with a hold's wave (1, 2, ...), not with the alarm          // (M6.30) a dog handler: his dog at his heel (sim/people/dog.js)
+    if (gd.reserve && gd.wave) g.wave = gd.wave;
+    // (M6.87) one of yours: a Ghost operative who keeps with you and fights the other side (spec.relations says who
+    // is whose); not one to take down, mark, or count
+    if (gd.ally) { g.side = 'ally'; g.title = gd.name || 'A Ghost operative'; g.objective = false; g.escort = { lead: true, lag: 2.2 + 1.4 * (spec.guards.filter((q) => q.ally).indexOf(gd)) }; }          // (M6.79) a reserve that comes in with a hold's wave (1, 2, ...), not with the alarm          // (M6.30) a dog handler: his dog at his heel (sim/people/dog.js)
     // (M6.29) a marksman's perches: where he moves to, one after another, once he has given his place away
     if (gd.perches) g.perches = gd.perches.map(([px, py, pf]) => free([mid(px), floors[pf || gf || K0].y, mid(py)]));
     level.guards.push(g);

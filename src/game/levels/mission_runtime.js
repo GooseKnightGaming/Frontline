@@ -1713,6 +1713,7 @@ export function setupMission(ctx) {
         if (g.dead && !g.counted) {
           g.counted = true;
           if (g.side === 'ally' && B) continue;         // one of your side, in a battle: the count has him
+          if (g.side === 'ally' && !level.hijack) { showHint((g.title || 'One of yours') + (g.target.lastBy === 'you' ? ' - shot by you.' : ' is down.')); continue; }      // (M6.87) a Ghost operative with you, in a first draft
           if (g.side === 'ally') {
             // (Rhys: "I 'accidentally' killed the Guard") by your hand, it is on the debrief
             if (g.target.lastBy === 'you') { level.hijack.guardKilledByYou = true; showHint('You have killed the train\'s guard.'); }
@@ -2422,6 +2423,8 @@ export function setupMission(ctx) {
       // (M6.44) the blight's end: the Dalmar Star
       if (level.draft === 'dalmar' && m.result === 'success') all.push({ id: 'blight_ended', name: 'Harvest Saved', about: 'The blight off the Dalmar Star, and the radio log in Ghost\'s hands.' });
       // (M6.30) in a mission begun in disguise, the whole of it without anyone seeing through it
+      // (M6.87) a first draft with an alarm, done and never rung
+      if (level.draft && m.result === 'success' && !rt.sirenRung && devices.some((d) => d.kind === 'alarm')) all.push({ id: level.draft + '_never_rang', name: 'Never Rang: ' + level.title, about: 'Done at ' + (level.spec.place || level.title) + ' without the alarm ever sounding.' });
       if (level.spec && level.spec.startDisguise && !rt.disguiseBlown && (m.result === 'success' || m.result === 'partial')) all.push({ id: level.draft + '_plain_sight', name: 'In Plain Sight: ' + level.title, about: 'Done in disguise, from the door and back - no one saw through it.' });
       // (Level 35) LANTERN turned round: no trace finds Yard 7 again, this run
       if (level.draft === 'listening' && m.result !== 'failed' && (level.terminals || []).some((q) => q.id === 'mainframe' && q.done)) downLantern(Saves.currentSlot());

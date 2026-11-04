@@ -77,7 +77,7 @@ import { boardOf, describe as contractText, TERMS } from '../sim/play/contracts.
 import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './core/input.js';
 import { isTouchDevice, touchControls, retext } from './core/touch.js';
 
-const VERSION = 'M6.86.0';
+const VERSION = 'M6.87.0';
 const $ = (id) => document.getElementById(id);
 const TEST = /[?&]test\b/.test(location.search);
 // Level 0, the training mission, is its own page load: index.html?level=0
@@ -744,7 +744,7 @@ function boot() {
       const done = Saves.loadDone(slotNo), clues = Saves.loadCase(slotNo).filter((id) => CASE.some((c) => c.id === id)).length;
       const mark = (id) => done[id] === 'success' ? '  \u2713' : done[id] === 'partial' ? '  \u00bd' : '';
       // (M6.56) in their stories: a heading where each begins
-      const GROUPS = [[5, 'FIRST DRAFTS'], [35, 'THE CASE'], [43, 'THE BLIGHT'], [48, 'THE CODEX'], [51, 'THE RIVER'], [54, 'THE FORGERS'], [57, 'THE HANDLER'], [61, 'THE FIVE'], [65, 'THE NORTH']];
+      const GROUPS = [[5, 'FIRST DRAFTS'], [35, 'THE CASE'], [43, 'THE BLIGHT'], [48, 'THE CODEX'], [51, 'THE RIVER'], [54, 'THE FORGERS'], [57, 'THE HANDLER'], [61, 'THE FIVE'], [65, 'THE NORTH'], [68, 'MORE WORK']];
       // (M6.80) a story's heading carries its trail's stamp once the trail is done
       const haveCase = Saves.loadCase(slotNo), stampOf = (title) => { if (title === 'THE CASE' && caseClosed(haveCase)) return ' <span style="color:#c0392b;border:2px solid #c0392b;padding:0 5px;margin-left:6px;letter-spacing:2px">CASE CLOSED</span>'; const t = TRAILS.find((q) => q.title === title); return t && trailDone(t, haveCase) ? ' <span style="color:' + t.colour + ';border:2px solid ' + t.colour + ';padding:0 5px;margin-left:6px;letter-spacing:2px">' + t.stamp + '</span>' : ''; };
       const head = (no) => { const g = GROUPS.find((q) => q[0] === no); return g ? '<div style="grid-column:1/-1;margin:12px 0 2px;letter-spacing:3px;color:var(--amber);font-size:12px;text-align:left">' + g[1] + stampOf(g[1]) + '</div>' : ''; };
@@ -2320,7 +2320,7 @@ function boot() {
     if (S.playing && !S.menu && lastInput && lastInput.aim && level.guards && level.guards.length) {
       const h = level.world.raycast(player.eyePos, S.aimNow.dir, 70, (q) => q.glass || q.shootThrough);
       const g = h && h.solid && h.solid.target && h.solid.target.guard;
-      if (g && !g.dead && !g.tracked && g.faction !== 'yellow' && g.faction !== 'staff' && !g.neutral) {
+      if (g && !g.dead && !g.tracked && g.faction !== 'yellow' && g.faction !== 'staff' && !g.neutral && g.side !== 'ally') {
         if (S.markG !== g) { S.markG = g; S.markT = 0; }
         S.markT += dt;
         if (S.markT > 0.9) { g.tracked = true; S.markG = null; S.noteText = 'Marked: ' + (g.name || 'he') + ' is on your radar now'; S.noteT = 1.6; audio.click(); }
