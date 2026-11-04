@@ -20,7 +20,7 @@ export default {
   time: { date: [11, 5, 2027], hour: 7, minute: 30 }, night: false, faction: 'red', weather: 'snow',
   startLoadout: { primary: 'K7', backup: 'V27C', utility1: 'SMOKE', utility2: 'FRAG', gear: 'LENSES', mods: { primary: ['SILENCER'], backup: ['SILENCER'] } },
   atmos: { fog: [0.7, 0.72, 0.76, 25, 180], ambient: [0.55, 0.57, 0.62] },
-  extractName: 'the forest, east', extract: { x: 58, y: 22, floor: 'G', van: [-1, 6] },
+  extractName: 'the forest, east', extract: { x: 58, y: 7, floor: 'G', van: [-1, 6] },
   outside: { backdrop: 'hills', mat: 'grass', margin: 14 },
   floors: {
     G: {
@@ -48,7 +48,7 @@ export default {
     box([30 * C, 0, 23 * C], [33 * C, 0.5, 28 * C], 'metal', { tint: [0.5, 0.53, 0.5] });
     box([mid(23) - 0.3, 0, mid(19) - 1.2], [mid(23) + 0.4, 3.4, mid(19) + 1.2], 'metal', { tint: [0.35, 0.36, 0.35], solid: false });
   },
-  start: { x: 58, y: 24, floor: 'G', yaw: Math.PI / 2 },
+  start: { x: 58, y: 8, floor: 'G', yaw: Math.PI / 2 },
   zones: [
     { id: 'wreck', label: 'The Skarn forest - the wreck', at: [24, 18, 40, 21] },
     { id: 'camp', label: 'The Skarn forest - the reds\' camp', at: [2, 2, 16, 14] },

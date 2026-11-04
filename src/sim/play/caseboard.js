@@ -120,6 +120,12 @@ export const WARNING = [
   { level: 'railhotel', title: 'The Railway Hotel', text: 'The paymaster\'s ledger taken from room nine, and the driver who sold the farm marked in the bar.' },
   { level: 'garage', title: 'The Kiln Road Garage', text: 'The reds cleared out of Ghost\'s garage, and the lorries\' route book taken back.' },
 ];
+// (M6.112) the winter road: the saints' papers carried north by air, over the mountain and off the ice
+export const WINTER = [
+  { level: 'crash', title: 'The Crash Site', text: 'The transport\'s crew brought out of the Skarn forest, and the flight bag taken from the wreck.' },
+  { level: 'fennick', title: 'Fennick\'s Pass', text: 'The fort\'s sector map taken, and the flight bag carried over the pass.' },
+  { level: 'lake', title: 'The Frozen Lake', text: 'The flares lit on Lake Orsa, the snowcat stopped, and the plane met on the ice.' },
+];
 export const TRAILS = [
   { id: 'blight', title: 'THE BLIGHT', steps: BLIGHT, stamp: 'HARVEST SAVED', colour: '#5a9a3a' },
   { id: 'codex', title: 'THE CODEX', steps: CODEX, stamp: 'RETURNED', colour: '#3a7ab0' },
@@ -135,6 +141,7 @@ export const TRAILS = [
   { id: 'drops', title: 'THE DROPS', steps: DROPS, stamp: 'RUNG OUT', colour: '#8a6a3a' },
   { id: 'saints', title: 'THE SAINTS', steps: SAINTS, stamp: 'ABSOLVED', colour: '#6a5a8a' },
   { id: 'warning', title: 'THE WARNING', steps: WARNING, stamp: 'HEEDED', colour: '#9a7a3a' },
+  { id: 'winter', title: 'THE WINTER ROAD', steps: WINTER, stamp: 'DELIVERED', colour: '#5a8aaa' },
 ];
 export const trailMark = (trail, level) => trail.id + ':' + level;
 // the marks a mission's being done adds (any trail it is a step of)

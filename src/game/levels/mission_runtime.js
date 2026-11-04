@@ -2477,6 +2477,9 @@ export function setupMission(ctx) {
       if (level.draft === 'safehouse' && m.result === 'success') all.push({ id: 'ford', name: 'Holding the Ford', about: 'Eleven saints out of Lindqvist\'s Ford, and the squad\'s leader with them.' });
       if (level.draft === 'railhotel' && m.result === 'success') all.push({ id: 'roomnine', name: 'Room Nine', about: 'The paymaster\'s ledger, and the driver who sold Lindqvist\'s Ford.' });
       if (level.draft === 'garage' && m.result === 'success') all.push({ id: 'routebook', name: 'New Roads', about: 'The Kiln Road garage cleared, and Ghost\'s route book back where it belongs.' });
+      if (level.draft === 'crash' && m.result === 'success') all.push({ id: 'nobodyleft', name: 'Nobody Left Behind', about: 'The pilot and the navigator out of the Skarn forest, and the flight bag with them.' });
+      if (level.draft === 'fennick' && m.result === 'success') all.push({ id: 'mulepath', name: 'The Mule Track', about: 'Over Fennick\'s Pass under the fort\'s nose, with its sector map in your pocket.' });
+      if (level.draft === 'lake' && m.result === 'success') all.push({ id: 'icelanding', name: 'Ice Landing', about: 'A plane down on Lake Orsa between your flares, and away again before the town knew.' });
       // (M6.66) the river open: Varnholm Lock
       if (level.draft === 'lock' && m.result === 'success') all.push({ id: 'river_open', name: 'River Open', about: 'The stand-down sent and the lock opened: Ghost\'s boats through to the sea.' });
       // (M6.44) the blight's end: the Dalmar Star

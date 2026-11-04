@@ -7,6 +7,14 @@ GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
 
+## M6.112.0 — Levels 91 - 93: THE WINTER ROAD
+
+- `drafts/crash.js` (no 91): a transport down in the snowy Skarn forest, no devices. Rescue the pilot (the reds' camp) and the navigator (the forester's hut), take the flight bag from the fuselage (a room with its tail door open), optional `quick` 300.
+- `drafts/fennick.js` (no 92): a night pass between rock walls (`dark`, NVG). The fort's console has the floodlights over the track (a `lights` device with an outdoor area). Take the sector map, reach the far side, optional quiet.
+- `drafts/lake.js` (no 93): Lake Orsa frozen. Two flares to light (terminals with verb Light, no net), a snowcat to stop (`stop`, wait 200; probed: it gets away at 200 s), and a reach (the plane) `after` the east flare. The extract is on the west shore, because the van needs somewhere to park.
+- Fixes: the Crash Site's start moved north (a wreck patrol on the same row saw you at once); Fennick's roster put on a table (intel test).
+- Trail THE WINTER ROAD (stamp DELIVERED), group [91]. Trophies: Nobody Left Behind, The Mule Track, Ice Landing.
+
 ## M6.111.0 — Levels 89 and 90: the Railway Hotel and the Kiln Road Garage (THE WARNING closes)
 
 - `drafts/railhotel.js` (no 89): Northern HQ's two-floor footprint reused as a hotel (lobby, bar, switchboard room; guest rooms upstairs). You start disguised. Read the switchboard (a hack with reveal), take the paymaster's ledger upstairs, mark the driver in the bar.
