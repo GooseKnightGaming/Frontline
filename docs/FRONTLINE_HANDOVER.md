@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.96.0)
+# Frontline — Handover (M6.97.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,11 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.97.0 — Level 75, the Kessin Battery; THE COAST ends
+- `drafts/battery.js` (75): with Hale and Moss on the Kessin cliffs - lock the guns out at the fire-control table,
+  then hold the bunker 90 s (two waves, from the barracks and the road) while Ghost's boats come and go; optionally
+  the battery commander alive. THE COAST is four (ball, counting, harbour, battery). Trophy Silent Guns.
 
 ## M6.96.0 — Level 74, Kessin Harbour
 - `drafts/harbour.js` (74): two motor boats at the agents' moorings run south for the harbour mouth at about 2 and
