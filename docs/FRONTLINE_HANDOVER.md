@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.79.0)
+# Frontline — Handover (M6.80.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,15 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.80.0 — the trails in the debrief and the mission list; the controls page
+- The debrief has a row for each story trail the mission is a step of: "n of 4 on the case board", or the trail's
+  stamp in its colour once every step is done.
+- The mission list's story headings carry their stamps once done (THE CASE: CASE CLOSED; the trails: theirs).
+- The controls page: following a man, taking a man alive, holding a place; the case board's trails and papers.
+- `drafts/gazette.js` (63, the Varnholm Courier): the reds have come to wreck the city paper's presses. Start the
+  press, hold the press hall 60 s (two waves in from Fleet Row), optionally get the three staff out. The trophy Stop
+  Press (success: everything, the staff included).
 
 ## M6.79.0 — a place to hold, and waves; Level 62, the Hesk Hill Transmitter
 - A reach (spec.reach) can have `hold: seconds` (and `after: <terminal id>`, `said`): the objective (kind 'reach')

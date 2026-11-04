@@ -27,7 +27,7 @@ import { makeTarget } from '../../sim/arms/weapons.js';
 import { makeDog, DOG } from '../../sim/people/dog.js';
 import { markIntrusion, downLantern } from './hq_security.js';
 import { xpFor, pointsAt } from '../../sim/play/skills.js';
-import { CASE, cluesFrom, caseOpen, FINAL, CLOSED, trailSteps } from '../../sim/play/caseboard.js';
+import { CASE, cluesFrom, caseOpen, FINAL, CLOSED, trailSteps, TRAILS, trailMark, trailDone } from '../../sim/play/caseboard.js';
 import { settle as settleContracts, TERMS as CONTRACT_TERMS, describe as contractText } from '../../sim/play/contracts.js';
 import { Device, stepDevice, setMode, Trace, HACK, MODES, SIREN, darkAt, sirenFor, syncLocks, modeSays, lightsOut, breaks } from '../../sim/world/devices.js';
 
@@ -2404,6 +2404,8 @@ export function setupMission(ctx) {
       if (level.draft === 'lodge' && m.result === 'success') all.push({ id: 'five_faces', name: 'Five Faces', about: 'All five of the reds\' chiefs marked at Ravensholt Lodge, and their names with them.' });
       // (M6.79) the names on the air
       if (level.draft === 'mast' && m.result === 'success') all.push({ id: 'on_air', name: 'On the Air', about: 'The tape patched in on Hesk Hill, and the transmitter hall held for all ninety seconds.' });
+      // (M6.80) the edition out
+      if (level.draft === 'gazette' && m.result === 'success' && hostages.every((h) => h.state === 'rescued')) all.push({ id: 'stop_press', name: 'Stop Press', about: 'The Courier\'s special edition printed with the press hall held, and every one of the staff brought out.' });
       // (M6.66) the river open: Varnholm Lock
       if (level.draft === 'lock' && m.result === 'success') all.push({ id: 'river_open', name: 'River Open', about: 'The stand-down sent and the lock opened: Ghost\'s boats through to the sea.' });
       // (M6.44) the blight's end: the Dalmar Star
@@ -2499,6 +2501,11 @@ export function setupMission(ctx) {
         (homeNew.length ? row('Weapons captured', homeNew.map((id) => ITEMS[id].name).join(', ') + ' &mdash; at Logistics in Ghost HQ') : '') +
         (taken.length && m.result === 'failed' ? row('Weapons captured', 'none brought home') : '') +
         (hostages.length ? row('Hostages rescued', rescued() + ' of ' + hostages.length) : '') +
+        // (M6.80) the story trails this mission is a step of: how far along each is, stamped when it is all done
+        (level.draft ? TRAILS.filter((t) => t.steps.some((b) => b.level === level.draft)).map((t) => {
+          const have = Saves.loadCase(Saves.currentSlot()), n = t.steps.filter((b) => have.includes(trailMark(t, b.level))).length;
+          return row(t.title.charAt(0) + t.title.slice(1).toLowerCase(), trailDone(t, have) ? '<b style="color:' + t.colour + '">' + t.stamp + '</b> &mdash; all ' + t.steps.length + ' done' : n + ' of ' + t.steps.length + ' on the case board');
+        }).join('') : '') +
         (level.intel && level.intel.length ? row('Intel found', level.intel.filter((q) => q.found).length + ' of ' + level.intel.length) : '') +
         // (Rhys: he could not find them all) where the rest were -
         // (Rhys: players should find them for themselves) a testing
