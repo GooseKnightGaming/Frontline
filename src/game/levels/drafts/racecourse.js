@@ -20,7 +20,7 @@ export default {
   startLoadout: { primary: null, backup: 'V27C', utility1: 'SMOKE', utility2: 'FLASH', gear: 'LENSES', mods: { backup: ['SILENCER'] } },
   atmos: { fog: [0.72, 0.75, 0.8, 50, 300], ambient: [0.62, 0.63, 0.66] },
   extractName: 'the car park, west', extract: { x: 2, y: 20, floor: 'G', van: [0, 6] },
-  outside: { backdrop: 'hills', mat: 'lawn', margin: 14 },
+  outside: { backdrop: 'hills', mat: 'grass', margin: 14 },
   windows: false,
   floors: {
     G: {
