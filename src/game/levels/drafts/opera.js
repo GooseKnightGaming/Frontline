@@ -84,7 +84,6 @@ export default {
     { id: 'eng', at: [38, 33, 'G'], arms: 'pistol', temper: 'cowardly', role: 'engineer' },
     { id: 'cl1', at: [39, 10, 'G'], arms: 'pistol', temper: 'cowardly' },
     { id: 'u1', at: [25, 30, '1'], route: [[22, 30], [29, 30]], arms: 'pistol' },
-    { id: 'st1', at: [8, 37, 'G'], route: [[3, 37], [14, 37]], arms: 'carbine' },
   ],
   civilians: [
     { id: 'diva', at: [25, 11, 'G'], yaw: Math.PI, title: 'The soprano', tint: [1.3, 1.1, 1.0], says: ['I have sung for three governments in this house. They all sit in the same box.'] },

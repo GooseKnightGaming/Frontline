@@ -132,6 +132,12 @@ export const PRESS = [
   { level: 'censor', title: 'The Censor\'s Office', text: 'The front page sent to every newsroom stamped as passed, the blacklist taken, and the censor with it.' },
   { level: 'paperrun', title: 'The Paper Run', text: 'The Courier left on Hollen\'s three stands through the curfew.' },
 ];
+// (M6.114) the general: the man who signed the crosses, found, taken and driven south to his trial
+export const GENERAL = [
+  { level: 'opera', title: 'The Opera', text: 'General Vey\'s three bodyguards marked on opening night, and his diary taken from his coat.' },
+  { level: 'veyestate', title: 'The Vey Estate', text: 'The General taken from his own bed, and his dispatch box from his study.' },
+  { level: 'drivesouth', title: 'The Drive South', text: 'The General driven down the coast road, through both roadblocks, to Ghost\'s lines.' },
+];
 export const TRAILS = [
   { id: 'blight', title: 'THE BLIGHT', steps: BLIGHT, stamp: 'HARVEST SAVED', colour: '#5a9a3a' },
   { id: 'codex', title: 'THE CODEX', steps: CODEX, stamp: 'RETURNED', colour: '#3a7ab0' },
@@ -149,6 +155,7 @@ export const TRAILS = [
   { id: 'warning', title: 'THE WARNING', steps: WARNING, stamp: 'HEEDED', colour: '#9a7a3a' },
   { id: 'winter', title: 'THE WINTER ROAD', steps: WINTER, stamp: 'DELIVERED', colour: '#5a8aaa' },
   { id: 'press', title: 'THE PRESS', steps: PRESS, stamp: 'PRINTED', colour: '#3a3a3a' },
+  { id: 'general', title: 'THE GENERAL', steps: GENERAL, stamp: 'ON TRIAL', colour: '#7a2a2a' },
 ];
 export const trailMark = (trail, level) => trail.id + ':' + level;
 // the marks a mission's being done adds (any trail it is a step of)

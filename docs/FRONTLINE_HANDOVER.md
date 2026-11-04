@@ -7,6 +7,13 @@ GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
 
+## M6.114.0 — Levels 97 - 99: THE GENERAL
+
+- `drafts/opera.js` (no 97): an opera house in disguise. A foyer with a stair to the crush bar, boxes either side of the stalls on floor 1 (their fronts are windows over the auditorium), the cloakroom by the stage door. Mark three bodyguards, take the diary, optional quiet. The street patrol was removed: a disguised player standing still at the doors drew it in.
+- `drafts/veyestate.js` (no 98): Northern HQ's walled two-floor shell as a country house, with dogs in the grounds. Capture the General (his bedroom), take the dispatch box (the study), optional quiet. The door guard was moved off the stairwell (kit).
+- `drafts/drivesouth.js` (no 99): the Border Run's drive pattern on a longer coast road with two roadblocks (the second has the turret). Reach plus optional quick 240.
+- Trail THE GENERAL (stamp ON TRIAL), group [97]. Trophies: Curtain Call, In His Dressing Gown, The Coast Road.
+
 ## M6.113.0 — Levels 94 - 96: THE PRESS
 
 - `drafts/bakery.js` (no 94): a bakery with the press room behind it, raided, no devices. Rescue the editor, take the type formes, optional quiet.

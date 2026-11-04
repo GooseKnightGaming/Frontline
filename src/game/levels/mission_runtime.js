@@ -2483,6 +2483,9 @@ export function setupMission(ctx) {
       if (level.draft === 'bakery' && m.result === 'success') all.push({ id: 'dailybread', name: 'Daily Bread', about: 'The editor and the front page out of Arnesen\'s, and the reds left with the rolls.' });
       if (level.draft === 'censor' && m.result === 'success') all.push({ id: 'passed', name: 'Passed for Publication', about: 'The Courier on every wire in the north, stamped by the censor himself.' });
       if (level.draft === 'paperrun' && m.result === 'success') all.push({ id: 'extra', name: 'Extra! Extra!', about: 'The Courier on all three of Hollen\'s stands before the curfew lifted.' });
+      if (level.draft === 'opera' && m.result === 'success') all.push({ id: 'curtaincall', name: 'Curtain Call', about: 'Three bodyguards marked and the General\'s diary taken, and the General none the wiser.' });
+      if (level.draft === 'veyestate' && m.result === 'success') all.push({ id: 'dressinggown', name: 'In His Dressing Gown', about: 'General Vey taken from his own bed, with every order for the crosses in his box.' });
+      if (level.draft === 'drivesouth' && m.result === 'success') all.push({ id: 'coastroad', name: 'The Coast Road', about: 'The General delivered to Ghost\'s lines through two roadblocks.' });
       // (M6.66) the river open: Varnholm Lock
       if (level.draft === 'lock' && m.result === 'success') all.push({ id: 'river_open', name: 'River Open', about: 'The stand-down sent and the lock opened: Ghost\'s boats through to the sea.' });
       // (M6.44) the blight's end: the Dalmar Star

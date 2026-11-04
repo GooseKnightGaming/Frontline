@@ -7,7 +7,7 @@ export default {
   id: 'veyestate', no: 98, title: 'The Vey Estate', place: 'the house at Vey, outside Hollen',
   where: 'The house at Vey, outside Hollen. 03:00, a clear frost, the dogs loose in the grounds.',
   brief: [
-    ['The job', 'The General\'s diary said where he sleeps: his own house at <b>Vey</b>, an hour out of Hollen, behind its wall and its dogs. Go over the wall at three in the morning. <b>Take the General alive</b> from his bed. Take his <b>dispatch box</b> from the study. If you can, do it <b>without the alarm</b>.'],
+    ['The job', 'The General\'s diary said where he sleeps: his own house at <b>Vey</b>, an hour out of Hollen, behind its wall and its dogs. Come in by the gate at three in the morning. <b>Take the General alive</b> from his bed. Take his <b>dispatch box</b> from the study. If you can, do it <b>without the alarm</b>.'],
     ['The place', 'A walled park with the gate on the south side. Downstairs in the house are the <b>hall</b>, the <b>study</b> and the dining room. Upstairs, the bedrooms, with the <b>General\'s</b> at the east end. The stables are east, the garage west.'],
     ['Security', 'Cameras on the drive and the hall and the house alarm, all on the console in the gatehouse with the radio. The engineer is in the garage. <b>Dogs</b> are loose in the grounds, and there is a man on the General\'s door.'],
     ['Objectives', '<b>Take the General alive</b> (his bedroom, upstairs). Take the <b>dispatch box</b> (the study). If you can, <b>without the alarm</b>. Out by the gate, south.'],
@@ -65,7 +65,7 @@ export default {
     for (const [x, y] of [[25, 25], [26, 36], [12, 24], [40, 25]]) level.lights.push({ pos: [mid(x), 4.5, mid(y)], range: 11, intensity: 0.8, color: [1, 0.9, 0.75], street: true });
   },
   vehicles: [{ id: 'vcar', kind: 'car', model: 'lightUtility', paint: 'black', at: [8, 24], yaw: 0, hp: 560 }],
-  start: { x: 44, y: 39, floor: 'G', yaw: 0 },
+  start: { x: 44, y: 39, floor: 'G', yaw: Math.PI / 2 },
   zones: [
     { id: 'hall', label: 'Vey - the hall', at: [16, 8, 34, 14] },
     { id: 'study', label: 'Vey - the study', at: [16, 16, 24, 22] },
