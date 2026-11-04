@@ -116,7 +116,7 @@ export default {
     { id: 'h1', at: [45, 6, 'B1'], arms: 'carbine' },
     { id: 'h2', at: [20, 11, 'B1'], route: [[10, 11], [80, 11]], arms: 'smg' },
     { id: 'h3', at: [68, 7, 'B1'], arms: 'pistol', temper: 'cowardly' },
-    { id: 'g1', at: [24, 1, 'G'], route: [[4, 0], [86, 0]], arms: 'carbine' },
+    { id: 'g1', at: [20, 1, 'G'], route: [[4, 0], [26, 0]], arms: 'carbine' },      // (M6.86) the west end of the street only: he walked through the start
   ],
   pickups: [{ id: 'trigger', name: 'Vey\'s trigger', what: 'the trigger', at: [78, 14, 'B2'], table: false, h: 0.8, colour: [0.9, 0.3, 0.2] }],
   terminals: [{ id: 'device', name: 'the device', at: [45, 25, 'B2'], face: [0, -1], time: 9, reveal: 20, verb: 'Disarm', doing: 'Disarming',

@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.85.0)
+# Frontline — Handover (M6.86.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,12 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.86.0 — the older levels' starts checked
+- The same 15 s stand-still check over the older story levels (5 - 47, the Campus too big to load in the test's
+  time): only the Subway seen at once - the street patrol walked the whole street, through the start; he keeps to its
+  west end now. A few glances elsewhere (the Cemetery, the Mineshaft, the Assassination: a patrolling man's notice
+  under 0.2, gone again) left as they are.
 
 ## M6.85.0 — Level 67, the Council House; THE NORTH on the board
 - `drafts/council.js` (67): a walled garden on Nordvik's hill (the wall as J cells, drawn in extra; the gate south;
