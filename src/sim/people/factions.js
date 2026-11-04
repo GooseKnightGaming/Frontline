@@ -57,6 +57,9 @@ export function pickFoe(g, you, guards, rel, ctx, dt) {
   let best = null, bd = Infinity;
   for (const o of guards) {
     if (!hostileTo(g, o, rel)) continue;
+    // (M6.89) one of yours who keeps with you holds his fire on a man who has not woken up to you - he does not start
+    // the fight for you; once that man is alert, searching, hurt or all but sure of you, he is fair game
+    if (g.side === 'ally' && g.escort && !(o.state === 'alert' || o.state === 'search' || o.state === 'flee' || o.awareness > 0.6 || o.hurtBy)) continue;
     const d = Math.hypot(o.pos[0] - g.pos[0], o.pos[1] - g.pos[1], o.pos[2] - g.pos[2]);
     if (d > SENSE.range || d >= bd) continue;
     if (!g.canSee([o.pos[0], o.pos[1] + 1.15, o.pos[2]], ctx)) continue;

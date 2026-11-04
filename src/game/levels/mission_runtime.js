@@ -1387,7 +1387,7 @@ export function setupMission(ctx) {
   }
   // a first-draft level's objectives, as they stand
   function draftObjectives() {
-    return level.objectives.map((o) => {
+    const list = level.objectives.map((o) => {
       const r = { id: o.id, kind: o.kind, text: o.text, optional: o.optional, done: false, failed: false, status: '' };
       if (o.kind === 'clear') {
         const gs = targets.filter((g) => !o.faction || g.faction === o.faction), d = gs.filter((g) => g.dead).length;
@@ -1435,6 +1435,18 @@ export function setupMission(ctx) {
       }
       return r;
     });
+    // (M6.89) done against the clock (kind 'quick', o.secs): every required one done inside the time - an optional one
+    for (const r of list) {
+      if (r.kind !== 'quick') continue;
+      const o = level.objectives.find((q) => q.id === r.id), q = rt.quick || (rt.quick = {});
+      const rest = list.filter((x) => !x.optional && x.kind !== 'quick');
+      if (!q[r.id] && rest.length && rest.every((x) => x.done) && m.time <= o.secs) q[r.id] = 'done';
+      if (!q[r.id] && m.time > o.secs) q[r.id] = 'failed';
+      r.done = q[r.id] === 'done'; r.failed = q[r.id] === 'failed';
+      const left = Math.max(0, Math.ceil(o.secs - m.time));
+      r.status = r.done ? 'done in time' : r.failed ? 'out of time' : Math.floor(left / 60) + ':' + String(left % 60).padStart(2, '0') + ' left';
+    }
+    return list;
   }
   const LEAVE_HOLD = 1.5;           // seconds of E at the jeep to withdraw with things still undone
 
@@ -2421,6 +2433,8 @@ export function setupMission(ctx) {
       // (M6.88) the camps
       if (level.draft === 'arnbridge' && m.result === 'success' && guards.filter((g) => g.side === 'ally').every((g) => !g.dead)) all.push({ id: 'all_three', name: 'All Three Home', about: 'The Arn bridge held, and Hale and Moss on the last lorry with you.' });
       if (level.draft === 'camp' && m.result === 'success') all.push({ id: 'ostrava', name: 'Nine Hundred Names', about: 'The four out of Camp Ostrava, and its register with them.' });
+      // (M6.89) the relays, in time
+      if (level.draft === 'relays' && m.result === 'success' && rt.quick && rt.quick.o4 === 'done') all.push({ id: 'six_minutes', name: 'Six Minutes', about: 'All three relays on the Kessock ridge cut before the raids went in.' });
       // (M6.66) the river open: Varnholm Lock
       if (level.draft === 'lock' && m.result === 'success') all.push({ id: 'river_open', name: 'River Open', about: 'The stand-down sent and the lock opened: Ghost\'s boats through to the sea.' });
       // (M6.44) the blight's end: the Dalmar Star

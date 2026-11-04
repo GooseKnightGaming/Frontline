@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.88.0)
+# Frontline — Handover (M6.89.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,16 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.89.0 — against the clock; Level 70, the Relay Peaks; THE CAMPS ends
+- A new objective kind, `quick` (`secs`): done once every required objective is done inside that many seconds of
+  the mission (m.time); failed once the time is up first. Optional. Status "4:12 left".
+- `drafts/relays.js` (70): with Hale and Moss on the open Kessock ridge - cut the west, middle and east relays (three
+  hack terminals, far apart), optionally inside six minutes. THE CAMPS is three missions (arnbridge, camp, relays).
+  The trophy Six Minutes. The controls page: allies, Never Rang.
+- Allies hold their fire (factions.js pickFoe): an escorting ally picks a foe only once that man is alert, searching,
+  fleeing, hurt or past 0.6 aware - he does not start the fight for you. (Before, at the Relay Peaks, Hale and Moss
+  opened up on the middle hut's sentry from the start.) An alert red put in front of them: down in six seconds.
 
 ## M6.88.0 — Level 69, Camp Ostrava; THE CAMPS on the board
 - `drafts/camp.js` (69): with Hale and Moss. A walled camp: three prisoners' huts maglocked (the warden's card),

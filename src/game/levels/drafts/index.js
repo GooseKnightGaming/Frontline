@@ -65,5 +65,6 @@ import nordvik from './nordvik.js';
 import council from './council.js';
 import arnbridge from './arnbridge.js';
 import camp from './camp.js';
+import relays from './relays.js';
 
-export const DRAFTS = [sewers, bank, cemetery, estate, manor, mine, facility, vantage, ward, campus, shipyard, fortress, drop, beachhead, factoryBattle, riverboat, city, ruins, wasteland, theatre, baths, temple, prison, bunkers, arena, nightclub, airport, outpost, spaceport, subway, listening, yacht, archive, tower, testrange, embassy, barracks, kaldberg, glasshouse, grain, dalmar, ministry, embankment, museum, hospital, villa, pens, rooftops, lock, mill, holm, townhall, market, power, docks, varna, lodge, mast, gazette, airfield, pass, nordvik, council, arnbridge, camp];
+export const DRAFTS = [sewers, bank, cemetery, estate, manor, mine, facility, vantage, ward, campus, shipyard, fortress, drop, beachhead, factoryBattle, riverboat, city, ruins, wasteland, theatre, baths, temple, prison, bunkers, arena, nightclub, airport, outpost, spaceport, subway, listening, yacht, archive, tower, testrange, embassy, barracks, kaldberg, glasshouse, grain, dalmar, ministry, embankment, museum, hospital, villa, pens, rooftops, lock, mill, holm, townhall, market, power, docks, varna, lodge, mast, gazette, airfield, pass, nordvik, council, arnbridge, camp, relays];

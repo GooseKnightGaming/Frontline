@@ -53,7 +53,7 @@ ok(fv && fv.steps.map((b) => b.level).join() === 'lodge,mast,gazette,airfield', 
 const nt = TRAILS.find((t) => t.id === 'north');
 ok(nt && nt.steps.map((b) => b.level).join() === 'pass,nordvik,council', 'the north');
 // (M6.88) the camps
-ok(TRAILS.find((t) => t.id === 'camps').steps.map((b) => b.level).join() === 'arnbridge,camp', 'the camps');
+ok(TRAILS.find((t) => t.id === 'camps').steps.map((b) => b.level).join() === 'arnbridge,camp,relays', 'the camps');
 const k = byId[FINAL];
 ok(k && k.guards.some((g) => g.card) && k.guards.some((g) => g.dog) && k.guards.some((g) => g.reserve) && k.guards.some((g) => g.shield), 'Kaldberg uses the specialists');
 ok(k && ['camera', 'turret', 'lock', 'laser', 'lights', 'alarm'].every((kind) => k.devices.some((d) => d.kind === kind)), 'Kaldberg has every kind of device');

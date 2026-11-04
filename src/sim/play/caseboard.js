@@ -81,6 +81,7 @@ export const NORTH = [
 export const CAMPS = [
   { level: 'arnbridge', title: 'The Arn Bridge', text: 'The north end held while four lorries crossed: two hundred people out of the first camp.' },
   { level: 'camp', title: 'Camp Ostrava', text: 'Four out of the huts and into the lorry, and the camp\'s register with them.' },
+  { level: 'relays', title: 'The Relay Peaks', text: 'All three relays cut: the rest of the camps emptied in one night, and not one call got out.' },
 ];
 export const TRAILS = [
   { id: 'blight', title: 'THE BLIGHT', steps: BLIGHT, stamp: 'HARVEST SAVED', colour: '#5a9a3a' },

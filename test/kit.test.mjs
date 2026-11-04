@@ -170,5 +170,11 @@ T('allies (M6.87): the Arn Bridge\'s Hale and Moss are yours - side ally, escort
   A(al.length === 2 && al.every((g) => g.escort && g.escort.lead && g.objective === false && g.faction === 'ghost'), 'the allies');
   A(L.relations && L.relations.ghost.red && L.relations.red.ghost && L.relations.ghost.you === false, 'relations');
 });
+T('against the clock (objective kind quick, M6.89): the Relay Peaks - three relays, six minutes', () => {
+  const d = DRAFTS.find((q) => q.id === 'relays'), q = d.objectives.find((o) => o.kind === 'quick');
+  A(q && q.secs === 360 && q.optional && d.objectives.filter((o) => o.kind === 'hack').length === 3, 'the relays');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
+  A(/r\.kind !== 'quick'/.test(rt) && /m\.time > o\.secs/.test(rt), 'the runtime');
+});
 console.log(fails.length ? 'FAILURES (' + fails.length + '):\n' + fails.map((f) => '  * ' + f).join('\n') : 'ALL ' + pass + ' PASSED');
 process.exit(fails.length ? 1 : 0);
