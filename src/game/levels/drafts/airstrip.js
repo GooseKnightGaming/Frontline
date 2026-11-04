@@ -46,7 +46,7 @@ export default {
     // the strip's paint, the plane on its apron, the tank
     box([0, 0.01, 30 * C], [W * C, 0.03, 36 * C], 'asphalt', { tint: [0.3, 0.3, 0.3], solid: false });
     box([25 * C, 0.6, 23 * C], [31 * C, 2.2, 25 * C], 'metal', { tint: [0.85, 0.85, 0.8] });
-    box([22 * C, 1.6, 23.6 * C], [34 * C, 1.8, 24.4 * C], 'metal', { tint: [0.85, 0.85, 0.8] });
+    box([22 * C, 1.6, 23.6 * C], [34 * C, 1.8, 24.4 * C], 'metal', { tint: [0.85, 0.85, 0.8], solid: false });
     box([mid(39) - 1, 0.8, mid(16) - 2.4], [mid(39) + 1, 2.6, mid(16) - 0.8], 'metal', { tint: [0.6, 0.55, 0.3] });
     for (const [x, y] of [[27, 22], [43, 20], [10, 21], [20, 32], [40, 32]]) level.lights.push({ pos: [mid(x), 5, mid(y)], range: 13, intensity: 0.85, color: [1, 0.9, 0.75], street: true });
   },
