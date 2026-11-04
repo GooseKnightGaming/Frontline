@@ -127,6 +127,7 @@ export default {
     { id: 'canyon', label: 'The Shael - the canyon', at: [0, 0, W - 1, H - 1] },
   ],
   guards: [
+    { id: 'pilot_gun', at: [52, 38, 'G'], faction: 'ghost', ally: true, freedFrom: 'pilot', name: 'Lieutenant Osei-Brandt', arms: 'smg', temper: 'steady', tint: [0.45, 0.6, 1.35] },
     { id: 'rask', at: [42, 23, 'G'], arms: 'carbine', rank: 'officer', temper: 'steady', name: 'Rask' },
     { id: 'o1', at: [36, 22, 'G'], arms: 'smg' },
     { id: 'r1', at: [38, 20, 'R'], arms: 'lmg', temper: 'steady' },
@@ -144,6 +145,8 @@ export default {
     { id: 'y2', at: [38, 40, 'G'], arms: 'rocket', temper: 'steady' },
   ],
   hostages: [{ id: 'pilot', name: 'Lieutenant Osei-Brandt', at: [52, 38, 'G'] }],
+  // (M6.94) the pilot, freed, takes up a gun and fights his way out with you (the Yellows' side and his at war)
+  relations: { yellow: { you: true, ghost: true }, ghost: { you: false, yellow: true } },
   terminals: [{ id: 'dump', name: 'the stack of drums', at: [51, 19, 'G'], face: [0, 1], time: 5, reveal: 0.01, verb: 'Set a charge on', doing: 'Setting a charge on',
     said: 'The charge is set on the drums - and they go up: the dump is fire and smoke, and the compound with it.' }],
   // (M6.69) papers to read: lore, not needed to finish

@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.93.0)
+# Frontline — Handover (M6.94.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,10 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.94.0 — the Outpost's pilot fights too
+- The Desert Outpost (32): Lieutenant Osei-Brandt, freed from the cell block, takes up a gun (a freedFrom ally, as
+  Venn; the relations yellow against ghost - the Outpost is the Yellows').
 
 ## M6.93.0 — a prisoner who fights: Sergeant Venn
 - An ally guard spec with `freedFrom: <hostage id>` waits, dormant, until that hostage is freed; then he (or she)
