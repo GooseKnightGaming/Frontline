@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.92.0)
+# Frontline — Handover (M6.93.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,14 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.93.0 — a prisoner who fights: Sergeant Venn
+- An ally guard spec with `freedFrom: <hostage id>` waits, dormant, until that hostage is freed; then he (or she)
+  wakes where the prisoner stands and keeps with you and fights, and the prisoner - out of sight now - goes where the
+  ally goes, so bringing the ally out brings the prisoner out (the rescue counts as before). The ally killed: the
+  prisoner killed.
+- The Mega-Prison (27): Sergeant Venn, freed, takes up a rifle (and the level's relations: red against ghost).
+  Tested in a browser: freed, she is awake and an ally, keeps 5 m behind you as you walk, the prisoner with her.
 
 ## M6.92.0 — Level 72, the Winter Ball
 - `drafts/ball.js` (72): the Opera House's winter ball, in a red officer's uniform among seven guests and staff

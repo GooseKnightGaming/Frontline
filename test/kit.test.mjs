@@ -176,5 +176,11 @@ T('against the clock (objective kind quick, M6.89): the Relay Peaks - three rela
   const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/r\.kind !== 'quick'/.test(rt) && /m\.time > o\.secs/.test(rt), 'the runtime');
 });
+T('a prisoner who fights (M6.93): the Prison\'s Venn waits as a dormant ally until she is freed', () => {
+  const L = buildKitLevel(DRAFTS.find((q) => q.id === 'prison')), g = L.guards.find((q) => q.id === 'venn_gun');
+  A(g && g.dormant && g.side === 'ally' && g.freedFrom === 'venn' && L.hostages.some((h) => h.id === 'venn'), 'Venn');
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
+  A(/g\.freedFrom === hq\.id/.test(rt) && /hq\.armedGuard = gun/.test(rt), 'the runtime');
+});
 console.log(fails.length ? 'FAILURES (' + fails.length + '):\n' + fails.map((f) => '  * ' + f).join('\n') : 'ALL ' + pass + ' PASSED');
 process.exit(fails.length ? 1 : 0);

@@ -1771,12 +1771,21 @@ export function setupMission(ctx) {
         for (const hq of hostages) {
           hq.step(simDt, hctx);
           for (const ev of hq.events) {
-            if (ev.type === 'freed') { audio.stepDone && audio.stepDone(); showHint(whoIs(hq) + ' is free. ' + He(hq) + ' will follow you: get ' + him(hq) + ' to ' + (level.safeName || 'the police cars in the street') + '. E tells ' + him(hq) + ' to wait, or to come on.'); }
+            // (M6.93) a prisoner who fights: freed, the ally waiting for him takes his place - and the prisoner goes with him
+            const gun = ev.type === 'freed' && guards.find((g) => g.freedFrom === hq.id && g.dormant && !g.dead);
+            if (gun) { gun.dormant = false; gun.target.solid.disabled = false; gun.pos = hq.pos.slice(); gun.home = { pos: hq.pos.slice(), yaw: gun.yaw }; gun.moveBody && gun.moveBody(); hq.armedGuard = gun; hq.target.solid.disabled = true; audio.stepDone && audio.stepDone(); showHint(whoIs(hq) + ' is free - and armed. ' + He(hq) + ' keeps with you and fights. Get ' + him(hq) + ' to ' + (level.safeName || 'the way out') + '.'); }
+            else if (ev.type === 'freed') { audio.stepDone && audio.stepDone(); showHint(whoIs(hq) + ' is free. ' + He(hq) + ' will follow you: get ' + him(hq) + ' to ' + (level.safeName || 'the police cars in the street') + '. E tells ' + him(hq) + ' to wait, or to come on.'); }
             if (ev.type === 'rescued') { audio.stepDone && audio.stepDone(); showHint(whoIs(hq) + ' is safe with the police: ' + rescued() + ' of ' + hostages.length + '.'); }
             // not a failure any more: an outcome the story remembers
             if (ev.type === 'killed') showHint(whoIs(hq) + ' has been killed.');
           }
           hq.events.length = 0;
+          // (M6.93) armed: where he goes, the prisoner is (out of sight, for the count); if he falls, so has the prisoner
+          if (hq.armedGuard && hq.state !== 'rescued' && hq.state !== 'dead') {
+            const g = hq.armedGuard;
+            if (g.dead) { hq.state = 'dead'; showHint(whoIs(hq) + ' has been killed.'); }
+            else { hq.pos[0] = g.pos[0]; hq.pos[1] = g.pos[1]; hq.pos[2] = g.pos[2]; hq.state = 'following'; }
+          }
         }
         // (Rhys) shoving: freed hostages and guards push apart where
         // they meet, and you push whoever you walk into. A guard shoved knows
@@ -2084,7 +2093,7 @@ export function setupMission(ctx) {
         if (b.enabled !== vis) b.enabled = vis;
         if (vis) b.update(dt, n.animState(), at, n.yaw);
       });
-      const hshown = hcull.frame(hostages.map((hq) => ({ pos: hq.pos, hidden: hq.state === 'rescued' })), sightEye, eye[1], dt);
+      const hshown = hcull.frame(hostages.map((hq) => ({ pos: hq.pos, hidden: hq.state === 'rescued' || !!hq.armedGuard })), sightEye, eye[1], dt);
       hostages.forEach((hq, i) => {
         const b = hbodies[i];
         const visible = hshown[i];

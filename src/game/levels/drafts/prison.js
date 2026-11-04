@@ -145,6 +145,7 @@ export default {
     { id: 'yard', label: 'HMP Greyhallow - the yard', at: [0, 0, W - 1, H - 1] },
   ],
   guards: [
+    { id: 'venn_gun', at: [49, 26, '3'], faction: 'ghost', ally: true, freedFrom: 'venn', name: 'Sergeant Venn', arms: 'carbine', temper: 'steady', tint: [0.45, 0.6, 1.35] },
     { id: 'gov', at: [33, 43, '3'], arms: 'pistol', rank: 'officer', temper: 'cowardly', name: 'Governor Ashdown-Pryce', tint: [0.6, 0.62, 0.7], card: 'awing' },
     { id: 'g3a', at: [18, 30, '3'], route: [[18, 19], [18, 38]], arms: 'carbine' },
     { id: 'g3b', at: [45, 20, '3'], route: [[45, 20], [45, 38]], arms: 'smg', temper: 'steady' },
@@ -163,6 +164,8 @@ export default {
     { id: 's2', at: [44, 43, '2'], arms: 'carbine' },
   ],
   hostages: [{ id: 'venn', name: 'Sergeant Venn', she: true, at: [49, 26, '3'] }],
+  // (M6.93) Venn, freed, takes up a rifle: she keeps with you and fights (the guards' side and hers at war)
+  relations: { red: { you: true, ghost: true }, ghost: { you: false, red: true } },
   // (hacking and control) A Wing's security: cameras over the hall, the first tier's galleries and the
   // entrance, a turret covering the lobby - one network, run from the security terminal in the control room
   devices: [
