@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.100.0)
+# Frontline — Handover (M6.101.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,11 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.101.0 — Level 79, the Hunting Party (THE COLONEL begins)
+- `drafts/hunt.js` (79): a daylight shoot in snowy pine woods (pines drawn in extra), with Hale and Moss. Take
+  Colonel Strand alive on his stretch of the line (capture), take his map case (the hunting hut), optionally without
+  the alarm. The trophy Bagged. The mission list's group THE COLONEL (79 on).
 
 ## M6.100.0 — the grades on the case board
 - The case board counts the best grades kept (M6.90): S x n, A x n, B x n, C x n, of all the missions.
