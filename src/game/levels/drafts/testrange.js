@@ -30,7 +30,7 @@ export default {
       carve: { size: [W, H], ops: rooms, after: [
         ['cells', [[5, 20], [9, 10], [17, 10], [25, 10], [33, 10]], 'D'],
         ['cells', [[4, 6], [6, 14], [13, 15], [29, 7], [29, 14], [37, 6], [40, 14]], 'C'],
-        ['cells', [[42, 3]], 'T'],
+        ['cells', [[42, 3], [3, 18]], 'T'],
       ] },
     },
   },
@@ -53,6 +53,8 @@ export default {
     { id: 'dark', at: [29, 4, 'G'], arms: 'smg', temper: 'steady' },
     { id: 'end', at: [40, 9, 'G'], arms: 'carbine', temper: 'steady' },
   ],
+  // (M6.123.1) papers: Q's note in the first room
+  intel: [{ id: 'qnote', at: [3, 18, 'G'], kind: 'Note', title: 'A note from Q, on the first room\'s table', text: ['"Break anything you like in here. That is what it is for. Please do not break the kettle. - Q"'] }],
   pickups: [{ id: 'cell', name: 'The test cell', what: 'the test cell', at: [42, 3, 'G'], table: false, h: 0.8, colour: [0.35, 0.95, 1] }],
   devices: [
     { id: 'c-1', kind: 'camera', at: [8, 2, 'G'], face: [-1, 1], net: 'range' },
