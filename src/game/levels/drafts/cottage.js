@@ -78,7 +78,7 @@ export default {
     { id: 'pr', at: [26, 14, 'G'], arms: 'carbine', temper: 'steady' },
     { id: 'up', at: [27, 15, '1'], arms: 'smg', temper: 'steady' },
     { id: 'rad', at: [37, 24, 'G'], arms: 'pistol', temper: 'steady', role: 'radio' },
-    { id: 'gd', at: [20, 24, 'G'], route: [[10, 24], [32, 24]], arms: 'carbine', dog: true },
+    { id: 'gd', at: [16, 24, 'G'], route: [[8, 24], [22, 24]], arms: 'carbine', dog: true },
   ],
   pickups: [{ id: 'codes', name: 'Hollis\'s code book', what: 'the code book', at: [24, 12, '2'], table: true, colour: [0.3, 0.35, 0.3] }],
   devices: [

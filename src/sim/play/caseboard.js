@@ -90,6 +90,11 @@ export const COAST = [
   { level: 'harbour', title: 'Kessin Harbour', text: 'Both boats stopped in the basin, and the agents\' cash book taken.' },
   { level: 'battery', title: 'The Kessin Battery', text: 'The guns locked out and the bunker held while Ghost\'s boats came and went.' },
 ];
+// (M6.98) Hollis: a name on a dance card, a face on a beach, and one of Ghost's own
+export const HOLLIS = [
+  { level: 'cove', title: 'Hollis\'s Cove', text: 'Hollis marked on the beach and followed home: one of Ghost\'s own.' },
+  { level: 'cottage', title: 'The Cliff Cottage', text: 'Hollis taken alive in his attic before he could send the date, and his code book with him.' },
+];
 export const TRAILS = [
   { id: 'blight', title: 'THE BLIGHT', steps: BLIGHT, stamp: 'HARVEST SAVED', colour: '#5a9a3a' },
   { id: 'codex', title: 'THE CODEX', steps: CODEX, stamp: 'RETURNED', colour: '#3a7ab0' },
@@ -100,6 +105,7 @@ export const TRAILS = [
   { id: 'north', title: 'THE NORTH', steps: NORTH, stamp: 'ADJOURNED', colour: '#4a6a9a' },
   { id: 'camps', title: 'THE CAMPS', steps: CAMPS, stamp: 'EMPTIED', colour: '#6a8a5a' },
   { id: 'coast', title: 'THE COAST', steps: COAST, stamp: 'PAID OFF', colour: '#3a7a8a' },
+  { id: 'hollis', title: 'HOLLIS', steps: HOLLIS, stamp: 'TURNED', colour: '#8a3a4a' },
 ];
 export const trailMark = (trail, level) => trail.id + ':' + level;
 // the marks a mission's being done adds (any trail it is a step of)

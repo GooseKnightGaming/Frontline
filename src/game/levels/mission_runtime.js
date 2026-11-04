@@ -2456,6 +2456,8 @@ export function setupMission(ctx) {
       if (level.draft === 'harbour' && m.result === 'success') all.push({ id: 'harbour_shut', name: 'Harbour Closed', about: 'Neither of the agents\' boats out of Kessin harbour, and their cash book taken.' });
       // (M6.97) the guns silent
       if (level.draft === 'battery' && m.result === 'success') all.push({ id: 'guns_silent', name: 'Silent Guns', about: 'The Kessin battery locked out and its bunker held while Ghost\'s boats came and went.' });
+      // (M6.98) Hollis
+      if (level.draft === 'cottage' && m.result === 'success') all.push({ id: 'hollis_taken', name: 'One of Our Own', about: 'Hollis taken alive in his attic, before the date went out.' });
       // (M6.66) the river open: Varnholm Lock
       if (level.draft === 'lock' && m.result === 'success') all.push({ id: 'river_open', name: 'River Open', about: 'The stand-down sent and the lock opened: Ghost\'s boats through to the sea.' });
       // (M6.44) the blight's end: the Dalmar Star

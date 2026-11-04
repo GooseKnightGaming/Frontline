@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.97.0)
+# Frontline — Handover (M6.98.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,15 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.98.0 — HOLLIS: Levels 76 and 77
+- The name seeded on the Winter Ball's dance card, the paymaster's memo and the Battery's range card. `drafts/cove.js`
+  (76): mark Hollis on a dark beach (identify), follow him up the cliff path's switchbacks to his cottage (tail), take
+  the boat's manifest. `drafts/cottage.js` (77): with Hale and Moss, take Hollis alive in his attic (capture), take his
+  code book, optionally without the alarm. The case board's eleventh trail, HOLLIS (stamped TURNED); the trophy One
+  of Our Own.
+- A tail's clock (o.lose) starts only once you have been within range of him (s.begun): at the Cove you start on the
+  headland, sixty metres off.
 
 ## M6.97.0 — Level 75, the Kessin Battery; THE COAST ends
 - `drafts/battery.js` (75): with Hale and Moss on the Kessin cliffs - lock the guns out at the fire-control table,
