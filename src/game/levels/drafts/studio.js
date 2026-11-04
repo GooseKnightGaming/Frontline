@@ -20,7 +20,7 @@ export default {
   time: { date: [6, 5, 2027], hour: 5, minute: 20 }, night: true, faction: 'red', requires: 'HACKKIT',
   startLoadout: { primary: 'K7', backup: 'V27C', utility1: 'SMOKE', utility2: 'FLASH', gear: 'LENSES', mods: { primary: ['SILENCER'], backup: ['SILENCER'] } },
   atmos: { fog: [0.2, 0.21, 0.25, 25, 160], ambient: [0.3, 0.3, 0.35] },
-  extractName: 'the alley, west', extract: { x: 1, y: 24, floor: 'G', van: [1, 5] },
+  extractName: 'the alley, west', extract: { x: 1, y: 12, floor: 'G', van: [1, 5] },
   outside: { backdrop: 'city', mat: 'asphalt', margin: 14 },
   floors: {
     G: {
@@ -30,7 +30,7 @@ export default {
         ['room', 20, 6, 26, 14],                        // the back room
       ], after: [
         ['cells', [[14, 5], [19, 10], [23, 15]], 'D'],
-        ['cells', [[11, 5], [17, 5], [9, 10], [27, 10], [13, 15]], 'W'],
+        ['cells', [[11, 5], [17, 5], [27, 10]], 'W'],
         ['cells', [[12, 7], [16, 13]], 'T'], ['cells', [[11, 12]], 'H'],
         ['cells', [[21, 8]], 'T'], ['cells', [[21, 13]], 'M'],
         // the yard: the generator, crates and a handcart; the street's benches
@@ -62,7 +62,7 @@ export default {
       speed: 9, goal: 'escape', wait: 240, hp: 560, name: 'Major Kade\'s car',
       crew: [{ id: 'drv', at: [-0.42, 0.15] }, { id: 'kade', at: [0.42, 0.15] }] },
   ],
-  start: { x: 2, y: 23, floor: 'G', yaw: -Math.PI / 2 },
+  start: { x: 2, y: 13, floor: 'G', yaw: -Math.PI / 2 },
   zones: [
     { id: 'shop', label: 'The Studio - the shop', at: [10, 6, 18, 14] },
     { id: 'back', label: 'The Studio - the back room', at: [20, 6, 26, 14] },
@@ -79,6 +79,8 @@ export default {
     { id: 'fl1', at: [21, 11, '1'], arms: 'carbine', temper: 'steady' },
     { id: 'eng', at: [31, 21, 'G'], arms: 'pistol', temper: 'cowardly', role: 'engineer' },
     { id: 'yd1', at: [26, 18, 'G'], route: [[12, 18], [40, 18]], arms: 'carbine' },
+    { id: 'drv', at: [18, 24, 'G'], arms: 'pistol', temper: 'steady' },
+    { id: 'kade', at: [19, 24, 'G'], arms: 'pistol', rank: 'officer', temper: 'cowardly', name: 'Major Kade', she: true, tint: [0.25, 0.25, 0.3] },
     { id: 'st1', at: [24, 2, 'G'], route: [[8, 2], [44, 2]], arms: 'carbine' },
   ],
   civilians: [

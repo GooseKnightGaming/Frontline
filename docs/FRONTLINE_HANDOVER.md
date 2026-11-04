@@ -7,6 +7,12 @@ GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
 
+## M6.109.0 — Level 87, the Studio (THE SAINTS closes)
+
+- New draft `drafts/studio.js` (no 87): a photographic studio over two floors (shop and back room; darkroom and files upstairs, stair in the back room), the yard behind with Major Kade's car. Objectives: take the files (upstairs), stop the car (`stop`, wait 240), optional quiet.
+- THE SAINTS trail complete: abbey, express, studio (stamp ABSOLVED). Trophy "Overexposed".
+- Lesson: a vehicle's `crew` ids must also be in `guards` (as in the Docks), or it has no driver and never leaves. Probed: the car gets away at 240 s and the objective fails. The start was moved off the car's line of sight down the alley.
+
 ## M6.108.0 — Level 86, the Night Express (THE SAINTS, second)
 
 - New draft `drafts/express.js` (no 86): the night express standing at a frontier halt, six carriages as rooms joined by gangway doors, the platform alongside, the customs hut across it. You start disguised. Objectives: capture the identifier (third sleeper), take his album, optional quiet.

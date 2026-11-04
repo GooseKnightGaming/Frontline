@@ -112,6 +112,7 @@ export const DROPS = [
 export const SAINTS = [
   { level: 'monastery', title: 'Kelder Abbey', text: 'St Brannoc brought out of the abbey library under the raid\'s nose.' },
   { level: 'express', title: 'The Night Express', text: 'The identifier taken off the night express at the frontier halt, and his album of saints\' faces with him.' },
+  { level: 'studio', title: 'The Studio', text: 'The files behind the crosses taken from Kiln Street, and Major Kade\'s car stopped in the yard.' },
 ];
 export const TRAILS = [
   { id: 'blight', title: 'THE BLIGHT', steps: BLIGHT, stamp: 'HARVEST SAVED', colour: '#5a9a3a' },
