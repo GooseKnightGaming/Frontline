@@ -89,5 +89,8 @@ import garage from './garage.js';
 import crash from './crash.js';
 import fennick from './fennick.js';
 import lake from './lake.js';
+import bakery from './bakery.js';
+import censor from './censor.js';
+import paperrun from './paperrun.js';
 
-export const DRAFTS = [sewers, bank, cemetery, estate, manor, mine, facility, vantage, ward, campus, shipyard, fortress, drop, beachhead, factoryBattle, riverboat, city, ruins, wasteland, theatre, baths, temple, prison, bunkers, arena, nightclub, airport, outpost, spaceport, subway, listening, yacht, archive, tower, testrange, embassy, barracks, kaldberg, glasshouse, grain, dalmar, ministry, embankment, museum, hospital, villa, pens, rooftops, lock, mill, holm, townhall, market, power, docks, varna, lodge, mast, gazette, airfield, pass, nordvik, council, arnbridge, camp, relays, light, ball, counting, harbour, battery, cove, cottage, wrongbridge, hunt, northhq, borderrun, funfair, observatory, cathedral, monastery, express, studio, safehouse, railhotel, garage, crash, fennick, lake];
+export const DRAFTS = [sewers, bank, cemetery, estate, manor, mine, facility, vantage, ward, campus, shipyard, fortress, drop, beachhead, factoryBattle, riverboat, city, ruins, wasteland, theatre, baths, temple, prison, bunkers, arena, nightclub, airport, outpost, spaceport, subway, listening, yacht, archive, tower, testrange, embassy, barracks, kaldberg, glasshouse, grain, dalmar, ministry, embankment, museum, hospital, villa, pens, rooftops, lock, mill, holm, townhall, market, power, docks, varna, lodge, mast, gazette, airfield, pass, nordvik, council, arnbridge, camp, relays, light, ball, counting, harbour, battery, cove, cottage, wrongbridge, hunt, northhq, borderrun, funfair, observatory, cathedral, monastery, express, studio, safehouse, railhotel, garage, crash, fennick, lake, bakery, censor, paperrun];

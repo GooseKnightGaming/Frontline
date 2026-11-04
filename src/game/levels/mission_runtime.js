@@ -2480,6 +2480,9 @@ export function setupMission(ctx) {
       if (level.draft === 'crash' && m.result === 'success') all.push({ id: 'nobodyleft', name: 'Nobody Left Behind', about: 'The pilot and the navigator out of the Skarn forest, and the flight bag with them.' });
       if (level.draft === 'fennick' && m.result === 'success') all.push({ id: 'mulepath', name: 'The Mule Track', about: 'Over Fennick\'s Pass under the fort\'s nose, with its sector map in your pocket.' });
       if (level.draft === 'lake' && m.result === 'success') all.push({ id: 'icelanding', name: 'Ice Landing', about: 'A plane down on Lake Orsa between your flares, and away again before the town knew.' });
+      if (level.draft === 'bakery' && m.result === 'success') all.push({ id: 'dailybread', name: 'Daily Bread', about: 'The editor and the front page out of Arnesen\'s, and the reds left with the rolls.' });
+      if (level.draft === 'censor' && m.result === 'success') all.push({ id: 'passed', name: 'Passed for Publication', about: 'The Courier on every wire in the north, stamped by the censor himself.' });
+      if (level.draft === 'paperrun' && m.result === 'success') all.push({ id: 'extra', name: 'Extra! Extra!', about: 'The Courier on all three of Hollen\'s stands before the curfew lifted.' });
       // (M6.66) the river open: Varnholm Lock
       if (level.draft === 'lock' && m.result === 'success') all.push({ id: 'river_open', name: 'River Open', about: 'The stand-down sent and the lock opened: Ghost\'s boats through to the sea.' });
       // (M6.44) the blight's end: the Dalmar Star

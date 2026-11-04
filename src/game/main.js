@@ -77,7 +77,7 @@ import { boardOf, describe as contractText, TERMS } from '../sim/play/contracts.
 import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './core/input.js';
 import { isTouchDevice, touchControls, retext } from './core/touch.js';
 
-const VERSION = 'M6.112.0';
+const VERSION = 'M6.113.0';
 const $ = (id) => document.getElementById(id);
 const TEST = /[?&]test\b/.test(location.search);
 // Level 0, the training mission, is its own page load: index.html?level=0
@@ -745,7 +745,7 @@ function boot() {
       const grades = Saves.loadGrades(slotNo);
       const mark = (id) => (done[id] === 'success' ? '  \u2713' : done[id] === 'partial' ? '  \u00bd' : '') + (grades[id] ? '  ' + grades[id] : '');      // (M6.90) and its best grade
       // (M6.56) in their stories: a heading where each begins
-      const GROUPS = [[5, 'FIRST DRAFTS'], [35, 'THE CASE'], [43, 'THE BLIGHT'], [48, 'THE CODEX'], [51, 'THE RIVER'], [54, 'THE FORGERS'], [57, 'THE HANDLER'], [61, 'THE FIVE'], [65, 'THE NORTH'], [68, 'THE CAMPS'], [71, 'MORE WORK'], [72, 'THE COAST'], [76, 'HOLLIS'], [79, 'THE COLONEL'], [82, 'THE DROPS'], [85, 'THE SAINTS'], [88, 'THE WARNING'], [91, 'THE WINTER ROAD']];
+      const GROUPS = [[5, 'FIRST DRAFTS'], [35, 'THE CASE'], [43, 'THE BLIGHT'], [48, 'THE CODEX'], [51, 'THE RIVER'], [54, 'THE FORGERS'], [57, 'THE HANDLER'], [61, 'THE FIVE'], [65, 'THE NORTH'], [68, 'THE CAMPS'], [71, 'MORE WORK'], [72, 'THE COAST'], [76, 'HOLLIS'], [79, 'THE COLONEL'], [82, 'THE DROPS'], [85, 'THE SAINTS'], [88, 'THE WARNING'], [91, 'THE WINTER ROAD'], [94, 'THE PRESS']];
       // (M6.80) a story's heading carries its trail's stamp once the trail is done
       const haveCase = Saves.loadCase(slotNo), stampOf = (title) => { if (title === 'THE CASE' && caseClosed(haveCase)) return ' <span style="color:#c0392b;border:2px solid #c0392b;padding:0 5px;margin-left:6px;letter-spacing:2px">CASE CLOSED</span>'; const t = TRAILS.find((q) => q.title === title); return t && trailDone(t, haveCase) ? ' <span style="color:' + t.colour + ';border:2px solid ' + t.colour + ';padding:0 5px;margin-left:6px;letter-spacing:2px">' + t.stamp + '</span>' : ''; };
       const head = (no) => { const g = GROUPS.find((q) => q[0] === no); return g ? '<div style="grid-column:1/-1;margin:12px 0 2px;letter-spacing:3px;color:var(--amber);font-size:12px;text-align:left">' + g[1] + stampOf(g[1]) + '</div>' : ''; };

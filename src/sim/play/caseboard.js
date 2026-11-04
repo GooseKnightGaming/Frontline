@@ -126,6 +126,12 @@ export const WINTER = [
   { level: 'fennick', title: 'Fennick\'s Pass', text: 'The fort\'s sector map taken, and the flight bag carried over the pass.' },
   { level: 'lake', title: 'The Frozen Lake', text: 'The flares lit on Lake Orsa, the snowcat stopped, and the plane met on the ice.' },
 ];
+// (M6.113) the press: the saints' story printed, passed and put on the stands
+export const PRESS = [
+  { level: 'bakery', title: 'The Bakery', text: 'The Courier\'s editor brought out of Arnesen\'s, and tomorrow\'s front page with her.' },
+  { level: 'censor', title: 'The Censor\'s Office', text: 'The front page sent to every newsroom stamped as passed, the blacklist taken, and the censor with it.' },
+  { level: 'paperrun', title: 'The Paper Run', text: 'The Courier left on Hollen\'s three stands through the curfew.' },
+];
 export const TRAILS = [
   { id: 'blight', title: 'THE BLIGHT', steps: BLIGHT, stamp: 'HARVEST SAVED', colour: '#5a9a3a' },
   { id: 'codex', title: 'THE CODEX', steps: CODEX, stamp: 'RETURNED', colour: '#3a7ab0' },
@@ -142,6 +148,7 @@ export const TRAILS = [
   { id: 'saints', title: 'THE SAINTS', steps: SAINTS, stamp: 'ABSOLVED', colour: '#6a5a8a' },
   { id: 'warning', title: 'THE WARNING', steps: WARNING, stamp: 'HEEDED', colour: '#9a7a3a' },
   { id: 'winter', title: 'THE WINTER ROAD', steps: WINTER, stamp: 'DELIVERED', colour: '#5a8aaa' },
+  { id: 'press', title: 'THE PRESS', steps: PRESS, stamp: 'PRINTED', colour: '#3a3a3a' },
 ];
 export const trailMark = (trail, level) => trail.id + ':' + level;
 // the marks a mission's being done adds (any trail it is a step of)

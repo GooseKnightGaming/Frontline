@@ -19,7 +19,7 @@ export default {
   time: { date: [18, 5, 2027], hour: 4, minute: 40 }, night: true, faction: 'red',
   startLoadout: { primary: null, backup: 'V27C', utility1: 'SMOKE', utility2: 'FLASH', gear: 'LENSES', mods: { backup: ['SILENCER'] } },
   atmos: { fog: [0.15, 0.15, 0.19, 25, 170], ambient: [0.27, 0.27, 0.32] },
-  extractName: 'the printers\' van, south-west', extract: { x: 3, y: 45, floor: 'G', van: [0, -3] },
+  extractName: 'the printers\' van, south-west', extract: { x: 3, y: 45, floor: 'G', van: [4, 1] },
   outside: { backdrop: 'city', mat: 'asphalt', margin: 14 },
   floors: {
     G: {

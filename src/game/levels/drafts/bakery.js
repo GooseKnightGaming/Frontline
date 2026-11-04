@@ -61,7 +61,7 @@ export default {
     { id: 'bk1', at: [22, 8, 'G'], arms: 'carbine', temper: 'cowardly' },
     { id: 'st1', at: [20, 3, 'G'], route: [[4, 3], [30, 3]], arms: 'carbine' },
     { id: 'al1', at: [6, 18, 'G'], route: [[6, 12], [6, 26]], arms: 'carbine' },
-    { id: 'yd1', at: [16, 26, 'G'], route: [[8, 26], [28, 26]], arms: 'pistol', dog: true },
+    { id: 'yd1', at: [16, 26, 'G'], route: [[8, 26], [22, 26]], arms: 'pistol', dog: true },
   ],
   civilians: [
     { id: 'baker', at: [25, 10, 'G'], yaw: 0, title: 'Mr Arnesen, the baker', tint: [1.2, 1.15, 1.1], says: ['Forty years I have baked bread here, and twelve of them I have printed a newspaper. The reds want their rolls at six. They will have them.'] },

@@ -7,6 +7,14 @@ GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
 
+## M6.113.0 — Levels 94 - 96: THE PRESS
+
+- `drafts/bakery.js` (no 94): a bakery with the press room behind it, raided, no devices. Rescue the editor, take the type formes, optional quiet.
+- `drafts/censor.js` (no 95): the Studio's two-floor footprint and stair again (front office and teleprinter room; the censor's office and the archive upstairs). Send the front page (a terminal with verb Send), take the blacklist, capture the censor, optional quiet.
+- `drafts/paperrun.js` (no 96): a curfew town of solid `J` blocks drawn as buildings round an open square. Three newsstands are terminals (verb Leave, 2 s), with an optional `quick` 300.
+- Starts: the Bakery's yard patrol shortened (it saw you from its end); the Paper Run's van moved out of the start's view.
+- Trail THE PRESS (stamp PRINTED), group [94]. Trophies: Daily Bread, Passed for Publication, Extra! Extra!
+
 ## M6.112.0 — Levels 91 - 93: THE WINTER ROAD
 
 - `drafts/crash.js` (no 91): a transport down in the snowy Skarn forest, no devices. Rescue the pilot (the reds' camp) and the navigator (the forester's hut), take the flight bag from the fuselage (a room with its tail door open), optional `quick` 300.
