@@ -898,3 +898,15 @@ mission list in its stories with ticks. See the handover for each.
 - M6.66: Level 53, Varnholm Lock - the end of the river trail (the Pens, the Rooftops, the Lock), stamped RIVER OPEN.
 - M6.67 - M6.69: papers in seventeen more levels. M6.70: the patrol launch at the Lock goes round (the Pilot's fix).
 - Candidates next: papers in the levels that still have none; the river's epilogue feeding a later mission.
+
+## The second night (3 - 4 November 2026, M6.75 on)
+- New objective kinds: `tail` (follow a man), `capture` (take him alive), `identify` (mark men), a reach with `hold`
+  (and reserves that come in waves), `quiet` (no alarm).
+- Levels 57 - 67: the Old Market, Holm Power Station, the Docks Yard, the Varna Star (THE HANDLER); Ravensholt Lodge,
+  the Hesk Hill Transmitter, the Varnholm Courier, Kessin Airfield (THE FIVE); the Vashka Pass, Nordvik, the Council
+  House (THE NORTH).
+- The case board: seven trails, THE STORY SO FAR (epilogues - forty-five levels have one), VARNHOLM: FILE CLOSED.
+  The debrief and the mission list show the trails' progress and stamps.
+- Every new level's start checked by standing still there for 15 s: five fixed where you were seen at once.
+- Candidates next: the same start check over the older levels; allies who follow and fight (the Yellows' escort,
+  for Ghost's own); more papers and epilogues where there are none.
