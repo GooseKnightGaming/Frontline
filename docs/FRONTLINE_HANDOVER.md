@@ -7,6 +7,11 @@ GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
 
+## M6.115.0 — Level 100, the Rising (a battle)
+
+- `drafts/hollen.js` (no 100): a battle (`battle` spec, as in the Factory and the Colosseum) on the Paper Run's Hollen grid. Ghost and the townspeople come from the south-west, the reds' garrison from the north-east, with 80 a side in reserve, 12 on the field and eight minutes on the clock. Four lanes a side: the west and north streets, the south and east streets, the middle streets, and the market square. Probed: both sides fight from the start and there are no page errors.
+- Group [100] THE RISING. Trophy "Hollen Rises".
+
 ## M6.114.0 — Levels 97 - 99: THE GENERAL
 
 - `drafts/opera.js` (no 97): an opera house in disguise. A foyer with a stair to the crush bar, boxes either side of the stalls on floor 1 (their fronts are windows over the auditorium), the cloakroom by the stage door. Mark three bodyguards, take the diary, optional quiet. The street patrol was removed: a disguised player standing still at the doors drew it in.
