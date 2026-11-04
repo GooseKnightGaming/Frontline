@@ -36,7 +36,7 @@ export default {
       ], after: [
         ['cells', [[28, 13], [28, 31], [41, 22], [12, 9], [21, 9], [30, 9], [40, 9], [11, 21], [28, 34]], 'D'],
         // the ring (low wall), the seats round it, the band's stand
-        ['room', 24, 19, 32, 19, 'K'], ['room', 24, 25, 32, 25, 'K'], ['room', 24, 20, 24, 24, 'K'], ['room', 32, 20, 32, 24, 'K'],
+        ['room', 24, 19, 27, 19, 'K'], ['room', 29, 19, 32, 19, 'K'], ['room', 24, 25, 27, 25, 'K'], ['room', 29, 25, 32, 25, 'K'], ['room', 24, 20, 24, 24, 'K'], ['room', 32, 20, 32, 24, 'K'],
         ['room', 18, 16, 22, 16, 'Y'], ['room', 34, 16, 38, 16, 'Y'], ['room', 18, 28, 22, 28, 'Y'], ['room', 34, 28, 38, 28, 'Y'],
         ['room', 17, 18, 17, 26, 'Y'], ['room', 39, 18, 39, 26, 'Y'], ['cells', [[28, 15]], 'T'],
         ['cells', [[11, 5], [20, 5], [29, 5]], 'Y'], ['cells', [[42, 5]], 'T'], ['cells', [[38, 7]], 'H'],
@@ -77,7 +77,7 @@ export default {
     { id: 'zk', at: [6, 21, 'G'], arms: 'carbine', temper: 'steady', dog: true },
   ],
   civilians: [
-    { id: 'clown', at: [30, 23, 'G'], yaw: Math.PI, title: 'A clown, between turns', tint: [1.3, 1.2, 1.2], says: ['Smile, they are watching. The ringmaster gets letters in every town, and nobody in this circus can read.'] },
+    { id: 'clown', at: [29, 20, 'G'], yaw: Math.PI, title: 'A clown, between turns', tint: [1.3, 1.2, 1.2], says: ['Smile, they are watching. The ringmaster gets letters in every town, and nobody in this circus can read.'] },
     { id: 'aud1', at: [20, 17, 'G'], yaw: 0, title: 'A child with candyfloss', tint: [1.3, 1.1, 1.2], says: ['The man in the front row did not laugh at the elephant. Everybody laughs at the elephant.'] },
     { id: 'aud2', at: [36, 29, 'G'], yaw: Math.PI, title: 'A courting couple', tint: [1.1, 1.1, 1.2], says: ['We came for the trapeze. They cancelled the trapeze.'] },
     { id: 'aud3', at: [18, 26, 'G'], yaw: Math.PI / 2, title: 'A retired schoolmaster', tint: [0.9, 0.9, 0.85], says: ['I have seen this circus in four countries. The same act, the same faces, and the same man in the front row.'] },
