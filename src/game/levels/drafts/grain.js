@@ -12,6 +12,11 @@ export default {
     ['Security', 'Cameras on the warehouse and the office, the office\'s alarm - its console in the office - and floodlights on the quay. A radio in the office, an engineer about the yard, a dog with the man on the quay road.'],
     ['Objectives', '<b>Stop the van</b>. Copy the <b>manifest</b> (the shipping office). Out the way you came, to the west.'],
   ],
+  // (M6.82) how it ends (the debrief; the case board's story so far)
+  epilogue: {
+    success: "The van never leaves the grain terminal, and the shipping office's papers name a ship, the Dalmar Star, at Kessin. Whatever was in the van was meant to go out with the export grain.",
+    partial: "The van is stopped, or the papers are taken, but not both. Ghost knows a ship is involved, and not much more.",
+  },
   time: { date: [29, 12, 2026], hour: 3, minute: 40 }, night: true, faction: 'red', requires: 'HACKKIT', weather: 'wind',
   atmos: { fog: [0.12, 0.14, 0.17, 30, 200], ambient: [0.26, 0.28, 0.32] },
   extractName: 'the quay, to the west', extract: { x: 2, y: 34, floor: 'G' },

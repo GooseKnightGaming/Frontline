@@ -22,6 +22,11 @@ export default {
     ['The streets', 'The reds\' patrols are in the streets below - and on the roofs, a few of the courier\'s men. Down from the tallest roof by its fire ladder, east; the van is in the street there.'],
     ['Objectives', 'Take the <b>codes case</b> (the tallest roof, east). Out by the van in the east street.'],
   ],
+  // (M6.82) how it ends (the debrief; the case board's story so far)
+  epilogue: {
+    success: "The codes case is gone from the tallest roof before the courier's men know it. The reds will use those codes for another month, and Ghost will be reading every word.",
+    partial: "The courier knows he was hit. The codes will be changed by the weekend.",
+  },
   time: { date: [16, 1, 2027], hour: 0, minute: 40 }, night: true, faction: 'red', requires: 'QGRAPPLE', weather: 'rain',
   startLoadout: { primary: 'MP2', backup: 'V27C', utility1: 'SMOKE', utility2: 'FLASH', gear: 'LENSES', mods: { primary: ['SILENCER'], backup: ['SILENCER'] } },
   atmos: { fog: [0.12, 0.13, 0.16, 25, 170], ambient: [0.24, 0.25, 0.3] },

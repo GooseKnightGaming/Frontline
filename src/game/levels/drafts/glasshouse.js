@@ -14,6 +14,11 @@ export default {
     ['Security', 'Cameras over the hall and the lab, a laser across the growing room, the maglock, the alarm - run from the office upstairs. A dog with the man on the grounds, a radio in the office.'],
     ['Objectives', 'Take the <b>sample</b> (the growing room). Copy the <b>research server</b> (the server room). Out by the van on the lane to the south.'],
   ],
+  // (M6.82) how it ends (the debrief; the case board's story so far)
+  epilogue: {
+    success: "Varn's glasshouse gives up its secret: the guidance systems were a cover, and what he really grew there was ordered and paid for. Ghost has the order now, and a name to follow: the grain terminal on the river.",
+    partial: "Ghost knows something was grown in the glasshouse, but not enough to say what or for whom. Varn will clear the place out before anyone comes back.",
+  },
   time: { date: [27, 12, 2026], hour: 1, minute: 10 }, night: true, faction: 'red', requires: 'HACKKIT', weather: 'rain',
   atmos: { fog: [0.2, 0.24, 0.26, 25, 180], ambient: [0.3, 0.34, 0.36] },
   extractName: 'the van on the lane', extract: { x: 23, y: 32, floor: 'G' },

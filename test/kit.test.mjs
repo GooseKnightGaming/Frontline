@@ -149,5 +149,10 @@ T('the Hesk Hill Transmitter: a place to hold (reach with hold, after a terminal
   const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/z\.held \+= simDt/.test(rt) && /g\.wave === k/.test(rt), 'the runtime');
 });
+T('epilogues: each has a success and an in-part ending; the case board tells the story so far (M6.82)', () => {
+  const ep = DRAFTS.filter((d) => d.epilogue);
+  A(ep.length >= 29 && ep.every((d) => typeof d.epilogue.success === 'string' && d.epilogue.success.length > 40 && typeof d.epilogue.partial === 'string'), 'epilogues: ' + ep.length);
+  A(/THE STORY SO FAR/.test(readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8')), 'the case board');
+});
 console.log(fails.length ? 'FAILURES (' + fails.length + '):\n' + fails.map((f) => '  * ' + f).join('\n') : 'ALL ' + pass + ' PASSED');
 process.exit(fails.length ? 1 : 0);

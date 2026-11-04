@@ -73,6 +73,11 @@ export default {
     ['The crew', 'Fifteen of his men. The bridge officer has the <b>radio</b>; the <b>engineer</b> is in the engine room; a <b>medic</b> in the crew\'s mess; a man with a <b>ballistic shield</b> on the main deck; a <b>marksman</b> on the sun deck who will not stay in one place; and a <b>dog</b> with the man on the pier.'],
     ['Objectives', 'Take Corwen\'s <b>files</b> from the panic room. Bring <b>Mara Quill</b> out. Optionally, stop Corwen.'],
   ],
+  // (M6.82) how it ends (the debrief; the case board's story so far)
+  epilogue: {
+    success: "The Salt Crown's ledgers are in Ghost's hands, and Ilya Corwen's buyers are about to find out who has been selling to both sides.",
+    partial: "Some of Corwen's ledgers. He will move his office to another port before the week is out.",
+  },
   time: { date: [14, 11, 2026], hour: 23, minute: 50 }, night: true, faction: 'red', requires: 'HACKKIT', startGear: 'MULTIVIS',
   extractName: 'the end of the pier',
   outside: { backdrop: 'city', mat: 'concrete', margin: 10 },

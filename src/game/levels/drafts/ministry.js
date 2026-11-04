@@ -11,6 +11,11 @@ export default {
     ['Security', 'Cameras in the hall, on the stairs and the second floor (they look longer at a uniform, but they look), the laser in the records room, the maglock, the alarm - run from the security desk in the hall. A radio at the desk; an engineer about the building.'],
     ['Objectives', 'Copy the <b>supply records</b> (the records room). Take the <b>order</b> - the one that bought the blight - from the Deputy Minister\'s safe. Out by the front door, the way you came.'],
   ],
+  // (M6.82) how it ends (the debrief; the case board's story so far)
+  epilogue: {
+    success: "The order is out of the Ministry of Supply in a red officer's briefcase, and it is signed by the Deputy Minister himself. By noon he has cancelled all his meetings. By evening he is packing.",
+    partial: "Some of the Ministry's papers, not the order itself. The Deputy Minister will be more careful with his signature from now on.",
+  },
   time: { date: [4, 1, 2027], hour: 14, minute: 20 }, night: false, faction: 'red', requires: 'HACKKIT', startDisguise: 'red',
   startLoadout: { primary: null, backup: 'V27C', utility1: 'SMOKE', utility2: 'RCAM', gear: 'LENSES', mods: { backup: ['SILENCER'] } },
   extractName: 'the street, by the front door', extract: { x: 21, y: 32, floor: 'G' },

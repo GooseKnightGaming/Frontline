@@ -12,6 +12,11 @@ export default {
     ['Security', 'Laser tripwires across the galleries (on your belly under them, or hack them); the display cases are glass, and a round through one breaks it - loudly; cameras (a pinhole in the special exhibition - EMF), the maglock, the alarm - all from the security office. The night staff are reds tonight; one has a radio, one is an engineer.'],
     ['Objectives', 'Take the <b>Halvard Codex</b> (the special exhibition). Copy the <b>loan register</b> (the curator\'s office). Out by the loading dock.'],
   ],
+  // (M6.82) how it ends (the debrief; the case board's story so far)
+  epilogue: {
+    success: "The Halvard Codex leaves the Varnholm Museum in Ghost's hands, not the buyer's. The loan register goes with it. One name in it does not add up: the night curator who signed the book out.",
+    partial: "The Codex or the register, not both. The buyer will know by morning that someone else came for it.",
+  },
   time: { date: [8, 1, 2027], hour: 2, minute: 30 }, night: true, faction: 'red', requires: 'HACKKIT', startGear: 'MULTIVIS',
   startLoadout: { primary: 'MP2', backup: 'V27C', utility1: 'SMOKE', utility2: 'LURE', gear: 'MULTIVIS', mods: { primary: ['SILENCER'], backup: ['SILENCER'] } },
   extractName: 'the loading dock', extract: { x: 22, y: 1, floor: 'G' },

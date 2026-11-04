@@ -12,6 +12,11 @@ export default {
     ['Security', 'Cameras on the quays and in the boat shed, the duty office maglocked (the duty officer\'s keycard), the alarm. The radio is in the duty office; an engineer in the workshop. A dog on the east quay.'],
     ['Objectives', 'Copy the <b>patrol schedules</b> (the duty office). Take the <b>codebook</b> (the barracks room). Out the way you came - into the water, and south.'],
   ],
+  // (M6.82) how it ends (the debrief; the case board's story so far)
+  epilogue: {
+    success: "The patrol schedules leave Kessin harbour in a waterproof wallet, and nobody at the pens knows they were copied. Ghost's boats can go where the reds' never do, and the schedules point to a courier on the roofs of the old quarter.",
+    partial: "Part of the schedules. Enough to dodge some patrols, but not enough to find their courier.",
+  },
   time: { date: [14, 1, 2027], hour: 1, minute: 20 }, night: true, faction: 'red', requires: 'HACKKIT',
   startLoadout: { primary: 'MP2', backup: 'V27C', utility1: 'SMOKE', utility2: 'RCAM', gear: 'REBREATHER', mods: { primary: ['SILENCER'], backup: ['SILENCER'] } },
   atmos: { fog: [0.08, 0.1, 0.13, 20, 160], ambient: [0.22, 0.24, 0.3] },

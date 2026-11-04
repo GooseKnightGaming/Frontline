@@ -12,6 +12,11 @@ export default {
     ['Security', 'Cameras over the hall, the stair and the first-floor corridor (they look longer at a uniform, but they look), a laser across the archive, the two maglocks, the alarm - run from the <b>security room</b> in the basement. The ambassador carries a <b>keycard</b>; there is a <b>dog</b> with the man on the back gate, a <b>radio</b> in the security room, an <b>engineer</b> in the basement.'],
     ['Objectives', 'Copy the <b>cipher keys</b> at the cipher room\'s terminal. Take the <b>ledger</b> from the ambassador\'s office. There is a trophy for doing it with no one seeing through your disguise.'],
   ],
+  // (M6.82) how it ends (the debrief; the case board's story so far)
+  epilogue: {
+    success: "The cipher room's codes and the ambassador's safe are both empty by the end of the reception, and nobody saw through the uniform. The reds' embassy will be reading its own mail more carefully from now on.",
+    partial: "The disguise held, but not for everything. The ambassador will change the safe and the cipher by morning.",
+  },
   time: { date: [6, 12, 2026], hour: 21, minute: 15 }, night: true, faction: 'red', requires: 'HACKKIT', startDisguise: 'red',
   startLoadout: { primary: null, backup: 'V27C', utility1: 'SMOKE', utility2: 'RCAM', gear: 'LENSES', mods: { backup: ['SILENCER'] } },
   extractName: 'the car on Linden Row',

@@ -11,6 +11,11 @@ export default {
     ['The far bank', 'A checkpoint on the road, a watchtower with a marksman in it, men along the river wall. A footbridge crosses the river at its middle: when you fire, they will come over it. Shoot the driver and the car stops; shoot the minister and the job is done.'],
     ['Objectives', '<b>Stop the Deputy Minister</b>. Then back to the van behind the ridge, north.'],
   ],
+  // (M6.82) how it ends (the debrief; the case board's story so far)
+  epilogue: {
+    success: "The Deputy Minister's car stops on the Halvard embankment and does not go on to the border. The blight has no buyer now, and the man who signed for it is answering questions.",
+    partial: "The car got further than it should have. The Deputy Minister is across the border, and he has kept his secrets.",
+  },
   time: { date: [6, 1, 2027], hour: 6, minute: 40 }, faction: 'red', weather: 'wind',
   atmos: { fog: [0.62, 0.66, 0.72, 60, 420], ambient: [0.46, 0.48, 0.52] },
   startLoadout: { primary: 'LR7', backup: 'V27C', utility1: 'SMOKE', utility2: 'FRAG', gear: 'LENSES', mods: { primary: ['SCOPE8'] } },

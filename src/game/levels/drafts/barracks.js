@@ -13,6 +13,11 @@ export default {
     ['The reds', 'Most still asleep in the huts - leave them be, and they stay that way. Awake: the patrols, two <b>dog handlers</b>, a <b>marksman</b> in the watchtower who moves when he gives himself away, the guardroom (a <b>radio</b>), the armourer (an <b>engineer</b>). If it goes loud, the guardroom\'s <b>reserve</b> turns out - and the alarm wakes the huts.'],
     ['Objectives', 'Photograph the <b>training plans</b> in the headquarters office (hack the planning terminal). Take the <b>prototype rifle</b> from the armoury. Optionally, get out with no one sounding the alarm.'],
   ],
+  // (M6.82) how it ends (the debrief; the case board's story so far)
+  epilogue: {
+    success: "Camp Dravik's rolls and training plans go to Ghost, and the reds' special forces have no secrets left about who they are or what they train for.",
+    partial: "Part of what was wanted at Dravik. Their instructors will rewrite the plans.",
+  },
   time: { date: [12, 12, 2026], hour: 5, minute: 10 }, faction: 'red', requires: 'HACKKIT',
   atmos: { fog: [0.55, 0.6, 0.66, 40, 260], ambient: [0.42, 0.45, 0.52] },
   extractName: 'the forest track, south',

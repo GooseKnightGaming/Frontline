@@ -65,6 +65,11 @@ export default {
     ['Security', 'All the Yellows\' now: cameras in the reading room and the entrance hall (and a <b>pinhole</b> in the vault - EMF), a <b>laser</b> across the vault\'s approach, the vault <b>maglocked</b>, the reading room\'s <b>lights</b>, the alarm, and a turret of theirs in the stacks - run from the librarian\'s office. You carry a <b>hacking kit</b>. Their lookout has the <b>radio</b>; their technician is an <b>engineer</b>; there is a <b>medic</b>, and a <b>marksman</b> on the gallery.'],
     ['Objectives', 'Take the <b>Halloran Codex</b> from the vault. <b>Copy the microfilm</b> in the stacks\' microfilm room. Optionally, free <b>Mr Abernethy</b>, the night librarian, tied up in the conservation lab.'],
   ],
+  // (M6.82) how it ends (the debrief; the case board's story so far)
+  epilogue: {
+    success: "The microfilm is copied and the Codex is safe before the Yellows' safe-cracker gets the vault open. The red courier's dead drop is burned for good.",
+    partial: "The Yellows got something out of the Halloran Library tonight. Ghost will have to find out what.",
+  },
   time: { date: [19, 11, 2026], hour: 1, minute: 20 }, night: true, faction: 'yellow', requires: 'HACKKIT', startGear: 'MULTIVIS', weather: 'rain',
   extractName: 'the van on Chancery Square',
   outside: { backdrop: 'city', mat: 'asphalt', margin: 16 },

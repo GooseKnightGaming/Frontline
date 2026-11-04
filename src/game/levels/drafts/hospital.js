@@ -12,6 +12,11 @@ export default {
     ['Security', 'Cameras in the corridors, a maglock on the side rooms (the guard sergeant\'s keycard), the alarm - from the porters\' office by the bay, where the reds have put their radio. They have a medic of their own with them.'],
     ['Objectives', '<b>Bring Tobias Marle out</b> (Ward 4\'s side rooms, upstairs). Take his <b>case notes</b> (the ward office). Out by the ambulance bay.'],
   ],
+  // (M6.82) how it ends (the debrief; the case board's story so far)
+  epilogue: {
+    success: "Tobias Marle walks out of St Brannoc's with his arm in a sling and a new name. By the end of the week he has told Ghost who bought the Codex: Count Merrow, on the lake road.",
+    partial: "Marle's notes, or Marle himself, not both. The men watching his room will have moved him by tomorrow.",
+  },
   time: { date: [9, 1, 2027], hour: 3, minute: 50 }, night: true, faction: 'red', requires: 'HACKKIT', weather: 'rain',
   startLoadout: { primary: 'MP2', backup: 'V27C', utility1: 'SMOKE', utility2: 'FLASH', gear: 'LENSES', mods: { primary: ['SILENCER'], backup: ['SILENCER'] } },
   extractName: 'the ambulance bay', extract: { x: 46, y: 16, floor: 'G' },

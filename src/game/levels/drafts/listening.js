@@ -17,6 +17,11 @@ export default {
     ['The reds', 'Sixteen. The duty officer in the security office has the <b>radio</b>; the station\'s <b>engineer</b> is in the plant room and will put a hacked network back on. <b>Major Vass</b>, who runs LANTERN, is in the comms room. And there is a <b>medic</b> (the canteen): he brings knocked-out men round; a <b>dog handler</b> walking the fence - the dog smells you in the dark and through camouflage; and a man with a <b>ballistic shield</b> in the stairwell - it stops rounds from the front: go round it, or for his head.'],
     ['Objectives', '<b>Wipe Ghost\'s file</b> at the archive terminal. <b>Turn LANTERN round</b> at the mainframe (the server hall). Take the <b>intercept log</b> from the operations room. Optionally, stop Major Vass.'],
   ],
+  // (M6.82) how it ends (the debrief; the case board's story so far)
+  epilogue: {
+    success: "LANTERN goes dark at Skarvik, and with it everything it had gathered on Ghost. Yard 7 is safe again, for now.",
+    partial: "LANTERN is hurt but still listening. Ghost moves its traffic, and hopes.",
+  },
   time: { date: [3, 11, 2026], hour: 2, minute: 15 }, night: true, faction: 'red', requires: 'HACKKIT', startGear: 'MULTIVIS', weather: 'wind',
   extractName: 'the road south',
   outside: { backdrop: 'hills', mat: 'asphalt', margin: 14 },

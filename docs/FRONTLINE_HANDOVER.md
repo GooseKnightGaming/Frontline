@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.81.0)
+# Frontline — Handover (M6.82.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,12 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.82.0 — the story so far
+- The case board's THE STORY SO FAR: every first draft done (success or in part) that has an epilogue, in level
+  order, with the epilogue the debrief gave it - one fold to open.
+- Epilogues for fourteen more: the case (35 - 41 but the test range), the blight's, the Codex's and the river's
+  steps that had none. Twenty-nine levels have one.
 
 ## M6.81.0 — Level 64, Kessin Airfield; THE FIVE on the board
 - `drafts/airfield.js` (64): a jet on the apron with the chief from Drosk aboard taxis east, round and off west after
