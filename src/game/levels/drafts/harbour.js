@@ -53,7 +53,7 @@ export default {
       speed: 9, goal: 'escape', wait: 180, name: 'The second boat',
       crew: [{ id: 'h2', at: [-0.4, 0.6] }, { id: 'a2', at: [0, -2.2] }] },
   ],
-  start: { x: 1, y: 10, floor: 'G', yaw: -Math.PI / 2 },
+  start: { x: 2, y: 4, floor: 'G', yaw: Math.PI },
   zones: [
     { id: 'hm', label: 'Kessin harbour - the harbour master\'s office', at: [6, 3, 16, 8] },
     { id: 'house', label: 'Kessin harbour - the agents\' house', at: [20, 3, 30, 8] },
@@ -69,7 +69,7 @@ export default {
     { id: 'rad', at: [13, 6, 'G'], arms: 'pistol', rank: 'officer', temper: 'steady', role: 'radio', name: 'The harbour master' },
     { id: 'hs', at: [25, 6, 'G'], arms: 'smg', temper: 'bold' },
     { id: 'eng', at: [40, 6, 'G'], arms: 'pistol', temper: 'cowardly', role: 'engineer' },
-    { id: 'q1', at: [30, 10, 'G'], route: [[8, 10], [46, 10]], arms: 'carbine', dog: true },
+    { id: 'q1', at: [30, 10, 'G'], route: [[16, 10], [46, 10]], arms: 'carbine', dog: true },
     { id: 'q2', at: [44, 0, 'G'], route: [[18, 0], [50, 0]], arms: 'carbine' },
   ],
   pickups: [{ id: 'cash', name: 'The agents\' cash book', what: 'the cash book', at: [23, 5, 'G'], table: true, colour: [0.35, 0.25, 0.2] }],

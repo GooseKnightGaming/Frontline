@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.95.0)
+# Frontline — Handover (M6.96.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,11 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.96.0 — Level 74, Kessin Harbour
+- `drafts/harbour.js` (74): two motor boats at the agents' moorings run south for the harbour mouth at about 2 and
+  3 minutes (wait 120 / 180 s; the basin runs to the map's south edge, so each boat's last point is in water); stop
+  both, take the cash book from the agents' house. THE COAST is three (ball, counting, harbour). Trophy Harbour Closed.
 
 ## M6.95.0 — Level 73, the Counting House; THE COAST begins
 - `drafts/counting.js` (73): Lund & Harl's counting house on Kessin quay, built on the Town Hall's three storeys (the

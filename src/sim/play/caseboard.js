@@ -87,6 +87,7 @@ export const CAMPS = [
 export const COAST = [
   { level: 'ball', title: 'The Winter Ball', text: 'The paymaster and his two agents marked among the dancers.' },
   { level: 'counting', title: 'The Counting House', text: 'The receipts out of the strongroom, and the paymaster taken alive at his desk.' },
+  { level: 'harbour', title: 'Kessin Harbour', text: 'Both boats stopped in the basin, and the agents\' cash book taken.' },
 ];
 export const TRAILS = [
   { id: 'blight', title: 'THE BLIGHT', steps: BLIGHT, stamp: 'HARVEST SAVED', colour: '#5a9a3a' },
