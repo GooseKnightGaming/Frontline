@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.80.0)
+# Frontline — Handover (M6.81.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,13 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.81.0 — Level 64, Kessin Airfield; THE FIVE on the board
+- `drafts/airfield.js` (64): a jet on the apron with the chief from Drosk aboard taxis east, round and off west after
+  180 s - ground it from the tower's cab (holdOn 'tower', as the Airport) or stop it; take the chief from Kessin
+  alive (capture; the lounge); optionally the flight plan (the tower). The trophy Grounded.
+- The case board's sixth trail, THE FIVE (lodge, mast, gazette, airfield; stamped EXPOSED); the mission list's group
+  for 61 on is THE FIVE.
 
 ## M6.80.0 — the trails in the debrief and the mission list; the controls page
 - The debrief has a row for each story trail the mission is a step of: "n of 4 on the case board", or the trail's

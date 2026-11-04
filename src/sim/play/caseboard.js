@@ -64,12 +64,20 @@ export const HANDLER = [
   { level: 'docks', title: 'The Docks Yard', text: 'Both lorries stopped, the city\'s gold back - and the loading list, naming a ship.' },
   { level: 'varna', title: 'The Varna Star', text: 'The handler taken alive aboard her, and his forty names copied from her bridge.' },
 ];
+// (M6.81) the five: marked at the lodge, named on the air and in the paper, the last two stopped at the airfield
+export const FIVE = [
+  { level: 'lodge', title: 'Ravensholt Lodge', text: 'Five chiefs marked through the lodge\'s windows, and their names on the seating plan.' },
+  { level: 'mast', title: 'The Hesk Hill Transmitter', text: 'The names on the air: ninety seconds, held.' },
+  { level: 'gazette', title: 'The Varnholm Courier', text: 'The names in the paper: the presses saved, the edition out.' },
+  { level: 'airfield', title: 'Kessin Airfield', text: 'The last two stopped at the airfield: the jet grounded, the Kessin man taken alive.' },
+];
 export const TRAILS = [
   { id: 'blight', title: 'THE BLIGHT', steps: BLIGHT, stamp: 'HARVEST SAVED', colour: '#5a9a3a' },
   { id: 'codex', title: 'THE CODEX', steps: CODEX, stamp: 'RETURNED', colour: '#3a7ab0' },
   { id: 'river', title: 'THE RIVER', steps: RIVER, stamp: 'RIVER OPEN', colour: '#2a8a8a' },
   { id: 'forgers', title: 'THE FORGERS', steps: FORGERS, stamp: 'NOT VALID', colour: '#9a6a2a' },
   { id: 'handler', title: 'THE HANDLER', steps: HANDLER, stamp: 'DISMISSED', colour: '#7a3a8a' },
+  { id: 'five', title: 'THE FIVE', steps: FIVE, stamp: 'EXPOSED', colour: '#b0503a' },
 ];
 export const trailMark = (trail, level) => trail.id + ':' + level;
 // the marks a mission's being done adds (any trail it is a step of)

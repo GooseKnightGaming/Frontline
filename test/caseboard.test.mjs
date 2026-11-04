@@ -46,6 +46,9 @@ ok(fg && fg.steps.map((b) => b.level).join() === 'mill,holm,townhall' && trailDo
 // (M6.76) the handler
 const hd = TRAILS.find((t) => t.id === 'handler');
 ok(hd && hd.steps.map((b) => b.level).join() === 'market,power,docks,varna', 'the handler');
+// (M6.81) the five
+const fv = TRAILS.find((t) => t.id === 'five');
+ok(fv && fv.steps.map((b) => b.level).join() === 'lodge,mast,gazette,airfield', 'the five');
 const k = byId[FINAL];
 ok(k && k.guards.some((g) => g.card) && k.guards.some((g) => g.dog) && k.guards.some((g) => g.reserve) && k.guards.some((g) => g.shield), 'Kaldberg uses the specialists');
 ok(k && ['camera', 'turret', 'lock', 'laser', 'lights', 'alarm'].every((kind) => k.devices.some((d) => d.kind === kind)), 'Kaldberg has every kind of device');
