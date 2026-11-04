@@ -79,7 +79,7 @@ export default {
     { id: 'oath', at: [34, 29, 'G'], kind: 'Oath', title: 'The guard company\'s oath, pinned to the wall', text: ['"To the last man and the last round." Under it, in several hands: "Which last man?", "Not me", and "Ask the commander - oh."'] },
   ],
   objectives: [
-    { id: 'o1', kind: 'clear', faction: 'red', text: 'Clear the die-hards out of the battery' },
+    { id: 'o1', kind: 'clear', text: 'Clear the die-hards out of the battery' },
     { id: 'o2', kind: 'hack', ref: 'flag', text: 'Hoist the white flag (the command post)' },
   ],
 };
