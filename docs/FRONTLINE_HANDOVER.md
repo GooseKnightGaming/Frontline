@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.104.0)
+# Frontline — Handover (M6.105.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,12 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.105.0 — Level 83, the Observatory
+- `drafts/observatory.js` (83): dark (night vision issued), the dome's lights a `lights` device on the guard hut's
+  console - put them out and the reds in the dome have only their torches. Copy the receiver's recordings (the dome,
+  maglocked - the duty officer's card), bring out Dr Sauer (her rooms), take the courier's drop (the library). The
+  trophy Back to the Stars.
 
 ## M6.104.0 — Level 82, the Funfair
 - `drafts/funfair.js` (82): a night funfair, disguised. The Hall of Mirrors' corridor has a portal near its far end

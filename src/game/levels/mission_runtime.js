@@ -2468,6 +2468,8 @@ export function setupMission(ctx) {
       if (level.draft === 'borderrun' && m.result === 'success' && rt.quick && rt.quick.o2 === 'done') all.push({ id: 'border_run', name: 'Foot Down', about: 'Down the Vashka valley road and over the frontier inside three minutes.' });
       // (M6.104) through the mirrors
       if (level.draft === 'funfair' && m.result === 'success' && !rt.disguiseBlown) all.push({ id: 'mirrors', name: 'Smoke and Mirrors', about: 'Through the Hall of Mirrors to the message, the contact marked, and the uniform never doubted.' });
+      // (M6.105) Dr Sauer home
+      if (level.draft === 'observatory' && m.result === 'success') all.push({ id: 'stargazer', name: 'Back to the Stars', about: 'Dr Sauer brought down from Kessock Peak, and six months of the reds\' traffic with her.' });
       // (M6.66) the river open: Varnholm Lock
       if (level.draft === 'lock' && m.result === 'success') all.push({ id: 'river_open', name: 'River Open', about: 'The stand-down sent and the lock opened: Ghost\'s boats through to the sea.' });
       // (M6.44) the blight's end: the Dalmar Star
