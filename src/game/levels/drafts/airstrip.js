@@ -19,7 +19,7 @@ export default {
   time: { date: [18, 7, 2027], hour: 19, minute: 30 }, night: true, faction: 'red', requires: 'HACKKIT',
   startLoadout: { primary: 'LR7', backup: 'V27C', utility1: 'SMOKE', utility2: 'FLASH', gear: 'LENSES', mods: { primary: ['SCOPE8'], backup: ['SILENCER'] } },
   atmos: { fog: [0.42, 0.32, 0.26, 40, 240], ambient: [0.48, 0.4, 0.36] },
-  extractName: 'the dunes, north-west', extract: { x: 3, y: 2, floor: 'G', van: [0, 6] },
+  extractName: 'the dunes, north-west', extract: { x: 3, y: 2, floor: 'G', van: [7, 0] },
   outside: { backdrop: 'hills', mat: 'desert', margin: 14 },
   floors: {
     G: {
@@ -28,16 +28,16 @@ export default {
         ['room', 20, 10, 34, 20],                       // the hangar
         ['room', 44, 12, 50, 18],                       // the control hut
         ['room', 6, 12, 14, 18],                        // the crew's barracks
-        ['room', 24, 4, 28, 7],                         // the generator shed
+        ['room', 24, 2, 28, 5],                         // the generator shed
       ], after: [
-        ['cells', [[27, 21], [28, 21], [43, 15], [10, 19], [26, 8]], 'D'],
+        ['cells', [[27, 21], [28, 21], [43, 15], [10, 19], [26, 6]], 'D'],
         ['cells', [[19, 15], [35, 13], [47, 11], [51, 15], [5, 15]], 'W'],
         ['room', 21, 11, 21, 15, 'H'], ['cells', [[32, 11]], 'Y'], ['cells', [[31, 19]], 'T'],
         ['cells', [[45, 13], [49, 17]], 'T'], ['cells', [[7, 13], [7, 17], [13, 13], [13, 17]], 'Y'], ['cells', [[11, 15]], 'T'],
-        ['cells', [[26, 5]], 'M'],
+        ['cells', [[26, 3]], 'M'],
         // the fuel tank on its stand, oil drums, the windsock, the dunes' rocks
         ['cells', [[39, 16]], 'T'], ['cells', [[38, 14], [40, 14]], 'C'],
-        ['cells', [[8, 6], [16, 4], [36, 6], [48, 4], [4, 26], [52, 26], [16, 24], [40, 24]], 'C'],
+        ['cells', [[8, 6], [16, 4], [36, 4], [48, 4], [4, 26], [52, 26], [16, 24], [40, 24]], 'C'],
       ] },
     },
   },
@@ -61,7 +61,7 @@ export default {
     { id: 'pilot', at: [31, 12, 'G'], arms: 'pistol', rank: 'specialist', temper: 'cowardly', name: 'Kray\'s pilot', tint: [0.5, 0.45, 0.35] },
     { id: 'hg1', at: [27, 17, 'G'], route: [[22, 17], [33, 17]], arms: 'smg' },
     { id: 'rad', at: [47, 15, 'G'], arms: 'pistol', rank: 'officer', temper: 'steady', role: 'radio' },
-    { id: 'eng', at: [27, 6, 'G'], arms: 'pistol', temper: 'cowardly', role: 'engineer' },
+    { id: 'eng', at: [27, 4, 'G'], arms: 'pistol', temper: 'cowardly', role: 'engineer' },
     { id: 'br1', at: [10, 14, 'G'], arms: 'carbine' },
     { id: 'tk1', at: [39, 18, 'G'], arms: 'carbine', temper: 'steady' },
     { id: 'st1', at: [28, 27, 'G'], route: [[12, 27], [48, 27]], arms: 'carbine' },

@@ -19,7 +19,7 @@ export default {
   time: { date: [21, 7, 2027], hour: 22, minute: 0 }, night: true, faction: 'red', requires: 'HACKKIT',
   startLoadout: { primary: 'MP2', backup: 'V27C', utility1: 'SMOKE', utility2: 'FLASH', gear: 'LENSES', mods: { primary: ['SILENCER'], backup: ['SILENCER'] } },
   atmos: { fog: [0.2, 0.2, 0.26, 30, 200], ambient: [0.32, 0.31, 0.36] },
-  extractName: 'the cliff path, south-west', extract: { x: 2, y: 35, floor: 'G', van: [0, -6] },
+  extractName: 'the cliff path, south-west', extract: { x: 2, y: 35, floor: 'G', van: [7, 0] },
   outside: { backdrop: 'hills', mat: 'grass', margin: 14 },
   windows: false,
   floors: {
