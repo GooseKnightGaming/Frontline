@@ -45,7 +45,7 @@ export default {
     for (const [x, y] of [[14, 3], [30, 3], [5, 18], [24, 25], [36, 14]]) level.lights.push({ pos: [mid(x), 4.2, mid(y)], range: 10, intensity: 0.8, color: [1, 0.88, 0.7], street: true });
     level.signs.push({ pos: [mid(14), 3.0, 5 * C - 0.13], yaw: Math.PI, w: 4, h: 0.7, text: 'ARNESEN', sub: 'Bread - Cakes - Since 1902', col: '#5a3a1a' });
   },
-  vehicles: [{ id: 'raidvan', kind: 'car', model: 'lightUtility', paint: 'grey', at: [24, 2], yaw: -Math.PI / 2, hp: 560 }],
+  vehicles: [{ id: 'raidvan', kind: 'car', model: 'lightUtility', paint: 'grey', at: [35, 2], yaw: -Math.PI / 2, hp: 560 }],
   start: { x: 38, y: 16, floor: 'G', yaw: Math.PI / 2 },
   zones: [
     { id: 'shop', label: 'Arnesen\'s - the shop', at: [10, 6, 18, 12] },
