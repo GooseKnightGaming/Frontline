@@ -102,6 +102,12 @@ export const COLONEL = [
   { level: 'northhq', title: 'Northern Headquarters', text: 'His staff marked, and the spring plan stood down in his own name.' },
   { level: 'borderrun', title: 'The Border Run', text: 'The spring plan driven down the valley road and over the frontier.' },
 ];
+// (M6.106) the drops: the couriers' messages followed from a hall of mirrors to a bell tower
+export const DROPS = [
+  { level: 'funfair', title: 'The Funfair', text: 'The contact marked, and the message taken from the end of a maze nobody finishes.' },
+  { level: 'observatory', title: 'The Observatory', text: 'Dr Sauer brought down from Kessock Peak, and her star charts with her.' },
+  { level: 'cathedral', title: 'St Aldric\'s Tower', text: 'The Sexton taken in his own clock room, and the month\'s drop from among the bells.' },
+];
 export const TRAILS = [
   { id: 'blight', title: 'THE BLIGHT', steps: BLIGHT, stamp: 'HARVEST SAVED', colour: '#5a9a3a' },
   { id: 'codex', title: 'THE CODEX', steps: CODEX, stamp: 'RETURNED', colour: '#3a7ab0' },
@@ -114,6 +120,7 @@ export const TRAILS = [
   { id: 'coast', title: 'THE COAST', steps: COAST, stamp: 'PAID OFF', colour: '#3a7a8a' },
   { id: 'hollis', title: 'HOLLIS', steps: HOLLIS, stamp: 'TURNED', colour: '#8a3a4a' },
   { id: 'colonel', title: 'THE COLONEL', steps: COLONEL, stamp: 'STOOD DOWN', colour: '#5a5a7a' },
+  { id: 'drops', title: 'THE DROPS', steps: DROPS, stamp: 'RUNG OUT', colour: '#8a6a3a' },
 ];
 export const trailMark = (trail, level) => trail.id + ':' + level;
 // the marks a mission's being done adds (any trail it is a step of)
