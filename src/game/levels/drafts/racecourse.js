@@ -8,7 +8,7 @@ export default {
   where: 'The Lessar racecourse, Cup day. 14:30, the third race off, the stands roaring.',
   brief: [
     ['The job', 'Kray\'s money never touched a bank anyone could name. It went through a private banker in Lessar, <b>Mr Ivo Dancourt</b>, by way of the racecourse: <b>winning slips</b> bought for cash at the Lessar Cup and paid out clean at his bank a week later. Go to the Cup. <b>Mark Dancourt\'s courier</b> at the bookmakers\' rail. Take the week\'s <b>slips</b> from the stewards\' room. If you can, <b>without the alarm</b>.'],
-    ['The place', 'The <b>grandstand</b> is along the north side, with the <b>stewards\' room</b> at its east end and the <b>weighing room</b> at its west end. The <b>bookmakers\' rail</b> runs along the lawn in front of it, and the track is beyond the rail, south. It is broad daylight and the lawn is full.'],
+    ['The place', 'The <b>grandstand</b> is along the north side, with the <b>stewards\' room</b> at its east end and the <b>weighing room</b> at its west end. The <b>bookmakers\' rail</b> runs along the lawn in front of it, and the track is beyond the rail, south. It is broad daylight and the lawn is full. You go in <b>dressed as one of Dancourt\'s men</b>: there are a dozen of them here.'],
     ['Security', 'A camera on the stewards\' room and the course\'s alarm, both on the console in the weighing room with the radio. The engineer is at the tote board. Dancourt\'s men are on the lawn in good suits. The course police are not his, but they will not ask questions either.'],
     ['Objectives', '<b>Mark the courier</b> (the bookmakers\' rail). Take the <b>slips</b> (the stewards\' room). If you can, <b>without the alarm</b>. Out by the car park, west.'],
   ],
@@ -16,7 +16,7 @@ export default {
     success: 'The week\'s slips are worth eleven thousand on Kray\'s account, and every one is stamped with the stewards\' seal in the same hand. The courier goes to the bank on Monday with an empty case, and Ghost watches who opens the door to him.',
     partial: 'Half of it. Ghost knows the courier, or holds the slips, but cannot yet tie them to the bank.',
   },
-  time: { date: [7, 8, 2027], hour: 14, minute: 30 }, night: false, faction: 'red', requires: 'HACKKIT',
+  time: { date: [7, 8, 2027], hour: 14, minute: 30 }, night: false, faction: 'red', requires: 'HACKKIT', startDisguise: 'red',
   startLoadout: { primary: null, backup: 'V27C', utility1: 'SMOKE', utility2: 'FLASH', gear: 'LENSES', mods: { backup: ['SILENCER'] } },
   atmos: { fog: [0.72, 0.75, 0.8, 50, 300], ambient: [0.62, 0.63, 0.66] },
   extractName: 'the car park, west', extract: { x: 2, y: 20, floor: 'G', van: [0, 6] },
