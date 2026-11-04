@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.103.0)
+# Frontline — Handover (M6.104.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,13 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.104.0 — Level 82, the Funfair
+- `drafts/funfair.js` (82): a night funfair, disguised. The Hall of Mirrors' corridor has a portal near its far end
+  (the Ward's kind: shift 24 squares back) that is off once the maze's plan (a pickup, in the attendant's booth) is
+  taken - then the corridor lets you through to the room at the end and the courier's message. Mark the contact
+  watching the door. Five fairgoers (the attendant and a child hint at the trick). Tested in a browser: walking east
+  without the plan you come out at x 17; with it, at the door at x 38. The trophy Smoke and Mirrors.
 
 ## M6.103.0 — Level 81, the Border Run
 - `drafts/borderrun.js` (81): a drive. A jeep at the start (yours to drive: no path, no crew), a valley road between
