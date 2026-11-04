@@ -80,6 +80,8 @@ ok(TRAILS.find((t) => t.id === 'gold').steps.map((b) => b.level).join() === 'min
 ok(TRAILS.find((t) => t.id === 'peace').steps.map((b) => b.level).join() === 'treaty,clocktower,signing', 'the peace');
 // (M6.119) the smugglers
 ok(TRAILS.find((t) => t.id === 'smugglers').steps.map((b) => b.level).join() === 'customs,oldtown,smugcove', 'the smugglers');
+// (M6.120) the buyer
+ok(TRAILS.find((t) => t.id === 'buyer').steps.map((b) => b.level).join() === 'airstrip,capmerrow,caravan', 'the buyer');
 const k = byId[FINAL];
 ok(k && k.guards.some((g) => g.card) && k.guards.some((g) => g.dog) && k.guards.some((g) => g.reserve) && k.guards.some((g) => g.shield), 'Kaldberg uses the specialists');
 ok(k && ['camera', 'turret', 'lock', 'laser', 'lights', 'alarm'].every((kind) => k.devices.some((d) => d.kind === kind)), 'Kaldberg has every kind of device');

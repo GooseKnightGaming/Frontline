@@ -162,6 +162,12 @@ export const SMUGGLERS = [
   { level: 'oldtown', title: 'Saren Old Town', text: 'The inspector followed through the lanes to the smugglers\' door, the buyer marked, the price list taken.' },
   { level: 'smugcove', title: 'The Smugglers\' Cove', text: 'The honest customs officer freed, and the last boatload of rifles stopped in Gull Cove.' },
 ];
+// (M6.120) the buyer: Anselm Kray, who bought the north's rifles and sold them on
+export const BUYER = [
+  { level: 'airstrip', title: 'The Airstrip', text: 'Kray\'s plane left dry at Sand Hollow, its pilot marked and its flight plan taken.' },
+  { level: 'capmerrow', title: 'Cap Merrow', text: 'Kray\'s two dinner guests marked, and his client list photographed from the safe.' },
+  { level: 'caravan', title: 'The Caravan', text: 'Kray taken alive at the Bir Sahra well, and the last of the north\'s crates stopped.' },
+];
 export const TRAILS = [
   { id: 'blight', title: 'THE BLIGHT', steps: BLIGHT, stamp: 'HARVEST SAVED', colour: '#5a9a3a' },
   { id: 'codex', title: 'THE CODEX', steps: CODEX, stamp: 'RETURNED', colour: '#3a7ab0' },
@@ -184,6 +190,7 @@ export const TRAILS = [
   { id: 'gold', title: 'THE GOLD', steps: GOLD, stamp: 'RETURNED TO SENDER', colour: '#b0902a' },
   { id: 'peace', title: 'THE PEACE', steps: PEACE, stamp: 'SIGNED', colour: '#4a8a4a' },
   { id: 'smugglers', title: 'THE SMUGGLERS', steps: SMUGGLERS, stamp: 'SEIZED', colour: '#8a5a2a' },
+  { id: 'buyer', title: 'THE BUYER', steps: BUYER, stamp: 'SOLD OUT', colour: '#aa6a3a' },
 ];
 export const trailMark = (trail, level) => trail.id + ':' + level;
 // the marks a mission's being done adds (any trail it is a step of)

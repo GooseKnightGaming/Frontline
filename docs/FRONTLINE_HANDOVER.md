@@ -7,6 +7,14 @@ GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
 
+## M6.120.0 — Levels 113 - 115: THE BUYER (the Dry Coast)
+
+- `drafts/airstrip.js` (no 113): a desert strip at dusk (`mat: 'desert'`). Drain the fuel tank (a terminal with verb Drain), mark the pilot, take the flight plan, optional quiet. The plane's wing box is not solid (it was at head height over the apron). The generator shed was moved off the hangar's back wall, because its door had opened onto a one-square lane.
+- `drafts/capmerrow.js` (no 114): Kray's cliff-top house, `windows: false`. Mark two dinner guests and open the study safe (verb Open). Kray himself is there but not the job.
+- `drafts/caravan.js` (no 115): a desert camp round a well, with tents as small rooms. Capture Kray (his tent), and stop the lead lorry (`stop`, wait 240; probed: it moves off at 240).
+- Vans moved out of the starts' view (`van: [7, 0]`) at the Airstrip and Cap Merrow.
+- Trail THE BUYER (stamp SOLD OUT), group [113]. Trophies: Dry Tanks, Mr Grey and Mr Blue, The Last Crate.
+
 ## M6.119.0 — Levels 110 - 112: THE SMUGGLERS (a new case, Port Saren)
 
 - `drafts/customs.js` (no 110): a customs house (long room, the inspector's office, the bonded store), `windows: false`. Mark the inspector, take the seizure book, optional quiet.
