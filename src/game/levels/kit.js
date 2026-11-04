@@ -754,7 +754,8 @@ export function buildKitLevel(spec) {
     if (gd.target) g.isTarget = true;
     if (gd.dog) g.hasDog = true;
     // (M6.30) a reserve: not here yet - called in by the radio operator or the siren, from where he is placed
-    if (gd.reserve) { g.reserve = true; g.dormant = true; g.target.solid.disabled = true; g.objective = false; }          // (M6.30) a dog handler: his dog at his heel (sim/people/dog.js)
+    if (gd.reserve) { g.reserve = true; g.dormant = true; g.target.solid.disabled = true; g.objective = false; }
+    if (gd.reserve && gd.wave) g.wave = gd.wave;          // (M6.79) a reserve that comes in with a hold's wave (1, 2, ...), not with the alarm          // (M6.30) a dog handler: his dog at his heel (sim/people/dog.js)
     // (M6.29) a marksman's perches: where he moves to, one after another, once he has given his place away
     if (gd.perches) g.perches = gd.perches.map(([px, py, pf]) => free([mid(px), floors[pf || gf || K0].y, mid(py)]));
     level.guards.push(g);
@@ -858,7 +859,7 @@ export function buildKitLevel(spec) {
   // ── places to reach ──
   for (const r of spec.reach || []) {
     const F = floors[r.floor || K0];
-    level.reach.push({ id: r.id, name: r.name, box: [[r.at[0] * CELL, F.y - 0.5, r.at[1] * CELL], [(r.at[2] + 1) * CELL, F.y + 2.5, (r.at[3] + 1) * CELL]], done: false });
+    level.reach.push({ id: r.id, name: r.name, box: [[r.at[0] * CELL, F.y - 0.5, r.at[1] * CELL], [(r.at[2] + 1) * CELL, F.y + 2.5, (r.at[3] + 1) * CELL]], done: false, hold: r.hold || 0, held: 0, said: r.said || null, after: r.after || null });      // (M6.79) hold: seconds to stay in it
   }
   // radiation: sources (spec.radiation: [{ at: [x, y], r: squares, rate: hp a second at the heart of it,
   // floor }]) - the dose falls off with the square of the distance out to r

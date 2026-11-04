@@ -1407,7 +1407,7 @@ export function setupMission(ctx) {
         r.status = hs.length === 1 ? (ok ? 'brought out' : dead ? 'killed' : 'still inside') : ok + ' of ' + hs.length + ' brought out' + (dead ? ' (' + dead + ' killed)' : '');
       } else if (o.kind === 'reach') {
         const z = level.reach.find((q) => q.id === o.ref);
-        r.done = !!(z && z.done); r.status = r.done ? 'reached' : 'not reached';
+        r.done = !!(z && z.done); r.status = z && z.hold ? (r.done ? 'held' : Math.floor(z.held) + ' of ' + Math.round(z.hold) + ' s') : r.done ? 'reached' : 'not reached';
       } else if (o.kind === 'identify') {
         // (M6.78) men to mark (main.js's marking: aim at one for a second, or a tracker on him) - every one, alive
         const gs = (o.refs || []).map((id) => guards.find((q) => q.id === id)).filter(Boolean), n = gs.filter((g) => g.tracked).length;
@@ -1932,7 +1932,22 @@ export function setupMission(ctx) {
           }
           // a first draft: the next thing to do, and how far the rest are
           for (const z of level.reach) if (!z.done && player.mode !== 'dead' && player.pos[0] > z.box[0][0] && player.pos[0] < z.box[1][0] && player.pos[2] > z.box[0][2] && player.pos[2] < z.box[1][2] && player.pos[1] > z.box[0][1] && player.pos[1] < z.box[1][1]) {
-            z.done = true; audio.stepDone && audio.stepDone(); showHint(z.name + ' - reached.');
+            if (!z.hold) { z.done = true; audio.stepDone && audio.stepDone(); showHint(z.name + ' - reached.'); continue; }
+            // (M6.79) a place to hold: so many seconds in it (they add up - step out, and it waits), and the reserves
+            // with a wave number come in as it goes: wave 1 at once, the rest spread through the hold
+            if (z.after && !(level.terminals || []).some((t) => t.id === z.after && t.done)) { if (!z.toldAfter) { z.toldAfter = true; showHint(z.name + ': not yet - ' + ((level.terminals || []).find((t) => t.id === z.after) || { name: 'the terminal' }).name + ' first.'); } continue; }
+            const waves = Math.max(0, ...guards.filter((g) => g.reserve && g.wave).map((g) => g.wave));
+            const before = z.held; z.held += simDt;
+            if (!z.started) { z.started = true; showHint(z.name + ': hold it - ' + Math.round(z.hold) + ' seconds.'); }
+            for (let k = 1; k <= waves; k++) {
+              const at = (k - 1) / waves * z.hold;
+              if (before <= at && z.held > at) {
+                const rs = guards.filter((g) => g.reserve && g.dormant && g.wave === k);
+                for (const g of rs) { g.dormant = false; g.target.solid.disabled = false; g.awareness = 0.9; g.stim = player.pos.slice(); g.since = 0; g.state = 'search'; g.stateT = 0; g.path = null; g.pursuit = true; }
+                if (rs.length) later.push({ t: 1.5, fn: () => showHint('They are coming for you: ' + rs.length + ' more.') });
+              }
+            }
+            if (z.held >= z.hold) { z.done = true; audio.stepDone && audio.stepDone(); showHint(z.said || z.name + ' - held.'); }
           }
           if (B) { battleTick(simDt); return; }
           const os = now.objectives || [], next = os.find((x) => !x.optional && !x.done && !x.failed);
@@ -2387,6 +2402,8 @@ export function setupMission(ctx) {
       if (level.draft === 'varna' && m.result === 'success') all.push({ id: 'handler_taken', name: 'Taken Alive', about: 'The handler, tied up aboard the Varna Star, and his forty names with him.' });
       // (M6.78) five faces on the file
       if (level.draft === 'lodge' && m.result === 'success') all.push({ id: 'five_faces', name: 'Five Faces', about: 'All five of the reds\' chiefs marked at Ravensholt Lodge, and their names with them.' });
+      // (M6.79) the names on the air
+      if (level.draft === 'mast' && m.result === 'success') all.push({ id: 'on_air', name: 'On the Air', about: 'The tape patched in on Hesk Hill, and the transmitter hall held for all ninety seconds.' });
       // (M6.66) the river open: Varnholm Lock
       if (level.draft === 'lock' && m.result === 'success') all.push({ id: 'river_open', name: 'River Open', about: 'The stand-down sent and the lock opened: Ghost\'s boats through to the sea.' });
       // (M6.44) the blight's end: the Dalmar Star

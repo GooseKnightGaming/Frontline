@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.78.0)
+# Frontline — Handover (M6.79.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,16 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.79.0 — a place to hold, and waves; Level 62, the Hesk Hill Transmitter
+- A reach (spec.reach) can have `hold: seconds` (and `after: <terminal id>`, `said`): the objective (kind 'reach')
+  is done when you have been in it that long - the seconds add up, stepping out only pauses them - and only once the
+  terminal is done ("not yet: ... first" once). Status "n of 90 s".
+- Reserves with `wave: n` (kit: `g.wave`) come in with the siren like any reserve; if it has not called them, each
+  wave comes in during the hold: wave 1 at its start, wave k at (k-1)/waves of the way through, straight for you.
+- `drafts/mast.js` (62): after the lodge - patch Ghost's tape into Radio Varnholm's transmitter on Hesk Hill (the
+  control room), then hold the transmitter hall for 90 s as three waves come up the hill (the gate, both sides, over
+  the top); optionally bring out the night engineer (the studio). Out north.
 
 ## M6.78.0 — men to mark; Level 61, Ravensholt Lodge
 - A new objective kind, `identify` (mission_runtime.js): `{ kind: 'identify', refs: [guard ids] }` - done when every

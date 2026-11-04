@@ -141,5 +141,13 @@ T('Ravensholt Lodge: men to mark (objective kind identify) - every ref a guard, 
   const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
   A(/o\.kind === 'identify'/.test(rt) && / marked'/.test(rt), 'the runtime');
 });
+T('the Hesk Hill Transmitter: a place to hold (reach with hold, after a terminal), reserves in three waves', () => {
+  const d = DRAFTS.find((q) => q.id === 'mast'), L = buildKitLevel(d), z = L.reach.find((q) => q.id === 'tx');
+  A(z && z.hold === 90 && z.after === 'patch' && L.terminals.some((t) => t.id === 'patch'), 'the hold');
+  const ws = L.guards.filter((g) => g.reserve && g.wave).map((g) => g.wave);
+  A([1, 2, 3].every((k) => ws.includes(k)), 'waves: ' + ws);
+  const rt = readFileSync(new URL('../src/game/levels/mission_runtime.js', import.meta.url), 'utf8');
+  A(/z\.held \+= simDt/.test(rt) && /g\.wave === k/.test(rt), 'the runtime');
+});
 console.log(fails.length ? 'FAILURES (' + fails.length + '):\n' + fails.map((f) => '  * ' + f).join('\n') : 'ALL ' + pass + ' PASSED');
 process.exit(fails.length ? 1 : 0);
