@@ -7,6 +7,12 @@ GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
 
+## M6.106.0 — Level 84, St Aldric's Tower (THE DROPS closes)
+
+- New draft `drafts/cathedral.js` (no 84): a cathedral nave and vestry with a four-floor bell tower at the east end (G foot, 1 ringing chamber, 2 clock room, 3 bell chamber; stairs alternate x32 / x36 as in the Light). Objectives: capture the Sexton (clock room), take the drop (bell chamber), optional quiet.
+- Case board: new trail THE DROPS (funfair, observatory, cathedral; stamp RUNG OUT). Mission list group [82] renamed THE DROPS. Trophy "Rung Out".
+- Kit fixes on the way: guards had been placed on stair cells, and a window had overwritten the vestry door.
+
 ## M6.105.0 — Level 83, the Observatory
 - `drafts/observatory.js` (83): dark (night vision issued), the dome's lights a `lights` device on the guard hut's
   console - put them out and the reds in the dome have only their torches. Copy the receiver's recordings (the dome,

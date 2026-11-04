@@ -8,7 +8,7 @@ export default {
   where: 'St Aldric\'s cathedral, Varnholm. 00:30, after the last service, the nave dark but for candles.',
   brief: [
     ['The job', 'Dr Sauer\'s star charts had it written on their backs. The couriers\' drops are run by one man, the <b>Sexton</b>, from the <b>bell tower</b> of St Aldric\'s. The last drop of every month is left in the <b>bell chamber</b>. Climb the tower. <b>Take the Sexton alive</b> in the clock room. Take the month\'s <b>drop</b> from among the bells. If you can, do it <b>without the alarm</b>.'],
-    ['The place', 'The <b>nave</b>, the vestry to the south, and the <b>tower</b> at the west end. Inside the tower, one stair climbs a flight to each floor: the ringing chamber, the <b>clock room</b>, and the <b>bell chamber</b> at the top. You come in by the north door.'],
+    ['The place', 'The <b>nave</b>, the vestry to the south, and the <b>tower</b> at the east end. Inside the tower, one stair climbs a flight to each floor: the ringing chamber, the <b>clock room</b>, and the <b>bell chamber</b> at the top. You come in by the north door.'],
     ['Security', 'A camera on the nave, the alarm. The console and the radio are in the vestry, the engineer at the foot of the tower. There are men on every floor of the tower and a lookout among the bells. The verger and one late worshipper are still in the nave. They are not reds.'],
     ['Objectives', '<b>Take the Sexton alive</b> (the clock room). Take the <b>drop</b> (the bell chamber). If you can, <b>without the alarm</b>. Out by the north door.'],
   ],
@@ -30,7 +30,7 @@ export default {
         ['room', 6, 24, 14, 30],                        // the vestry
       ], after: [
         ['cells', [[18, 9], [31, 16], [10, 23]], 'D'],
-        ['cells', [[10, 9], [26, 9], [10, 23], [26, 23], [5, 16]], 'W'],
+        ['cells', [[10, 9], [26, 9], [26, 23], [5, 16], [5, 27]], 'W'],
         ['room', 10, 12, 10, 20, 'Y'], ['room', 14, 12, 14, 20, 'Y'], ['room', 18, 12, 18, 20, 'Y'], ['room', 22, 12, 22, 20, 'Y'],
         ['cells', [[28, 16]], 'M'], ['cells', [[27, 13], [27, 19]], 'K'],
         ['cells', [[37, 14]], 'C'], ['cells', [[37, 18]], 'M'],
@@ -80,9 +80,9 @@ export default {
     { id: 'close', label: 'St Aldric\'s', at: [0, 0, W - 1, H - 1] },
   ],
   guards: [
-    { id: 'sexton', at: [37, 14, '2'], arms: 'pistol', rank: 'officer', temper: 'cowardly', name: 'The Sexton', tint: [0.2, 0.2, 0.22] },
-    { id: 'cg', at: [33, 14, '2'], arms: 'smg', temper: 'steady' },
-    { id: 'rg', at: [37, 15, '1'], arms: 'carbine', temper: 'steady' },
+    { id: 'sexton', at: [35, 17, '2'], arms: 'pistol', rank: 'officer', temper: 'cowardly', name: 'The Sexton', tint: [0.2, 0.2, 0.22] },
+    { id: 'cg', at: [34, 14, '2'], arms: 'smg', temper: 'steady' },
+    { id: 'rg', at: [34, 15, '1'], arms: 'carbine', temper: 'steady' },
     { id: 'look', at: [37, 18, '3'], arms: 'dmr', rank: 'specialist', temper: 'steady' },
     { id: 'eng', at: [36, 18, 'G'], arms: 'pistol', temper: 'cowardly', role: 'engineer' },
     { id: 'n1', at: [20, 11, 'G'], route: [[8, 11], [28, 11]], arms: 'carbine' },
