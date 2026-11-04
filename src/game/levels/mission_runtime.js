@@ -2505,6 +2505,12 @@ export function setupMission(ctx) {
       if (level.draft === 'racecourse' && m.result === 'success') all.push({ id: 'favourite', name: 'Backing the Favourite', about: 'Dancourt\'s courier marked at the Lessar Cup and the week\'s slips taken.' });
       if (level.draft === 'dancourt' && m.result === 'success') all.push({ id: 'afterhours', name: 'After Hours', about: 'Dancourt & Fils\' index copied and Kray\'s book taken, in the dark.' });
       if (level.draft === 'cablecar' && m.result === 'success') all.push({ id: 'lastcar', name: 'The Last Car Down', about: 'Mr Dancourt brought down the Lessar mountain in the last car.' });
+      if (level.draft === 'witnessflat' && m.result === 'success') all.push({ id: 'topfloor', name: 'Top Floor', about: 'Marta Lind\'s flat held until the car came.' });
+      if (level.draft === 'motorcade' && m.result === 'success') all.push({ id: 'fivetonine', name: 'Five to Nine', about: 'Marta Lind on the courthouse steps in time, through both tries on the embankment.' });
+      if (level.draft === 'courthouse' && m.result === 'success') all.push({ id: 'twelfth', name: 'The Twelfth Juror', about: 'The bought juror\'s usher marked and his book taken, and the verdict safe.' });
+      if (level.draft === 'quarry' && m.result === 'success') all.push({ id: 'secondcar', name: 'The Second Car', about: 'The getaway car stopped in the quarry and the planner taken.' });
+      if (level.draft === 'vineyard' && m.result === 'success') all.push({ id: 'grapes', name: 'Through the Vines', about: 'Varo\'s son followed unseen to Kray\'s hiding place.' });
+      if (level.draft === 'oldbridge' && m.result === 'success') all.push({ id: 'midnight', name: 'Thursday, Midnight', about: 'Anselm Kray taken at the old bridge, this time for good.' });
       // (M6.66) the river open: Varnholm Lock
       if (level.draft === 'lock' && m.result === 'success') all.push({ id: 'river_open', name: 'River Open', about: 'The stand-down sent and the lock opened: Ghost\'s boats through to the sea.' });
       // (M6.44) the blight's end: the Dalmar Star

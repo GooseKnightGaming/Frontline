@@ -19,7 +19,7 @@ export default {
   time: { date: [28, 8, 2027], hour: 16, minute: 40 }, night: false, faction: 'red',
   startLoadout: { primary: 'K7', backup: 'V27C', utility1: 'SMOKE', utility2: 'FRAG', gear: 'LENSES', mods: { primary: ['SILENCER'], backup: ['SILENCER'] } },
   atmos: { fog: [0.72, 0.66, 0.56, 40, 260], ambient: [0.62, 0.58, 0.52] },
-  extractName: 'the haul road, west', extract: { x: 2, y: 20, floor: 'G', van: [0, 7] },
+  extractName: 'the haul road, west', extract: { x: 2, y: 20, floor: 'G', van: [4, -3] },
   outside: { backdrop: 'hills', mat: 'desert', margin: 14 },
   windows: false,
   floors: {

@@ -90,7 +90,7 @@ export default {
   ],
   civilians: [
     { id: 'marta', at: [33, 20, '1'], yaw: -Math.PI / 2, title: 'Marta Lind', tint: [0.9, 0.85, 0.8], says: ['Nine years I kept his books. I can tell you what every one of those crates cost, to the penny. If I live till Monday.'] },
-    { id: 'caretaker', at: [29, 18, 'G'], yaw: 0, title: 'The caretaker', tint: [0.8, 0.75, 0.7], says: ['Somebody paid me fifty to tell them which flat. I told them the wrong one. Then I telephoned your people.'] },
+    { id: 'caretaker', at: [27, 17, 'G'], yaw: 0, title: 'The caretaker', tint: [0.8, 0.75, 0.7], says: ['Somebody paid me fifty to tell them which flat. I told them the wrong one. Then I telephoned your people.'] },
   ],
   objectives: [
     { id: 'o1', kind: 'reach', ref: 'flat', text: 'Hold her flat until the car comes' },

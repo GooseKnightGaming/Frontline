@@ -10,7 +10,7 @@ export default {
   where: 'The Varo vineyard, the Vintners\' country. 20:50, the vintage half in, the light going.',
   brief: [
     ['The job', '"V." was a vineyard in the Vintners\' country, the house of a man called <b>Varo</b>, who turns out to be <b>Kray\'s half-brother</b>. Kray is not in the house. Varo\'s <b>son</b> is about to go to him with food and the news. Take the <b>false passport</b> waiting in the house for Kray. Then <b>follow the son</b> through the vines to wherever Kray is hiding.'],
-    ['The place', 'The <b>house</b> is in the north-west corner, with the winery beside it. The <b>vines</b> run in long rows across the middle, with a track down through them. The far side of the vineyard is east, and the river is beyond it. You come in along the river path, from the south.'],
+    ['The place', 'The <b>house</b> is in the north-west corner, with the winery beside it. The <b>vines</b> run in long rows across the middle, with a track down through them. The far side of the vineyard is east, with the old water mill on the river in its north-east corner. You come in along the river path, from the south.'],
     ['Security', 'Varo keeps men of his own on the house and the winery, and some of Kray\'s friends are with them now. The son is nervous and looks over his shoulder. If he sees you following, he will run, and Kray with him.'],
     ['Objectives', 'Take the <b>passport</b> (the house). <b>Follow the son</b> to where he goes. Back along the river path, south.'],
   ],
@@ -30,51 +30,51 @@ export default {
       carve: { size: [W, H], ops: [
         ['room', 2, 2, 6, 6],                           // the house
         ['room', 11, 2, 19, 6],                         // the winery
-        ['room', 48, 31, 54, 37],                       // the old water mill
+        ['room', 50, 5, 56, 11],                        // the old water mill
       ], after: [
         ...ROWS,
-        ['cells', [[7, 4], [15, 7], [47, 34]], 'D'],
-        ['cells', [[4, 1], [15, 1], [51, 30], [55, 34]], 'W'],
+        ['cells', [[7, 4], [15, 7], [49, 8]], 'D'],
+        ['cells', [[4, 1], [15, 1], [53, 4], [57, 8]], 'W'],
         ['cells', [[3, 3]], 'T'], ['cells', [[5, 5]], 'Y'],
         ['room', 12, 3, 18, 3, 'C'], ['cells', [[17, 5]], 'M'],
-        ['cells', [[50, 32]], 'T'], ['cells', [[53, 36]], 'Y'], ['cells', [[52, 33]], 'M'],
+        ['cells', [[52, 6]], 'T'], ['cells', [[55, 10]], 'Y'], ['cells', [[54, 6]], 'M'],
         // carts and baskets of grapes along the track
-        ['cells', [[27, 6], [46, 12], [46, 26], [4, 24], [16, 37], [30, 36]], 'C'],
+        ['cells', [[27, 6], [48, 16], [48, 28], [4, 24], [16, 37], [30, 36]], 'C'],
       ] },
     },
   },
   extra(kit) {
     const { box, level, mid, CELL: C } = kit;
     box([0, -0.05, 39 * C], [W * C, 0.02, H * C + 4], 'glassB', { tint: [0.2, 0.3, 0.35], solid: false });
-    for (const [x, y] of [[8, 8], [26, 8], [44, 34], [8, 34]]) level.lights.push({ pos: [mid(x), 3.4, mid(y)], range: 9, intensity: 0.7, color: [1, 0.85, 0.6], street: true });
+    for (const [x, y] of [[8, 8], [26, 8], [47, 9], [8, 34]]) level.lights.push({ pos: [mid(x), 3.4, mid(y)], range: 9, intensity: 0.7, color: [1, 0.85, 0.6], street: true });
   },
   start: { x: 36, y: 37, floor: 'G', yaw: 0 },
   zones: [
     { id: 'house', label: 'The vineyard - Varo\'s house', at: [2, 2, 6, 6] },
     { id: 'winery', label: 'The vineyard - the winery', at: [11, 2, 19, 6] },
-    { id: 'mill', label: 'The vineyard - the old water mill', at: [48, 31, 54, 37] },
+    { id: 'mill', label: 'The vineyard - the old water mill', at: [50, 5, 56, 11] },
     { id: 'vines', label: 'The Varo vineyard', at: [0, 0, W - 1, H - 1] },
   ],
   guards: [
-    { id: 'son', at: [8, 8, 'G'], route: [[8, 34, 30], [26, 34], [26, 8], [44, 8], [44, 34], [49, 34, 1e9]],
+    { id: 'son', at: [8, 8, 'G'], route: [[8, 8, 30], [8, 34], [26, 34], [26, 8], [48, 8, 1e9]],
       arms: 'pistol', temper: 'cowardly', name: 'Varo\'s son', tint: [0.7, 0.6, 0.5] },
     { id: 'varo', at: [4, 4, 'G'], arms: 'pistol', rank: 'officer', temper: 'steady', name: 'Varo' },
     { id: 'hs1', at: [9, 5, 'G'], arms: 'carbine', temper: 'steady' },
     { id: 'wn1', at: [14, 5, 'G'], arms: 'smg' },
     { id: 'kf1', at: [30, 4, 'G'], route: [[22, 4], [44, 4]], arms: 'carbine' },
-    { id: 'kf2', at: [52, 20, 'G'], route: [[52, 8], [52, 28]], arms: 'carbine', dog: true },
-    { id: 'kray', at: [51, 35, 'G'], arms: 'pistol', rank: 'officer', temper: 'cowardly', name: 'Anselm Kray', tint: [0.9, 0.85, 0.75] },
+    { id: 'kf2', at: [46, 18, 'G'], route: [[46, 14], [46, 21]], arms: 'carbine', dog: true },
+    { id: 'kray', at: [53, 9, 'G'], arms: 'pistol', rank: 'officer', temper: 'cowardly', name: 'Anselm Kray', tint: [0.9, 0.85, 0.75] },
   ],
   civilians: [
     { id: 'picker', at: [27, 20, 'G'], yaw: 0, title: 'A grape picker, late home', tint: [1.0, 0.9, 0.8], says: ['The boy takes a basket down to the old mill every night now. Nobody has milled anything there in twenty years.'] },
   ],
   pickups: [{ id: 'passport', name: 'The false passport', what: 'the passport', at: [3, 3, 'G'], table: true, colour: [0.2, 0.25, 0.5] }],
   intel: [
-    { id: 'note', at: [50, 32, 'G'], kind: 'Note', title: 'A note in the mill', text: ['"Boat Thursday, the old bridge, midnight. Bring the passport. - K." It is Thursday.'] },
+    { id: 'note', at: [52, 6, 'G'], kind: 'Note', title: 'A note in the mill', text: ['"Boat Thursday, the old bridge, midnight. Bring the passport. - K." It is Thursday.'] },
   ],
   objectives: [
     { id: 'o1', kind: 'take', ref: 'passport', text: 'Take the false passport (the house)' },
     { id: 'o2', kind: 'tail', ref: 'son', range: 40, near: 5, lose: 16, text: 'Follow Varo\'s son to where he goes',
-      said: 'The son goes into the old water mill with his basket. Somebody inside says his name. It is Kray\'s voice.' },
+      said: 'The son knocks at the old water mill\'s door with his basket. Somebody inside says his name. It is Kray\'s voice.' },
   ],
 };

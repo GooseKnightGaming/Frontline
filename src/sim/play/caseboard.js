@@ -174,6 +174,18 @@ export const BANKER = [
   { level: 'dancourt', title: 'Dancourt & Fils', text: 'The bank\'s index copied in the dark, and Kray\'s account book taken from the vault.' },
   { level: 'cablecar', title: 'The Mountain', text: 'The cable car\'s winding gear stopped, and Mr Dancourt taken in his study above the snow line.' },
 ];
+// (M6.122) the witnesses: the trial of Brandt, Kray and Dancourt, and the people who made it
+export const WITNESSES = [
+  { level: 'witnessflat', title: 'The Witness Flat', text: 'Marta Lind\'s flat held until the car came, and the men who came for her marked.' },
+  { level: 'motorcade', title: 'The Motorcade', text: 'Marta Lind driven along the embankment, through both tries, to the courthouse steps.' },
+  { level: 'courthouse', title: 'The Courthouse', text: 'The usher who bought a juror marked, his payments book taken, and the jury room\'s calls read.' },
+];
+// (M6.122) the escape: Kray sprung, followed and taken again
+export const ESCAPE = [
+  { level: 'quarry', title: 'The Quarry', text: 'The second getaway car stopped in the Merle quarry, and the man who planned it taken.' },
+  { level: 'vineyard', title: 'The Vineyard', text: 'Kray\'s false passport taken, and Varo\'s son followed through the vines to the mill.' },
+  { level: 'oldbridge', title: 'The Old Bridge', text: 'Kray taken at the old bridge, and the boat that was to carry him away stopped.' },
+];
 export const TRAILS = [
   { id: 'blight', title: 'THE BLIGHT', steps: BLIGHT, stamp: 'HARVEST SAVED', colour: '#5a9a3a' },
   { id: 'codex', title: 'THE CODEX', steps: CODEX, stamp: 'RETURNED', colour: '#3a7ab0' },
@@ -198,6 +210,8 @@ export const TRAILS = [
   { id: 'smugglers', title: 'THE SMUGGLERS', steps: SMUGGLERS, stamp: 'SEIZED', colour: '#8a5a2a' },
   { id: 'buyer', title: 'THE BUYER', steps: BUYER, stamp: 'SOLD OUT', colour: '#aa6a3a' },
   { id: 'banker', title: 'THE BANKER', steps: BANKER, stamp: 'ACCOUNT CLOSED', colour: '#3a4a7a' },
+  { id: 'witnesses', title: 'THE WITNESSES', steps: WITNESSES, stamp: 'GUILTY', colour: '#5a3a3a' },
+  { id: 'escape', title: 'THE ESCAPE', steps: ESCAPE, stamp: 'RECAPTURED', colour: '#3a5a5a' },
 ];
 export const trailMark = (trail, level) => trail.id + ':' + level;
 // the marks a mission's being done adds (any trail it is a step of)

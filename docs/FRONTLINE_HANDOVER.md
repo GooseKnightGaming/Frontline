@@ -7,6 +7,17 @@ GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
 
+## M6.122.0 — Levels 119 - 124: THE WITNESSES and THE ESCAPE
+
+- `drafts/witnessflat.js` (no 119): Northern HQ's shell made a tenement by script. The hold is upstairs (`reach` with `floor: '1'`, hold 120, four waves; probed: done at 119 s), with Hale and Moss. You start in the flat.
+- `drafts/motorcade.js` (no 120): the Drive South made by script into the river embankment, a reach with optional quick 210.
+- `drafts/courthouse.js` (no 121): the courtroom, chambers, jury room, records office, robing room and entrance hall. Mark the usher, take his payments book, read the switchboard (verb Read), optional quiet.
+- `drafts/quarry.js` (no 122): a pit between rock walls. Stop the second car (`stop`, wait 170) and capture the planner. There is an optional rescue of the van's warder.
+- `drafts/vineyard.js` (no 123): rows of vines (`K`) and a `tail`. **Lesson: the runtime treats a route's first point as the man's own post and skips it**, so `route[0]` must be where he stands (as in the Cove). And he stops outside a door, not inside. Probed: he walks the whole route and arrives at the mill door in about 110 s.
+- `drafts/oldbridge.js` (no 124): a river with a bridge across it. Capture Kray, stop his boat (`stop`, wait 200).
+- Kit and test fixes: the tenement's caretaker was on a table; the Quarry's van was in the rock; the Old Bridge's van was moved out of the start's view.
+- Trails THE WITNESSES (stamp GUILTY) and THE ESCAPE (stamp RECAPTURED), groups [119] and [122]. Six trophies.
+
 ## M6.121.0 — Levels 116 - 118: THE BANKER
 
 - `drafts/racecourse.js` (no 116): a racecourse by day in disguise, with a grandstand, the stewards' and weighing rooms, the bookmakers' rail and a crowd. Mark the courier, take the slips, optional quiet.

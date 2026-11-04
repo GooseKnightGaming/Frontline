@@ -19,7 +19,7 @@ export default {
   time: { date: [2, 9, 2027], hour: 23, minute: 50 }, night: true, faction: 'red',
   startLoadout: { primary: 'MP2', backup: 'V27C', utility1: 'SMOKE', utility2: 'FLASH', gear: 'LENSES', mods: { primary: ['SILENCER'], backup: ['SILENCER'] } },
   atmos: { fog: [0.1, 0.11, 0.15, 25, 170], ambient: [0.22, 0.23, 0.28] },
-  extractName: 'the towpath, north-east', extract: { x: 57, y: 3, floor: 'G', van: [-7, 0] },
+  extractName: 'the towpath, north-east', extract: { x: 57, y: 3, floor: 'G', van: [0, 8] },
   outside: { backdrop: 'hills', mat: 'grass', margin: 14 },
   windows: false,
   floors: {
