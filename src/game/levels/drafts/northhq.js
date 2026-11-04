@@ -87,7 +87,7 @@ export default {
     { id: 'so2', at: [26, 16, '1'], arms: 'pistol', rank: 'officer', temper: 'steady', name: 'A staff officer (intelligence)', tint: [0.25, 0.3, 0.35] },
     { id: 'so3', at: [32, 16, '1'], arms: 'pistol', rank: 'officer', temper: 'cowardly', name: 'A staff officer (supply)', tint: [0.4, 0.32, 0.26] },
     { id: 'sg1', at: [20, 19, 'G'], arms: 'pistol', rank: 'specialist', temper: 'cowardly', name: 'The duty signaller' },
-    { id: 'hl1', at: [25, 11, 'G'], route: [[17, 11], [33, 11]], arms: 'carbine' },
+    { id: 'hl1', at: [25, 11, 'G'], route: [[17, 11], [29, 11]], arms: 'carbine' },
     { id: 'mp1', at: [30, 20, 'G'], arms: 'carbine', temper: 'steady' },
     { id: 'up1', at: [25, 9, '1'], route: [[17, 9], [33, 9]], arms: 'smg' },
     { id: 'rad', at: [24, 32, 'G'], arms: 'pistol', rank: 'officer', temper: 'steady', role: 'radio' },

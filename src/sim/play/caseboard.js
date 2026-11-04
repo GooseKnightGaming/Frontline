@@ -96,6 +96,11 @@ export const HOLLIS = [
   { level: 'cottage', title: 'The Cliff Cottage', text: 'Hollis taken alive in his attic before he could send the date, and his code book with him.' },
   { level: 'wrongbridge', title: 'The Wrong Bridge', text: 'The reds\' ambush party cleared from the wrong bridge while the armoury went by road.' },
 ];
+// (M6.102) the colonel: taken on his shoot, and his spring plan stood down in his own name
+export const COLONEL = [
+  { level: 'hunt', title: 'The Hunting Party', text: 'Colonel Strand taken alive in the Vashka woods, and his map case with him.' },
+  { level: 'northhq', title: 'Northern Headquarters', text: 'His staff marked, and the spring plan stood down in his own name.' },
+];
 export const TRAILS = [
   { id: 'blight', title: 'THE BLIGHT', steps: BLIGHT, stamp: 'HARVEST SAVED', colour: '#5a9a3a' },
   { id: 'codex', title: 'THE CODEX', steps: CODEX, stamp: 'RETURNED', colour: '#3a7ab0' },
@@ -107,6 +112,7 @@ export const TRAILS = [
   { id: 'camps', title: 'THE CAMPS', steps: CAMPS, stamp: 'EMPTIED', colour: '#6a8a5a' },
   { id: 'coast', title: 'THE COAST', steps: COAST, stamp: 'PAID OFF', colour: '#3a7a8a' },
   { id: 'hollis', title: 'HOLLIS', steps: HOLLIS, stamp: 'TURNED', colour: '#8a3a4a' },
+  { id: 'colonel', title: 'THE COLONEL', steps: COLONEL, stamp: 'STOOD DOWN', colour: '#5a5a7a' },
 ];
 export const trailMark = (trail, level) => trail.id + ':' + level;
 // the marks a mission's being done adds (any trail it is a step of)

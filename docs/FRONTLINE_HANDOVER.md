@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.101.0)
+# Frontline — Handover (M6.102.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,12 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.102.0 — Level 80, Northern Headquarters; THE COLONEL ends
+- `drafts/northhq.js` (80): with Hale and Moss, in a walled headquarters. Mark the three staff officers in their
+  offices upstairs (identify), send the stand-down at the signals desk, then hold the signals room 75 s (two waves from
+  the barracks and the motor pool). The case board's twelfth trail, THE COLONEL (hunt, northhq; stamped STOOD DOWN);
+  the trophy The Spring Called Off.
 
 ## M6.101.0 — Level 79, the Hunting Party (THE COLONEL begins)
 - `drafts/hunt.js` (79): a daylight shoot in snowy pine woods (pines drawn in extra), with Hale and Moss. Take

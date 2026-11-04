@@ -2462,6 +2462,8 @@ export function setupMission(ctx) {
       if (level.draft === 'wrongbridge' && m.result === 'success' && guards.filter((g) => g.side === 'ally').every((g) => !g.dead)) all.push({ id: 'four_home', name: 'All Four Home', about: 'The wrong bridge cleared with Hale, Moss and Venn, and none of them lost.' });
       // (M6.101) the colonel, bagged
       if (level.draft === 'hunt' && m.result === 'success') all.push({ id: 'colonel_bagged', name: 'Bagged', about: 'Colonel Strand taken alive on his own Sunday shoot, and his map case with him.' });
+      // (M6.102) the spring stood down
+      if (level.draft === 'northhq' && m.result === 'success') all.push({ id: 'spring_off', name: 'The Spring Called Off', about: 'Three staff officers marked, and the north\'s spring plan stood down in its own colonel\'s name.' });
       // (M6.66) the river open: Varnholm Lock
       if (level.draft === 'lock' && m.result === 'success') all.push({ id: 'river_open', name: 'River Open', about: 'The stand-down sent and the lock opened: Ghost\'s boats through to the sea.' });
       // (M6.44) the blight's end: the Dalmar Star
