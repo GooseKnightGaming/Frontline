@@ -929,4 +929,13 @@ mission list in its stories with ticks. See the handover for each.
   - files upstairs and a car to stop in the yard; "ABSOLVED").
 - Lessons for drafting: guards never on stair cells; a window cell overwrites a door cell; open courtyards need a way
   in at least two squares wide; a vehicle's crew must also be guards; keep the start out of a parked crew's view.
-- Candidates next: a new trail out of the Studio's files; papers in the older levels; the Campus start check.
+- M6.110 - M6.111: THE WARNING (the Safe House - hold a farmhouse with Hale and Moss against three waves, the
+  Railway Hotel - a switchboard, a ledger and a driver to mark, the Kiln Road Garage - cleared; "HEEDED").
+- M6.112: THE WINTER ROAD (the Crash Site in the snow, Fennick's Pass - dark, with the fort's floodlights on its
+  console, the Frozen Lake - flares to light, a snowcat to stop, a plane to meet; "DELIVERED").
+- M6.113: THE PRESS (the Bakery, the Censor's Office - the front page sent out on his own teleprinter, the Paper Run -
+  three newsstands through the curfew; "PRINTED").
+- M6.114: THE GENERAL (the Opera in disguise, the Vey Estate - the General from his bed, the Drive South - two
+  roadblocks on the coast road; "ON TRIAL").
+- M6.115: Level 100, the Rising - a battle through Hollen's streets, Ghost and the town against the garrison.
+- Candidates next: papers in the older levels; the Campus start check; Rhys's own playtesting notes on any of these.
