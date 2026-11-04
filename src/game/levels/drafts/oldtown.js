@@ -48,7 +48,7 @@ export default {
     { id: 'old', label: 'The old town, Port Saren', at: [0, 0, W - 1, H - 1] },
   ],
   guards: [
-    { id: 'insp', at: [19, 3, 'G'], route: [[19, 17, 20], [34, 17], [34, 32], [19, 32], [19, 37, 1e9]],
+    { id: 'insp', at: [19, 3, 'G'], route: [[19, 3, 20], [19, 17], [34, 17], [34, 32], [19, 32], [19, 37, 1e9]],
       arms: 'pistol', rank: 'officer', temper: 'cowardly', name: 'The inspector', tint: [0.3, 0.32, 0.4] },
     { id: 'buyer', at: [12, 37, 'G'], arms: 'pistol', rank: 'officer', temper: 'steady', name: 'The buyer', tint: [0.55, 0.45, 0.35] },
     { id: 'wh1', at: [8, 36, 'G'], arms: 'smg', temper: 'steady' },
