@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.89.0)
+# Frontline — Handover (M6.90.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,14 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.90.0 — a grade for each mission
+- The debrief grades a first draft done (not a battle): 3 for a success (1 in part), +2 for every optional objective
+  too, +1 for no alarm (where there is one), +1 for no one killed, +1 for every paper read - S at 7 and over, A 5 - 6,
+  B 3 - 4, C below. The best grade each level has had is kept with the save (saves.js markGrade / loadGrades,
+  cleared with the slot) and shown beside it on the mission list, after its tick.
+- Tested in a browser: Holm Power Station with its two objectives done and walked out quietly, the optional rescue
+  not done - A, and kept.
 
 ## M6.89.0 — against the clock; Level 70, the Relay Peaks; THE CAMPS ends
 - A new objective kind, `quick` (`secs`): done once every required objective is done inside that many seconds of

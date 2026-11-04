@@ -120,6 +120,11 @@ T('the papers read are kept per slot, each once, and go with the slot when it is
   A(!Object.keys(S.loadPapers(4)).length, 'another slot');
   S.clearSlot(3); A(!Object.keys(S.loadPapers(3)).length, 'cleared');
 });
+T('the best grade is kept per level, and cleared with the slot (M6.90)', () => {
+  S.markGrade(2, 'lock', 'B'); S.markGrade(2, 'lock', 'C'); S.markGrade(2, 'lock', 'S'); S.markGrade(2, 'mill', 'A');
+  const g = S.loadGrades(2); A(g.lock === 'S' && g.mill === 'A', JSON.stringify(g));
+  S.clearSlot(2); A(!Object.keys(S.loadGrades(2)).length, 'cleared');
+});
 console.log('\n' + '='.repeat(50));
 console.log(fails.length ? 'FAILURES (' + fails.length + ')' : 'ALL ' + pass + ' PASSED');
 process.exit(fails.length ? 1 : 0);

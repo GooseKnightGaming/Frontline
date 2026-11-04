@@ -45,7 +45,7 @@ export function saveSlot(n, data) {
 export function loadSlot(n) { return listSlots()[n]; }
 // erasing a slot ends its run: the save, its story and its trophies
 export function clearSlot(n) {
-  try { for (const k of [KEY(n), STORY(n), TROPHIES(n), ARMOURY(n), GADGET(n), RECORD(n), SKILLS(n), CASEB(n), CONTRACTS(n), DONE(n), PAPERS(n), 'frontline.lantern.' + n]) localStorage.removeItem(k); return true; } catch (e) { return false; }
+  try { for (const k of [KEY(n), STORY(n), TROPHIES(n), ARMOURY(n), GADGET(n), RECORD(n), SKILLS(n), CASEB(n), CONTRACTS(n), DONE(n), PAPERS(n), GRADES(n), 'frontline.lantern.' + n]) localStorage.removeItem(k); return true; } catch (e) { return false; }
 }
 // the first slot with no run in it, or -1
 export function freeSlot() {
@@ -191,6 +191,15 @@ export function loadPapers(n) { try { return JSON.parse(localStorage.getItem(PAP
 export function markPaper(n, level, id) {
   const d = loadPapers(n), l = d[level] || (d[level] = []);
   if (!l.includes(id)) { l.push(id); try { localStorage.setItem(PAPERS(n), JSON.stringify(d)); } catch (e) { /* private window */ } }
+  return d;
+}
+// (M6.90) each first draft's best grade this run: { id: 'S' | 'A' | 'B' | 'C' }
+const GRADES = (n) => 'frontline.grades.' + n;
+const GRANK = { C: 1, B: 2, A: 3, S: 4 };
+export function loadGrades(n) { try { return JSON.parse(localStorage.getItem(GRADES(n)) || '{}') || {}; } catch (e) { return {}; } }
+export function markGrade(n, id, g) {
+  const d = loadGrades(n);
+  if ((GRANK[g] || 0) > (GRANK[d[id]] || 0)) { d[id] = g; try { localStorage.setItem(GRADES(n), JSON.stringify(d)); } catch (e) { /* private window */ } }
   return d;
 }
 export function markDone(n, id, result) {

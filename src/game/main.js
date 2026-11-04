@@ -77,7 +77,7 @@ import { boardOf, describe as contractText, TERMS } from '../sim/play/contracts.
 import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './core/input.js';
 import { isTouchDevice, touchControls, retext } from './core/touch.js';
 
-const VERSION = 'M6.89.0';
+const VERSION = 'M6.90.0';
 const $ = (id) => document.getElementById(id);
 const TEST = /[?&]test\b/.test(location.search);
 // Level 0, the training mission, is its own page load: index.html?level=0
@@ -742,7 +742,8 @@ function boot() {
       const open = caseOpen(Saves.loadCase(slotNo)) || TEST;
       // (M6.48) how each has gone so far: a tick for a success, a half for less
       const done = Saves.loadDone(slotNo), clues = Saves.loadCase(slotNo).filter((id) => CASE.some((c) => c.id === id)).length;
-      const mark = (id) => done[id] === 'success' ? '  \u2713' : done[id] === 'partial' ? '  \u00bd' : '';
+      const grades = Saves.loadGrades(slotNo);
+      const mark = (id) => (done[id] === 'success' ? '  \u2713' : done[id] === 'partial' ? '  \u00bd' : '') + (grades[id] ? '  ' + grades[id] : '');      // (M6.90) and its best grade
       // (M6.56) in their stories: a heading where each begins
       const GROUPS = [[5, 'FIRST DRAFTS'], [35, 'THE CASE'], [43, 'THE BLIGHT'], [48, 'THE CODEX'], [51, 'THE RIVER'], [54, 'THE FORGERS'], [57, 'THE HANDLER'], [61, 'THE FIVE'], [65, 'THE NORTH'], [68, 'THE CAMPS']];
       // (M6.80) a story's heading carries its trail's stamp once the trail is done

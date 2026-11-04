@@ -2457,6 +2457,19 @@ export function setupMission(ctx) {
       const t = Math.floor(m.time), mm = Math.floor(t / 60), ss = String(t % 60).padStart(2, '0');
       const tick = (b) => b ? '<b class="ok">&#10003;</b>' : '<b class="no">&#10007;</b>';
       const row = (k, v) => '<div>' + k + ' <b>' + v + '</b></div>';
+      // (M6.90) a grade for a first draft: done (3, in part 1), every optional one too (+2), no alarm (+1, where there
+      // is one), no one killed (+1), every paper read (+1). S 7 and over, A 5 - 6, B 3 - 4, C below
+      let grade = null;
+      if (level.draft && !B && m.result !== 'failed') {
+        const os = draftObjectives(), opt = os.filter((o) => o.optional);
+        let pts = m.result === 'success' ? 3 : 1;
+        if (opt.length && opt.every((o) => o.done)) pts += 2;
+        if (devices.some((d) => d.kind === 'alarm') ? !rt.sirenRung : true) pts += 1;
+        if (!m.kills) pts += 1;
+        if (level.intel && level.intel.length && level.intel.every((q) => q.found)) pts += 1;
+        grade = pts >= 7 ? 'S' : pts >= 5 ? 'A' : pts >= 3 ? 'B' : 'C';
+        if (!rt.graded) { rt.graded = true; Saves.markGrade(Saves.currentSlot(), level.draft, grade); }
+      }
       const fav = m.favourite, favName = fav === 'hands' ? 'Bare hands' : fav === 'knife' ? 'Knife (takedowns)' : (ITEMS[fav] && ITEMS[fav].name) || '\u2014';
       // (M6.28) onto the run's service record (the Trophies page shows it)
       if (!rt.recorded) {
@@ -2525,6 +2538,7 @@ export function setupMission(ctx) {
         row('Doors breached', m.breaches) +
         (rt.newClues && rt.newClues.length ? row('The case', rt.newClues.map((id) => (CASE.find((c) => c.id === id) || {}).title).join(', ') + ' &mdash; on the board at Ghost HQ' + (rt.caseMade ? '. <b>Ghost knows where the council meets: Kaldberg.</b>' : '')) : '') +
         (rt.contractsPaid && rt.contractsPaid.length ? row('Contract' + (rt.contractsPaid.length > 1 ? 's' : ''), rt.contractsPaid.map((c) => CONTRACT_TERMS[c.term].name + ' (' + contractText(c) + ') +' + c.xp).join('; ')) : '') +
+        (grade ? row('Grade', '<span style="font-size:20px;letter-spacing:2px">' + grade + '</span> <span style="opacity:0.7;font-weight:normal">(done, the optional ones, no alarm, no one killed, every paper)</span>') : '') +
         (rt.xpGained ? row('Experience', '+' + rt.xpGained + (rt.newPoints ? ' &mdash; ' + (rt.newPoints === 1 ? 'a skill point' : rt.newPoints + ' skill points') + ' to spend at Ghost HQ' : '')) : '') +
         (devices.length ? row('Security hacked', (m.hacked || 0) + (m.hacked === 1 ? ' time' : ' times') + (m.traced ? ' &mdash; <span class="no">traced</span>: they know where Yard 7 is' : m.hacked ? ' &mdash; never traced' : '')) : '') +
         (m.turretKills ? row('Downed by their own turrets', m.turretKills) : '') +
