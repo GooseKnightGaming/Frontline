@@ -913,5 +913,6 @@ mission list in its stories with ticks. See the handover for each.
   THE CAMPS (the Arn Bridge, Camp Ostrava, the Relay Peaks).
 - M6.90 - M6.92: a grade for every mission (S/A/B/C, the best on the mission list); Level 71, the Skarra Light (a
   four-floor lighthouse); Level 72, the Winter Ball (a disguise, a crowd, three to mark).
-- Candidates next: a rescued soldier who becomes an ally (Sergeant Venn at the Prison); more papers where there are
-  none; the Campus's start (too big for the start check's time).
+- M6.93 - M6.94: prisoners who fight once freed (Sergeant Venn at the Prison, the pilot at the Outpost).
+- Candidates next: more papers where there are none; the Campus's start (too big for the start check's time); the
+  door check that fails with its parent under load (it passes on a rerun every time - worth making it wait longer).
