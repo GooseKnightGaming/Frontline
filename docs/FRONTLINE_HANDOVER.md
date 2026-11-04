@@ -7,6 +7,12 @@ GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
 
+## M6.111.0 — Levels 89 and 90: the Railway Hotel and the Kiln Road Garage (THE WARNING closes)
+
+- `drafts/railhotel.js` (no 89): Northern HQ's two-floor footprint reused as a hotel (lobby, bar, switchboard room; guest rooms upstairs). You start disguised. Read the switchboard (a hack with reveal), take the paymaster's ledger upstairs, mark the driver in the bar.
+- `drafts/garage.js` (no 90): a small garage compound with no devices, Ghost's lorries parked in the workshop. Clear all eight reds (`clear`), take the route book from the office.
+- THE WARNING complete (stamp HEEDED). Trophies "Room Nine" and "New Roads".
+
 ## M6.110.0 — Level 88, the Safe House (THE WARNING opens)
 
 - New draft `drafts/safehouse.js` (no 88): a farm at dusk, no devices. With Hale and Moss, hold the farmhouse 120 s (`reach` hold with no `after`) against three waves (north, east, west; probed: in at 0, 40 and 80 s), and capture the squad's leader, who comes with the last wave.

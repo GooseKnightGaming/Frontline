@@ -2475,6 +2475,8 @@ export function setupMission(ctx) {
       if (level.draft === 'express' && m.result === 'success') all.push({ id: 'facesoff', name: 'No Faces', about: 'The identifier off the night express, and every saint\'s face in his album with him.' });
       if (level.draft === 'studio' && m.result === 'success') all.push({ id: 'developed', name: 'Overexposed', about: 'The files behind the crosses taken, and Major Kade going nowhere.' });
       if (level.draft === 'safehouse' && m.result === 'success') all.push({ id: 'ford', name: 'Holding the Ford', about: 'Eleven saints out of Lindqvist\'s Ford, and the squad\'s leader with them.' });
+      if (level.draft === 'railhotel' && m.result === 'success') all.push({ id: 'roomnine', name: 'Room Nine', about: 'The paymaster\'s ledger, and the driver who sold Lindqvist\'s Ford.' });
+      if (level.draft === 'garage' && m.result === 'success') all.push({ id: 'routebook', name: 'New Roads', about: 'The Kiln Road garage cleared, and Ghost\'s route book back where it belongs.' });
       // (M6.66) the river open: Varnholm Lock
       if (level.draft === 'lock' && m.result === 'success') all.push({ id: 'river_open', name: 'River Open', about: 'The stand-down sent and the lock opened: Ghost\'s boats through to the sea.' });
       // (M6.44) the blight's end: the Dalmar Star

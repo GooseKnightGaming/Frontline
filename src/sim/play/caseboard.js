@@ -117,6 +117,8 @@ export const SAINTS = [
 // (M6.110) the warning: the saints got out, and the man who gave the reds their safe house found
 export const WARNING = [
   { level: 'safehouse', title: 'The Safe House', text: 'Lindqvist\'s Ford held until the lorry came, and the squad\'s leader taken alive.' },
+  { level: 'railhotel', title: 'The Railway Hotel', text: 'The paymaster\'s ledger taken from room nine, and the driver who sold the farm marked in the bar.' },
+  { level: 'garage', title: 'The Kiln Road Garage', text: 'The reds cleared out of Ghost\'s garage, and the lorries\' route book taken back.' },
 ];
 export const TRAILS = [
   { id: 'blight', title: 'THE BLIGHT', steps: BLIGHT, stamp: 'HARVEST SAVED', colour: '#5a9a3a' },
