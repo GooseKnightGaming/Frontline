@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.94.1)
+# Frontline — Handover (M6.95.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,14 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.95.0 — Level 73, the Counting House; THE COAST begins
+- `drafts/counting.js` (73): Lund & Harl's counting house on Kessin quay, built on the Town Hall's three storeys (the
+  basement, the ground, the first floor; the two stairs side by side). Take the receipts (the strongroom, maglocked -
+  the chief clerk's card), take the paymaster alive (his office upstairs), optionally copy the books (the ledger
+  room). Two clerks working late (civilians). The trophy Accounts Closed.
+- The case board's tenth trail, THE COAST (ball, counting - more to come; stamped PAID OFF); the mission list's
+  group THE COAST (72 on).
 
 ## M6.94.1 — the browser suite's door check
 - test/browser.test.py: "and E again shuts it" asks only once "E opens it" has opened the door. With the opening
