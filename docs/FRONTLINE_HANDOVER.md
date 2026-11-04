@@ -7,6 +7,13 @@ GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
 
+## M6.118.0 — Levels 107 - 109: THE PEACE
+
+- `drafts/treaty.js` (no 107): the Ostberg house at Lake Morra, `windows: false`. Three microphones to take out (terminals with verb Remove, under the long table, in the salon lamp and in the library telephone), and the spy among the staff to mark. Optional quiet.
+- `drafts/clocktower.js` (no 108): a village town hall with a three-floor tower (stairs alternate x26 / x30) and no devices. Capture the marksman at the top, take his orders from the council chamber, optional quick 240.
+- `drafts/signing.js` (no 109): the Treaty House's floors reused by day, with Hale and Moss. Hold the great hall for 150 s through four waves (probed: in at 0, 37, 75 and 112 s, done at 149) and mark the leader, who comes with the last wave. You start in the hall, so the hold starts at once.
+- Trail THE PEACE (stamp SIGNED), group [107]. Trophies: Nobody Listening, Coffee at Nine, Signed, Sealed.
+
 ## M6.117.0 — Levels 104 - 106: THE GOLD
 
 - `drafts/mint.js` (no 104): a mint with a maglocked strongroom (the vault officer has the card) and a second door from the treasurer's office. Mark the treasurer, take the manifest, optional quiet. `windows: false`, with the lobby's west window taken out (the lobby guard saw the start through it).

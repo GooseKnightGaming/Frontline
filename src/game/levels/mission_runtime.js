@@ -2493,6 +2493,9 @@ export function setupMission(ctx) {
       if (level.draft === 'mint' && m.result === 'success') all.push({ id: 'counted', name: 'Counted Twice', about: 'The treasurer marked and the Mint\'s manifest taken, and the strongroom locked behind you.' });
       if (level.draft === 'goodsyard' && m.result === 'success') all.push({ id: 'machineparts', name: 'Machine Parts', about: 'Both of the gold lorries stopped in the Kessin goods yard.' });
       if (level.draft === 'pier' && m.result === 'success') all.push({ id: 'bar406', name: 'Bar Four Hundred and Six', about: 'The treasurer off the freighter, and the last bar of the north\'s gold home with him.' });
+      if (level.draft === 'treaty' && m.result === 'success') all.push({ id: 'nobodylistening', name: 'Nobody Listening', about: 'Three microphones out of the Ostberg house before the talks, and the footman who planted them marked.' });
+      if (level.draft === 'clocktower' && m.result === 'success') all.push({ id: 'coffeeatnine', name: 'Coffee at Nine', about: 'The marksman in Morra\'s clock tower taken alive, and the delegates none the wiser.' });
+      if (level.draft === 'signing' && m.result === 'success') all.push({ id: 'signed', name: 'Signed, Sealed', about: 'The treaty signed at Lake Morra, and the war that began in Varnholm over.' });
       // (M6.66) the river open: Varnholm Lock
       if (level.draft === 'lock' && m.result === 'success') all.push({ id: 'river_open', name: 'River Open', about: 'The stand-down sent and the lock opened: Ghost\'s boats through to the sea.' });
       // (M6.44) the blight's end: the Dalmar Star

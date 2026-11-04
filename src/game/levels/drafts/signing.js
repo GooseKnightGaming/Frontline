@@ -50,7 +50,7 @@ export default {
     const { box, CELL: C } = kit;
     box([0, -0.05, 0], [3 * C, 0.02, H * C], 'glassB', { tint: [0.3, 0.4, 0.5], solid: false });
   },
-  start: { x: 25, y: 14, floor: 'G', yaw: Math.PI },
+  start: { x: 25, y: 14, floor: 'G', yaw: 0 },
   zones: [
     { id: 'hall', label: 'The Ostberg house - the great hall', at: [12, 8, 38, 16] },
     { id: 'salon', label: 'The Ostberg house - the salon', at: [12, 18, 22, 26] },

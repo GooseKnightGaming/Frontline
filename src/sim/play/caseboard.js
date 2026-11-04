@@ -150,6 +150,12 @@ export const GOLD = [
   { level: 'goodsyard', title: 'The Goods Yard', text: 'Both lorries of "machine parts" stopped in the Kessin yard, eleven tons of gold aboard.' },
   { level: 'pier', title: 'Pier Four', text: 'The treasurer taken off the reds\' freighter with the four hundred and sixth bar, and the ship\'s log with him.' },
 ];
+// (M6.118) the peace: the talks kept private, the delegates kept alive, the treaty signed
+export const PEACE = [
+  { level: 'treaty', title: 'The Treaty House', text: 'Three microphones out of the Ostberg house, and the second footman marked.' },
+  { level: 'clocktower', title: 'The Clock Tower', text: 'The marksman taken in Morra\'s clock tower before the coffee was served.' },
+  { level: 'signing', title: 'The Signing', text: 'The great hall held until the last signature, and the die-hards\' leader marked.' },
+];
 export const TRAILS = [
   { id: 'blight', title: 'THE BLIGHT', steps: BLIGHT, stamp: 'HARVEST SAVED', colour: '#5a9a3a' },
   { id: 'codex', title: 'THE CODEX', steps: CODEX, stamp: 'RETURNED', colour: '#3a7ab0' },
@@ -170,6 +176,7 @@ export const TRAILS = [
   { id: 'general', title: 'THE GENERAL', steps: GENERAL, stamp: 'ON TRIAL', colour: '#7a2a2a' },
   { id: 'islands', title: 'THE ISLANDS', steps: ISLANDS, stamp: 'STRAIT OPEN', colour: '#2a6a8a' },
   { id: 'gold', title: 'THE GOLD', steps: GOLD, stamp: 'RETURNED TO SENDER', colour: '#b0902a' },
+  { id: 'peace', title: 'THE PEACE', steps: PEACE, stamp: 'SIGNED', colour: '#4a8a4a' },
 ];
 export const trailMark = (trail, level) => trail.id + ':' + level;
 // the marks a mission's being done adds (any trail it is a step of)
