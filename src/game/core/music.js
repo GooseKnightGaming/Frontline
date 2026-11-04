@@ -4,21 +4,22 @@
 // starting the game does not wait on a download. One track plays at a time and
 // the changeover is a fade, so it never cuts.
 
-// Rhys's notes on each piece decided where it sits.
+// Rhys's notes on each piece decided where it sits. (M6.123.1) The file names are exactly as uploaded (with their
+// spaces - one has a space before the .mp3); test/music.test.mjs checks every one is there.
 export const TRACKS = {
-  title:   { file: 'Black_Vortex.mp3',           name: 'Black Vortex' },           // title: deep and epic
-  opening: { file: 'Burn_The_World_Waltz_.mp3',  name: 'Burn The World Waltz' },   // quieter opening theme
+  title:   { file: 'Black Vortex.mp3',           name: 'Black Vortex' },           // title: deep and epic
+  opening: { file: 'Burn The World Waltz .mp3',  name: 'Burn The World Waltz' },   // quieter opening theme
   course:  { file: 'Breakdown.mp3',              name: 'Breakdown' },              // learning to move
-  range:   { file: 'Ready_Aim_Fire.mp3',         name: 'Ready Aim Fire' },         // amped-up agent
-  yard:    { file: 'Iron_Bacon.mp3',             name: 'Iron Bacon' },             // knocking about
-  tension: { file: 'Failing_Defense.mp3',        name: 'Failing Defense' },        // something is wrong
-  action:  { file: 'Five_Armies.mp3',            name: 'Five Armies' },            // a real fight
-  chase:   { file: 'Movement_Proposition.mp3',   name: 'Movement Proposition' },   // do not let him get away
-  brief:   { file: 'Black_Vortex.mp3',           name: 'Black Vortex' },           // briefings
-  complex: { file: 'The_Complex.mp3',            name: 'The Complex' },            // that facility
+  range:   { file: 'Ready Aim Fire.mp3',         name: 'Ready Aim Fire' },         // amped-up agent
+  yard:    { file: 'Iron Bacon.mp3',             name: 'Iron Bacon' },             // knocking about
+  tension: { file: 'Failing Defense.mp3',        name: 'Failing Defense' },        // something is wrong
+  action:  { file: 'Five Armies.mp3',            name: 'Five Armies' },            // a real fight
+  chase:   { file: 'Movement Proposition.mp3',   name: 'Movement Proposition' },   // do not let him get away
+  brief:   { file: 'Black Vortex.mp3',           name: 'Black Vortex' },           // briefings
+  complex: { file: 'The Complex.mp3',            name: 'The Complex' },            // that facility
   battle:  { file: 'Mechanolith.mp3',            name: 'Mechanolith' },            // major battle
-  loop:    { file: 'Zap_Beat.mp3',               name: 'Zap Beat' },               // simple loop
-  down:    { file: 'Hero_Down.mp3',              name: 'Hero Down' },              // death, and the credits
+  loop:    { file: 'Zap Beat.mp3',               name: 'Zap Beat' },               // simple loop
+  down:    { file: 'Hero Down.mp3',              name: 'Hero Down' },              // death, and the credits
 };
 // every one of these is by Kevin MacLeod (incompetech.com), CC BY 4.0
 export const CREDIT = 'Music by Kevin MacLeod (incompetech.com), licensed CC BY 4.0';
@@ -41,7 +42,7 @@ export class Music {
     const t = TRACKS[key];
     if (!t) return null;
     try {
-      const a = new window.Audio(this.base + t.file);
+      const a = new window.Audio(this.base + encodeURIComponent(t.file));
       a.loop = true;
       a.preload = 'none';
       a.volume = 0;

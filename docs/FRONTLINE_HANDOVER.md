@@ -7,6 +7,12 @@ GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
 
+## M6.123.1 — the music plays (a real bug)
+
+- **Eleven of the thirteen music tracks never played.** `src/game/core/music.js` looked for `Black_Vortex.mp3`, `Iron_Bacon.mp3` and so on, but the files Rhys uploaded on 12 Oct have spaces (`Black Vortex.mp3`), and one has a space before the extension (`Burn The World Waltz .mp3`). Only Breakdown and Mechanolith loaded. Now the names are exact, and the player encodes the file name (`encodeURIComponent`) so the spaces load on any server. This was also the 404 behind four of the browser suite's "known failures" (no errors on the page / in test mode / at the door / Chromebook), which should pass now.
+- New test `test/music.test.mjs`: every track's file is there.
+- A paper in Q's Test Range (a note from Q, on a new table in the first room).
+
 ## M6.123.0 — Levels 125 - 127: THE CIRCUS (the last new levels: Rhys, 4 Nov 22:26, "stop writing more missions now")
 
 - `drafts/bigtop.js` (no 125): a circus in disguise. The big top (with the ring's low wall, which has gaps north and south: it had been closed all round, so the kit could not reach the ringmaster), the wagons, the menagerie and the ticket booth. Mark the contact, take the route book, optional quiet.
