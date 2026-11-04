@@ -943,5 +943,13 @@ mission list in its stories with ticks. See the handover for each.
 - M6.117: THE GOLD (the Mint, the Goods Yard - a lorry held from the signal box, Pier Four; "RETURNED TO SENDER").
 - M6.118: THE PEACE (the Treaty House - three microphones, the Clock Tower, the Signing - hold the great hall;
   "SIGNED"). The war that began in Varnholm is over.
-- Candidates next: Rhys's own playtesting notes; a new case somewhere new; papers in the last few older levels
-  (the Riverboat, the Embankment, the Wasteland, the Subway, the Test Range).
+- M6.119: THE SMUGGLERS (Port Saren: the Customs House, Saren Old Town - a tail, the Smugglers' Cove).
+- M6.120: THE BUYER (the Airstrip, Cap Merrow, the Caravan).
+- M6.121: THE BANKER (the Racecourse, Dancourt & Fils - dark, the Mountain).
+- M6.122: THE WITNESSES (the Witness Flat - a hold upstairs, the Motorcade, the Courthouse) and THE ESCAPE (the Quarry,
+  the Vineyard - a tail, the Old Bridge).
+- M6.123: THE CIRCUS (the Big Top, Winter Quarters, the Last Performance). **The last new levels**: Rhys, 4 Nov,
+  "stop writing more missions now. 130 is plenty". 127 levels in all. From here on: fixes and Rhys's testing notes.
+- `docs/FRONTLINE_TESTING_GUIDE.md`: what to play first in Levels 73 - 127, and why.
+- Candidates next: Rhys's own playtesting notes (first); papers in the last few older levels (the Riverboat, the
+  Embankment, the Wasteland, the Subway, the Test Range).
