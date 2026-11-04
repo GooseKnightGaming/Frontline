@@ -58,6 +58,8 @@ async def main():
         ok('the title screen greets you, with the logo', vis == 'flex' and await pg.evaluate("!!document.getElementById('t-logo').naturalWidth"), vis)
         await pg.click('#t-fresh')
         await pg.wait_for_timeout(500)
+        try: await pg.wait_for_function('FL.S.frames > 60', timeout=240000)      # (M6.123.1) see THE LINK ROOM DOOR below
+        except Exception: pass
         st = await pg.evaluate("({locked: FL.input.locked, playing: FL.S.playing, start: getComputedStyle(document.getElementById('start')).display})")
         ok('deploying starts play (mouse captured, or drag-to-look fallback)', st['playing'] and st['locked'] and st['start'] == 'none', json.dumps(st))
         z0 = await pg.evaluate("FL.player.pos[2]")
@@ -319,6 +321,10 @@ async def main():
         await pg.evaluate("FL.settings.quality='low'; FL.view.applyQuality('low')")
         await pg.click('#t-fresh')
         await pg.wait_for_timeout(500)
+        # (M6.123.1) under the software renderer a fresh game's first frames take about 40 s (the first level loading
+        # and its shaders compiling); everything after this pressed keys at a game that had not started drawing yet
+        try: await pg.wait_for_function('FL.S.frames > 60', timeout=240000)
+        except Exception: pass
         async def until(js, secs=12):
             for _ in range(int(secs * 5)):
                 v = await pg.evaluate(js)
