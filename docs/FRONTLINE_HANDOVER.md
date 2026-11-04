@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.90.0)
+# Frontline — Handover (M6.91.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,14 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.91.0 — Level 71, the Skarra Light
+- `drafts/light.js` (71): a lighthouse of four floors (0, 4, 8, 12) in one 7 x 7 tower, a flight to each - G to 1
+  north, 1 to 2 south, 2 to 3 north again (each flight's holes are in the floor above only, so the first and third
+  can share their squares). Put out the light (the lamp room), take the signals book (the watch room), optionally
+  bring out the keeper (his cottage). The trophy Lights Out. The mission list's MORE WORK (71 on).
+- Its start checked standing still: the boathouse's radio man saw you through an auto window - he and his mate now
+  face away from the slip.
 
 ## M6.90.0 — a grade for each mission
 - The debrief grades a first draft done (not a battle): 3 for a success (1 in part), +2 for every optional objective

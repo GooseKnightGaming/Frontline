@@ -2435,6 +2435,8 @@ export function setupMission(ctx) {
       if (level.draft === 'camp' && m.result === 'success') all.push({ id: 'ostrava', name: 'Nine Hundred Names', about: 'The four out of Camp Ostrava, and its register with them.' });
       // (M6.89) the relays, in time
       if (level.draft === 'relays' && m.result === 'success' && rt.quick && rt.quick.o4 === 'done') all.push({ id: 'six_minutes', name: 'Six Minutes', about: 'All three relays on the Kessock ridge cut before the raids went in.' });
+      // (M6.91) the light out
+      if (level.draft === 'light' && m.result === 'success') all.push({ id: 'lights_out', name: 'Lights Out', about: 'The Skarra light put out from the top of its tower, and the supply ship turned for home.' });
       // (M6.66) the river open: Varnholm Lock
       if (level.draft === 'lock' && m.result === 'success') all.push({ id: 'river_open', name: 'River Open', about: 'The stand-down sent and the lock opened: Ghost\'s boats through to the sea.' });
       // (M6.44) the blight's end: the Dalmar Star
