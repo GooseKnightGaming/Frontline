@@ -168,6 +168,12 @@ export const BUYER = [
   { level: 'capmerrow', title: 'Cap Merrow', text: 'Kray\'s two dinner guests marked, and his client list photographed from the safe.' },
   { level: 'caravan', title: 'The Caravan', text: 'Kray taken alive at the Bir Sahra well, and the last of the north\'s crates stopped.' },
 ];
+// (M6.121) the banker: where Kray's money went, and the man who counted it
+export const BANKER = [
+  { level: 'racecourse', title: 'The Racecourse', text: 'Dancourt\'s courier marked at the Lessar Cup, and the week\'s winning slips taken.' },
+  { level: 'dancourt', title: 'Dancourt & Fils', text: 'The bank\'s index copied in the dark, and Kray\'s account book taken from the vault.' },
+  { level: 'cablecar', title: 'The Mountain', text: 'The cable car\'s winding gear stopped, and Mr Dancourt taken in his study above the snow line.' },
+];
 export const TRAILS = [
   { id: 'blight', title: 'THE BLIGHT', steps: BLIGHT, stamp: 'HARVEST SAVED', colour: '#5a9a3a' },
   { id: 'codex', title: 'THE CODEX', steps: CODEX, stamp: 'RETURNED', colour: '#3a7ab0' },
@@ -191,6 +197,7 @@ export const TRAILS = [
   { id: 'peace', title: 'THE PEACE', steps: PEACE, stamp: 'SIGNED', colour: '#4a8a4a' },
   { id: 'smugglers', title: 'THE SMUGGLERS', steps: SMUGGLERS, stamp: 'SEIZED', colour: '#8a5a2a' },
   { id: 'buyer', title: 'THE BUYER', steps: BUYER, stamp: 'SOLD OUT', colour: '#aa6a3a' },
+  { id: 'banker', title: 'THE BANKER', steps: BANKER, stamp: 'ACCOUNT CLOSED', colour: '#3a4a7a' },
 ];
 export const trailMark = (trail, level) => trail.id + ':' + level;
 // the marks a mission's being done adds (any trail it is a step of)

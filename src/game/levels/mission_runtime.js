@@ -2502,6 +2502,9 @@ export function setupMission(ctx) {
       if (level.draft === 'airstrip' && m.result === 'success') all.push({ id: 'drytanks', name: 'Dry Tanks', about: 'Kray\'s plane grounded at Sand Hollow, and its flight plan in Ghost\'s hands.' });
       if (level.draft === 'capmerrow' && m.result === 'success') all.push({ id: 'mrgrey', name: 'Mr Grey and Mr Blue', about: 'Both of Kray\'s guests marked at dinner, and his client list copied from the safe.' });
       if (level.draft === 'caravan' && m.result === 'success') all.push({ id: 'lastcrate', name: 'The Last Crate', about: 'Anselm Kray taken at the Bir Sahra well, tied to his own crates.' });
+      if (level.draft === 'racecourse' && m.result === 'success') all.push({ id: 'favourite', name: 'Backing the Favourite', about: 'Dancourt\'s courier marked at the Lessar Cup and the week\'s slips taken.' });
+      if (level.draft === 'dancourt' && m.result === 'success') all.push({ id: 'afterhours', name: 'After Hours', about: 'Dancourt & Fils\' index copied and Kray\'s book taken, in the dark.' });
+      if (level.draft === 'cablecar' && m.result === 'success') all.push({ id: 'lastcar', name: 'The Last Car Down', about: 'Mr Dancourt brought down the Lessar mountain in the last car.' });
       // (M6.66) the river open: Varnholm Lock
       if (level.draft === 'lock' && m.result === 'success') all.push({ id: 'river_open', name: 'River Open', about: 'The stand-down sent and the lock opened: Ghost\'s boats through to the sea.' });
       // (M6.44) the blight's end: the Dalmar Star

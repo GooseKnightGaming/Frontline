@@ -7,6 +7,13 @@ GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
 
+## M6.121.0 — Levels 116 - 118: THE BANKER
+
+- `drafts/racecourse.js` (no 116): a racecourse by day in disguise, with a grandstand, the stewards' and weighing rooms, the bookmakers' rail and a crowd. Mark the courier, take the slips, optional quiet.
+- `drafts/dancourt.js` (no 117): the Mint's layout reused as a private bank at night (`dark`, NVG). A `lights` device covers the banking hall, there is the maglocked vault, and a ledger machine (verb Copy, reveal 15). Copy the index, take Kray's book, optional quiet. It was generated from mint.js by a script, so check it if mint.js changes.
+- `drafts/cablecar.js` (no 118): the top station of a cable car in the snow, the gear house, and the chalet (hall and study). Stop the winding gear (verb Stop), capture Dancourt, optional quiet. The gear house was moved up so its door is not on a one-square slot.
+- Trail THE BANKER (stamp ACCOUNT CLOSED), group [116]. Trophies: Backing the Favourite, After Hours, The Last Car Down.
+
 ## M6.120.0 — Levels 113 - 115: THE BUYER (the Dry Coast)
 
 - `drafts/airstrip.js` (no 113): a desert strip at dusk (`mat: 'desert'`). Drain the fuel tank (a terminal with verb Drain), mark the pilot, take the flight plan, optional quiet. The plane's wing box is not solid (it was at head height over the apron). The generator shed was moved off the hangar's back wall, because its door had opened onto a one-square lane.
