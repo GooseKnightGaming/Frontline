@@ -20,7 +20,7 @@ export default {
   time: { date: [15, 6, 2027], hour: 1, minute: 0 }, night: true, faction: 'red', requires: 'HACKKIT',
   startLoadout: { primary: 'MP2', backup: 'V27C', utility1: 'SMOKE', utility2: 'FLASH', gear: 'LENSES', mods: { primary: ['SILENCER'], backup: ['SILENCER'] } },
   atmos: { fog: [0.12, 0.14, 0.18, 25, 170], ambient: [0.24, 0.26, 0.31] },
-  extractName: 'the lake shore, west', extract: { x: 2, y: 34, floor: 'G', van: [0, -6] },
+  extractName: 'the lake shore, west', extract: { x: 2, y: 34, floor: 'G', van: [6, 2] },
   outside: { backdrop: 'hills', mat: 'grass', margin: 14 },
   windows: false,
   floors: {

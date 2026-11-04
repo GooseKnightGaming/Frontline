@@ -19,7 +19,7 @@ export default {
   time: { date: [10, 6, 2027], hour: 2, minute: 10 }, night: true, faction: 'red', requires: 'HACKKIT',
   startLoadout: { primary: 'K7', backup: 'V27C', utility1: 'SMOKE', utility2: 'FRAG', gear: 'LENSES', mods: { primary: ['SILENCER'], backup: ['SILENCER'] } },
   atmos: { fog: [0.16, 0.16, 0.2, 25, 170], ambient: [0.28, 0.28, 0.32] },
-  extractName: 'the sidings, south-west', extract: { x: 2, y: 34, floor: 'G', van: [5, 0] },
+  extractName: 'the sidings, south-west', extract: { x: 2, y: 34, floor: 'G', van: [0, -6] },
   outside: { backdrop: 'city', mat: 'asphalt', margin: 14 },
   floors: {
     G: {
