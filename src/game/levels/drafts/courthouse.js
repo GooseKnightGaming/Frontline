@@ -32,9 +32,9 @@ export default {
         ['room', 6, 6, 12, 12],                         // the records office
         ['room', 6, 14, 12, 20],                        // the robing room
         ['room', 14, 22, 34, 28],                       // the entrance hall
-        ['room', 38, 24, 44, 28],                       // the boiler room
+        ['room', 39, 25, 45, 29],                       // the boiler room
       ], after: [
-        ['cells', [[24, 21], [35, 9], [35, 17], [13, 9], [13, 17], [14, 21], [24, 29], [9, 21], [37, 23], [5, 24]], 'D'],
+        ['cells', [[24, 21], [35, 9], [35, 17], [13, 9], [13, 17], [14, 21], [24, 29], [9, 21], [38, 27]], 'D'],
         // the bench, the witness box, the dock, the gallery's benches
         ['room', 20, 7, 28, 7, 'K'], ['cells', [[30, 9]], 'T'], ['room', 16, 9, 17, 10, 'K'],
         ['room', 16, 14, 22, 14, 'Y'], ['room', 26, 14, 32, 14, 'Y'], ['room', 16, 17, 22, 17, 'Y'], ['room', 26, 17, 32, 17, 'Y'],
@@ -43,8 +43,8 @@ export default {
         ['cells', [[7, 7], [11, 11]], 'T'], ['room', 7, 9, 7, 11, 'H'],
         ['cells', [[11, 15]], 'T'], ['room', 7, 15, 7, 19, 'H'],
         ['room', 18, 24, 30, 24, 'Y'], ['cells', [[33, 27]], 'T'],
-        ['cells', [[42, 26]], 'M'],
-        ['cells', [[4, 28], [46, 30], [20, 31], [30, 31], [46, 6]], 'C'],
+        ['cells', [[44, 28]], 'M'],
+        ['cells', [[4, 28], [47, 31], [20, 31], [30, 31], [46, 6]], 'C'],
       ] },
     },
   },
@@ -69,7 +69,7 @@ export default {
     { id: 'rad', at: [24, 26, 'G'], arms: 'pistol', rank: 'officer', temper: 'steady', role: 'radio', name: 'The court police sergeant' },
     { id: 'cp1', at: [30, 23, 'G'], route: [[16, 23], [33, 23]], arms: 'pistol' },
     { id: 'clerk', at: [9, 9, 'G'], arms: 'pistol', temper: 'cowardly' },
-    { id: 'eng', at: [41, 25, 'G'], arms: 'pistol', temper: 'cowardly', role: 'engineer' },
+    { id: 'eng', at: [42, 27, 'G'], arms: 'pistol', temper: 'cowardly', role: 'engineer' },
   ],
   civilians: [
     { id: 'juror', at: [38, 15, 'G'], yaw: Math.PI / 2, title: 'A juror, eating sandwiches', tint: [1.0, 0.95, 0.9], says: ['We are not supposed to talk about the case. The man in the corner has not talked about anything else.'] },
