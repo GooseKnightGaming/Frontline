@@ -7,6 +7,11 @@ GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
 
+## M6.108.0 — Level 86, the Night Express (THE SAINTS, second)
+
+- New draft `drafts/express.js` (no 86): the night express standing at a frontier halt, six carriages as rooms joined by gangway doors, the platform alongside, the customs hut across it. You start disguised. Objectives: capture the identifier (third sleeper), take his album, optional quiet.
+- THE SAINTS trail now abbey + express. Trophy "No Faces". The extract van is parked south of the platform (`van: [1, 5]`) so it does not block the start's view.
+
 ## M6.107.0 — Level 85, Kelder Abbey (THE SAINTS opens)
 
 - New draft `drafts/monastery.js` (no 85): an abbey under a red raid in the rain. Church, library, refectory, dorter round an open garth; the raid's console in the gatehouse. Objectives: rescue Brannoc (library), mark the commander (garth), optional quiet.

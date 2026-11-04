@@ -111,6 +111,7 @@ export const DROPS = [
 // (M6.107) the saints: the couriers the reds no longer trust, reached before the reds reach them
 export const SAINTS = [
   { level: 'monastery', title: 'Kelder Abbey', text: 'St Brannoc brought out of the abbey library under the raid\'s nose.' },
+  { level: 'express', title: 'The Night Express', text: 'The identifier taken off the night express at the frontier halt, and his album of saints\' faces with him.' },
 ];
 export const TRAILS = [
   { id: 'blight', title: 'THE BLIGHT', steps: BLIGHT, stamp: 'HARVEST SAVED', colour: '#5a9a3a' },
