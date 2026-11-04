@@ -81,7 +81,7 @@ export default {
     { id: 'courier', at: [44, 15, 'D'], arms: 'pistol', rank: 'officer', temper: 'cowardly', name: 'The river courier', tint: [0.95, 0.95, 1.0] },
     { id: 'd1', at: [41, 10, 'D'], arms: 'carbine', temper: 'steady' },
     { id: 'd2', at: [46, 19, 'D'], route: [[41, 21], [46, 21], [46, 7], [41, 7]], arms: 'smg' },
-    { id: 'b1', at: [20, 15, 'B'], arms: 'dmr', rank: 'specialist', temper: 'steady' },
+    { id: 'b1', at: [20, 15, 'B'], yaw: -Math.PI / 2, arms: 'dmr', rank: 'specialist', temper: 'steady' },
     { id: 'c1', at: [31, 15, 'C'], route: [[29, 10], [34, 10], [34, 18], [29, 18]], arms: 'carbine' },
     { id: 's1', at: [25, 2, 'G'], route: [[1, 2], [50, 2]], arms: 'carbine' },
     { id: 's2', at: [25, 27, 'G'], route: [[1, 27], [48, 27]], arms: 'carbine' },

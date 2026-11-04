@@ -71,6 +71,12 @@ export const FIVE = [
   { level: 'gazette', title: 'The Varnholm Courier', text: 'The names in the paper: the presses saved, the edition out.' },
   { level: 'airfield', title: 'Kessin Airfield', text: 'The last two stopped at the airfield: the jet grounded, the Kessin man taken alive.' },
 ];
+// (M6.85) the north: over the pass, the courier followed through Nordvik, the council in its house
+export const NORTH = [
+  { level: 'pass', title: 'The Vashka Pass', text: 'Over the frontier, and its register copied: sixty couriers in two years.' },
+  { level: 'nordvik', title: 'Nordvik', text: 'The courier followed through the town to the council\'s gate on the hill.' },
+  { level: 'council', title: 'The Council House', text: 'The four marked, the chairman "N" taken alive, the minutes taken.' },
+];
 export const TRAILS = [
   { id: 'blight', title: 'THE BLIGHT', steps: BLIGHT, stamp: 'HARVEST SAVED', colour: '#5a9a3a' },
   { id: 'codex', title: 'THE CODEX', steps: CODEX, stamp: 'RETURNED', colour: '#3a7ab0' },
@@ -78,6 +84,7 @@ export const TRAILS = [
   { id: 'forgers', title: 'THE FORGERS', steps: FORGERS, stamp: 'NOT VALID', colour: '#9a6a2a' },
   { id: 'handler', title: 'THE HANDLER', steps: HANDLER, stamp: 'DISMISSED', colour: '#7a3a8a' },
   { id: 'five', title: 'THE FIVE', steps: FIVE, stamp: 'EXPOSED', colour: '#b0503a' },
+  { id: 'north', title: 'THE NORTH', steps: NORTH, stamp: 'ADJOURNED', colour: '#4a6a9a' },
 ];
 export const trailMark = (trail, level) => trail.id + ':' + level;
 // the marks a mission's being done adds (any trail it is a step of)

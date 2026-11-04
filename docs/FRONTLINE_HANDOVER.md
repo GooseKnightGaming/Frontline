@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.84.0)
+# Frontline — Handover (M6.85.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,19 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.85.0 — Level 67, the Council House; THE NORTH on the board
+- `drafts/council.js` (67): a walled garden on Nordvik's hill (the wall as J cells, drawn in extra; the gate south;
+  the van parked outside it - `extract.van`). Mark the four council members at the long table (identify; through the
+  council room's windows - the LR7, 8x scope), take the chairman "N" alive (capture; his study upstairs), take the
+  minutes (the secretary's office). The trophy Meeting Adjourned.
+- The case board's seventh trail, THE NORTH (pass, nordvik, council; stamped ADJOURNED). VARNHOLM: FILE CLOSED
+  wants it too.
+- Starts checked by standing still at each new level's start for 15 s (the runtime stepped in a browser): seen at
+  once at the Rooftops (roof B's marksman: now faces east), Varnholm Lock (the warehouse man through a window, the
+  dog's patrol: the window gone, the patrol shortened, the start behind the warehouse), Holm Power Station (a patrol
+  past the start: moved to the switchyard side), the Council House (the gate man: the start along the wall, west) and
+  the Vashka Pass (M6.84). The other nineteen: nobody notices you.
 
 ## M6.84.0 — done quietly; Levels 65 and 66, the Vashka Pass and Nordvik
 - A new objective kind, `quiet`: done while the alarm's siren has never sounded this mission (rt.sirenRung, set in

@@ -34,7 +34,7 @@ export default {
         ['room', 38, 28, 50, 35],                       // the warehouse
       ], after: [
         ['cells', [[27, 13], [36, 10], [42, 12], [10, 12], [27, 27], [44, 27]], 'D'],      // (the control house: the front maglocked, a side door east)
-        ['cells', [[24, 3], [31, 3], [19, 8], [8, 3], [12, 3], [43, 4], [22, 31], [32, 31], [51, 31], [37, 31]], 'W'],
+        ['cells', [[24, 3], [31, 3], [19, 8], [8, 3], [12, 3], [43, 4], [22, 31], [32, 31], [37, 31]], 'W'],
         // the river: the west reach, the lock's chamber, the east reach; the gates (x 21 and x 34) are the ways across
         ['room', 2, 16, 20, 23, '~'], ['room', 22, 18, 33, 21, '~'], ['room', 35, 16, 53, 23, '~'],
         ['room', 2, 15, 20, 15, '='], ['room', 35, 15, 53, 15, '='], ['room', 2, 24, 20, 24, '='], ['room', 35, 24, 53, 24, '='],
@@ -79,7 +79,7 @@ export default {
       path: [[6, 17], [15, 17], [18, 19.5], [15, 22], [6, 22], [3, 19.5], [6, 17]],
       crew: [{ id: 'pb_helm', at: [-0.4, 0.6] }, { id: 'pb_bow', at: [0, -2.2] }] },
   ],
-  start: { x: 53, y: 30, floor: 'G', yaw: 0 },
+  start: { x: 54, y: 37, floor: 'G', yaw: 0 },
   zones: [
     { id: 'control', label: 'Varnholm Lock - the control house', at: [20, 4, 35, 12] },
     { id: 'signal', label: 'Varnholm Lock - the signal room', at: [20, 4, 35, 12], floor: '1' },
@@ -102,7 +102,7 @@ export default {
     { id: 'gate_e', at: [34, 20, 'G'], route: [[34, 14], [34, 25]], arms: 'carbine' },
     { id: 'gate_w', at: [21, 18, 'G'], arms: 'carbine', temper: 'steady' },
     { id: 'n1', at: [16, 14, 'G'], route: [[3, 14], [52, 14]], arms: 'smg' },
-    { id: 's1', at: [35, 26, 'G'], route: [[8, 26], [52, 26]], arms: 'carbine', dog: true },
+    { id: 's1', at: [35, 26, 'G'], route: [[8, 26], [44, 26]], arms: 'carbine', dog: true },
     { id: 'bk', at: [10, 8, 'G'], arms: 'smg', temper: 'bold' },
     { id: 'wh', at: [44, 32, 'G'], route: [[40, 32], [48, 32]], arms: 'carbine' },
   ],

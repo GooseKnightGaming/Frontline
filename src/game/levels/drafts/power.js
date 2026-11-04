@@ -83,7 +83,7 @@ export default {
     { id: 'lane', at: [30, 12, 'G'], route: [[30, 2], [30, 22]], arms: 'carbine' },
     { id: 'yd', at: [51, 11, 'G'], route: [[51, 3], [51, 20]], arms: 'carbine', dog: true },
     { id: 'p1', at: [20, 23, 'G'], route: [[15, 23], [45, 23]], arms: 'carbine' },
-    { id: 'p2', at: [2, 15, 'G'], route: [[1, 2], [1, 28]], arms: 'smg' },
+    { id: 'p2', at: [56, 15, 'G'], route: [[56, 3], [56, 28]], arms: 'smg' },
   ],
   civilians: [
     { id: 'fitter', at: [13, 17, 'G'], yaw: Math.PI, title: 'A fitter', tint: [0.9, 0.75, 0.4], says: ['Thirty years at Holm. They don\'t know a turbine from a teapot, but they know where the switches are.', 'The chief told them no. They put him in the store.'] },
