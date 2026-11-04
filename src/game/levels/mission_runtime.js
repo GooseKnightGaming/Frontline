@@ -1867,7 +1867,9 @@ export function setupMission(ctx) {
             if (g.dead) { s.failed = true; s.why = 'he is down'; showHint(who + ' is down - and where he was going, nobody will know now.'); continue; }
             const d = Math.hypot(g.pos[0] - player.pos[0], g.pos[2] - player.pos[2]) + Math.abs(g.pos[1] - player.pos[1]) * 2;
             s.d = d;
-            s.lost = d > (o.range || 40) ? s.lost + dt : Math.max(0, s.lost - dt);
+            // (M6.98) the clock on losing him runs only once you have been within range of him at all
+            if (d <= (o.range || 40)) s.begun = true;
+            s.lost = !s.begun ? 0 : d > (o.range || 40) ? s.lost + dt : Math.max(0, s.lost - dt);
             s.close = d < (o.near || 4) ? s.close + dt : Math.max(0, s.close - dt * 0.5);
             const end = g.route && g.route[g.route.length - 1];
             if (g.awareness > 0.7 || g.state === 'alert' || g.state === 'flee' || s.close > 3) { s.failed = true; s.why = 'he made you'; showHint(who + ' has seen you following him.'); }
