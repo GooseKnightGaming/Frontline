@@ -911,5 +911,7 @@ mission list in its stories with ticks. See the handover for each.
 - M6.86 - M6.89: the older levels' starts checked (the Subway fixed); Never Rang trophies; allies (Hale and Moss -
   they keep with you, hold their fire until a red wakes up, and fight); `quick` (against the clock); Levels 68 - 70,
   THE CAMPS (the Arn Bridge, Camp Ostrava, the Relay Peaks).
+- M6.90 - M6.92: a grade for every mission (S/A/B/C, the best on the mission list); Level 71, the Skarra Light (a
+  four-floor lighthouse); Level 72, the Winter Ball (a disguise, a crowd, three to mark).
 - Candidates next: a rescued soldier who becomes an ally (Sergeant Venn at the Prison); more papers where there are
   none; the Campus's start (too big for the start check's time).
