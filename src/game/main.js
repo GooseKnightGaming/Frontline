@@ -804,6 +804,10 @@ function boot() {
           : '<div class="rec-row" style="display:block;opacity:0.45">? ? ?  <span>(Level ' + lvl(b.level).no + ', ' + lvl(b.level).title + ')</span></div>').join('')
         + (trailDone(tr, have) ? '<div style="margin:12px auto 4px;width:max-content;padding:5px 16px;border:4px double ' + tr.colour + ';color:' + tr.colour + ';font:700 22px/1 \'Courier New\',monospace;letter-spacing:5px;transform:rotate(-4deg)">' + tr.stamp + '</div>' : '');
     }
+    // (M6.100) the grades: how many missions at each, best first
+    const gr = Saves.loadGrades(slotNo), gcount = { S: 0, A: 0, B: 0, C: 0 };
+    for (const k of Object.keys(gr)) if (gcount[gr[k]] !== undefined) gcount[gr[k]]++;
+    if (Object.keys(gr).length) $('case-list').innerHTML += '<h3 style="margin:18px 0 6px;letter-spacing:3px;color:var(--amber);font-size:13px">GRADES</h3><p style="margin:0 0 6px">' + ['S', 'A', 'B', 'C'].map((g) => '<b style="font-size:18px">' + g + '</b> &times; ' + gcount[g]).join(' &nbsp; ') + ' <span style="opacity:0.7">(of ' + DRAFTS.filter((d) => !d.battle).length + ' missions)</span></p>';
     // (M6.82) the story so far: how each mission done ended (its epilogue, as the debrief told it), in order
     const doneMap = Saves.loadDone(slotNo), told = DRAFTS.filter((d) => d.epilogue && (doneMap[d.id] === 'success' || doneMap[d.id] === 'partial'));
     if (told.length) {
