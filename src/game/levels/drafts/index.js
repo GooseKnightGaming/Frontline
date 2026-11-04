@@ -73,5 +73,6 @@ import harbour from './harbour.js';
 import battery from './battery.js';
 import cove from './cove.js';
 import cottage from './cottage.js';
+import wrongbridge from './wrongbridge.js';
 
-export const DRAFTS = [sewers, bank, cemetery, estate, manor, mine, facility, vantage, ward, campus, shipyard, fortress, drop, beachhead, factoryBattle, riverboat, city, ruins, wasteland, theatre, baths, temple, prison, bunkers, arena, nightclub, airport, outpost, spaceport, subway, listening, yacht, archive, tower, testrange, embassy, barracks, kaldberg, glasshouse, grain, dalmar, ministry, embankment, museum, hospital, villa, pens, rooftops, lock, mill, holm, townhall, market, power, docks, varna, lodge, mast, gazette, airfield, pass, nordvik, council, arnbridge, camp, relays, light, ball, counting, harbour, battery, cove, cottage];
+export const DRAFTS = [sewers, bank, cemetery, estate, manor, mine, facility, vantage, ward, campus, shipyard, fortress, drop, beachhead, factoryBattle, riverboat, city, ruins, wasteland, theatre, baths, temple, prison, bunkers, arena, nightclub, airport, outpost, spaceport, subway, listening, yacht, archive, tower, testrange, embassy, barracks, kaldberg, glasshouse, grain, dalmar, ministry, embankment, museum, hospital, villa, pens, rooftops, lock, mill, holm, townhall, market, power, docks, varna, lodge, mast, gazette, airfield, pass, nordvik, council, arnbridge, camp, relays, light, ball, counting, harbour, battery, cove, cottage, wrongbridge];

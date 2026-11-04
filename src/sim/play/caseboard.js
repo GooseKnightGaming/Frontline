@@ -94,6 +94,7 @@ export const COAST = [
 export const HOLLIS = [
   { level: 'cove', title: 'Hollis\'s Cove', text: 'Hollis marked on the beach and followed home: one of Ghost\'s own.' },
   { level: 'cottage', title: 'The Cliff Cottage', text: 'Hollis taken alive in his attic before he could send the date, and his code book with him.' },
+  { level: 'wrongbridge', title: 'The Wrong Bridge', text: 'The reds\' ambush party cleared from the wrong bridge while the armoury went by road.' },
 ];
 export const TRAILS = [
   { id: 'blight', title: 'THE BLIGHT', steps: BLIGHT, stamp: 'HARVEST SAVED', colour: '#5a9a3a' },

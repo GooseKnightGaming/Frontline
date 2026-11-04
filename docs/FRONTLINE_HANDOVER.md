@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.98.0)
+# Frontline — Handover (M6.99.0)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,12 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.99.0 — Level 78, the Wrong Bridge
+- `drafts/wrongbridge.js` (78): daylight, three allies (Hale, Moss and Venn). The reds are dug in along a railway
+  cutting facing the line, waiting for a train that is not coming; come over the hill behind them and clear them out
+  (kind 'clear' - the allies are not counted), take their orders from the command hut, optionally their officer
+  alive. HOLLIS is three missions (cove, cottage, wrongbridge). The trophy All Four Home.
 
 ## M6.98.0 — HOLLIS: Levels 76 and 77
 - The name seeded on the Winter Ball's dance card, the paymaster's memo and the Battery's range card. `drafts/cove.js`
