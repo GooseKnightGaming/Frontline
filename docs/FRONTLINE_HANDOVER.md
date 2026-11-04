@@ -1,4 +1,4 @@
-# Frontline — Handover (M6.94.0)
+# Frontline — Handover (M6.94.1)
 
 ## Start here
 A browser espionage game in PlayCanvas, hosted on GitHub Pages
@@ -6,6 +6,11 @@ A browser espionage game in PlayCanvas, hosted on GitHub Pages
 GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/`
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
+
+## M6.94.1 — the browser suite's door check
+- test/browser.test.py: "and E again shuts it" asks only once "E opens it" has opened the door. With the opening
+  check failing on the test machine (known), a late open made the shutting check fail on its own now and then -
+  three times in these two nights, each time passing on a rerun.
 
 ## M6.94.0 — the Outpost's pilot fights too
 - The Desert Outpost (32): Lieutenant Osei-Brandt, freed from the cell block, takes up a gun (a freedFrom ally, as

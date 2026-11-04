@@ -337,7 +337,9 @@ async def main():
         await snap(pg, '/tmp/fl/door_open.png')
         await pg.keyboard.press('KeyE')
         shut = await until("!FL.doors[0].open && FL.doors[0].swing <= 0")
-        ok('and E again shuts it', bool(shut))
+        # (M6.95) only a question once E has opened it: with the opening check failing (the test machine's known stall),
+        # a late open made this fail on its own now and then, and a rerun always passed
+        ok('and E again shuts it', bool(shut) or not opened, 'opened=%s shut=%s' % (opened, shut))
         await pg.evaluate("FL.pose([-89, -16, -2.5], -Math.PI / 2 + 0.5, 0)")
         await pg.wait_for_timeout(2500)
         await snap(pg, '/tmp/fl/door_sign.png')
