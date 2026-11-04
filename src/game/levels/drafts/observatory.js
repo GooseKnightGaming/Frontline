@@ -32,7 +32,7 @@ export default {
         ['room', 32, 22, 38, 27],                       // the guard hut
         ['room', 32, 8, 37, 12],                        // the generator house
       ], after: [
-        ['cells', [[19, 17], [15, 17], [23, 17], [19, 22], [27, 11], [35, 21], [34, 13]], 'D'],
+        ['cells', [[15, 17], [23, 17], [19, 22], [27, 11], [23, 27], [35, 21], [34, 13]], 'D'],      // (the dome's east door maglocked; her rooms' own door south)
         ['cells', [[11, 11], [19, 5], [11, 22], [27, 22], [39, 24]], 'W'],
         // the telescope on its pier, the receiver's desk, the library's shelves and table, her rooms
         ['room', 18, 10, 20, 12, 'M'], ['cells', [[14, 8], [24, 8]], 'T'], ['cells', [[24, 14]], 'K'],
@@ -71,7 +71,7 @@ export default {
   pickups: [{ id: 'drop', name: 'The courier\'s drop', what: 'the drop', at: [16, 22, 'G'], table: true, colour: [0.9, 0.85, 0.7] }],
   devices: [
     { id: 'c-door', kind: 'camera', at: [28, 17, 'G'], face: [1, 1], net: 'obs' },
-    { id: 'm-dome', kind: 'lock', at: [19, 17, 'G'], net: 'obs' },
+    { id: 'm-dome', kind: 'lock', at: [27, 11, 'G'], net: 'obs' },
     { id: 'l-dome', kind: 'lights', at: [12, 16, 'G'], face: [1, 0], area: [12, 6, 26, 16], name: 'the dome', net: 'obs' },
     { id: 'a-obs', kind: 'alarm', at: [31, 22, 'G'], face: [-1, 0], net: 'obs' },
   ],
