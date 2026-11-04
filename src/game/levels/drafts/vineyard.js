@@ -21,7 +21,7 @@ export default {
   time: { date: [30, 8, 2027], hour: 20, minute: 50 }, night: true, faction: 'red',
   startLoadout: { primary: null, backup: 'V27C', utility1: 'SMOKE', utility2: 'FLASH', gear: 'LENSES', mods: { backup: ['SILENCER'] } },
   atmos: { fog: [0.35, 0.28, 0.3, 30, 200], ambient: [0.36, 0.3, 0.32] },
-  extractName: 'the river path, south', extract: { x: 20, y: 38, floor: 'G', van: [7, 0] },
+  extractName: 'the river path, south', extract: { x: 36, y: 38, floor: 'G', van: [-8, 0] },
   outside: { backdrop: 'hills', mat: 'grass', margin: 14 },
   windows: false,
   floors: {
@@ -29,17 +29,17 @@ export default {
       y: 0, wallH: 3.4, wall: 'plaster', wallTint: [0.92, 0.84, 0.7], floor: 'tile', ceil: 'wood', lampPower: 0.6, lampColour: [1, 0.85, 0.6], lampEvery: 4,
       carve: { size: [W, H], ops: [
         ['room', 2, 2, 6, 6],                           // the house
-        ['room', 10, 2, 18, 6],                         // the winery
+        ['room', 11, 2, 19, 6],                         // the winery
         ['room', 48, 31, 54, 37],                       // the old water mill
       ], after: [
         ...ROWS,
-        ['cells', [[7, 4], [8, 7], [14, 7], [47, 34]], 'D'],
-        ['cells', [[4, 1], [14, 1], [51, 30], [55, 34]], 'W'],
+        ['cells', [[7, 4], [15, 7], [47, 34]], 'D'],
+        ['cells', [[4, 1], [15, 1], [51, 30], [55, 34]], 'W'],
         ['cells', [[3, 3]], 'T'], ['cells', [[5, 5]], 'Y'],
-        ['room', 11, 3, 17, 3, 'C'], ['cells', [[16, 5]], 'M'],
+        ['room', 12, 3, 18, 3, 'C'], ['cells', [[17, 5]], 'M'],
         ['cells', [[50, 32]], 'T'], ['cells', [[53, 36]], 'Y'], ['cells', [[52, 33]], 'M'],
         // carts and baskets of grapes along the track
-        ['cells', [[27, 6], [46, 12], [46, 26], [4, 24], [16, 34], [36, 36]], 'C'],
+        ['cells', [[27, 6], [46, 12], [46, 26], [4, 24], [16, 37], [30, 36]], 'C'],
       ] },
     },
   },
@@ -48,10 +48,10 @@ export default {
     box([0, -0.05, 39 * C], [W * C, 0.02, H * C + 4], 'glassB', { tint: [0.2, 0.3, 0.35], solid: false });
     for (const [x, y] of [[8, 8], [26, 8], [44, 34], [8, 34]]) level.lights.push({ pos: [mid(x), 3.4, mid(y)], range: 9, intensity: 0.7, color: [1, 0.85, 0.6], street: true });
   },
-  start: { x: 20, y: 37, floor: 'G', yaw: 0 },
+  start: { x: 36, y: 37, floor: 'G', yaw: 0 },
   zones: [
     { id: 'house', label: 'The vineyard - Varo\'s house', at: [2, 2, 6, 6] },
-    { id: 'winery', label: 'The vineyard - the winery', at: [10, 2, 18, 6] },
+    { id: 'winery', label: 'The vineyard - the winery', at: [11, 2, 19, 6] },
     { id: 'mill', label: 'The vineyard - the old water mill', at: [48, 31, 54, 37] },
     { id: 'vines', label: 'The Varo vineyard', at: [0, 0, W - 1, H - 1] },
   ],
@@ -60,7 +60,7 @@ export default {
       arms: 'pistol', temper: 'cowardly', name: 'Varo\'s son', tint: [0.7, 0.6, 0.5] },
     { id: 'varo', at: [4, 4, 'G'], arms: 'pistol', rank: 'officer', temper: 'steady', name: 'Varo' },
     { id: 'hs1', at: [9, 5, 'G'], arms: 'carbine', temper: 'steady' },
-    { id: 'wn1', at: [13, 5, 'G'], arms: 'smg' },
+    { id: 'wn1', at: [14, 5, 'G'], arms: 'smg' },
     { id: 'kf1', at: [30, 4, 'G'], route: [[22, 4], [44, 4]], arms: 'carbine' },
     { id: 'kf2', at: [52, 20, 'G'], route: [[52, 8], [52, 28]], arms: 'carbine', dog: true },
     { id: 'kray', at: [51, 35, 'G'], arms: 'pistol', rank: 'officer', temper: 'cowardly', name: 'Anselm Kray', tint: [0.9, 0.85, 0.75] },
