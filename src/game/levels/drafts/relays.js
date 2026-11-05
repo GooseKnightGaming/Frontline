@@ -58,7 +58,7 @@ export default {
     { id: 'hale', at: [31, 41, 'G'], faction: 'ghost', ally: true, name: 'Hale', arms: 'carbine', temper: 'steady', tint: [0.45, 0.6, 1.35] },
     { id: 'moss', at: [33, 41, 'G'], faction: 'ghost', ally: true, name: 'Moss', arms: 'smg', temper: 'bold', tint: [0.4, 0.55, 1.3] },
     { id: 'rad', at: [31, 25, 'G'], arms: 'pistol', rank: 'officer', temper: 'steady', role: 'radio' },
-    { id: 'm1', at: [33, 29, 'G'], arms: 'carbine', temper: 'steady' },
+    { id: 'm1', at: [33, 29, 'G'], arms: 'carbine', temper: 'steady', yaw: 0 },
     { id: 'w1', at: [9, 9, 'G'], arms: 'carbine', temper: 'steady' },
     { id: 'w2', at: [9, 13, 'G'], arms: 'smg', temper: 'bold' },
     { id: 'eng', at: [54, 9, 'G'], arms: 'pistol', temper: 'cowardly', role: 'engineer' },

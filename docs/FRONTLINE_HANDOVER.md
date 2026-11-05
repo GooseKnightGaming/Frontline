@@ -15,6 +15,7 @@ game into the repository's root.
 - **Epilogues for the 13 older levels that had none** (the Housing Estate, the Facility, the Ward, the Campus, the Shipyard, the Fortress, the Riverboat, the City, the Wasteland, the Bunkers, the Space Port, the Subway, Q's range). Every level now has one for THE STORY SO FAR.
 - **The General renamed again, to Aske**: "Brandt" was already Dr Ilse Brandt at the Research Facility (Level 11). The level ids are unchanged.
 - The Night Express's radio man moved further back in his van. With last night's facing fix the start now faces where it should, and he saw you.
+- The start check rerun on every other level, the older ones too: only the Relay Peaks (70) was seen at its start. Its door guard now faces up the ridge (`yaw: 0`).
 - Text checks (bold tags balanced, no stray backslashes, double spaces or spaces before punctuation, clock times matching each level's time): all clean.
 
 ## A sweep of every level (5 Nov, night)
