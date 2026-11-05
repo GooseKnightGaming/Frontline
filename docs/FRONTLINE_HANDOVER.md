@@ -7,6 +7,10 @@ GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
 
+## M6.124.2 — the HUD's place line and ammo, readable over snow
+
+- `#zone` and `#weapon` get a second, softer shadow, so the level line and the ammo read over snow and bright sky.
+
 ## M6.124.1 — polish: the pause menu and the debrief
 
 - **The pause menu** now opens with a recap for a first-draft level: its number and name, and each objective ticked,

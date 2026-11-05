@@ -65,12 +65,12 @@
   #st-fill { background: #d8d8d0; }
   #stance { font-size: 12px; letter-spacing: 4px; color: #e8b423; text-shadow: 0 1px 3px #000; opacity: 0; transition: opacity 0.2s; }
   #br { position: absolute; left: 50%; top: 18%; width: 240px; transform: translateX(-50%); display: none; text-align: center; }
-  #zone { position: absolute; left: 22px; top: 18px; font-size: 13px; letter-spacing: 4px; color: #e6eaee; text-shadow: 0 1px 3px #000; }
+  #zone { position: absolute; left: 22px; top: 18px; font-size: 13px; letter-spacing: 4px; color: #e6eaee; text-shadow: 0 1px 3px #000, 0 0 6px rgba(0,0,0,0.85); }   /* (M6.124.2) a second, softer shadow: readable over snow and sky */
   #zone::before { content: 'GHOST TRAINING  //  '; color: var(--amber); }
   body.mission #zone::before { content: 'LEVEL 0  //  '; }
   body.offduty #zone::before { content: 'OFF DUTY  //  '; }
   body.draft #zone::before { content: var(--zpre); }      /* (M6.19.0) a first draft: its level number */      /* (M6.18.10) the train: nothing to do with Ghost */
-  #weapon { position: absolute; right: 22px; bottom: 22px; text-align: right; text-shadow: 0 1px 3px #000; }
+  #weapon { position: absolute; right: 22px; bottom: 22px; text-align: right; text-shadow: 0 1px 3px #000, 0 0 6px rgba(0,0,0,0.85); }
   #w-name { font-size: 12px; letter-spacing: 3px; color: var(--amber); }
   #w-ammo { font-size: 26px; letter-spacing: 2px; color: #e6eaee; font-weight: 600; }
   #score { position: absolute; right: 22px; top: 18px; font-size: 13px; letter-spacing: 3px; color: #cfd6dc; text-shadow: 0 1px 3px #000; }
