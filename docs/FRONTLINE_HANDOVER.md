@@ -7,11 +7,11 @@ GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
 
-## M6.123.2 — turns the game makes are no longer undone (a real bug); the browser suite's stale tests
+## M6.123.3 / M6.123.2 — turns the game makes are no longer undone (a real bug); the browser suite's stale tests
 
 - **The "absurd mouse jump" guard undid the game's own turns.** In `main.js` it compared this frame's yaw with *last frame's* and put back anything over 2.2 rad. A turn the game made itself was taken for a mouse jump and undone. That covers a mission's start facing (arriving from the HQ facing the other way), boarding a vehicle that points the other way, a portal's turn, and a test's `FL.pose`. It now compares with the yaw just before this frame's mouse is read, so only a real mouse jump is ignored. This was behind "the gallery targets are on the radar" and "remembered where they were" failing: the test's pose had been turned back to face a wall.
 - Browser suite: tests that pressed keys straight after a new game now wait for it to draw (the software renderer takes about 40 s to its first frames). That fixed the door's E and the radar's zoom keys. Tests that had fallen behind Rhys's decisions were updated: the controls list has 28 actions; a rifle can go in the backup slot ("any gun in any slot"); a sign has a face each way ("printed backwards"); first or third person is the View setting (V is the vision modes).
-- The blood test now asks for the colour to drain only while the health is still below 60 when it reads it (under the slow renderer the health had regenerated past 60). **With that, the browser suite has no known failures: 62 of 62.**
+- **The colour never drained when you were badly hurt (a real bug).** `hud()` set `saturate()` on `#app`, but `#app` is the canvas, and the vision modes set the canvas's filter every frame straight after, which wiped it out. Now `hud()` puts the hurt filter in `S.hurtFilter`, and the vision code adds it to whatever mode is on (normal, night vision, thermal, drugged...). The health had not regenerated; that guess was wrong, and the test stays strict. **With that, the browser suite should have no known failures.**
 
 ## M6.123.1 — the music plays (a real bug)
 

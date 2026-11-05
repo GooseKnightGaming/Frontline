@@ -216,8 +216,7 @@ async def main():
         await frames(3)
         hurt = await pg.evaluate("({b: +getComputedStyle(document.getElementById('blood')).opacity, f: document.getElementById('app').style.filter, hp: FL.player.health})")
         ok('no health bar; the screen is clear at full health', clean['hp'] is None and clean['b'] < 0.05, json.dumps(clean))
-        # (M6.123.2) the colour drains below 60 health; under the slow renderer it can have healed past that by now
-        ok('when badly hurt, blood fills the screen edges and colour drains', hurt['b'] > 0.7 and ('saturate' in hurt['f'] or hurt['hp'] >= 60), json.dumps(hurt))
+        ok('when badly hurt, blood fills the screen edges and colour drains', hurt['b'] > 0.7 and 'saturate' in hurt['f'], json.dumps(hurt))
         await snap(pg, '/tmp/fl/hurt.png')
         await pg.evaluate("FL.player.health = 100"); await frames(2)
         # (M6.123.1) Rhys ("printed backwards"): each side its own face the right way round, not one two-sided panel

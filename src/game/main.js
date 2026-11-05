@@ -77,7 +77,7 @@ import { boardOf, describe as contractText, TERMS } from '../sim/play/contracts.
 import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './core/input.js';
 import { isTouchDevice, touchControls, retext } from './core/touch.js';
 
-const VERSION = 'M6.123.2';
+const VERSION = 'M6.123.3';
 const $ = (id) => document.getElementById(id);
 const TEST = /[?&]test\b/.test(location.search);
 // Level 0, the training mission, is its own page load: index.html?level=0
@@ -1078,8 +1078,9 @@ function boot() {
     $('splat').style.opacity = Math.min(0.85, hurt * hurt * 0.85 + beat * 0.5).toFixed(3);
     $('blood').style.setProperty('--spread', (62 - hurt * 30).toFixed(1) + '%');
     const sat = player.health >= 60 ? 1 : 0.25 + 0.75 * (player.health / 60);
-    const filt = sat < 0.999 ? `saturate(${sat.toFixed(2)})` : '';
-    if ($('app').style.filter !== filt) $('app').style.filter = filt;
+    // (M6.123.2) the canvas is #app, and the vision modes set its filter every frame after this - so the colour
+    // draining is handed to them to add on, rather than written here and overwritten straight away
+    S.hurtFilter = sat < 0.999 ? `saturate(${sat.toFixed(2)})` : '';
     // weapon panel
     const w = arsenal.weapon, am = arsenal.ammoNow;
     // (M6.33) the firing mode, where it has more than one
@@ -1438,13 +1439,14 @@ function boot() {
     if (dr && !nv && vm === 'normal' && !ir) {
       const t = performance.now() / 1000;
       const df = 'hue-rotate(' + Math.round(Math.sin(t * 0.21) * 70) + 'deg) saturate(' + (1.5 + Math.sin(t * 0.37) * 0.4).toFixed(2) + ') blur(' + (0.6 + Math.sin(t * 0.53) * 0.5).toFixed(2) + 'px) contrast(1.1)';
-      canvas.style.filter = df; const ov0 = $('nv'); if (ov0) ov0.style.display = 'none'; return;
+      canvas.style.filter = (df + ' ' + (S.hurtFilter || '')).trim(); const ov0 = $('nv'); if (ov0) ov0.style.display = 'none'; return;
     }
     const f = nv ? 'brightness(4.2) contrast(1.25) grayscale(1) sepia(1) hue-rotate(58deg) saturate(2.6)' : ir ? 'grayscale(1) brightness(2.4) contrast(1.2)'
       : vm === 'thermal' ? 'grayscale(1) brightness(2.2) contrast(0.55)' : vm === 'uv' ? 'brightness(1.6) sepia(1) hue-rotate(215deg) saturate(3.2)' : vm === 'emf' ? 'brightness(1.4) contrast(1.2) saturate(0.35)'
       // (M6.28) where the lights have been hacked out: dark for you too (night vision or thermal sees)
       : !watching && S.playing && level.blackout && level.blackout(player.eyePos) ? 'brightness(0.3) saturate(0.5)' : '';
-    if (canvas.style.filter !== f) canvas.style.filter = f;
+    const fh = (f + ' ' + (S.hurtFilter || '')).trim();
+    if (canvas.style.filter !== fh) canvas.style.filter = fh;
     const ov = $('nv');
     if (ov) ov.style.display = nv ? 'block' : 'none';
   }
