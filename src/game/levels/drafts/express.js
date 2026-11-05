@@ -73,7 +73,7 @@ export default {
     { id: 's2', at: [50, 8, 'G'], route: [[46, 8], [57, 8]], arms: 'pistol' },
     { id: 's1', at: [36, 7, 'G'], arms: 'pistol', temper: 'steady' },
     { id: 'd1', at: [21, 6, 'G'], arms: 'carbine' },
-    { id: 'rad', at: [7, 6, 'G'], arms: 'pistol', rank: 'officer', temper: 'steady', role: 'radio' },
+    { id: 'rad', at: [10, 5, 'G'], arms: 'pistol', rank: 'officer', temper: 'steady', role: 'radio' },
     { id: 'eng', at: [11, 7, 'G'], arms: 'pistol', temper: 'cowardly', role: 'engineer' },
     { id: 'bg', at: [81, 6, 'G'], arms: 'carbine', temper: 'steady' },
     { id: 'p1', at: [40, 12, 'G'], route: [[12, 12], [84, 12]], arms: 'carbine' },
