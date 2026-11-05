@@ -77,7 +77,7 @@ import { boardOf, describe as contractText, TERMS } from '../sim/play/contracts.
 import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './core/input.js';
 import { isTouchDevice, touchControls, retext } from './core/touch.js';
 
-const VERSION = 'M6.124.0';
+const VERSION = 'M6.124.1';
 const $ = (id) => document.getElementById(id);
 const TEST = /[?&]test\b/.test(location.search);
 // Level 0, the training mission, is its own page load: index.html?level=0
@@ -1269,7 +1269,20 @@ function boot() {
     if ($('safe-ui')) $('safe-ui').style.display = 'none';     // the safe's dial waits behind the menu
     if (document.pointerLockElement) document.exitPointerLock();
     tab('main');
+    drawJob();
     show('menu', true);
+  }
+  // (M6.124.1) the pause menu says where you are and what is left: the level, and its objectives ticked off
+  function drawJob() {
+    const box = $('m-job'); if (!box) return;
+    let os = null; try { os = missionRt && missionRt.objectives && missionRt.objectives(); } catch (e) { os = null; }
+    const sp = { no: (level.spec || {}).no || level.no, title: (level.spec || {}).title || level.title };
+    if (!os || !os.length || !sp.title) { box.style.display = 'none'; return; }
+    const esc = (t) => String(t).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+    box.innerHTML = '<div class="mj-t">LEVEL ' + (sp.no || '') + ' \u00b7 ' + esc(sp.title).toUpperCase() + '</div>' +
+      os.map((o) => '<div class="mj-o' + (o.done ? ' done' : o.failed ? ' failed' : '') + (o.optional ? ' opt' : '') + '">' + (o.done ? '\u2713 ' : o.failed ? '\u2717 ' : '\u2022 ') +
+        esc(o.text) + (o.optional ? ' (optional)' : '') + (o.status && !o.done && !o.failed && !['take', 'hack', 'reach'].includes(o.kind) ? ' <span style="opacity:0.6">- ' + esc(o.status) + '</span>' : '') + '</div>').join('');
+    box.style.display = 'block';
   }
   function tab(name) {
     for (const t of ['main', 'controls', 'settings', 'howto', 'trophies', 'gear', 'skills']) $('tab-' + t).style.display = t === name ? 'block' : 'none';

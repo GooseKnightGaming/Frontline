@@ -7,6 +7,16 @@ GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
 
+## M6.124.1 — polish: the pause menu and the debrief
+
+- **The pause menu** now opens with a recap for a first-draft level: its number and name, and each objective ticked,
+  crossed or still to do, with its status where that helps (`drawJob()` in `main.js`, `#m-job` in `src/index.html`).
+  Take, hack and reach objectives show no status, as on the HUD. Other levels show nothing new.
+- **The debrief's grade** shows which parts were earned (done, the optional ones, no alarm, no one killed, every paper),
+  each with a tick or a cross, rather than the list of what counts (`rt.gradeWhy`).
+- **"No alarm yet"** now reads "no alarm" once the mission is over: the outcome is read again after `m.done`.
+- **The story row** in the debrief is in title case ("The Winter Road", not "The winter road").
+
 ## M6.124.0 — polish (Rhys, 5 Nov: "time for polish"): looks, writing, the levels list
 
 - **Props.** In the new levels the outdoor "crates" became what they stood for, by a script over the rows its comments name: trees (`t`) and rubble (`r`) on hills and in woods; low walls (`w`) for sandbags; barrels (`B`) for drums, bins, bollards and benches. Real crates stay crates. One tree was moved off a patrol's end point (the Last Battery). The start check was rerun on all 50 changed levels.

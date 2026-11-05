@@ -1410,7 +1410,7 @@ export function setupMission(ctx) {
         r.done = !!(z && z.done); r.status = z && z.hold ? (r.done ? 'held' : Math.floor(z.held) + ' of ' + Math.round(z.hold) + ' s') : r.done ? 'reached' : 'not reached';
       } else if (o.kind === 'quiet') {
         // (M6.84) done the quiet way: the alarm never sounded (best as an optional one - it is 'done' until it rings)
-        r.done = !rt.sirenRung; r.failed = !!rt.sirenRung; r.status = rt.sirenRung ? 'the alarm sounded' : 'no alarm yet';
+        r.done = !rt.sirenRung; r.failed = !!rt.sirenRung; r.status = rt.sirenRung ? 'the alarm sounded' : m.done ? 'no alarm' : 'no alarm yet';
       } else if (o.kind === 'identify') {
         // (M6.78) men to mark (main.js's marking: aim at one for a second, or a tracker on him) - every one, alive
         const gs = (o.refs || []).map((id) => guards.find((q) => q.id === id)).filter(Boolean), n = gs.filter((g) => g.tracked).length;
@@ -2375,7 +2375,7 @@ export function setupMission(ctx) {
     endHotel(o) {
       if (m.done) return;
       const r = rules.grade(o);
-      m.done = true; m.result = r; rt.outcome = o;
+      m.done = true; m.result = r; rt.outcome = level.draft ? outcome() : o;   // (M6.124.1) read again now it is over: 'no alarm', not 'no alarm yet'
       if (r === 'failed') m.failure = B ? (B.retreated ? 'You withdrew before it was decided' : 'The battle was lost') : 'Withdrew with nothing achieved';
       m.events.push({ type: 'complete' });
       if (ctx.recordOutcome) ctx.recordOutcome(o, r);
@@ -2542,10 +2542,14 @@ export function setupMission(ctx) {
       if (level.draft && !B && m.result !== 'failed') {
         const os = draftObjectives(), opt = os.filter((o) => o.optional);
         let pts = m.result === 'success' ? 3 : 1;
-        if (opt.length && opt.every((o) => o.done)) pts += 2;
-        if (devices.some((d) => d.kind === 'alarm') ? !rt.sirenRung : true) pts += 1;
-        if (!m.kills) pts += 1;
-        if (level.intel && level.intel.length && level.intel.every((q) => q.found)) pts += 1;
+        // (M6.124.1) and which of them were earned, for the debrief's line
+        const gOpt = !opt.length || opt.every((o) => o.done), gAlarm = devices.some((d) => d.kind === 'alarm') ? !rt.sirenRung : true;
+        const gClean = !m.kills, gPapers = !!(level.intel && level.intel.length && level.intel.every((q) => q.found));
+        if (opt.length && gOpt) pts += 2;
+        if (gAlarm) pts += 1;
+        if (gClean) pts += 1;
+        if (gPapers) pts += 1;
+        rt.gradeWhy = [['done', m.result === 'success'], ['the optional ones', gOpt], ['no alarm', gAlarm], ['no one killed', gClean], ['every paper', gPapers]];
         grade = pts >= 7 ? 'S' : pts >= 5 ? 'A' : pts >= 3 ? 'B' : 'C';
         if (!rt.graded) { rt.graded = true; Saves.markGrade(Saves.currentSlot(), level.draft, grade); }
       }
@@ -2617,7 +2621,7 @@ export function setupMission(ctx) {
         row('Doors breached', m.breaches) +
         (rt.newClues && rt.newClues.length ? row('The case', rt.newClues.map((id) => (CASE.find((c) => c.id === id) || {}).title).join(', ') + ' &mdash; on the board at Ghost HQ' + (rt.caseMade ? '. <b>Ghost knows where the council meets: Kaldberg.</b>' : '')) : '') +
         (rt.contractsPaid && rt.contractsPaid.length ? row('Contract' + (rt.contractsPaid.length > 1 ? 's' : ''), rt.contractsPaid.map((c) => CONTRACT_TERMS[c.term].name + ' (' + contractText(c) + ') +' + c.xp).join('; ')) : '') +
-        (grade ? row('Grade', '<span style="font-size:20px;letter-spacing:2px">' + grade + '</span> <span style="opacity:0.7;font-weight:normal">(done, the optional ones, no alarm, no one killed, every paper)</span>') : '') +
+        (grade ? row('Grade', '<span style="font-size:20px;letter-spacing:2px">' + grade + '</span> <span style="opacity:0.8;font-weight:normal;font-size:13px">' + (rt.gradeWhy || []).map(([k, y]) => '<span style="margin-left:8px;color:' + (y ? '#7fc97f' : '#8a8a8a') + '">' + (y ? '&#10003; ' : '&#10007; ') + k + '</span>').join('') + '</span>') : '') +
         (rt.xpGained ? row('Experience', '+' + rt.xpGained + (rt.newPoints ? ' &mdash; ' + (rt.newPoints === 1 ? 'a skill point' : rt.newPoints + ' skill points') + ' to spend at Ghost HQ' : '')) : '') +
         (devices.length ? row('Security hacked', (m.hacked || 0) + (m.hacked === 1 ? ' time' : ' times') + (m.traced ? ' &mdash; <span class="no">traced</span>: they know where Yard 7 is' : m.hacked ? ' &mdash; never traced' : '')) : '') +
         (m.turretKills ? row('Downed by their own turrets', m.turretKills) : '') +
@@ -2628,7 +2632,7 @@ export function setupMission(ctx) {
         // (M6.80) the story trails this mission is a step of: how far along each is, stamped when it is all done
         (level.draft ? TRAILS.filter((t) => t.steps.some((b) => b.level === level.draft)).map((t) => {
           const have = Saves.loadCase(Saves.currentSlot()), n = t.steps.filter((b) => have.includes(trailMark(t, b.level))).length;
-          return row(t.title.charAt(0) + t.title.slice(1).toLowerCase(), trailDone(t, have) ? '<b style="color:' + t.colour + '">' + t.stamp + '</b> &mdash; all ' + t.steps.length + ' done' : n + ' of ' + t.steps.length + ' on the case board');
+          return row(t.title.toLowerCase().replace(/(^|\s)([a-z])/g, (q, sp, c) => sp + c.toUpperCase()), trailDone(t, have) ? '<b style="color:' + t.colour + '">' + t.stamp + '</b> &mdash; all ' + t.steps.length + ' done' : n + ' of ' + t.steps.length + ' on the case board');
         }).join('') : '') +
         (level.intel && level.intel.length ? row('Intel found', level.intel.filter((q) => q.found).length + ' of ' + level.intel.length) : '') +
         // (Rhys: he could not find them all) where the rest were -

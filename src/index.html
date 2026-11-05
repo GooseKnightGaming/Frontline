@@ -196,7 +196,10 @@
   #drafts .brief-card { width: min(1060px, 94vw); max-width: none; }
   #drafts-list { max-width: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 0 10px; }
   #drafts-list .btn { margin: 3px 0; padding: 7px 10px; font-size: 12px; letter-spacing: 1px; text-align: left; }
-  #drafts-jump { position: sticky; top: -14px; z-index: 2; background: rgba(10,12,15,0.96); padding: 8px 0 6px; margin: 0 0 4px;
+  #m-job { display: none; margin: -4px 0 14px; padding: 10px 14px; border-left: 3px solid #e0b030; background: rgba(255,255,255,0.04); font-size: 14px; line-height: 1.55; color: #cfd4da; text-align: left; }
+#m-job .mj-t { color: #e0b030; letter-spacing: 1px; font-size: 13px; margin-bottom: 4px; }
+#m-job .mj-o.done { color: #7fc97f; } #m-job .mj-o.failed { color: #d07a6a; text-decoration: line-through; } #m-job .mj-o.opt { opacity: 0.75; }
+#drafts-jump { position: sticky; top: -14px; z-index: 2; background: rgba(10,12,15,0.96); padding: 8px 0 6px; margin: 0 0 4px;
     display: flex; flex-wrap: wrap; gap: 3px 12px; font-size: 11px; letter-spacing: 2px; border-bottom: 1px solid rgba(232,180,35,0.25); }
   #drafts-jump a { color: var(--amber); cursor: pointer; text-decoration: none; white-space: nowrap; }
   #drafts-jump a:hover { text-decoration: underline; }
@@ -464,6 +467,7 @@
     <div class="tab" id="tab-main">
       <img id="m-badge" onerror="if(!this.dataset.r){this.dataset.r=1;this.src=this.src.split('?')[0]+'?r='+Date.now()}" src="assets/ui/frontline_badge.png" alt="Frontline">
       <h2>PAUSED</h2>
+      <div id="m-job"></div>
       <button class="btn primary" id="btn-resume">Resume</button>
       <button class="btn" id="btn-gear">Your gear</button>
       <button class="btn" id="btn-howto">Controls guide (opens a page)</button>
