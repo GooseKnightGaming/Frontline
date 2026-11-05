@@ -36,7 +36,7 @@ export default {
         // the presses, the type cases, the paper stacks
         ['cells', [[14, 17], [19, 17], [24, 19]], 'M'], ['room', 11, 15, 11, 17, 'H'], ['cells', [[26, 15]], 'T'], ['cells', [[16, 21], [27, 21]], 'C'],
         // the street, the alley, the yard
-        ['cells', [[33, 3], [6, 3], [4, 24], [30, 27], [16, 27], [35, 22]], 'C'],
+        ['cells', [[33, 3], [6, 3], [4, 24], [30, 27], [16, 27], [35, 22]], 'B'],
       ] },
     },
   },

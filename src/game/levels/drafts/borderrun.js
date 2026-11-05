@@ -36,8 +36,8 @@ export default {
         // the river under the bridge (x 74 - 78), the bridge itself the road
         ['room', 74, 2, 78, 8, '~'], ['room', 74, 16, 78, 21, '~'],
         // the roadblock: sandbags across the road, a gap in the middle
-        ['cells', [[60, 9], [60, 10], [60, 15], [60, 16]], 'C'],
-        ['cells', [[20, 17], [34, 6], [46, 18], [88, 6], [94, 18], [10, 5]], 'C'],
+        ['cells', [[60, 9], [60, 10], [60, 15], [60, 16]], 'w'],
+        ['cells', [[20, 17], [34, 6], [46, 18], [88, 6], [94, 18], [10, 5]], 'r'],
       ] },
     },
   },

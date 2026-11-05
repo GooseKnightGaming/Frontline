@@ -42,7 +42,7 @@ export default {
         ['cells', [[38, 31]], 'T'], ['cells', [[41, 33]], 'M'],
         // the garth's well, the trucks in the gatehouse yard
         ['cells', [[22, 20]], 'M'], ['cells', [[38, 37], [42, 37]], 'C'],
-        ['cells', [[6, 6], [40, 6], [2, 32], [44, 28]], 'C'],
+        ['cells', [[6, 6], [2, 32]], 't'], ['cells', [[40, 6], [44, 28]], 'r'],
       ] },
     },
   },
