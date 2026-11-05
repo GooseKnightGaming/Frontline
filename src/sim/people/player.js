@@ -253,7 +253,7 @@ export class Player {
     if (this.skills && this.skills.tough && why !== 'fall') n *= this.skills.tough;     // (M6.29) Hard to Kill
     this.health = Math.max(0, this.health - n);
     this.sinceDamage = 0;
-    this.events.push({ type: 'hurt', amount: n, why });
+    this.events.push({ type: 'hurt', amount: n, why, from: from ? from.slice() : null });   // (M6.125) where from, for the HUD's arc
     if (this.health <= 0) {
       // which way the body goes down: away from whatever hit it
       const look = this.lookDir();

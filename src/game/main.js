@@ -77,7 +77,7 @@ import { boardOf, describe as contractText, TERMS } from '../sim/play/contracts.
 import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './core/input.js';
 import { isTouchDevice, touchControls, retext } from './core/touch.js';
 
-const VERSION = 'M6.124.2';
+const VERSION = 'M6.125.0';
 const $ = (id) => document.getElementById(id);
 const TEST = /[?&]test\b/.test(location.search);
 // Level 0, the training mission, is its own page load: index.html?level=0
@@ -1099,6 +1099,7 @@ function boot() {
     $('w-ammo').style.color = am && am.mag === 0 && arsenal.reloading <= 0 ? '#e05050' : '#e6eaee';
     $('score').textContent = score ? 'SCORE ' + score : '';
     $('hitmark').style.opacity = hitMark > 0 ? 1 : 0;
+    if (hitMark > 0) $('hitmark').className = S.hitKind || '';
     let stance = player.mode === 'swim' ? '' : player.stance === 2 ? 'PRONE' : player.stance === 1 ? 'CROUCHED' : '';
     if (S.lock) stance = 'LOCKED ON' + (stance ? '  ' + stance : '');
     // (Rhys: the Jump Pack "should show its fuel % all the while it's NOT at 100%, similar to your Stamina Bar")
@@ -1156,6 +1157,7 @@ function boot() {
     $('zone').textContent = z ? z.label : DRAFT ? DRAFT.title : MISSION ? 'Meridian House' : HOTEL ? 'Riverside Hotel' : FACTORY ? 'Derelict Factory' : CASINO ? 'Casino' : TRAIN ? 'Night Train' : 'Yard 7';
     $('uw').style.opacity = uw ? 1 : 0;
     $('hurt').style.opacity = Math.min(1, S.hurt);
+    drawHurtDirs();
     $('crosshair').className = input.frameAim ? 'aim' : '';
     if (S.debug) {
       const sp = Math.hypot(player.vel[0], player.vel[2]);
@@ -1271,6 +1273,28 @@ function boot() {
     tab('main');
     drawJob();
     show('menu', true);
+  }
+  // (M6.125) a red arc round the crosshair on the side the fire came from, turning with you, fading in a second
+  function drawHurtDirs() {
+    const cv = $('hurtdir'); if (!cv) return;
+    const list = S.hurtDirs || [];
+    if (!list.length && !cv._dirty) return;
+    const c = cv.getContext('2d'), N = 280, r = 112;
+    c.clearRect(0, 0, N, N); cv._dirty = false;
+    if (player.mode === 'dead' || S.menu) { list.length = 0; return; }
+    const fx = -Math.sin(player.yaw), fz = -Math.cos(player.yaw);
+    for (const h of list) {
+      const dx = h.from[0] - player.pos[0], dz = h.from[2] - player.pos[2];
+      if (Math.hypot(dx, dz) < 0.5) continue;
+      const rel = Math.atan2(dx * -fz + dz * fx, dx * fx + dz * fz);
+      const left = 1.2 - (S.time - h.at); if (left <= 0) continue;
+      const k = Math.min(1, left / 0.6) * h.a;
+      c.strokeStyle = 'rgba(220,40,30,' + (0.85 * k) + ')'; c.lineWidth = 9; c.lineCap = 'round';
+      c.shadowColor = 'rgba(0,0,0,0.6)'; c.shadowBlur = 4;
+      c.beginPath(); c.arc(N / 2, N / 2, r, rel - Math.PI / 2 - 0.32, rel - Math.PI / 2 + 0.32); c.stroke();
+      cv._dirty = true;
+    }
+    S.hurtDirs = list.filter((h) => S.time - h.at < 1.2);
   }
   // (M6.124.1) the pause menu says where you are and what is left: the level, and its objectives ticked off
   function drawJob() {
@@ -1997,7 +2021,7 @@ function boot() {
       if (ev.type === 'climb' || ev.type === 'over') audio.vault(true);
       // a run-up: two quick footfalls on the wall
       if (ev.type === 'wallkick') { audio.step(surfaceUnder(), true); setTimeout(() => audio.step(surfaceUnder(), true), 110); }
-      if (ev.type === 'hurt') { S.hurt = Math.min(1, 0.35 + ev.amount / 40); S.lastHurt = S.time; if (ev.amount > 3) audio.hurt(); buzz(Math.min(120, 30 + ev.amount * 3)); }
+      if (ev.type === 'hurt') { S.hurt = Math.min(1, 0.35 + ev.amount / 40); S.lastHurt = S.time; if (ev.from && !['fall', 'fell', 'gas', 'fire', 'radiation'].includes(ev.why)) { (S.hurtDirs = S.hurtDirs || []).push({ from: ev.from, at: S.time, a: Math.min(1, 0.5 + ev.amount / 30) }); if (S.hurtDirs.length > 6) S.hurtDirs.shift(); } if (ev.amount > 3) audio.hurt(); buzz(Math.min(120, 30 + ev.amount * 3)); }
       if (ev.type === 'died') {
         audio.died();
         const why = { fell: 'The fall was too much.', drowned: 'You ran out of air.', bitten: 'The dog got you.' }[ev.why] || 'Operative down.';
@@ -2467,7 +2491,7 @@ function boot() {
       }
       if (ev.type === 'pellet' && ev.hit && ev.hit.solid && !ev.hit.target) wview.addMark(ev.hit.point, ev.hit.solid, ev.dir);   // a shotgun's other pellets
       if (ev.type === 'swing') wview.onSwing();
-      if (ev.type === 'target') { hitMark = 1; if (ev.killed) { score += ev.target.score; audio.targetDown(); } }
+      if (ev.type === 'target') { hitMark = ev.killed && !ev.blast ? 1.6 : 1; S.hitKind = ev.killed && !ev.blast ? (ev.target.headshot ? 'kill head' : 'kill') : ev.head ? 'head' : ''; if (ev.killed) { score += ev.target.score; audio.targetDown(); } }
       if (ev.type === 'blast') {
         // an EMP: night vision, torches, turrets and engines out a while, in its reach
         if (ev.emp) {

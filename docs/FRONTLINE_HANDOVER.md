@@ -7,6 +7,15 @@ GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
 
+## M6.125.0 — game feel: which way the fire came from, and a hit that drops him
+
+- **A red arc round the crosshair** on the side a shot (a bite, a turret, a blast) came from, turning with you as you
+  turn and fading in 1.2 s (`drawHurtDirs()` in `main.js`, `#hurtdir` in `src/index.html`). The player's `hurt` event
+  now carries `from`. Gas, fire, radiation and falls draw no arc: they have the screen's tint already.
+- **The hit marker** turns red, and stays a little longer, when the shot drops him, and is a little larger for the head
+  (`#hitmark.kill`, `#hitmark.head`). A blast's kills keep the white one.
+- Nothing tuned: aim, recoil, movement and damage are as they were, to wait for Rhys's playtest notes.
+
 ## M6.124.2 — the HUD's place line and ammo, readable over snow
 
 - `#zone` and `#weapon` get a second, softer shadow, so the level line and the ammo read over snow and bright sky.
