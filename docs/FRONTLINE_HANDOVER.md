@@ -7,6 +7,12 @@ GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
 
+## M6.123.2 — turns the game makes are no longer undone (a real bug); the browser suite's stale tests
+
+- **The "absurd mouse jump" guard undid the game's own turns.** In `main.js` it compared this frame's yaw with *last frame's* and put back anything over 2.2 rad. A turn the game made itself was taken for a mouse jump and undone. That covers a mission's start facing (arriving from the HQ facing the other way), boarding a vehicle that points the other way, a portal's turn, and a test's `FL.pose`. It now compares with the yaw just before this frame's mouse is read, so only a real mouse jump is ignored. This was behind "the gallery targets are on the radar" and "remembered where they were" failing: the test's pose had been turned back to face a wall.
+- Browser suite: tests that pressed keys straight after a new game now wait for it to draw (the software renderer takes about 40 s to its first frames). That fixed the door's E and the radar's zoom keys. Tests that had fallen behind Rhys's decisions were updated: the controls list has 28 actions; a rifle can go in the backup slot ("any gun in any slot"); a sign has a face each way ("printed backwards"); first or third person is the View setting (V is the vision modes).
+- Still known: "when badly hurt ... colour drains" (under the slow renderer the health has regenerated past 60 before the frames the test waits for. The game sets `saturate()` below 60 health).
+
 ## M6.123.1 — the music plays (a real bug)
 
 - **Eleven of the thirteen music tracks never played.** `src/game/core/music.js` looked for `Black_Vortex.mp3`, `Iron_Bacon.mp3` and so on, but the files Rhys uploaded on 12 Oct have spaces (`Black Vortex.mp3`), and one has a space before the extension (`Burn The World Waltz .mp3`). Only Breakdown and Mechanolith loaded. Now the names are exact, and the player encodes the file name (`encodeURIComponent`) so the spaces load on any server. This was also the 404 behind four of the browser suite's "known failures" (no errors on the page / in test mode / at the door / Chromebook), which should pass now.

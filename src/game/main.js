@@ -77,7 +77,7 @@ import { boardOf, describe as contractText, TERMS } from '../sim/play/contracts.
 import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './core/input.js';
 import { isTouchDevice, touchControls, retext } from './core/touch.js';
 
-const VERSION = 'M6.123.1';
+const VERSION = 'M6.123.2';
 const $ = (id) => document.getElementById(id);
 const TEST = /[?&]test\b/.test(location.search);
 // Level 0, the training mission, is its own page load: index.html?level=0
@@ -2036,9 +2036,12 @@ function boot() {
     const active = S.playing && !S.menu && !openCrate && !S.dialog && !S.transport && (input.locked || TEST) && player.mode !== 'dead';
     input.enabled = active;
     if (active && !TEST) {
+      // ignore an absurd mouse jump (entering the window can report one). (M6.123.2) Measured against the yaw just
+      // before this frame's mouse is read - not last frame's - so a turn the game makes itself (a mission's start, a
+      // vehicle boarded, a portal, a test's pose) is not taken for a jump and undone.
+      const yaw0 = input.yaw;
       const inp = input.frame();
-      // ignore an absurd mouse jump (entering the window can report one)
-      if (S.lastYaw !== undefined && Math.abs(inp.yaw - S.lastYaw) > 2.2) { input.yaw = S.lastYaw; inp.yaw = S.lastYaw; }
+      if (Math.abs(inp.yaw - yaw0) > 2.2) { input.yaw = yaw0; inp.yaw = yaw0; }
       // (M6.40; the roadmap's "camera follows movement") on a touch screen, walking sideways with the stick the view
       // eases round towards where you are going - unless you have looked in the last second (Settings: Touch: turn with the stick)
       if (touch && settings.touchTurn !== false && input.touchMove && inp.moveZ >= -0.2 && Math.abs(inp.moveX) > 0.25 && !inp.aim &&
