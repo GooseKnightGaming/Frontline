@@ -7,6 +7,11 @@ GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
 
+## M6.125.1 — the Skerries: no walking round the strait
+
+- Level 101: two rock headlands (not climbable) fill the ground outside the map at both ends of the strait, so the
+  boat is the only way across. Checked by walking east along both edges: stopped at the headland each time.
+
 ## M6.125.0 — game feel: which way the fire came from, and a hit that drops him
 
 - **A red arc round the crosshair** on the side a shot (a bite, a turret, a blast) came from, turning with you as you

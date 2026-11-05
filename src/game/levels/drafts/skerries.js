@@ -40,7 +40,9 @@ export default {
     },
   },
   extra(kit) {
-    const { box, level, mid } = kit;
+    const { box, level, mid, CELL: C, D } = kit;
+    // (M6.125.1) the strait's two headlands, north and south, in the ground outside the map: the only way across is by boat
+    for (const [z0, z1] of [[-15, -0.05], [D + 0.05, D + 15]]) box([14 * C - 1, -0.5, z0], [53 * C + 1, 5, z1], 'rock', { tint: [0.45, 0.46, 0.44], noClimb: true });
     // the radar's mast and dish on the station's roof
     box([mid(62) - 0.15, 3.2, mid(18) - 0.15], [mid(62) + 0.15, 6.2, mid(18) + 0.15], 'metal', { tint: [0.5, 0.5, 0.52] });
     box([mid(62) - 1.4, 6.2, mid(18) - 0.1], [mid(62) + 1.4, 7.0, mid(18) + 0.1], 'metal', { tint: [0.7, 0.7, 0.72], solid: false });

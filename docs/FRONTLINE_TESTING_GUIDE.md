@@ -16,7 +16,7 @@ been **played**. This guide says what is most worth your time.
 | 100 The Rising | A battle | Do the two sides actually meet and fight along the streets? Is eight minutes right? |
 | 82 The Funfair | The mirror maze (a portal) | Does the corridor loop you back until you hold the plan, and let you through after? |
 | 83 The Observatory, 92 Fennick's Pass, 117 Dancourt & Fils | Dark, with night vision and lights you can put out | Can you see well enough? Do the reds really see less once the lights are out? |
-| 101 The Skerries, 102 Holme Skerry | Boats | Can you drive the boat across? (Known: in 101 you can also walk round the outside of the map. In 102 there is a causeway.) |
+| 101 The Skerries, 102 Holme Skerry | Boats | Can you drive the boat across? (In 101 the boat is the only way; in 102 there is a causeway too.) |
 
 ## Then the rest, by story
 
