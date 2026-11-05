@@ -11,6 +11,8 @@ game into the repository's root.
 
 - All 123 draft levels loaded one after another (`?level=<id>&touch=1`), begun, and run for 3 s: **no page errors in any of them**. The Campus, the Factory battle, the City and the Prison need more than 3 minutes to load under the software renderer, and the Riverboat's Begin button needed a forced click (it was covered while loading). With more time, all five start cleanly.
 
+- And every new level, 73 - 127, apart from the battle and the three tails (76, 111, 123), was played through to its debrief by forcing each objective done (marked, tied, rescued, reached, hacked, taken, wrecked, cleared) and standing at the van: **all 51 show MISSION SUCCESSFUL, with no page errors**, so the debrief and each level's trophy code run cleanly. The probe is `finish.py`, from the session's scratchpad; it is easy to rebuild from this description.
+
 ## M6.123.3 / M6.123.2 — turns the game makes are no longer undone (a real bug); the browser suite's stale tests
 
 - **The "absurd mouse jump" guard undid the game's own turns.** In `main.js` it compared this frame's yaw with *last frame's* and put back anything over 2.2 rad. A turn the game made itself was taken for a mouse jump and undone. That covers a mission's start facing (arriving from the HQ facing the other way), boarding a vehicle that points the other way, a portal's turn, and a test's `FL.pose`. It now compares with the yaw just before this frame's mouse is read, so only a real mouse jump is ignored. This was behind "the gallery targets are on the radar" and "remembered where they were" failing: the test's pose had been turned back to face a wall.
