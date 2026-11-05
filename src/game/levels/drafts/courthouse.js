@@ -13,7 +13,7 @@ export default {
     ['Objectives', '<b>Mark the usher</b> (the courtroom). Take the <b>payments book</b> (the robing room). Read the <b>telephone log</b> (the records office). If you can, <b>without the alarm</b>. Out by the side door, south-west.'],
   ],
   epilogue: {
-    success: 'The juror is excused on the Wednesday "for reasons of health", and the usher\'s payments book is read into the record on the Thursday. Brandt, Kray and Dancourt are found guilty on the Friday, on every count, by eleven jurors and a new twelfth.',
+    success: 'The juror is excused on the Wednesday "for reasons of health", and the usher\'s payments book is read into the record on the Thursday. Aske, Kray and Dancourt are found guilty on the Friday, on every count, by eleven jurors and a new twelfth.',
     partial: 'Part of it. The bought juror stays on the jury, and the case is closer than it should be.',
   },
   time: { date: [24, 8, 2027], hour: 13, minute: 10 }, night: false, faction: 'red', requires: 'HACKKIT',

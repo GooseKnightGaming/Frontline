@@ -33,6 +33,10 @@ export default {
     ['Objective', 'Find the <b>antidote</b>. It is up the stairs - if you can get to the top of them. Whatever is in you will not let you leave until you have it. Then find the <b>way out</b>.'],
     ['Not the real world', 'No Control on the radio, no Ghost. This is not a mission: it is a bad night.'],
   ],
+  epilogue: {
+    success: "The antidote takes hold, the corridor stops going on for ever, and the room you are in has only one door. You still do not remember coming here. Ghost will want to know who brought you.",
+    partial: "You are out, but your head is not right yet. The ward will be in your dreams for a while.",
+  },
   time: { date: [20, 8, 2026], hour: 3, minute: 33 }, night: true, faction: 'red', offDuty: true,
   startLoadout: { primary: null, backup: 'PX9', utility1: null, utility2: null, gear: null },
   drugged: { until: 'antidote' },

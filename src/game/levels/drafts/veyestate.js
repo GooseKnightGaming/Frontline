@@ -77,7 +77,7 @@ export default {
     { id: 'park', label: 'Ravnsby', at: [0, 0, W - 1, H - 1] },
   ],
   guards: [
-    { id: 'vey', at: [32, 19, '1'], arms: 'pistol', rank: 'officer', temper: 'cowardly', name: 'General Brandt', tint: [0.6, 0.55, 0.5] },
+    { id: 'vey', at: [32, 19, '1'], arms: 'pistol', rank: 'officer', temper: 'cowardly', name: 'General Aske', tint: [0.6, 0.55, 0.5] },
     { id: 'gd', at: [30, 10, '1'], arms: 'smg', rank: 'specialist', temper: 'steady' },
     { id: 'land', at: [22, 9, '1'], route: [[17, 9], [28, 9]], arms: 'pistol' },
     { id: 'hl1', at: [25, 11, 'G'], route: [[17, 11], [29, 11]], arms: 'carbine' },

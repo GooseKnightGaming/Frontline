@@ -1,5 +1,5 @@
 // FRONTLINE - Level 97, the Opera (first draft, M6.119; the start of THE GENERAL). The Courier's front page named the
-// man above Major Kade: General Brandt, who signed the crosses. He is untouchable in his headquarters, and never anywhere
+// man above Major Kade: General Aske, who signed the crosses. He is untouchable in his headquarters, and never anywhere
 // else - except the Hollen Opera on its opening night, in the east box. Go in as one of his officers. Mark his three
 // bodyguards, so Ghost knows every face round him, and take his diary from his coat in the cloakroom: it says where he
 // sleeps.
@@ -8,7 +8,7 @@ export default {
   id: 'opera', no: 97, title: 'The Opera', place: 'the Hollen Opera House',
   where: 'The Hollen Opera House, opening night. 20:10, the second act, every seat full.',
   brief: [
-    ['The job', 'The Courier\'s front page named the man above Major Kade: <b>General Brandt</b>, who signed the crosses. He is untouchable in his headquarters, and never anywhere else, except the <b>Hollen Opera</b> on its opening night, in the east box. Go in as one of his officers. <b>Mark his three bodyguards</b>, so that Ghost knows every face round him. Take his <b>diary</b> from his coat in the <b>cloakroom</b>: it says where he sleeps.'],
+    ['The job', 'The Courier\'s front page named the man above Major Kade: <b>General Aske</b>, who signed the crosses. He is untouchable in his headquarters, and never anywhere else, except the <b>Hollen Opera</b> on its opening night, in the east box. Go in as one of his officers. <b>Mark his three bodyguards</b>, so that Ghost knows every face round him. Take his <b>diary</b> from his coat in the <b>cloakroom</b>: it says where he sleeps.'],
     ['The place', 'The <b>foyer</b> on the south side, with a stair up to the <b>crush bar</b> and the <b>boxes</b> above the stalls on either side. The <b>auditorium</b> and the stage are in the middle, and the <b>cloakroom</b> is beside the stage door, east. The manager\'s office is off the foyer. You are <b>dressed as one of them</b>, and half the stalls are red tonight.'],
     ['Security', 'A camera in the foyer and the house alarm, both on the manager\'s console, with the radio. The engineer is in the office. The General\'s bodyguards are a man in his box, a man in the box opposite with a view of his, and a man in the foyer who watches the stair.'],
     ['Objectives', '<b>Mark the three bodyguards</b> (the east box, the west box, the foyer). Take the <b>diary</b> (the cloakroom). If you can, <b>without the alarm</b>. Out by the front doors, south.'],
@@ -76,7 +76,7 @@ export default {
     { id: 'street', label: 'Hollen', at: [0, 0, W - 1, H - 1] },
   ],
   guards: [
-    { id: 'vey', at: [33, 16, '1'], arms: 'pistol', rank: 'officer', temper: 'steady', name: 'General Brandt', tint: [0.25, 0.22, 0.2], yaw: Math.PI / 2 },
+    { id: 'vey', at: [33, 16, '1'], arms: 'pistol', rank: 'officer', temper: 'steady', name: 'General Aske', tint: [0.25, 0.22, 0.2], yaw: Math.PI / 2 },
     { id: 'bg1', at: [32, 20, '1'], arms: 'smg', rank: 'specialist', temper: 'steady', name: 'A bodyguard (the General\'s box)' },
     { id: 'bg2', at: [18, 16, '1'], arms: 'pistol', rank: 'specialist', temper: 'steady', name: 'A bodyguard (the west box)' },
     { id: 'bg3', at: [27, 31, 'G'], arms: 'pistol', rank: 'specialist', temper: 'steady', name: 'A bodyguard (the foyer)' },
@@ -99,7 +99,7 @@ export default {
   ],
   terminals: [{ id: 'sec', name: 'the manager\'s console', at: [37, 29, 'G'], face: [0, 1], time: 6, net: 'opera' }],
   intel: [
-    { id: 'prog', at: [17, 29, 'G'], kind: 'Programme', title: 'A programme on the bar', text: ['"In the presence of General Brandt." Somebody has drawn a small cross beside his name, and then rubbed it out.'] },
+    { id: 'prog', at: [17, 29, 'G'], kind: 'Programme', title: 'A programme on the bar', text: ['"In the presence of General Aske." Somebody has drawn a small cross beside his name, and then rubbed it out.'] },
     { id: 'seating', at: [33, 13, '1'], kind: 'Card', title: 'A card in the General\'s box', text: ['The box\'s seating, in his aide\'s hand: the General, his guard, and "Major K. - absent".'] },
   ],
   objectives: [

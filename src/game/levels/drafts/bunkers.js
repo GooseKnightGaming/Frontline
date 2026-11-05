@@ -74,6 +74,10 @@ export default {
     ['Open ground', 'In front of the line and round the knoll the meadow is bare: nowhere to hide. The trench is your way along the line; the woods are at the valley\'s edges.'],
     ['Objectives', 'Take the <b>launch codes</b> from the bunker\'s strongroom - its blast door opens from the <b>comms room</b>, next to it. <b>Wreck the radar</b>: a charge on its control desk, in the hut on the knoll. Optionally, clear the Yellows off the line.'],
   ],
+  epilogue: {
+    success: "The Kessel Line is Ghost's by noon. Its codes are on their way south, its radar is in pieces, and the Yellows are walking back up the valley without their guns.",
+    partial: "The line was broken, but not cleanly. The Yellows will be back for what they left.",
+  },
   time: { date: [19, 11, 2026], hour: 10, minute: 30 }, faction: 'yellow',
   atmos: { fog: [0.75, 0.8, 0.88, 80, 600], ambient: [0.48, 0.52, 0.58], sun: [1, 0.96, 0.9, 1.3, 30, 160] },
   startLoadout: { primary: 'K7', backup: 'PX9', utility1: 'FRAG', utility2: 'SMOKE', gear: 'LENSES' },

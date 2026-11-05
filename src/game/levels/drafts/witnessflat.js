@@ -1,4 +1,4 @@
-// FRONTLINE - Level 119, the Witness Flat (first draft, M6.141; the start of THE WITNESSES). Brandt, Kray and Dancourt
+// FRONTLINE - Level 119, the Witness Flat (first draft, M6.141; the start of THE WITNESSES). Aske, Kray and Dancourt
 // are to be tried together in Lessar, and the case rests on a witness: Marta Lind, Kray's bookkeeper for nine years,
 // in a Ghost safe flat on the top floor of a tenement in the old quarter. Somebody has sold the address. Get there
 // before they do, with Hale and Moss, and hold her flat until the car comes to move her.
@@ -7,7 +7,7 @@ export default {
   id: 'witnessflat', no: 119, title: 'The Witness Flat', place: 'a tenement in Lessar\'s old quarter',
   where: 'A tenement in Lessar\'s old quarter. 23:40, rain, the street lamps out.',
   brief: [
-    ['The job', 'Brandt, Kray and Dancourt are to be tried together in Lessar, and the case rests on a witness: <b>Marta Lind</b>, Kray\'s bookkeeper for nine years. She is in a Ghost safe flat on the <b>top floor</b> of a tenement in the old quarter, and somebody has sold the address. Get there before they do, with <b>Hale and Moss</b>. <b>Hold her flat</b> until the car comes to move her. <b>Mark the man leading them</b>.'],
+    ['The job', 'Aske, Kray and Dancourt are to be tried together in Lessar, and the case rests on a witness: <b>Marta Lind</b>, Kray\'s bookkeeper for nine years. She is in a Ghost safe flat on the <b>top floor</b> of a tenement in the old quarter, and somebody has sold the address. Get there before they do, with <b>Hale and Moss</b>. <b>Hold her flat</b> until the car comes to move her. <b>Mark the man leading them</b>.'],
     ['The place', 'A tenement round a courtyard, with the gate on the south side. Downstairs are the entrance hall, the laundry and the caretaker\'s rooms. <b>Upstairs</b>, along the landing, are three flats, and <b>hers</b> is the one at the east end, up the stair. The sheds are east, the coal yard west.'],
     ['Security', 'There is none of Ghost\'s here but you three. They are coming in four lots: from the gate, from the coal yard, over the sheds, and the last with their <b>leader</b>. They want her, not you.'],
     ['Objectives', '<b>Hold her flat</b> until the car comes (two minutes). <b>Mark the leader</b> (with the last of them). Out by the gate, south.'],

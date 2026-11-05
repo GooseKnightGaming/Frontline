@@ -59,6 +59,10 @@ export default {
     ['Objectives', '<b>Disarm the device</b> (the train\'s middle car). Take <b>Vey\'s trigger</b> - the radio that sets it off early - from the signal room. Optionally, stop Vey.'],
     ['The track', 'The track is a drop of a metre and more - you can walk it, and climb back up.'],
   ],
+  epilogue: {
+    success: "The morning crowds come down into Holm Street at seven and catch their trains, and none of them knows how close it was. Vey's trigger is in an evidence bag at Ghost HQ.",
+    partial: "The trains run in the morning, but Holm Street is closed for a day while it is searched again, and again.",
+  },
   time: { date: [31, 10, 2026], hour: 1, minute: 50 }, faction: 'red', night: true,
   startLoadout: { primary: 'K7', backup: 'PX9', utility1: 'FLASH', utility2: 'SMOKE', gear: 'LENSES' },
   extractName: 'the street', navCap: 120000,

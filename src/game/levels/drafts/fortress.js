@@ -19,6 +19,10 @@ export default {
     ['Objectives', 'Take the <b>launch keys</b> from the command bunker. Optionally, hack the <b>signals terminal</b> in the armoury, and stop <b>Commander Brask</b>.'],
     ['New weapons', 'The KR-90 light machine gun: a ninety-round belt, slow to reload. Take one from a gunner who no longer needs it.'],
   ],
+  epilogue: {
+    success: "Fort Kerreth's keys go down the mountain with Ghost, and Commander Brask with them. The fort is just an old fort on a cold hill again.",
+    partial: "Kerreth is quiet, but not entirely Ghost's. The hills will need watching.",
+  },
   time: { date: [4, 9, 2026], hour: 15, minute: 30 }, faction: 'red', navCap: 160000,
   extractName: 'the van down the track',
   outside: { backdrop: 'hills', mat: 'desert', margin: 14 },

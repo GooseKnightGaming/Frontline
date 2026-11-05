@@ -149,6 +149,10 @@ export default {
     ['The books', 'Take the <b>ledger</b> from Kessel Freight\'s office (the second floor, the north-east room). Optionally stop <b>Vos</b>, the paymaster: he takes his lunch at the Corso.'],
     ['Driving', 'E beside a car to get in: W/S, A/D, SPACE to brake, E to get out. Hold right mouse to keep the view where you aim. The traffic stops for whoever is in its way.'],
   ],
+  epilogue: {
+    success: "Kessel Freight Services is closed for good by Friday. Its ledger is on Ghost's desk, its courier's van never left the city, and Vos has paid for his last lunch at the Corso.",
+    partial: "Part of Kessel's business is broken up, and the rest of it has gone very quiet.",
+  },
   time: { date: [17, 8, 2026], hour: 12, minute: 55 }, faction: 'red',
   startLoadout: { primary: 'K7', backup: 'PX9', utility1: 'FRAG', utility2: 'SMOKE', gear: 'LENSES' },
   extractName: 'Ghost\'s car, back where you came in', vehicle: false, navCap: 60000, testNavCap: 800000, chaseMax: 70, pieceBudget: 9000,

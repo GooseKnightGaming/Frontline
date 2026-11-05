@@ -14,6 +14,10 @@ export default {
     ['The reds', 'Sixteen - on the quay, in the tower, aboard; a machine gunner on the deck.'],
     ['Objectives', 'Take the <b>warhead arming codes</b> from the citadel. Optionally, hack the dock controls; stop <b>Captain Volkov</b> on the bridge.'],
   ],
+  epilogue: {
+    success: "The Ardent stays alongside at Varrow with her codes in Ghost's hands and her captain in Ghost's custody. The sea fret lifts at eight, and the yard goes back to work as if nothing had happened.",
+    partial: "The Ardent never sailed, but some of what she carried is unaccounted for. The navy will be searching her for weeks.",
+  },
   time: { date: [27, 8, 2026], hour: 5, minute: 10 }, faction: 'red',
   extractName: 'the van at the yard gate',
   outside: { backdrop: 'city', mat: 'concrete2', margin: 12 },

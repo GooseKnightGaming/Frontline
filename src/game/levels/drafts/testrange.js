@@ -21,6 +21,10 @@ export default {
     ['4. The lights', 'Hack the panel and the room goes dark: the guards in it see only what is close. So do you, without night vision.'],
     ['5. A turret, and its terminal', 'The terminal by the door runs this room\'s turret and everything behind you. Hack it (hold E): disable, reprogram, or take control - then the turret fires on the reds. Hack too long and you are traced.'],
   ],
+  epilogue: {
+    success: "Q looks at the range afterwards, sighs at what is left of it, and says the kettle at least survived. You pass.",
+    partial: "Q makes a note on his clipboard and says nothing. That is never a good sign.",
+  },
   time: { date: [1, 11, 2026], hour: 14, minute: 0 }, faction: 'red', requires: 'HACKKIT', startGear: 'MULTIVIS',
   extractName: 'the shed\'s door',
   outside: { backdrop: 'city', mat: 'asphalt', margin: 12 },

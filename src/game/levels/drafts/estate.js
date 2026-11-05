@@ -72,6 +72,10 @@ export default {
     ['Objectives', 'Take the <b>bomb plans</b> from Number 7 (the kitchen, upstairs). Stop the cell\'s bomb-maker, <b>Ferris</b> - in the attic of the three-storey house at the end of the terrace. Optionally, bring <b>Mrs Adeyemi</b> out of Number 22 - they have kept her in her own front room for a week.'],
     ['Doors', 'House doors are ordinary - E opens them. The lock-up garages are locked: kick them in.'],
   ],
+  epilogue: {
+    success: "Linden Row goes back to being an ordinary street. Ferris's plans go to Ghost instead of to the people who paid for them, and Mrs Adeyemi is drinking tea at her daughter's by teatime, complaining about the noise.",
+    partial: "Part of it. Linden Row is quiet again, but not everything that was in it is accounted for.",
+  },
   time: { date: [30, 7, 2026], hour: 16, minute: 40 }, faction: 'red',
   extractName: 'the van at the end of Linden Row',
   outside: { backdrop: 'city', mat: 'asphalt', margin: 16 },

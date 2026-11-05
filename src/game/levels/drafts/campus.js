@@ -209,6 +209,10 @@ export default {
     ['Objectives', 'Take the <b>pathogen sample</b> from BioSciences\' restricted lab (third floor; its door is reinforced - breach it). Bring out <b>Professor Amara Qureshi</b>, held upstairs in the Catalyst. Optionally, hack the <b>campus security terminal</b> in the Main Building, and clear the reds out.'],
     ['Getting about', 'Stairs at the ends of each building\'s corridors; the Catalyst\'s stairs: the ground floor to the mezzanine, the mezzanine upstairs, upstairs to the rooftop garden. The Hub\'s upstairs is in two halves: the left from the Hub, the right from the Main Building.'],
   ],
+  epilogue: {
+    success: "By evening the open day is an open day again. Professor Qureshi is home, the sample is in Ghost's hands, and Brookvale's lawns are full of people who will tell their grandchildren about it.",
+    partial: "The campus is the reds' no longer, but not everything came out of it. The university will stay closed a while.",
+  },
   time: { date: [3, 9, 2026], hour: 14, minute: 20 }, faction: 'red',
   extractName: 'the van at the visitors\' entrance',
   outside: { backdrop: 'woods', mat: 'lawn', margin: 10 },

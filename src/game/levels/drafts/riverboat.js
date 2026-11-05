@@ -71,6 +71,10 @@ export default {
     ['The river', 'A kilometre of it winding south through the warehouse district, under three bridges, into the harbour basin. Reds on the quays and the bridges - rifles, and rocket launchers. A gunboat works the middle reach.'],
     ['Objective', '<b>Stop the captain\'s launch</b> before it reaches the ship: its helmsman or the captain down, or the launch wrecked. Then the <b>police launch at Kell Quay</b>, on the harbour\'s west side.'],
   ],
+  epilogue: {
+    success: "The captain's launch never reaches the ship, and the ship sails at dawn without him. The Vell is quiet by midnight, apart from a gunboat drifting with the current.",
+    partial: "The river was a close thing. Not everyone who was on it was accounted for.",
+  },
   time: { date: [9, 7, 2026], hour: 19, minute: 40 }, faction: 'red',
   startLoadout: { primary: 'K7', backup: 'PX9', utility1: 'FRAG', utility2: 'SMOKE', gear: 'LENSES' },
   extractName: 'the police launch at Kell Quay', vehicle: false, navCap: 40000, testNavCap: 1200000, chaseMax: 60, pieceBudget: 9000,

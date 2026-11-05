@@ -7,6 +7,16 @@ GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
 
+## M6.124.0 — polish (Rhys, 5 Nov: "time for polish"): looks, writing, the levels list
+
+- **Props.** In the new levels the outdoor "crates" became what they stood for, by a script over the rows its comments name: trees (`t`) and rubble (`r`) on hills and in woods; low walls (`w`) for sandbags; barrels (`B`) for drums, bins, bollards and benches. Real crates stay crates. One tree was moved off a patrol's end point (the Last Battery). The start check was rerun on all 50 changed levels.
+- **The disguise badge** says what you are dressed as when a level sets `disguiseName` (A CUSTOMS OFFICER, A WAITER, A CIRCUS HAND, ONE OF DANCOURT'S MEN...). Otherwise it says RED/YELLOW UNIFORM as before.
+- **The levels list** is a grid of compact buttons (four across on a Chromebook, one on a phone), with an index of the stories pinned at its top: each name jumps to its heading, with a tick once its trail is done. The source is `src/index.html` (the build writes `index.html`).
+- **Epilogues for the 13 older levels that had none** (the Housing Estate, the Facility, the Ward, the Campus, the Shipyard, the Fortress, the Riverboat, the City, the Wasteland, the Bunkers, the Space Port, the Subway, Q's range). Every level now has one for THE STORY SO FAR.
+- **The General renamed again, to Aske**: "Brandt" was already Dr Ilse Brandt at the Research Facility (Level 11). The level ids are unchanged.
+- The Night Express's radio man moved further back in his van. With last night's facing fix the start now faces where it should, and he saw you.
+- Text checks (bold tags balanced, no stray backslashes, double spaces or spaces before punctuation, clock times matching each level's time): all clean.
+
 ## A sweep of every level (5 Nov, night)
 
 - All 123 draft levels loaded one after another (`?level=<id>&touch=1`), begun, and run for 3 s: **no page errors in any of them**. The Campus, the Factory battle, the City and the Prison need more than 3 minutes to load under the software renderer, and the Riverboat's Begin button needed a forced click (it was covered while loading). With more time, all five start cleanly.
@@ -88,7 +98,7 @@ game into the repository's root.
 - `drafts/battery2.js` (no 103): Storm Skerry by day with Hale and Moss. Clear the nine die-hards (allies are not counted), and hoist the white flag (a terminal with verb Hoist).
 - Trail THE ISLANDS (stamp STRAIT OPEN), group [101]. Trophies: Blind Spot, The Keep, White Flag (Hale and Moss both alive).
 
-## M6.115.1 — the General renamed Brandt; papers in the Ward and the Campus
+## M6.115.1 — the General renamed Aske; papers in the Ward and the Campus
 
 - See the note under M6.115.0. The Ward has two papers (your chart, the turning room's note), and the Campus has one (the closure notice in the Main Building).
 
@@ -96,7 +106,7 @@ game into the repository's root.
 
 - `drafts/hollen.js` (no 100): a battle (`battle` spec, as in the Factory and the Colosseum) on the Paper Run's Hollen grid. Ghost and the townspeople come from the south-west, the reds' garrison from the north-east, with 80 a side in reserve, 12 on the field and eight minutes on the clock. Four lanes a side: the west and north streets, the south and east streets, the middle streets, and the market square. Probed: both sides fight from the start and there are no page errors.
 - Group [100] THE RISING. Trophy "Hollen Rises".
-- (M6.115.1) The General renamed **Brandt**, and his house's village **Ravnsby**: "Vey" was already the reds' man in the Subway (Level 34). The level id stays `veyestate`, so saves are unchanged.
+- (M6.115.1) The General renamed **Aske**, and his house's village **Ravnsby**: "Vey" was already the reds' man in the Subway (Level 34). The level id stays `veyestate`, so saves are unchanged.
 
 ## M6.114.0 — Levels 97 - 99: THE GENERAL
 
@@ -227,7 +237,7 @@ game into the repository's root.
   three times in these two nights, each time passing on a rerun.
 
 ## M6.94.0 — the Outpost's pilot fights too
-- The Desert Outpost (32): Lieutenant Osei-Brandt, freed from the cell block, takes up a gun (a freedFrom ally, as
+- The Desert Outpost (32): Lieutenant Osei-Aske, freed from the cell block, takes up a gun (a freedFrom ally, as
   Venn; the relations yellow against ghost - the Outpost is the Yellows').
 
 ## M6.93.0 — a prisoner who fights: Sergeant Venn
@@ -1571,9 +1581,9 @@ The esbuild config marks `node:worker_threads` external (engine code for Node on
   Multi-spectrum Visor (MULTIVIS: all four). Levels place what each shows with `kit.mark(kind, a, b)`
   (uv | emf | heat (warm) | mist - mist hidden to thermal; `until: <pickup>` lifts it).
 - **Level 11, the Research Facility** (facility.js): Halden Research Station - labs, the cold store
-  full of mist (thermal), Dr Brandt's blood trail from the chemistry lab to the plant room's
+  full of mist (thermal), Dr Aske's blood trail from the chemistry lab to the plant room's
   crawlspace (UV), the shielded data room behind a door that looks like the wall, its cabling in the
-  service corridor's ceiling (EMF); the plant room's pipes and boilers. Rescue Dr Ilse Brandt, take the
+  service corridor's ceiling (EMF); the plant room's pipes and boilers. Rescue Dr Ilse Aske, take the
   sample case, hack the data terminal. 13 reds.
 - **Level 12, the Assassination** (vantage.js): Market Square, Varnholm - the unfinished Halloran
   Building (four floors, its east face open), the square, the reds' consulate. Reach the vantage

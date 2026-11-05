@@ -61,6 +61,10 @@ export default {
     ['Security', 'Two <b>turrets</b> cover the pad\'s approach from the road; <b>cameras</b> watch mission control and the hangar; the director\'s office is <b>maglocked</b>; the blockhouse\'s <b>lights</b> and its <b>alarm</b> are on the same network. The <b>range-safety console</b>, in the room behind the control room, runs them all - and you are issued a <b>hacking kit</b>. The man by the big screen carries the <b>radio</b>; the hangar has an <b>engineer</b> who will put a hacked system back on.'],
     ['Objectives', '<b>Pull the arming unit</b> (the gantry\'s top platform). Take the <b>flight program</b> - the satellite\'s orders - from the director\'s office in mission control. Optionally, stop <b>Director Halvorsen</b>.'],
   ],
+  epilogue: {
+    success: "The count at Pad 2 stops at T minus four minutes and never starts again. Director Halvorsen leaves Teskel in a car he did not order, and the rocket stands on its pad until it is taken apart.",
+    partial: "The launch never went, but Teskel is not quite safe. Somebody will try again with a different count.",
+  },
   time: { date: [29, 10, 2026], hour: 21, minute: 10 }, faction: 'red', night: true, requires: 'HACKKIT',
   atmos: { fog: [0.08, 0.1, 0.16, 60, 420], ambient: [0.26, 0.28, 0.36] },
   startLoadout: { primary: 'K7', backup: 'PX9', utility1: 'FRAG', utility2: 'SMOKE', gear: 'LENSES' },

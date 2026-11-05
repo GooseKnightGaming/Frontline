@@ -77,6 +77,10 @@ export default {
     ['Objectives', 'Take the <b>Site 9 drive</b> - the lab\'s research, from its strongroom (underground, the north-east room). Take the <b>reactor log</b> from the control room in the middle of the reactor hall. Optionally, stop <b>Harrow</b>, the raiders\' chief, in the village.'],
     ['Your kit', 'An R4 rifle, a PX9, frags and a medkit.'],
   ],
+  epilogue: {
+    success: "The Site 9 drive and the reactor log go back with Ghost, and Harrow's raiders have one fewer chief. The valley stays dead, but at least now somebody knows why.",
+    partial: "Something came out of the valley, and something stayed in it. The dust will keep its secrets a while longer.",
+  },
   time: { date: [21, 9, 2026], hour: 15, minute: 10 }, faction: 'red',
   atmos: { fog: [0.62, 0.6, 0.45, 30, 300], ambient: [0.5, 0.5, 0.4], sun: [1, 0.92, 0.6, 1.15, 38, 200], sky: [0.95, 0.9, 0.62] },
   startLoadout: { primary: 'K7', backup: 'PX9', utility1: 'FRAG', utility2: 'MEDKIT', gear: 'LENSES' },

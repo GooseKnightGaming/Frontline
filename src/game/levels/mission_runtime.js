@@ -2484,7 +2484,7 @@ export function setupMission(ctx) {
       if (level.draft === 'censor' && m.result === 'success') all.push({ id: 'passed', name: 'Passed for Publication', about: 'The Courier on every wire in the north, stamped by the censor himself.' });
       if (level.draft === 'paperrun' && m.result === 'success') all.push({ id: 'extra', name: 'Extra! Extra!', about: 'The Courier on all three of Hollen\'s stands before the curfew lifted.' });
       if (level.draft === 'opera' && m.result === 'success') all.push({ id: 'curtaincall', name: 'Curtain Call', about: 'Three bodyguards marked and the General\'s diary taken, and the General none the wiser.' });
-      if (level.draft === 'veyestate' && m.result === 'success') all.push({ id: 'dressinggown', name: 'In His Dressing Gown', about: 'General Brandt taken from his own bed, with every order for the crosses in his box.' });
+      if (level.draft === 'veyestate' && m.result === 'success') all.push({ id: 'dressinggown', name: 'In His Dressing Gown', about: 'General Aske taken from his own bed, with every order for the crosses in his box.' });
       if (level.draft === 'drivesouth' && m.result === 'success') all.push({ id: 'coastroad', name: 'The Coast Road', about: 'The General delivered to Ghost\'s lines through two roadblocks.' });
       if (level.draft === 'hollen' && m.result === 'success') all.push({ id: 'risen', name: 'Hollen Rises', about: 'The hundredth level: the reds\' garrison marched out of Hollen, and every bell in the town rung.' });
       if (level.draft === 'skerries' && m.result === 'success') all.push({ id: 'blindspot', name: 'Blind Spot', about: 'The Skerry radar turning all night and seeing nothing.' });

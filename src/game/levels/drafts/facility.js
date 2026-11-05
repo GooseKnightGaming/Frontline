@@ -16,6 +16,10 @@ export default {
     ['The building', 'Decontamination\'s two doors are <b>maglocked</b>: no kick opens them - hack the system, use the kit on a keypad, or blow them. The corridors\' <b>lights</b> are on the same system: put them out and the reds see only what is close (night vision sees it all). And while the <b>alarm</b> is live, one shout sets off the siren and the whole station comes. And not every camera is where you can see it: there are <b>pinhole cameras</b> in the walls - EMF shows them; and <b>laser tripwires</b> across the corridors, which night vision or UV show - go under them on your belly (or over).'],
     ['Objectives', 'Find <b>Dr Ilse Brandt</b>: she cut her hand in the chemistry lab as she ran - under UV, the spill trail shows the way. Bring her out. Take the <b>sample case</b> from the cold store. Find the shielded data room - EMF shows where its wiring goes - and hack its <b>data terminal</b>.'],
   ],
+  epilogue: {
+    success: "Dr Brandt walks out of Halden on her own feet, her hand bandaged and her notes in her coat. The reds leave the fen with nothing but a power cut to show for the night.",
+    partial: "Halden is quiet, but the night was not a clean one. Somebody will be asking what was lost on the fen.",
+  },
   time: { date: [11, 8, 2026], hour: 3, minute: 40 }, night: true, startGear: 'MULTIVIS', faction: 'red', requires: 'HACKKIT',
   extractName: 'the van in the car park',
   outside: { backdrop: 'woods', mat: 'asphalt', margin: 16 },

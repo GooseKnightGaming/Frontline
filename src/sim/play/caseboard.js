@@ -134,7 +134,7 @@ export const PRESS = [
 ];
 // (M6.114) the general: the man who signed the crosses, found, taken and driven south to his trial
 export const GENERAL = [
-  { level: 'opera', title: 'The Opera', text: 'General Brandt\'s three bodyguards marked on opening night, and his diary taken from his coat.' },
+  { level: 'opera', title: 'The Opera', text: 'General Aske\'s three bodyguards marked on opening night, and his diary taken from his coat.' },
   { level: 'veyestate', title: 'The Ravnsby Estate', text: 'The General taken from his own bed, and his dispatch box from his study.' },
   { level: 'drivesouth', title: 'The Drive South', text: 'The General driven down the coast road, through both roadblocks, to Ghost\'s lines.' },
 ];
@@ -174,7 +174,7 @@ export const BANKER = [
   { level: 'dancourt', title: 'Dancourt & Fils', text: 'The bank\'s index copied in the dark, and Kray\'s account book taken from the vault.' },
   { level: 'cablecar', title: 'The Mountain', text: 'The cable car\'s winding gear stopped, and Mr Dancourt taken in his study above the snow line.' },
 ];
-// (M6.122) the witnesses: the trial of Brandt, Kray and Dancourt, and the people who made it
+// (M6.122) the witnesses: the trial of Aske, Kray and Dancourt, and the people who made it
 export const WITNESSES = [
   { level: 'witnessflat', title: 'The Witness Flat', text: 'Marta Lind\'s flat held until the car came, and the men who came for her marked.' },
   { level: 'motorcade', title: 'The Motorcade', text: 'Marta Lind driven along the embankment, through both tries, to the courthouse steps.' },
