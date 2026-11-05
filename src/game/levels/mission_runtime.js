@@ -1141,7 +1141,7 @@ export function setupMission(ctx) {
     let el = document.getElementById('disguise-tag');
     if (!el) { el = document.createElement('div'); el.id = 'disguise-tag'; el.style.cssText = 'position:fixed;right:18px;top:236px;padding:3px 10px;font:600 12px sans-serif;letter-spacing:2px;border-radius:3px;pointer-events:none;z-index:5;display:none'; document.body.appendChild(el); }
     el.style.display = rt.disguise ? 'block' : 'none';
-    if (rt.disguise) { el.textContent = 'DISGUISED - ' + (rt.disguise === 'yellow' ? 'YELLOW' : 'RED') + ' UNIFORM'; el.style.background = rt.disguise === 'yellow' ? 'rgba(232,180,35,0.85)' : 'rgba(200,50,40,0.85)'; el.style.color = '#111'; }
+    if (rt.disguise) { el.textContent = 'DISGUISED - ' + ((level.spec && level.spec.disguiseName) || (rt.disguise === 'yellow' ? 'YELLOW' : 'RED') + ' UNIFORM');   /* (M6.124) a level may say what you are dressed as */ el.style.background = rt.disguise === 'yellow' ? 'rgba(232,180,35,0.85)' : 'rgba(200,50,40,0.85)'; el.style.color = '#111'; }
   };
   // (M6.30) the hold-up: come up behind a man who has not seen you, your gun on him from close by, and he
   // freezes, hands up. E questions him: where every one of his side is (your radar, a while), and his keycard if

@@ -16,7 +16,7 @@ export default {
     success: 'The ledger has the driver\'s name, his price, and the dates he was paid. Ghost has a word with the driver in a quiet room, and the reds\' paymaster finds that every man on his books has gone quiet.',
     partial: 'Part of it. The paymaster will move rooms, and the driver will be careful.',
   },
-  time: { date: [8, 5, 2027], hour: 22, minute: 15 }, night: true, faction: 'red', requires: 'HACKKIT', startDisguise: 'red',
+  time: { date: [8, 5, 2027], hour: 22, minute: 15 }, night: true, faction: 'red', requires: 'HACKKIT', startDisguise: 'red', disguiseName: 'A WAITER',
   startLoadout: { primary: null, backup: 'V27C', utility1: 'SMOKE', utility2: 'FLASH', gear: 'LENSES', mods: { backup: ['SILENCER'] } },
   atmos: { fog: [0.16, 0.15, 0.18, 25, 160], ambient: [0.3, 0.28, 0.32] },
   extractName: 'the kitchens\' yard', extract: { x: 50, y: 26, floor: 'G', van: [-1, 5] },

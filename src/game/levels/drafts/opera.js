@@ -17,7 +17,7 @@ export default {
     success: 'The General hears the last act through and goes home to bed, where his diary says he will be. Ghost knows the three faces round him now, and the road to his door. He has perhaps a week left of opening nights.',
     partial: 'Part of it. Ghost knows some of the faces round the General, or where he sleeps, but not both.',
   },
-  time: { date: [20, 5, 2027], hour: 20, minute: 10 }, night: true, faction: 'red', requires: 'HACKKIT', startDisguise: 'red',
+  time: { date: [20, 5, 2027], hour: 20, minute: 10 }, night: true, faction: 'red', requires: 'HACKKIT', startDisguise: 'red', disguiseName: 'ONE OF HIS OFFICERS',
   startLoadout: { primary: null, backup: 'V27C', utility1: 'SMOKE', utility2: 'FLASH', gear: 'LENSES', mods: { backup: ['SILENCER'] } },
   atmos: { fog: [0.16, 0.13, 0.13, 25, 160], ambient: [0.32, 0.28, 0.28] },
   extractName: 'the front doors, south', extract: { x: 25, y: 38, floor: 'G', van: [6, 0] },

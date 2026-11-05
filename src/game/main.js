@@ -748,10 +748,16 @@ function boot() {
       const GROUPS = [[5, 'FIRST DRAFTS'], [35, 'THE CASE'], [43, 'THE BLIGHT'], [48, 'THE CODEX'], [51, 'THE RIVER'], [54, 'THE FORGERS'], [57, 'THE HANDLER'], [61, 'THE FIVE'], [65, 'THE NORTH'], [68, 'THE CAMPS'], [71, 'MORE WORK'], [72, 'THE COAST'], [76, 'HOLLIS'], [79, 'THE COLONEL'], [82, 'THE DROPS'], [85, 'THE SAINTS'], [88, 'THE WARNING'], [91, 'THE WINTER ROAD'], [94, 'THE PRESS'], [97, 'THE GENERAL'], [100, 'THE RISING'], [101, 'THE ISLANDS'], [104, 'THE GOLD'], [107, 'THE PEACE'], [110, 'THE SMUGGLERS'], [113, 'THE BUYER'], [116, 'THE BANKER'], [119, 'THE WITNESSES'], [122, 'THE ESCAPE'], [125, 'THE CIRCUS']];
       // (M6.80) a story's heading carries its trail's stamp once the trail is done
       const haveCase = Saves.loadCase(slotNo), stampOf = (title) => { if (title === 'THE CASE' && caseClosed(haveCase)) return ' <span style="color:#c0392b;border:2px solid #c0392b;padding:0 5px;margin-left:6px;letter-spacing:2px">CASE CLOSED</span>'; const t = TRAILS.find((q) => q.title === title); return t && trailDone(t, haveCase) ? ' <span style="color:' + t.colour + ';border:2px solid ' + t.colour + ';padding:0 5px;margin-left:6px;letter-spacing:2px">' + t.stamp + '</span>' : ''; };
-      const head = (no) => { const g = GROUPS.find((q) => q[0] === no); return g ? '<div style="grid-column:1/-1;margin:12px 0 2px;letter-spacing:3px;color:var(--amber);font-size:12px;text-align:left">' + g[1] + stampOf(g[1]) + '</div>' : ''; };
+      const head = (no) => { const g = GROUPS.find((q) => q[0] === no); return g ? '<div id="grp-' + no + '" style="grid-column:1/-1;margin:12px 0 2px;letter-spacing:3px;color:var(--amber);font-size:12px;text-align:left">' + g[1] + stampOf(g[1]) + '</div>' : ''; };
       list.innerHTML = DRAFTS.map((d) => head(d.no) + (d.id === FINAL && !open ? '<button class="btn" disabled>Level ' + d.no + ': ? ? ?  (the case is not made yet - ' + clues + ' of ' + CASE_NEEDS + ' clues)</button>'
         : '<button class="btn" data-id="' + d.id + '">Level ' + d.no + ': ' + d.title + mark(d.id) + '</button>')).join('');
       list.querySelectorAll('button[data-id]').forEach((b) => { b.onclick = () => { saveNow(); goDraft(b.dataset.id); }; });
+      // (M6.124) the stories' index: a link to each heading (a tick once its trail is done)
+      const jump = $('drafts-jump');
+      if (jump) {
+        jump.innerHTML = GROUPS.filter((g) => DRAFTS.some((d) => d.no === g[0])).map((g) => '<a data-g="' + g[0] + '">' + g[1] + (stampOf(g[1]) ? ' \u2713' : '') + '</a>').join('');
+        jump.querySelectorAll('a[data-g]').forEach((a) => { a.onclick = () => { const el = $('grp-' + a.dataset.g); if (el) el.scrollIntoView({ block: 'start', behavior: 'smooth' }); }; });
+      }
     };
     drawDrafts();
     $('t-drafts').onclick = () => { drawDrafts(); show('assign', false); show('drafts', true); };

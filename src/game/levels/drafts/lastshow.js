@@ -16,7 +16,7 @@ export default {
     success: 'The ringmaster leaves his own ring in the middle of the finale, and the band plays on, because nobody has told it to stop. The ledger is the circus\'s whole history, and every name in it is now on a list of Ghost\'s. The Circus Orlov goes east without him, and carries nothing but clowns.',
     partial: 'The ringmaster or his ledger, not both. The circus goes east, and some of what it carries goes with it.',
   },
-  time: { date: [20, 9, 2027], hour: 21, minute: 20 }, night: true, faction: 'red', requires: 'HACKKIT', startDisguise: 'red',
+  time: { date: [20, 9, 2027], hour: 21, minute: 20 }, night: true, faction: 'red', requires: 'HACKKIT', startDisguise: 'red', disguiseName: 'A CIRCUS HAND',
   startLoadout: { primary: null, backup: 'V27C', utility1: 'SMOKE', utility2: 'FLASH', gear: 'LENSES', mods: { backup: ['SILENCER'] } },
   atmos: { fog: [0.2, 0.15, 0.18, 25, 170], ambient: [0.34, 0.28, 0.3] },
   extractName: 'the common, south', extract: { x: 28, y: 41, floor: 'G', van: [10, 0] },

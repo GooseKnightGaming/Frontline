@@ -17,7 +17,7 @@ export default {
     success: 'The night express goes north twenty minutes late with one customs officer fewer and one passenger more asleep than he should be. St Corin wakes at the other end of the line with nobody waiting for him, and the album full of saints\' faces is on Ghost\'s desk by morning.',
     partial: 'The identifier or his album, not both. Somewhere north of the gap, someone still knows St Corin\'s face.',
   },
-  time: { date: [5, 5, 2027], hour: 2, minute: 40 }, night: true, faction: 'red', requires: 'HACKKIT', startDisguise: 'red',
+  time: { date: [5, 5, 2027], hour: 2, minute: 40 }, night: true, faction: 'red', requires: 'HACKKIT', startDisguise: 'red', disguiseName: 'A CUSTOMS OFFICER',
   startLoadout: { primary: null, backup: 'V27C', utility1: 'SMOKE', utility2: 'FLASH', gear: 'LENSES', mods: { backup: ['SILENCER'] } },
   atmos: { fog: [0.14, 0.15, 0.18, 22, 150], ambient: [0.25, 0.25, 0.3] },
   extractName: 'the platform, west', extract: { x: 1, y: 12, floor: 'G', van: [1, 5] },

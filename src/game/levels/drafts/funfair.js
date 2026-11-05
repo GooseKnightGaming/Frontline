@@ -16,7 +16,7 @@ export default {
     success: 'The message says where the next drop will be, and the contact\'s face says who will come for it. Ghost is waiting at the next fair, and the one after.',
     partial: 'The maze kept its secret, or the contact walked away unseen. The couriers will find another hall of mirrors.',
   },
-  time: { date: [24, 4, 2027], hour: 21, minute: 40 }, night: true, faction: 'red', requires: 'HACKKIT', startDisguise: 'red',
+  time: { date: [24, 4, 2027], hour: 21, minute: 40 }, night: true, faction: 'red', requires: 'HACKKIT', startDisguise: 'red', disguiseName: 'OFF DUTY',
   startLoadout: { primary: null, backup: 'V27C', utility1: 'SMOKE', utility2: 'FLASH', gear: 'LENSES', mods: { backup: ['SILENCER'] } },
   atmos: { fog: [0.14, 0.12, 0.16, 25, 170], ambient: [0.3, 0.26, 0.3] },
   extractName: 'the common, south', extract: { x: 24, y: 35, floor: 'G' },

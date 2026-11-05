@@ -16,7 +16,7 @@ export default {
     success: 'The route book shows where the Circus Orlov will be for the rest of the year, and which towns get a performance nobody bought tickets for. The contact goes home after the show, and Ghost goes with him.',
     partial: 'Ghost knows the contact or the route, not both. The circus moves on tomorrow.',
   },
-  time: { date: [9, 9, 2027], hour: 19, minute: 30 }, night: true, faction: 'red', requires: 'HACKKIT', startDisguise: 'red',
+  time: { date: [9, 9, 2027], hour: 19, minute: 30 }, night: true, faction: 'red', requires: 'HACKKIT', startDisguise: 'red', disguiseName: 'A CIRCUS HAND',
   startLoadout: { primary: null, backup: 'V27C', utility1: 'SMOKE', utility2: 'FLASH', gear: 'LENSES', mods: { backup: ['SILENCER'] } },
   atmos: { fog: [0.2, 0.15, 0.18, 25, 170], ambient: [0.34, 0.28, 0.3] },
   extractName: 'the common, south', extract: { x: 28, y: 41, floor: 'G', van: [10, 0] },
