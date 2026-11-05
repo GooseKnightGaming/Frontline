@@ -42,7 +42,9 @@ for (const d of DRAFTS) {
     const nav = new NavGrid(L.world, L.navFloors, L.navLinks); nav.maxSteps = L.testNavCap || L.navCap;
     const st = d.start.alt ? L.extraction.pos : L.world.spawn.pos;      // (a start in the air: from where you land - the way out)
     // (M6.19.2) from the way in - or from wherever a portal puts you
-    const froms = [st].concat((L.portals || []).map((q) => [(q.box[0][0] + q.box[1][0]) / 2 + q.shift[0], q.box[0][1] + 0.5 + q.shift[1], (q.box[0][2] + q.box[1][2]) / 2 + q.shift[2]]));
+    const froms = [st].concat((L.portals || []).map((q) => [(q.box[0][0] + q.box[1][0]) / 2 + q.shift[0], q.box[0][1] + 0.5 + q.shift[1], (q.box[0][2] + q.box[1][2]) / 2 + q.shift[2]]))
+      // (M6.125.1) and from where a boat puts you ashore (the Skerries: the boat is the only way across)
+      .concat((d.testFroms || []).map(([x, y]) => [(x + 0.5) * (d.cell || 1.5), 0.1, (y + 0.5) * (d.cell || 1.5)]));
     const reach = (p, what) => { A(froms.some((f) => { const path = nav.find(f, p); return path && path.length; }), 'no way to ' + what + ' at ' + p.map((v) => v.toFixed(1)).join(',')); };
     for (const g of L.guards) {
       if (g.aboard) continue;                                        // (M6.20.0) a boat's crew rides it

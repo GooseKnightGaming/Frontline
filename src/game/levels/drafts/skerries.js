@@ -55,6 +55,7 @@ export default {
       crew: [{ id: 'pb_helm', at: [-0.4, 0.6] }, { id: 'pb_bow', at: [0, -2.2] }] },
   ],
   start: { x: 10, y: 20, floor: 'G', yaw: -Math.PI / 2 },
+  testFroms: [[55, 20]],                                // (M6.125.1) for the kit test: the skerry's shore, where the boat lands you
   zones: [
     { id: 'station', label: 'The Skerries - the radar station', at: [58, 14, 66, 22] },
     { id: 'hut', label: 'The Skerries - the crew\'s hut', at: [60, 28, 66, 32] },
