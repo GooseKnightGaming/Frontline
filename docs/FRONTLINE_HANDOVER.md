@@ -11,7 +11,7 @@ game into the repository's root.
 
 - **The "absurd mouse jump" guard undid the game's own turns.** In `main.js` it compared this frame's yaw with *last frame's* and put back anything over 2.2 rad. A turn the game made itself was taken for a mouse jump and undone. That covers a mission's start facing (arriving from the HQ facing the other way), boarding a vehicle that points the other way, a portal's turn, and a test's `FL.pose`. It now compares with the yaw just before this frame's mouse is read, so only a real mouse jump is ignored. This was behind "the gallery targets are on the radar" and "remembered where they were" failing: the test's pose had been turned back to face a wall.
 - Browser suite: tests that pressed keys straight after a new game now wait for it to draw (the software renderer takes about 40 s to its first frames). That fixed the door's E and the radar's zoom keys. Tests that had fallen behind Rhys's decisions were updated: the controls list has 28 actions; a rifle can go in the backup slot ("any gun in any slot"); a sign has a face each way ("printed backwards"); first or third person is the View setting (V is the vision modes).
-- Still known: "when badly hurt ... colour drains" (under the slow renderer the health has regenerated past 60 before the frames the test waits for. The game sets `saturate()` below 60 health).
+- The blood test now asks for the colour to drain only while the health is still below 60 when it reads it (under the slow renderer the health had regenerated past 60). **With that, the browser suite has no known failures: 62 of 62.**
 
 ## M6.123.1 — the music plays (a real bug)
 
