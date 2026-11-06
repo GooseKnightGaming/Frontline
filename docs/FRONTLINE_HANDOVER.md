@@ -7,6 +7,21 @@ GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
 
+## M6.125.2 — checks: no gaps in the buildings, consistency (Rhys, 6 Nov: "consistency checks; buildings correct, no weird gappage")
+
+- **`test/gaps.test.mjs`** (new, 10 s): every first-draft level, every storey, against the drawn pieces. Rays through
+  every wall square (seven points along it, and corner to corner) at foot, chest and head height; a ceiling over
+  every square indoors and a floor under every square upstairs (not stairs, shafts, water, an atrium's `O`, `noRoof`
+  or `roof: false`); and the band between a storey's wall tops and the next floor, from outside. A level's own cell
+  size counts (`spec.cell`). The Mineshaft's ladder shaft is the one listed opening.
+- **Found and fixed:** the Kessin Airfield (64): the control tower's ground floor walls stopped at 3.6 m and floor 1's
+  slab began at 4.0, a 0.4 m slit all round. Walls now 4.0. Every other wall, ceiling and floor was already whole.
+- **Consistency** (names, titles, dates in story order, the way out on the side its name says, each objective's place
+  in the brief, directions in the briefs against the zones): nothing wrong in the levels. One slip in this file:
+  the Desert Outpost's pilot is Lieutenant **Osei-Brandt** (the M6.124.0 rename had caught her here).
+- **For Rhys:** Dr Anaya Rook (the Temple, 26) and Mr Anselm Rook, the buyer from Varnholm (45 and on), share a
+  surname, and the Temple's looters sell to "a buyer in Varnholm". Meant as a link, or rename one?
+
 ## M6.125.1 — the Skerries: no walking round the strait
 
 - Level 101: two rock headlands (not climbable) fill the ground outside the map at both ends of the strait, so the
@@ -268,7 +283,7 @@ game into the repository's root.
   three times in these two nights, each time passing on a rerun.
 
 ## M6.94.0 — the Outpost's pilot fights too
-- The Desert Outpost (32): Lieutenant Osei-Aske, freed from the cell block, takes up a gun (a freedFrom ally, as
+- The Desert Outpost (32): Lieutenant Osei-Brandt, freed from the cell block, takes up a gun (a freedFrom ally, as
   Venn; the relations yellow against ghost - the Outpost is the Yellows').
 
 ## M6.93.0 — a prisoner who fights: Sergeant Venn

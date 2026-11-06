@@ -24,7 +24,8 @@ export default {
   outside: { backdrop: 'hills', mat: 'asphalt', margin: 16 },
   floors: {
     G: {
-      y: 0, wallH: 3.6, wall: 'paint', wallTint: [0.8, 0.8, 0.78], floor: 'tile', floorTint: [0.62, 0.62, 0.6], ceil: 'plaster', lampPower: 0.7, lampColour: [0.95, 0.95, 1], lampEvery: 6,
+      y: 0, wallH: 4.0, wall: 'paint',   // (M6.125.2) 4.0, up to floor 1's slab: at 3.6 there was a 0.4 m slit all round
+      wallTint: [0.8, 0.8, 0.78], floor: 'tile', floorTint: [0.62, 0.62, 0.6], ceil: 'plaster', lampPower: 0.7, lampColour: [0.95, 0.95, 1], lampEvery: 6,
       carve: { size: [W, H], ops: [
         ['room', 6, 6, 18, 14],                         // the lounge
         ['room', 20, 6, 28, 14],                        // the terminal office
