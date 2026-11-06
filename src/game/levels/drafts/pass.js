@@ -76,7 +76,7 @@ export default {
   devices: [
     { id: 'c-gate-s', kind: 'camera', at: [23, 22, 'G'], face: [1, 1], net: 'vashka' },
     { id: 'c-gate-n', kind: 'camera', at: [27, 20, 'G'], face: [0, -1], net: 'vashka' },
-    { id: 'a-vashka', kind: 'alarm', at: [22, 24, 'G'], face: [0, 1], net: 'vashka' },
+    { id: 'a-vashka', kind: 'alarm', at: [21, 24, 'G'], face: [0, 1] /* (M6.125.3) on a wall */, net: 'vashka' },
   ],
   terminals: [
     { id: 'sec', name: 'the guard post console', at: [16, 26, 'G'], face: [1, 0], time: 6, net: 'vashka' },

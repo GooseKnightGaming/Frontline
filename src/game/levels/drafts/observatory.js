@@ -72,7 +72,7 @@ export default {
   devices: [
     { id: 'c-door', kind: 'camera', at: [28, 17, 'G'], face: [1, 1], net: 'obs' },
     { id: 'm-dome', kind: 'lock', at: [27, 11, 'G'], net: 'obs' },
-    { id: 'l-dome', kind: 'lights', at: [12, 16, 'G'], face: [1, 0], area: [12, 6, 26, 16], name: 'the dome', net: 'obs' },
+    { id: 'l-dome', kind: 'lights', at: [11, 15, 'G'], face: [1, 0] /* (M6.125.3) on a wall */, area: [12, 6, 26, 16], name: 'the dome', net: 'obs' },
     { id: 'a-obs', kind: 'alarm', at: [31, 22, 'G'], face: [-1, 0], net: 'obs' },
   ],
   terminals: [

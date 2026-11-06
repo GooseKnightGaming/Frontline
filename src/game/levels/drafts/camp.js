@@ -90,7 +90,7 @@ export default {
     { id: 'm-h1', kind: 'lock', at: [15, 9, 'G'], net: 'ostrava' },
     { id: 'm-h2', kind: 'lock', at: [15, 20, 'G'], net: 'ostrava' },
     { id: 'm-h3', kind: 'lock', at: [15, 31, 'G'], net: 'ostrava' },
-    { id: 'a-camp', kind: 'alarm', at: [39, 14, 'G'], face: [-1, 0], net: 'ostrava' },
+    { id: 'a-camp', kind: 'alarm', at: [40, 13, 'G'], face: [0, 1] /* (M6.125.3) on a wall */, net: 'ostrava' },
   ],
   terminals: [{ id: 'sec', name: 'the commandant\'s console', at: [46, 10, 'G'], face: [-1, 0], time: 6, net: 'ostrava' }],
   intel: [

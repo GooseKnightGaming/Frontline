@@ -895,6 +895,12 @@ export function buildKitLevel(spec) {
       // a breaker panel at chest height, or the alarm's bell high up: on the wall behind the square
       const back = CELL * 0.45, y = d.kind === 'alarm' ? F.y + (F.wallH || S.wallH) - 0.5 : F.y + 1.45;
       pos = [base[0] - f[0] / fl * back, y, base[2] - f[1] / fl * back];
+      // (M6.125.3) flush on that wall: a wall runs down the middle of its squares, so half a square back was 0.7 m
+      // short of it and the panel (or the bell) hung in the air
+      const dir = [-f[0] / fl, 0, -f[1] / fl], hw = world.raycast([base[0], y, base[2]], dir, CELL * 1.6, (q) => q.glass || q.person || q.target);
+      const own = (F.rows[d.at[1]] || '')[d.at[0]] || ' ';
+      if ('#WDJ:LRVQf'.includes(own)) pos = [base[0] - dir[0] * (0.11 + 0.065), y, base[2] - dir[2] * (0.11 + 0.065)];   // its square is the wall: on its face
+      else if (hw && hw.t > 0.1) pos = [base[0] + dir[0] * (hw.t - 0.065), y, base[2] + dir[2] * (hw.t - 0.065)];
       if (d.kind === 'lights') {
         const a = d.area || [d.at[0], d.at[1], d.at[0], d.at[1]];
         extra.area = [[a[0] * CELL, F.y - 0.5, a[1] * CELL], [(a[2] + 1) * CELL, F.y + (F.wallH || S.wallH), (a[3] + 1) * CELL]];

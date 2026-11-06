@@ -20,6 +20,11 @@ game into the repository's root.
   machines, many put there by M6.124.0's props. A movable prop (`CBtrTMZYH`) on a patrol line moves a square aside,
   indoors or out as it was, off every line, not by a door; one holding a paper (or with nowhere to go) stays, noted
   in `spec._propsOnPatrols`. The Crash Site's two wreck patrols now go round the wings' tips.
+- **Light panels and alarm bells** (kit, devices): mounted half a square back from their square, which is 0.7 m
+  short of the wall behind (it runs down the middle of the next square), so they hung in the air. Now a ray finds
+  that wall and they sit flush on it; one whose own square is the wall goes on that wall's face. Four that had no
+  wall behind them at all (a window, an open yard) moved to the nearest wall: Camp Dravik, the Vashka Pass, Camp
+  Ostrava, the Observatory's dome. (Cameras were left: they hang from the ceiling on their brackets.)
 - **In mid-air or inside things:** the blight (the Dalmar Star), the supply order (the Ministry) and the Count's
   catalogue (the Villa) floated at table height with no table: they have one now. The Subway's train had a 0.6 m
   floor block its guards stood in (and you climbed into): the car's floor is level with the platform now.

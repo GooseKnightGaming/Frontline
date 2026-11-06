@@ -103,7 +103,7 @@ export default {
     { id: 'm-armoury', kind: 'lock', at: [47, 22, 'G'], net: 'dravik' },
     { id: 'm-office', kind: 'lock', at: [50, 38, 'G'], net: 'dravik' },
     { id: 'l-hq', kind: 'lights', at: [56, 35, 'G'], face: [-1, 0], area: [46, 34, 56, 42], name: 'the headquarters hut', net: 'dravik' },
-    { id: 'a-camp', kind: 'alarm', at: [31, 49, 'G'], face: [0, -1], net: 'dravik' },
+    { id: 'a-camp', kind: 'alarm', at: [30, 50, 'G'], face: [0, -1] /* (M6.125.3) on a wall */, net: 'dravik' },
   ],
   terminals: [
     { id: 'sec', name: 'the guardroom\'s console', at: [33, 48, 'G'], face: [-1, 0], time: 6, net: 'dravik' },
