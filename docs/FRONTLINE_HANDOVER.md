@@ -7,6 +7,28 @@ GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
 
+## M6.125.3 — does everything fit? Signs, patrols, things in mid-air; the Rooks; the gazetteer (Rhys, 6 Nov: "keep doing these passes, making sure everything fits right")
+
+- **Signs** (kit `snapSigns`, after `extra`): about thirty were put up half a square out from their walls (a wall runs
+  down the middle of its squares: `y * C + C + 0.13` is 0.77 m off it) and stood off the facades. Now a sign within
+  half a square and a little of a wall behind it is moved back to 0.12 m off it; one facing a wall close in front is
+  turned round onto it (signs have two faces); one almost touching is set 0.06 m off (no flicker); one out in the
+  open under the sky gets two thin posts. `free: true` on a sign leaves it alone. By hand: the Arena's two gate
+  signs and Nordvik's were inside walls (now on the outer faces), the Subway's south platform roundels 1.5 m out.
+- **Patrols through props** (kit `clearPatrols`, before tidying): a guard on patrol walks a straight line (nothing
+  in the level stops him: `bumps` sees only you), and 62 patrols walked through crates, barrels, trees, tables or
+  machines, many put there by M6.124.0's props. A movable prop (`CBtrTMZYH`) on a patrol line moves a square aside,
+  indoors or out as it was, off every line, not by a door; one holding a paper (or with nowhere to go) stays, noted
+  in `spec._propsOnPatrols`. The Crash Site's two wreck patrols now go round the wings' tips.
+- **In mid-air or inside things:** the blight (the Dalmar Star), the supply order (the Ministry) and the Count's
+  catalogue (the Villa) floated at table height with no table: they have one now. The Subway's train had a 0.6 m
+  floor block its guards stood in (and you climbed into): the car's floor is level with the platform now.
+- **The Rooks** (Rhys: "both of them are linked"): Dr Anaya Rook is the sister of the Varnholm buyer, now **Teodor**
+  Rook (he was a second Anselm, beside Anselm Kray). Calder's diary and the Temple's epilogue say so, and the Dalmar
+  Star's brief. **Linden Row:** the embassy's street keeps it; the Housing Estate's street is **Hollins Row**.
+- **The gazetteer** (`src/game/world/gazetteer.js`, `test/gazetteer.test.mjs`): every level in one of ten regions,
+  the first step to the semi-open world; the plan in stages is in the roadmap.
+
 ## M6.125.2 — checks: no gaps in the buildings, consistency (Rhys, 6 Nov: "consistency checks; buildings correct, no weird gappage")
 
 - **`test/gaps.test.mjs`** (new, 10 s): every first-draft level, every storey, against the drawn pieces. Rays through
@@ -668,7 +690,7 @@ game into the repository's root.
   at the Kessin docks an hour before she sails. Up the gangway to the main deck (cargo in rows, the superstructure
   aft), down the stair amidships to the hold (the blight's drums; the engine room aft of a bulkhead), up from the
   crew's mess to the bridge (the radio log, the console, the radio; a marksman on the bridge wings, a turret).
-  Take the blight; copy the radio log; optionally stop Anselm Rook, its buyer. Its own epilogue in the debrief, and a
+  Take the blight; copy the radio log; optionally stop Teodor Rook (Anselm until M6.125.3, a second Anselm beside Anselm Kray), its buyer. Its own epilogue in the debrief, and a
   trophy, Harvest Saved. (Case Closed and Tied Up Loose Ends are now Kaldberg's alone - `level.draft === FINAL`.)
 
 ## M6.43.0 — Level 44, the Grain Terminal

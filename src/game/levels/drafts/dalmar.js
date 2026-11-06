@@ -50,9 +50,9 @@ export default {
   where: 'The Dalmar Star, at the Kessin docks. 05:10, an hour before she sails.',
   brief: [
     ['The ship', 'A bulk freighter, loading the export grain - and the blight with it. Up the gangway from the dock to her <b>main deck</b> (containers in rows, the superstructure aft); down the stair amidships to the <b>hold</b> (cargo forward, the engine room aft); up from the crew\'s mess to the <b>bridge</b>.'],
-    ['The blight', 'In drums, in the hold. Take the <b>blight</b> off her. Her <b>radio log</b> on the bridge says who it was for - and the man who bought it, <b>Anselm Rook</b>, is aboard to see it loaded.'],
+    ['The blight', 'In drums, in the hold. Take the <b>blight</b> off her. Her <b>radio log</b> on the bridge says who it was for - and the man who bought it, <b>Teodor Rook</b>, is aboard to see it loaded. He is the Varnholm buyer who paid Calder\'s looters for the Tolun tablet, and <b>Dr Anaya Rook\'s brother</b>.'],
     ['Security', 'Cameras on the deck and in the hold, the hold\'s lights, a turret on the bridge wing, the alarm - run from the bridge. The radio is on the bridge; the engineer in the engine room; a dog with the man on the dock.'],
-    ['Objectives', 'Take the <b>blight</b> (the hold). Copy the <b>radio log</b> (the bridge). Optionally, stop <b>Anselm Rook</b>. Out along the dock, to the west.'],
+    ['Objectives', 'Take the <b>blight</b> (the hold). Copy the <b>radio log</b> (the bridge). Optionally, stop <b>Teodor Rook</b>. Out along the dock, to the west.'],
   ],
   // (M6.44) how the blight ends (the debrief)
   epilogue: {
@@ -93,7 +93,7 @@ export default {
     { id: 'dock', label: 'The Kessin docks', at: [0, 0, W - 1, H - 1] },
   ],
   guards: [
-    { id: 'rook', at: [34, 13, 'G'], arms: 'pistol', rank: 'officer', temper: 'cowardly', name: 'Anselm Rook', tint: [0.95, 0.95, 1.0] },
+    { id: 'rook', at: [34, 13, 'G'], arms: 'pistol', rank: 'officer', temper: 'cowardly', name: 'Teodor Rook', tint: [0.95, 0.95, 1.0] },
     { id: 'hd1', at: [38, 12, 'G'], arms: 'carbine', temper: 'steady' },
     { id: 'hd2', at: [27, 14, 'G'], route: [[20, 14], [52, 14]], arms: 'smg' },
     { id: 'eng', at: [11, 13, 'G'], arms: 'pistol', temper: 'cowardly', role: 'engineer' },
@@ -106,7 +106,7 @@ export default {
     { id: 'gang', at: [33, 18, '1'], arms: 'carbine', temper: 'steady' },
     { id: 'dk', at: [24, 23, 'G'], route: [[10, 23], [50, 23]], arms: 'carbine', dog: true },
   ],
-  pickups: [{ id: 'blight', name: 'The blight', what: 'the blight', at: [36, 11, 'G'], table: false, h: 1.05, colour: [0.55, 0.75, 0.2] }],
+  pickups: [{ id: 'blight', name: 'The blight', what: 'the blight', at: [36, 11, 'G'], table: true,   /* (M6.125.3) on a table by the drums: it had floated beside them */ colour: [0.55, 0.75, 0.2] }],
   devices: [
     { id: 'c-deck', kind: 'camera', at: [57, 8, '1'], face: [-1, 1], net: 'dalmar' },
     { id: 'c-gang', kind: 'camera', at: [18, 19, '1'], face: [1, -1], net: 'dalmar' },
@@ -129,6 +129,6 @@ export default {
   objectives: [
     { id: 'o1', kind: 'take', ref: 'blight', text: 'Take the blight (the hold)' },
     { id: 'o2', kind: 'hack', ref: 'log', text: 'Copy the radio log (the bridge)' },
-    { id: 'o3', kind: 'kill', ref: 'rook', text: 'Stop Anselm Rook', optional: true },
+    { id: 'o3', kind: 'kill', ref: 'rook', text: 'Stop Teodor Rook', optional: true },
   ],
 };

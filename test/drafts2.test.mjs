@@ -98,7 +98,7 @@ T('the Sewers: lamps in the street and over the steps down; brighter tunnels', (
 });
 T('the Estate: a number on every front door (Rhys: "no indication of which house is which?")', () => {
   const L = built.find((q) => q.d.id === 'estate').L, t = L.signs.map((s) => s.text);
-  A(['3', '7', '11', '22'].every((n) => t.includes(n)) && t.includes('LINDEN STORES'), t.join(' '));
+  A(['3', '7', '11', '22'].every((n) => t.includes(n)) && t.includes('HOLLINS STORES'), t.join(' '));
 });
 T('the Assassination: Colonel Rusk in his own colours; a named man\'s name shows under your sights', () => {
   const L = built.find((q) => q.d.id === 'vantage').L, r = L.guards.find((g) => g.id === 'rusk');

@@ -49,7 +49,8 @@ export default {
     // the council's wall round its house and garden, its gate on the south side
     box([44 * C, 0, 0], [45 * C, 3, 11 * C], 'concrete2', { tint: [0.55, 0.53, 0.5] });
     box([57 * C, 0, 0], [58 * C, 3, 11 * C], 'concrete2', { tint: [0.55, 0.53, 0.5] });
-    level.signs.push({ pos: [mid(9), 3.6, 15 * C + 0.12], yaw: 0, w: 3.6, h: 0.7, text: 'NORDVIK', sub: 'Station', col: '#2a2a3a' });
+    // (M6.125.3) on the front wall's outer face, over the door: it had been inside the building, in the ceiling
+    level.signs.push({ pos: [mid(9), 3.0, mid(15) + 0.23], yaw: 0, w: 3.6, h: 0.7, text: 'NORDVIK', sub: 'Station', col: '#2a2a3a' });
   },
   start: { x: 4, y: 21, floor: 'G', yaw: -Math.PI / 2 },
   zones: [

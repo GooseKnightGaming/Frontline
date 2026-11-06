@@ -69,7 +69,7 @@ export default {
   ],
   // (M6.83) how it ends (the debrief; the case board's story so far)
   epilogue: {
-    success: "The Tolun tablet leaves the jungle in Ghost's hands, and Dr Rook leaves it with it. Calder's buyer in Varnholm is still waiting for a delivery that will never come.",
+    success: "The Tolun tablet leaves the jungle in Ghost's hands, and Dr Rook leaves it with it. On the way out she reads Calder's diary, and goes quiet: the buyer in Varnholm is her brother, Teodor. He is still waiting for a delivery that will never come.",
     partial: "The tablet or Dr Rook, not both. Calder will be back for whatever he left behind.",
   },
   time: { date: [6, 9, 2026], hour: 7, minute: 10 }, faction: 'red',
@@ -143,7 +143,7 @@ export default {
     said: 'The glyph wheel turns - far below, stone grinds on stone: the sanctum\'s door is open.' }],
   // (M6.69) papers to read: lore, not needed to finish
   intel: [
-    { id: 'diary', at: [15, 16, 'G'], h: 0.78, kind: 'Diary', title: 'Calder\'s camp diary', text: ['Day 9. Rook will read the glyphs or we will find someone who will. The buyer in Varnholm wants the tablet by the end of the month.', 'Day 11. The rain has stopped. Tomorrow we open the tomb.'] },
+    { id: 'diary', at: [15, 16, 'G'], h: 0.78, kind: 'Diary', title: 'Calder\'s camp diary', text: ['Day 9. Rook will read the glyphs or we will find someone who will. The buyer in Varnholm wants the tablet by the end of the month. He says she is his sister, and she is not to be hurt.', 'Day 11. The rain has stopped. Tomorrow we open the tomb.'] },
   ],
   objectives: [
     { id: 'o1', kind: 'hack', ref: 'wheel', text: 'Turn the glyph wheel (the shrine, on the top)' },

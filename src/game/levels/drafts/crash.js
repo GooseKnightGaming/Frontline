@@ -58,8 +58,9 @@ export default {
     { id: 'off', at: [9, 8, 'G'], arms: 'pistol', rank: 'officer', temper: 'steady', name: 'The search party\'s officer' },
     { id: 'c1', at: [10, 13, 'G'], arms: 'carbine', temper: 'steady' },
     { id: 'c2', at: [4, 8, 'G'], route: [[4, 3], [4, 14]], arms: 'carbine' },
-    { id: 'wk1', at: [32, 24, 'G'], route: [[24, 24], [40, 24]], arms: 'carbine' },
-    { id: 'wk2', at: [32, 15, 'G'], route: [[24, 15], [40, 15]], arms: 'smg' },
+    // (M6.125.3) beyond the wings' tips, not through them (the wings lie in the snow, rows 12 - 16 and 23 - 27)
+    { id: 'wk1', at: [32, 29, 'G'], route: [[24, 29], [40, 29]], arms: 'carbine' },
+    { id: 'wk2', at: [32, 11, 'G'], route: [[24, 11], [40, 11]], arms: 'smg' },
     { id: 'wk3', at: [38, 20, 'G'], arms: 'pistol', rank: 'specialist', temper: 'cowardly', name: 'The red mechanic' },
     { id: 'h1', at: [51, 32, 'G'], arms: 'carbine', temper: 'steady' },
     { id: 'h2', at: [50, 38, 'G'], route: [[44, 38], [56, 38]], arms: 'carbine', dog: true },

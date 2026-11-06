@@ -887,6 +887,37 @@ quick-selects (done, M6.20.9).
 Almost all are Ghost assignments; the Train is off duty; the drugged level is outside the real world.
 **Remind Rhys:** the real Severian language, when he has it, replaces the placeholder Severian.
 
+## The semi-open world: a plan in stages (written 6 Nov 2026, M6.125.3, for Rhys to choose from)
+
+Rhys: "a van or chopper out to a level (or fast travel across a semi-open world)" (M6.20.8); "Yard 7 the hub;
+Assignment -> Loadout -> Mission -> Debrief" (M6.20.9); 6 Nov: "Remember I want it to become semi-open-worldy too".
+Today: 123 self-contained levels, chosen from the mission list and the case board; Ghost HQ under Yard 7.
+**Done (groundwork):** `src/game/world/gazetteer.js` places every level in one of ten regions (Varnholm 44,
+the north 20, Kessin 14, Lessar 12, Hollen 11, Port Saren 6, further afield 6, the Skarn 4, Lake Morra 4,
+nowhere 2), from the levels' own words; 16 were guesses (marked `guess: true`). `test/gazetteer.test.mjs` makes
+every new level take a place. Nothing in the game reads it yet.
+
+1. **The map table in Ghost HQ** (small; fits the game as it is). A map of the regions on the table in Yard 7.
+   Each level a pin where it happens, the story trails drawn between them, stamps on finished ones. Choose a
+   pin, and the van (or the chopper, for the far ones) takes you to its briefing. Replaces the mission list as
+   the way in (the list stays, for speed).
+2. **One walkable region** (the big one: Varnholm first - 44 levels there). A district map of streets you walk
+   or drive between missions: each mission's site a door you go in by (its level loads, as now), contacts on
+   street corners with work, a fence for captured weapons, papers to find. Built with the same kit, with
+   portals to the missions. Then the next region as its own district, linked by the road or the train.
+3. **The world remembers** (light): what you did shows - a checkpoint you cleared stays down, a region's
+   heat (how hard the reds are looking for you) rises with alarms and falls with quiet work, allies you
+   rescued turn up in the district.
+4. **Off duty** (already agreed: the Train): time between assignments, walking the region, nothing to do but
+   look, talk, shop.
+
+**For Rhys to decide:** stage 1 first, or straight to a walkable Varnholm? Travel as a map choice, or driven
+for real (the cars exist)? A heat system, yes or no? And the 16 guessed places: the Bank, the Sewers and the
+Cemetery's old city, the Housing Estate, Ashcombe Park, Brookvale University, the Halloran Library and Varn
+Dynamics in Varnholm; the Research Station, Varrow Naval Yard and Skarvik on the Kessin coast; HMP Greyhallow,
+Camp Dravik and the Halvard ridge in the north; the Villa Merrow on Lake Morra; Lindqvist's Ford near
+Varnholm; the circus's winter quarters near Lessar.
+
 ## Done overnight, 1-2 November 2026 (M6.43 - M6.64)
 Levels 44-52 (the Grain Terminal, the Dalmar Star, the Ministry of Supply, the Halvard Embankment, the Varnholm Museum,
 St Brannoc's, the Villa Merrow, the Kessin Pens, the Rooftops); the case board's trails (the blight, the Codex);

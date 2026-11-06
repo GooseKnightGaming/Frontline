@@ -149,8 +149,9 @@ export default {
     for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if ((G[y][x] === '#' || G[y][x] === ':') && !inside(x, y, 7.5)) box([x * C, 2.4, y * C], [(x + 1) * C, 9.5, (y + 1) * C], 'marble', { tint: [0.82, 0.74, 0.6] });
     // banners over the gates
     for (const s of [-1, 1]) { const x = cx + s * (A + 0.4); box([x * C - 0.1, 2.4, (cy - 2) * C], [x * C + 0.1, 4.4, (cy + 2) * C], 'cloth', { solid: false, tint: s < 0 ? [0.2, 0.3, 0.45] : [0.6, 0.12, 0.1] }); }
-    level.signs.push({ pos: [(cx - A - 10.6) * C, 3.6, cy * C], yaw: -Math.PI / 2, w: 3.6, h: 0.7, text: 'PORTA OCCIDENS', sub: 'Ghost', col: '#2a3a52' });
-    level.signs.push({ pos: [(cx + A + 10.6) * C, 3.6, cy * C], yaw: Math.PI / 2, w: 3.6, h: 0.7, text: 'PORTA ORIENS', sub: 'the reds', col: '#5a1a14' });
+    // (M6.125.3) on the gates' outer faces, 0.12 off: they had been inside the walls over the gates
+    level.signs.push({ pos: [(cx - A - 10.6) * C - 0.92, 3.6, cy * C], yaw: -Math.PI / 2, w: 3.6, h: 0.7, text: 'PORTA OCCIDENS', sub: 'Ghost', col: '#2a3a52' });
+    level.signs.push({ pos: [(cx + A + 10.6) * C + 0.92, 3.6, cy * C], yaw: Math.PI / 2, w: 3.6, h: 0.7, text: 'PORTA ORIENS', sub: 'the reds', col: '#5a1a14' });
   },
   zones: [
     { id: 'hypo', label: 'The Arena - the hypogeum', at: [cx - 14, cy - 11, cx + 13, cy + 10], floor: 'B' },

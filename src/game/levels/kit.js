@@ -230,6 +230,53 @@ export function autoWindows(rows, ground, protect) {
   return { rows: g.map((r) => r.join('')), added: n };
 }
 
+// (M6.125.3) a guard on patrol walks a straight line from point to point and nothing in the level stops him, so a
+// crate, a barrel, a tree or a table on that line he walks through. Such a prop is moved a square aside, off every
+// patrol line, onto plain floor of its own kind (indoors or out), not by a door, not onto anything protected; one
+// holding a paper, or with nowhere to go, stays and is noted (spec._propsOnPatrols) for the tests to report.
+const MOVABLE = 'CBtrTMZYH';
+export function clearPatrols(spec, prot) {
+  const legsBy = {};
+  for (const g of spec.guards || []) {
+    if (!g.route || !g.route.length || !g.at) continue;
+    const f = g.at[2] || Object.keys(spec.floors)[0];
+    const pts = [[g.at[0], g.at[1]], ...g.route.map((q) => [q[0], q[1]])];
+    const legs = legsBy[f] = legsBy[f] || [];
+    for (let i = 0; i + 1 < pts.length; i++) legs.push([pts[i], pts[i + 1]]);
+    if (g.route.length > 2) legs.push([g.route[g.route.length - 1], g.route[0]]);
+  }
+  const dist = (px, py, [a, b]) => {
+    const ax = a[0] + 0.5, ay = a[1] + 0.5, bx = b[0] + 0.5, by = b[1] + 0.5, dx = bx - ax, dy = by - ay, L2 = dx * dx + dy * dy || 1e-9;
+    const t = Math.max(0, Math.min(1, ((px - ax) * dx + (py - ay) * dy) / L2));
+    return Math.hypot(px - ax - t * dx, py - ay - t * dy);
+  };
+  const papers = {};
+  for (const q of [].concat(spec.intel || [], spec.pickups || [], spec.terminals || [], spec.devices || [], spec.civilians || [], spec.hostages || [])) if (q.at) { const f = q.at[2] || Object.keys(spec.floors)[0]; (papers[f] = papers[f] || new Set()).add(q.at[0] + ',' + q.at[1]); }
+  spec._propsOnPatrols = [];
+  for (const [f, legs] of Object.entries(legsBy)) {
+    const F = spec.floors[f]; if (!F || !F.rows) continue;
+    const g = F.rows.map((r) => r.split(''));
+    const at = (x, y) => (g[y] && g[y][x]) || '#';
+    const onLine = (x, y, r = 0.62) => legs.some((l) => dist(x + 0.5, y + 0.5, l) < r);
+    const keep = new Set([...(prot[f] || []), ...(prot._ || []), ...(papers[f] || [])]);
+    const indoors = insideOf(F.rows);
+    for (let y = 0; y < g.length; y++) for (let x = 0; x < g[y].length; x++) {
+      const c = g[y][x]; if (!MOVABLE.includes(c) || !onLine(x, y, 0.55)) continue;
+      if (keep.has(x + ',' + y)) { spec._propsOnPatrols.push(`${f}:[${x},${y}] '${c}' (holds something)`); continue; }
+      const n4 = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+      const inside = indoors.has(x + ',' + y), ground = inside || F.y > 0.5 ? '.' : ' ';   // indoors (or upstairs) plain floor; out, the ground
+      const near = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [1, -1], [-1, 1], [-1, -1], [2, 0], [-2, 0], [0, 2], [0, -2]]
+        .map(([dx, dy]) => [x + dx, y + dy])
+        .filter(([u, v]) => (at(u, v) === '.' || at(u, v) === ' ') && indoors.has(u + ',' + v) === inside && !keep.has(u + ',' + v) && !onLine(u, v)
+          && !n4.some(([dx, dy]) => 'DLRVQ:'.includes(at(u + dx, v + dy))))
+        .sort((p, q) => legs.reduce((m, l) => Math.min(m, dist(q[0] + 0.5, q[1] + 0.5, l)), 9) - legs.reduce((m, l) => Math.min(m, dist(p[0] + 0.5, p[1] + 0.5, l)), 9));
+      if (!near.length) { spec._propsOnPatrols.push(`${f}:[${x},${y}] '${c}' (nowhere to go)`); continue; }
+      const [u, v] = near[0]; g[v][u] = c; g[y][x] = ground;
+    }
+    F.rows = g.map((r) => r.join(''));
+  }
+}
+
 export function buildKitLevel(spec) {
   for (const k of Object.keys(spec.floors)) if (spec.floors[k].carve && !spec.floors[k].rows) spec.floors[k].rows = carve(spec.floors[k].carve);
   // tidied once (the spec's rows are kept tidied: building again changes nothing)
@@ -249,6 +296,7 @@ export function buildKitLevel(spec) {
       const [dx, dy] = DIRS[st.dir];
       for (let i = 0; i < st.len; i++) for (let j = 0; j < (st.w || 1); j++) { const px = st.x + dx * i + (dx ? 0 : j), py = st.y + dy * i + (dy ? 0 : j); B(st.to, px, py); if (i > 0) B(st.from, px, py); F2(st.from, px, py); F2(st.to, px, py); }
     }
+    clearPatrols(spec, prot);
     for (const k of Object.keys(spec.floors)) {
       const Fk0 = spec.floors[k];
       if (fblk[k]) Fk0.rows = Fk0.rows.map((r, y) => r.split('').map((ch, x) => ('TKHYZMCBX'.includes(ch) && fblk[k].has(x + ',' + y) ? '.' : ch)).join(''));
@@ -960,6 +1008,7 @@ export function buildKitLevel(spec) {
   // (M6.49) the floor plans, for the mission map: each floor's rows as built
   level.plan = { cell: CELL, floors: Object.keys(floors).map((k) => ({ key: k, y: floors[k].y, rows: floors[k].rows.slice() })) };
   if (spec.extra) spec.extra(kit);
+  snapSigns(level, world, kit);
   hangDoors(world, level.swingDoors);
   // what to bake: the map, and a little round it
   level.bakeRegion = [-4, -4, W + 4, D + 4];
@@ -967,6 +1016,48 @@ export function buildKitLevel(spec) {
 }
 
 export const DIRS = { E: [1, 0], W: [-1, 0], S: [0, 1], N: [0, -1] };
+
+// (M6.125.3) a sign put up 0.3 - 1 m off its wall (half a square out: a wall runs down the middle of its squares) is
+// moved back onto the wall, 0.12 m off it; one facing a wall close in front of it is turned round onto that wall
+// (signs have two faces); one almost touching its wall stands 0.06 m off, so the two do not flicker
+export function snapSigns(level, world, kit) {
+  for (const sg of level.signs || []) {
+    if (sg.free) continue;                                       // (a sign on its own posts, meant to stand)
+    const p = sg.pos, fx = Math.sin(sg.yaw || 0), fz = Math.cos(sg.yaw || 0), alongX = Math.abs(fx) > 0.5;
+    const reach = Math.max(1.05, ((kit && kit.CELL) || 1.5) / 2 + 0.45);   // half a square out, and a little
+    let back = null, front = null, inside = false;
+    for (const q of world.solids) {
+      if (q.person || q.target || q.disabled || q.ghost) continue;
+      if (p[1] < q.min[1] - 0.2 || p[1] > q.max[1] + 0.2) continue;
+      const [a0, a1, ac] = alongX ? [q.min[2], q.max[2], p[2]] : [q.min[0], q.max[0], p[0]];
+      if (ac < a0 || ac > a1) continue;
+      const [lo, hi, c, f] = alongX ? [q.min[0], q.max[0], p[0], fx] : [q.min[2], q.max[2], p[2], fz];
+      if (c > lo && c < hi && p[1] > q.min[1] && p[1] < q.max[1]) { inside = true; break; }  // inside something: left to the level
+      const dB = f > 0 ? c - hi : lo - c, dF = f > 0 ? lo - c : c - hi;
+      if (dB >= 0 && dB < reach && (back === null || dB < back)) back = dB;
+      if (dF >= 0 && dF < reach && (front === null || dF < front)) front = dF;
+    }
+    if (inside) continue;
+    const move = (dist) => { if (alongX) p[0] += dist; else p[2] += dist; };
+    const f = alongX ? Math.sign(fx) : Math.sign(fz);
+    if (back !== null && back > 0.3) move(-f * (back - 0.12));
+    else if (back !== null && back < 0.05) move(f * (0.06 - back));
+    else if (back === null && front !== null && front <= reach - 0.05) { sg.yaw = (sg.yaw || 0) + Math.PI; move(f * (front - 0.12)); }
+    else if (back === null && kit && !sg.posts) {
+      // nothing behind it and nothing in front: out in the open, it stands on two posts (if the sky is above it)
+      const half = (sg.w || 2) / 2 - 0.12, bot = p[1] - (sg.h || 0.6) / 2;
+      const ends = [-half, half].map((o) => alongX ? [p[0], p[2] + o] : [p[0] + o, p[2]]);
+      const roofed = world.solids.some((q) => !q.person && !q.target && q.min[1] > p[1] + 0.3 && q.min[1] < p[1] + 8 && ends.some(([x, z]) => x > q.min[0] && x < q.max[0] && z > q.min[2] && z < q.max[2]));
+      if (roofed) continue;
+      for (const [x, z] of ends) {
+        const g = world.groundBelow(x, bot - 0.05, z, 0.05);
+        if (!(g > -1e8) || bot - g > 6 || bot - g < 0.2) continue;
+        kit.box([x - 0.05, g, z - 0.05], [x + 0.05, bot + 0.05, z + 0.05], 'metal', { tint: [0.25, 0.26, 0.27], solid: false });
+      }
+      sg.posts = true;
+    }
+  }
+}
 
 // the Ghost van, parked by where you come in (the way out)
 function vanAt(kit, sp, off) {

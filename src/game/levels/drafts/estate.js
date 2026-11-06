@@ -39,7 +39,7 @@ function house(x0, y0, kind, storeys, flip) {
   }
   houses.push({ x0, y0, kind, storeys, flip });
 }
-// ── the north side of Linden Row (fronts facing south onto the road) ──
+// ── the north side of Hollins Row (fronts facing south onto the road) ──
 // the corner shop, then a terrace of five, a pair of semis, a detached house of three storeys
 stamp(G, 1, 11, ['############', '#..........#', '#.KKKKKK...#', '#..........#', '#.H.H.H.H..#', '#..........#', '#.H.H.H.H..#', '#..........#', '##WWDDWW####']);
 stamp(G, 9, 11, ['####', '#..#', 'D..#', '#..#', '####']);      // the shop's back store
@@ -64,8 +64,8 @@ for (const [x, y] of [[16, 6], [29, 8], [50, 7], [22, 38], [40, 37], [66, 6]]) p
 for (const [x, y] of [[20, 7], [36, 8], [44, 38], [14, 37]]) put(G, x, y, 'C');
 
 export default {
-  id: 'estate', no: 8, title: 'The Housing Estate', place: 'the Linden Row estate', cell: CELL,
-  where: 'Linden Row, the Hollins estate. 16:40, a grey afternoon.',
+  id: 'estate', no: 8, title: 'The Housing Estate', place: 'the Hollins Row estate', cell: CELL,
+  where: 'Hollins Row, the Hollins estate. 16:40, a grey afternoon.',
   brief: [
     ['The place', 'One street of ordinary houses: on the north side the corner shop, a terrace of five, a pair of semis and a three-storey house at the end; on the south side two bungalows, more houses and the lock-up garages. Back gardens behind every house, fenced, with gates onto the back alleys. Two houses have attics - up a ladder from the back bedroom. Number 7, the middle of the terrace, is an upside-down house: its bedrooms are downstairs.'],
     ['The reds', 'A cell of twelve, living here as neighbours: in the houses, in the gardens, on the street, and two walking the alleys.'],
@@ -73,11 +73,11 @@ export default {
     ['Doors', 'House doors are ordinary - E opens them. The lock-up garages are locked: kick them in.'],
   ],
   epilogue: {
-    success: "Linden Row goes back to being an ordinary street. Ferris's plans go to Ghost instead of to the people who paid for them, and Mrs Adeyemi is drinking tea at her daughter's by teatime, complaining about the noise.",
-    partial: "Part of it. Linden Row is quiet again, but not everything that was in it is accounted for.",
+    success: "Hollins Row goes back to being an ordinary street. Ferris's plans go to Ghost instead of to the people who paid for them, and Mrs Adeyemi is drinking tea at her daughter's by teatime, complaining about the noise.",
+    partial: "Part of it. Hollins Row is quiet again, but not everything that was in it is accounted for.",
   },
   time: { date: [30, 7, 2026], hour: 16, minute: 40 }, faction: 'red',
-  extractName: 'the van at the end of Linden Row',
+  extractName: 'the van at the end of Hollins Row',
   outside: { backdrop: 'city', mat: 'asphalt', margin: 16 },
   floors: {
     G: { y: 0, wallH: 2.8, rows: G.map((r) => r.join('')), wall: 'brick', floor: 'carpet', ceil: 'plaster', lampEvery: 6, lampPower: 0.8 },
@@ -97,18 +97,18 @@ export default {
     };
     north.forEach((h, i) => plate(h, 3 + i * 2));
     south.forEach((h, i) => plate(h, 18 + i * 2));
-    level.signs.push({ pos: [6.5 * C, 2.35, (19 + 0.5) * C + T / 2 + 0.03], yaw: 0, w: 2.6, h: 0.42, text: 'LINDEN STORES', sub: 'No. 1 - open till late', col: '#2f6f4f' });
-    level.signs.push({ pos: [70.5 * C, 2.4, 20.2 * C], yaw: -Math.PI / 2, w: 1.6, h: 0.36, text: 'LINDEN ROW', sub: 'Hollins Estate', col: '#24364f' });
+    level.signs.push({ pos: [6.5 * C, 2.35, (19 + 0.5) * C + T / 2 + 0.03], yaw: 0, w: 2.6, h: 0.42, text: 'HOLLINS STORES', sub: 'No. 1 - open till late', col: '#2f6f4f' });
+    level.signs.push({ pos: [70.5 * C, 2.4, 20.2 * C], yaw: -Math.PI / 2, w: 1.6, h: 0.36, text: 'HOLLINS ROW', sub: 'Hollins Estate', col: '#24364f' });
   },
   start: { x: 70, y: 22, floor: 'G', yaw: Math.PI / 2, van: [0, 3] },
   zones: [
-    { id: 'shop', label: 'Linden Row - the corner shop', at: [1, 11, 12, 19], floor: 'G' },
-    { id: 'n7', label: 'Linden Row - Number 7', at: [26, 11, 32, 19], floor: 'G' },
-    { id: 'n7up', label: 'Linden Row - Number 7, upstairs', at: [26, 11, 32, 19], floor: '1' },
-    { id: 'end', label: 'Linden Row - Number 11, the end of the terrace', at: [38, 11, 44, 19], floor: 'G' },
+    { id: 'shop', label: 'Hollins Row - the corner shop', at: [1, 11, 12, 19], floor: 'G' },
+    { id: 'n7', label: 'Hollins Row - Number 7', at: [26, 11, 32, 19], floor: 'G' },
+    { id: 'n7up', label: 'Hollins Row - Number 7, upstairs', at: [26, 11, 32, 19], floor: '1' },
+    { id: 'end', label: 'Hollins Row - Number 11, the end of the terrace', at: [38, 11, 44, 19], floor: 'G' },
     { id: 'attic', label: 'Number 11 - the attic', at: [38, 11, 44, 19], floor: '2' },
-    { id: 'n22', label: 'Linden Row - Number 22', at: [19, 25, 25, 33], floor: 'G' },
-    { id: 'garages', label: 'Linden Row - the lock-up garages', at: [56, 25, 71, 31], floor: 'G' },
+    { id: 'n22', label: 'Hollins Row - Number 22', at: [19, 25, 25, 33], floor: 'G' },
+    { id: 'garages', label: 'Hollins Row - the lock-up garages', at: [56, 25, 71, 31], floor: 'G' },
   ],
   guards: [
     { id: 'e1', at: [20, 22, 'G'], route: [[4, 22], [66, 22]], arms: 'carbine' },

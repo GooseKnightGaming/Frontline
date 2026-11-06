@@ -107,7 +107,7 @@ export default {
     { id: 'recept', at: [17, 19, 'G'], yaw: Math.PI, title: 'The receptionist', tint: [1.2, 1.0, 1.05], says: ['Good afternoon, sir. Sign the book on your way out.', 'Second floor is by the back stair, sir.'] },
     { id: 'cook', at: [35, 26, 'G'], yaw: Math.PI, title: 'The canteen cook', tint: [1.35, 1.35, 1.3], says: ['Soup\'s off. There\'s bread.', 'Officers eat upstairs, usually.'] },
   ],
-  pickups: [{ id: 'order', name: 'The supply order', what: 'the order', at: [38, 16, '2'], table: false, h: 0.85, colour: [0.85, 0.75, 0.4] }],
+  pickups: [{ id: 'order', name: 'The supply order', what: 'the order', at: [38, 16, '2'], table: true,   /* (M6.125.3) on a table: it had floated over the floor */ colour: [0.85, 0.75, 0.4] }],
   devices: [
     { id: 'c-hall', kind: 'camera', at: [14, 18, 'G'], face: [1, 1], net: 'ministry' },
     { id: 'c-stair', kind: 'camera', at: [27, 16, 'G'], face: [-1, -1], net: 'ministry' },

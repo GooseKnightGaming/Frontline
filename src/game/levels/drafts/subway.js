@@ -88,14 +88,14 @@ export default {
     box([3 * C, -11.2, 27 * C], [87 * C, -10.2, 27 * C + 0.1], 'concrete2', { tint: [0.5, 0.48, 0.45] });
     // the train's skin: red and cream, its roof, under-frame, the cab windows at either end
     for (const [a, b] of cars) {
-      box([a * C, -10.0, 23 * C], [(b + 1) * C, -9.4, 27 * C], 'paint', { tint: [0.2, 0.2, 0.22] });
+      box([a * C, -10.0, 23 * C], [(b + 1) * C, -9.97, 27 * C], 'paint', { tint: [0.2, 0.2, 0.22] });   // (M6.125.3) the car's floor, level with the platform (it was a 0.6 m block the guards stood in)
       box([a * C, -6.6, 23 * C], [(b + 1) * C, -6.3, 27 * C], 'paint', { tint: [0.75, 0.15, 0.12] });
       box([a * C, -11.2, 23.6 * C], [(b + 1) * C, -10.2, 26.4 * C], 'metal', { tint: [0.15, 0.15, 0.16] });
     }
     // the tunnel mouths at either end: black arches in the end walls
     for (const x of [2, 87]) box([x * C - 0.2, -11.2, 23 * C], [x * C + 0.2, -6.5, 27 * C], 'paint', { solid: false, tint: [0.02, 0.02, 0.02] });
     // signs: the station's roundel on the platform walls; the entrances
-    for (const x of [15, 45, 75]) { level.signs.push({ pos: [x * C, -7.4, 17 * C - 0.1 + 0.2], yaw: 0, w: 3.2, h: 0.8, text: 'HOLM STREET', sub: '', col: '#1d3f8a' }); level.signs.push({ pos: [x * C, -7.4, 33 * C + 0.65], yaw: Math.PI, w: 3.2, h: 0.8, text: 'HOLM STREET', sub: '', col: '#1d3f8a' }); }
+    for (const x of [15, 45, 75]) { level.signs.push({ pos: [x * C, -7.4, 17 * C - 0.1 + 0.2], yaw: 0, w: 3.2, h: 0.8, text: 'HOLM STREET', sub: '', col: '#1d3f8a' }); level.signs.push({ pos: [x * C, -7.4, 34 * C + 0.52]   /* (M6.125.3) 0.12 off the south platform wall, not 1.5 m out */, yaw: Math.PI, w: 3.2, h: 0.8, text: 'HOLM STREET', sub: '', col: '#1d3f8a' }); }
     for (const x0 of [12, 72]) level.signs.push({ pos: [(x0 + 3.5) * C, 3.6, 2 * C + C / 2 - 0.13], yaw: Math.PI, w: 3, h: 0.6, text: 'UNDERGROUND', sub: 'Holm Street', col: '#1d3f8a' });
   },
   zones: [
