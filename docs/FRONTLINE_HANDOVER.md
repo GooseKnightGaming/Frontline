@@ -25,6 +25,10 @@ game into the repository's root.
   that wall and they sit flush on it; one whose own square is the wall goes on that wall's face. Four that had no
   wall behind them at all (a window, an open yard) moved to the nearest wall: Camp Dravik, the Vashka Pass, Camp
   Ostrava, the Observatory's dome. (Cameras were left: they hang from the ceiling on their brackets.)
+- **People inside the spec's own building** (kit, after `extra`): guards and civilians are placed before a level's
+  `extra()` builds its own solids, so they could stand inside them - the Arena's seating had four of its soldiers
+  inside. Now anyone inside a solid then moves to the nearest place he fits (up to 6 m; noted in `level._moved`),
+  and the battle's spawn spots too. A heavy gunner (`hmg`) stays at his gun.
 - **In mid-air or inside things:** the blight (the Dalmar Star), the supply order (the Ministry) and the Count's
   catalogue (the Villa) floated at table height with no table: they have one now. The Subway's train had a 0.6 m
   floor block its guards stood in (and you climbed into): the car's floor is level with the platform now.

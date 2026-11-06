@@ -777,7 +777,8 @@ export function buildKitLevel(spec) {
   const free = (p, r, h) => {
     r = r || GUARD.radius; h = h || GUARD.height;
     if (fits(p, r, h)) return p;
-    for (let rr = 0.25; rr <= 2.5; rr += 0.25) for (let a = 0; a < 16; a++) {
+    for (let rr = 0.25; rr <= 6; rr += 0.25)   // (M6.125.3) 6 m, not 2.5: a crowded spawn in a gateway put men inside its walls
+      for (let a = 0; a < 16; a++) {
       const q = [p[0] + Math.cos(a / 16 * Math.PI * 2) * rr, p[1], p[2] + Math.sin(a / 16 * Math.PI * 2) * rr];
       if (fits(q, r, h)) return q;
     }
@@ -1015,6 +1016,15 @@ export function buildKitLevel(spec) {
   level.plan = { cell: CELL, floors: Object.keys(floors).map((k) => ({ key: k, y: floors[k].y, rows: floors[k].rows.slice() })) };
   if (spec.extra) spec.extra(kit);
   snapSigns(level, world, kit);
+  // (M6.125.3) people were placed before the spec's own building (extra): anyone it has built round is moved to
+  // the nearest place he fits (the Arena's seating had four men inside it)
+  {
+    const solidAt = (p, r, h) => world.hits([p[0] - r, p[1] + 0.25, p[2] - r], [p[0] + r, p[1] + h, p[2] + r]).some((q) => !q.person && !q.target && q.tag !== 'target' && !q.rider && !q.ghost && q.tag !== 'hdoor' && q.tag !== 'vehicle');
+    const clear = (p, r, h) => { if (!solidAt(p, r, h)) return null; for (let rr = 0.25; rr <= 6; rr += 0.25) for (let a = 0; a < 16; a++) { const q = [p[0] + Math.cos(a / 16 * Math.PI * 2) * rr, p[1], p[2] + Math.sin(a / 16 * Math.PI * 2) * rr]; if (!solidAt(q, r, h)) return q; } return null; };
+    for (const g of level.guards) if (!g.aboard && !g.seat && g.armsName !== 'hmg') { /* (a heavy gunner stands at his gun) */ const q = clear(g.pos, 0.2, 1.6); if (q) { (level._moved = level._moved || []).push(g.id + ' ' + Math.hypot(q[0] - g.pos[0], q[2] - g.pos[2]).toFixed(2)); /* for the tests */ g.pos[0] = q[0]; g.pos[2] = q[2]; if (g.home) g.home.pos = g.pos.slice(); } }
+    for (const n of level.npcs || []) if (n.pos && !n.sitting) { const q = clear(n.pos, 0.2, 1.6); if (q) { n.pos[0] = q[0]; n.pos[2] = q[2]; } }
+    if (level.battle) for (const side of Object.keys(level.battle.spots)) level.battle.spots[side] = level.battle.spots[side].map((p) => clear(p, 0.2, 1.6) || p);
+  }
   hangDoors(world, level.swingDoors);
   // what to bake: the map, and a little round it
   level.bakeRegion = [-4, -4, W + 4, D + 4];
