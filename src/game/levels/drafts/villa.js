@@ -113,7 +113,7 @@ export default {
     { id: 'g3', at: [25, 22, 'G'], yaw: 0, title: 'A guest', tint: [0.35, 0.45, 0.6], says: ['Have you seen the gallery? He takes people up one at a time.', 'They say the study is wired like a bank.'] },
     { id: 'wt', at: [22, 24, 'G'], yaw: Math.PI / 2, title: 'A waiter', tint: [1.35, 1.35, 1.35], says: ['Mulled wine, sir?', 'The Count\'s study? Upstairs, east side. He keeps the key on him.'] },
   ],
-  pickups: [{ id: 'cat', name: 'The Count\'s catalogue', what: 'the catalogue', at: [24, 14, '1'], table: true,   /* (M6.125.3) on a table: it had floated over the floor */ colour: [0.55, 0.15, 0.2] }],
+  pickups: [{ id: 'cat', name: 'The Count\'s catalogue', what: 'the catalogue', at: [25, 12, '1'], table: true,   /* (M6.125.3) on a table: it had floated over the floor */ colour: [0.55, 0.15, 0.2] }],
   devices: [
     { id: 'c-hall', kind: 'camera', at: [18, 10, 'G'], face: [1, 1], net: 'merrow' },
     { id: 'c-gal', kind: 'camera', at: [32, 18, '1'], face: [-1, -1], net: 'merrow' },

@@ -29,6 +29,37 @@ game into the repository's root.
   `extra()` builds its own solids, so they could stand inside them - the Arena's seating had four of its soldiers
   inside. Now anyone inside a solid then moves to the nearest place he fits (up to 6 m; noted in `level._moved`),
   and the battle's spawn spots too. A heavy gunner (`hmg`) stays at his gun.
+- **Still open: 27 patrols brush something at foot height** (a check, not yet a test: each walked leg, after the
+  kit lays it along the nav grid, swept at 0.12 - 0.5 m). Most are a shoulder at a door's jamb as the nav cuts a
+  corner, a parked car (its body starts 0.3 m up, so the nav seems to think the gap under it is open), or furniture
+  a paper is on. To look at in play, then fix by hand (or teach the nav the cars):
+  - 5 sewers: s3's patrol walks through [17,12] brick top 3.80
+  - 8 estate: e1's patrol walks through [17,21] paint top 0.95; [7,24] paint top 0.95; [4,24] paint top 0.95; [19,21] paint top 0.95; [39,24] paint top 0.95; [43,24] paint top 0.95; [61,21] paint top 0.95; [40,24] paint top 0.95; [9,23] paint top 0.95; [7,22] paint top 0.95
+  - 9 manor: m3's patrol walks through [36,60] hedge top 1.60
+  - 11 facility: h5's patrol walks through [30,7] wood top 0.72
+  - 12 vantage: v1's patrol walks through [4,33] concrete2 top 0.38
+  - 12 vantage: v9's patrol walks through [53,26] concrete2 top 3.60; [54,26] concrete2 top 3.60
+  - 14 campus: u2's patrol walks through [64,98] brick top 4.00
+  - 15 shipyard: y6's patrol walks through [68,11] metal top 1.00; [68,12] metal top 1.00; [68,7] metal top 1.00
+  - 21 city: s1's patrol walks through [61,65] wood top 3.00
+  - 24 theatre: c1's patrol walks through [15,21] cloth top 0.45
+  - 28 bunkers: b1's patrol walks through [38,56] metal top 1.00; [39,57] metal top 1.00; [40,56] metal top 1.00; [38,57] metal top 1.00
+  - 37 archive: g2's patrol walks through [7,27] metal top 1.00; [8,27] metal top 1.00
+  - 42 kaldberg: gp's patrol walks through [27,10] metal top 0.76
+  - 43 glasshouse: c1's patrol walks through [29,23] metal top 1.00
+  - 45 dalmar: hd2's patrol walks through [40,13] concrete2 top 0.38; [43,13] concrete2 top 3.80
+  - 45 dalmar: dk's patrol walks through [47,24] cargo top 1.15
+  - 46 ministry: hall2's patrol walks through [17,21] metal top 0.76
+  - 48 museum: g1's patrol walks through [30,26] metal top 1.00
+  - 50 villa: gal's patrol walks through [24,14] wood top 0.93
+  - 52 rooftops: d2's patrol walks through [43,17] wood top 0.72
+  - 58 power: c2's patrol walks through [35,12] metal top 1.00
+  - 60 varna: h1's patrol walks through [37,12] concrete2 top 0.38; [40,12] concrete2 top 3.61
+  - 60 varna: q1's patrol walks through [28,20] concrete2 top 3.80; [29,20] concrete2 top 3.80
+  - 65 pass: n1's patrol walks through [36,19] wood top 3.20
+  - 67 council: up's patrol walks through [32,11] metal top 1.00; [33,11] metal top 1.00; [34,11] metal top 1.00
+  - 69 camp: y1's patrol walks through [49,26] wood top 3.00
+  - 83 observatory: dm's patrol walks through [23,14] wood top 1.05
 - **In mid-air or inside things:** the blight (the Dalmar Star), the supply order (the Ministry) and the Count's
   catalogue (the Villa) floated at table height with no table: they have one now. The Subway's train had a 0.6 m
   floor block its guards stood in (and you climbed into): the car's floor is level with the platform now.
