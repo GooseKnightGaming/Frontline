@@ -27,6 +27,8 @@ export function snapshot(g) {
     trophies: g.trophies ? JSON.parse(JSON.stringify(g.trophies)) : null,
     // and the weapons this run has brought home (loadArmoury)
     armoury: g.armoury ? g.armoury.slice() : null,
+    // (M7.0) the world: regions known, and their heat (sim/play/world.js)
+    world: g.world ? JSON.parse(JSON.stringify(g.world)) : null,
   };
 }
 
@@ -45,7 +47,7 @@ export function saveSlot(n, data) {
 export function loadSlot(n) { return listSlots()[n]; }
 // erasing a slot ends its run: the save, its story and its trophies
 export function clearSlot(n) {
-  try { for (const k of [KEY(n), STORY(n), TROPHIES(n), ARMOURY(n), GADGET(n), RECORD(n), SKILLS(n), CASEB(n), CONTRACTS(n), DONE(n), PAPERS(n), GRADES(n), 'frontline.lantern.' + n]) localStorage.removeItem(k); return true; } catch (e) { return false; }
+  try { for (const k of [KEY(n), STORY(n), TROPHIES(n), ARMOURY(n), GADGET(n), RECORD(n), SKILLS(n), CASEB(n), CONTRACTS(n), DONE(n), PAPERS(n), GRADES(n), WORLD(n), 'frontline.lantern.' + n]) localStorage.removeItem(k); return true; } catch (e) { return false; }
 }
 // the first slot with no run in it, or -1
 export function freeSlot() {
@@ -223,3 +225,8 @@ export function addArmoury(n, ids) {
 }
 export function loadStory(n) { try { return JSON.parse(localStorage.getItem(STORY(n)) || 'null'); } catch (e) { return null; } }
 export function saveStory(n, story) { try { localStorage.setItem(STORY(n), JSON.stringify(story)); return true; } catch (e) { return false; } }
+
+// (M7.0) the world: { known: [region...], heat: { region: 0-100 }, visits: { region: n } } (sim/play/world.js)
+const WORLD = (n) => 'frontline.world.' + n;
+export function loadWorld(n) { try { return JSON.parse(localStorage.getItem(WORLD(n)) || 'null') || { known: [], heat: {}, visits: {} }; } catch (e) { return { known: [], heat: {}, visits: {} }; } }
+export function saveWorld(n, w) { try { localStorage.setItem(WORLD(n), JSON.stringify(w)); return true; } catch (e) { return false; } }

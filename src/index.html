@@ -205,7 +205,20 @@
   #m-job { display: none; margin: -4px 0 14px; padding: 10px 14px; border-left: 3px solid #e0b030; background: rgba(255,255,255,0.04); font-size: 14px; line-height: 1.55; color: #cfd4da; text-align: left; }
 #m-job .mj-t { color: #e0b030; letter-spacing: 1px; font-size: 13px; margin-bottom: 4px; }
 #m-job .mj-o.done { color: #7fc97f; } #m-job .mj-o.failed { color: #d07a6a; text-decoration: line-through; } #m-job .mj-o.opt { opacity: 0.75; }
-#drafts-jump { position: sticky; top: -14px; z-index: 2; background: rgba(10,12,15,0.96); padding: 8px 0 6px; margin: 0 0 4px;
+/* (M7.0) the map table */
+  #world .brief-card { width: min(1180px, 96vw); max-width: none; }
+  #world-wrap { display: flex; gap: 14px; align-items: stretch; margin: 6px 0 10px; }
+  #world-map { flex: 1 1 auto; min-width: 0; }
+  #world-map svg { width: 100%; height: auto; display: block; background: #1a1712; border: 1px solid #4a3f2c; border-radius: 6px; }
+  #world-side { flex: 0 0 300px; text-align: left; font-size: 14px; line-height: 1.5; background: rgba(255,255,255,0.04); border-left: 3px solid var(--amber); padding: 10px 12px; max-height: 62vh; overflow: auto; }
+  #world-side h3 { margin: 0 0 4px; color: var(--amber); letter-spacing: 2px; font-size: 14px; }
+  #world-side .btn { width: 100%; margin: 6px 0 0; }
+  #world-side .heat { display: inline-block; padding: 0 6px; border-radius: 3px; font-weight: 700; letter-spacing: 1px; font-size: 12px; }
+  #world-map .pin { cursor: pointer; }
+  #world-map .pin:hover circle { stroke: #fff; stroke-width: 2.5; }
+  #world-map .reg { cursor: pointer; }
+  @media (max-width: 760px) { #world-wrap { flex-direction: column; } #world-side { flex: none; max-height: none; } }
+  #drafts-jump { position: sticky; top: -14px; z-index: 2; background: rgba(10,12,15,0.96); padding: 8px 0 6px; margin: 0 0 4px;
     display: flex; flex-wrap: wrap; gap: 3px 12px; font-size: 11px; letter-spacing: 2px; border-bottom: 1px solid rgba(232,180,35,0.25); }
   #drafts-jump a { color: var(--amber); cursor: pointer; text-decoration: none; white-space: nowrap; }
   #drafts-jump a:hover { text-decoration: underline; }
@@ -365,6 +378,7 @@
     <p class="brief-where">Ghost HQ &middot; Operations. Choose where you go next.</p>
     <div class="ride"><span>Going by:</span> <button class="btn ride-btn" id="ride-van">Van</button> <button class="btn ride-btn" id="ride-heli">Helicopter</button></div>
     <div class="tmenu">
+        <button class="btn primary" id="t-world">The map table: the world</button>
         <button class="btn" id="t-mission">Level 0: Training Mission</button>
         <button class="btn" id="t-hotel">Level 1: Riverside Hotel (being built)</button>
         <button class="btn" id="t-factory">Level 2: Derelict Factory</button>
@@ -373,6 +387,26 @@
         <button class="btn" id="t-drafts">Levels 5 onward (first drafts)</button>
     </div>
     <button class="btn" id="assign-back">Back to HQ</button>
+  </div>
+</div>
+
+<div id="world" class="overlay">
+  <div class="card brief-card credits-card" id="world-card">
+    <h2>THE MAP TABLE</h2>
+    <p class="brief-where">Ghost HQ &middot; Operations. The world, and every job in it. A region Ghost has not worked in before, you <b>drive</b> into the first time; after that it is <b>known</b>, and you go straight there.</p>
+    <div id="world-wrap"><div id="world-map"></div><div id="world-side"></div></div>
+    <div class="ride"><span>Going by:</span> <button class="btn ride-btn" id="ride-van2">Van</button> <button class="btn ride-btn" id="ride-heli2">Helicopter</button></div>
+    <button class="btn" id="world-list">The mission list</button>
+    <button class="btn" id="world-back">Back to HQ</button>
+  </div>
+</div>
+
+<div id="arrive" class="overlay">
+  <div class="card brief-card">
+    <h2 id="arrive-title">ARRIVED</h2>
+    <p class="brief-where" id="arrive-where"></p>
+    <p id="arrive-text"></p>
+    <button class="btn primary" id="arrive-go">On to the job</button>
   </div>
 </div>
 

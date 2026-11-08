@@ -112,7 +112,7 @@ T('the Drop: you start in the air, a parachute in your gear; the way out is the 
 T('the drafts are numbered in order from 5, on a title-screen list of their own', () => {
   DRAFTS.forEach((d, i) => A(d.no === 5 + i, d.id + ' is ' + d.no));
   const mn = readFileSync(new URL('../src/game/main.js', import.meta.url), 'utf8'), html = readFileSync(new URL('../src/index.html', import.meta.url), 'utf8');
-  A(/id="t-drafts"/.test(html) && /id="drafts-list"/.test(html) && /goDraft\(b\.dataset\.id\)/.test(mn), 'no list');
+  A(/id="t-drafts"/.test(html) && /id="drafts-list"/.test(html) && /go(Draft|Job)\(b\.dataset\.id\)/.test(mn), 'no list');
   A(/const level = DRAFT \? buildKitLevel\(DRAFT\)/.test(mn), 'not built');
 });
 T('the drafts\' crates are plain freight, not Ghost Logistics; railings are bars, not the range fence', () => {

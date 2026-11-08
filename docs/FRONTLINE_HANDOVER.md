@@ -7,6 +7,34 @@ GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
 
+## M7.0.0 — the world: the map table, the first drive into each region, heat (Rhys, 8 Nov: "Map table in Ghost HQ - Yes. But also you absolutely should be able to walk around the world freely. Driven for real for the first mission in any of the ten regions... Once the region is established as 'known', unlock fast-travel as a choice on the map. Heat? Yes, please.")
+
+M7 is the milestone "Missions & Ghost HQ": this opens it.
+- **The map table** (`#world` in `src/index.html`; `openWorld`, `drawWorld`, `goJob` in `main.js`): the operations
+  table in Ghost HQ opens the map of the ten regions (the gazetteer), every job a pin in its region (white to do,
+  amber in part, green done, an S on an S grade). A region is drawn dashed and NOT YET KNOWN until driven into;
+  known, it is tinted by its heat. Choose a pin: its level, how it went, and **Drive there** (region not known) or
+  **Go by van / helicopter** (known). Choose a region: what it is, known or not, its heat. The old mission list is a
+  button on it ("The mission list"), and it too sends you on the drive first where the region is not known.
+- **The journeys** (`src/game/world/journeys.js`): `makeJourney(region, to)` builds the road into a region as a kit
+  level: a 150-square road east, Ghost's grey van at the start, the region's own look either side (Varnholm's and
+  Hollen's houses with doors, the Kessin coast with the sea, the north's rock and snow, the Skarn's pines, Lake
+  Morra's shore, the Dry Coast's sand, the Vintners' hedgerows, and for further afield the road to the Kessin
+  airfield and a plane), a stop halfway (a cafe, a fish stall, a filling station...) with somebody in it who knows
+  the region, and the region's sign at the end. `index.html?level=journey&region=north&to=pass`. Reaching the end
+  (no debrief: `journeyArrived` in main.js, the runtime's `endHotel` hands over) marks the region known and offers
+  the job: "ARRIVED: THE NORTH". The Ward and the test range ('elsewhere') have no road.
+- **Heat** (`src/sim/play/world.js`, kept per slot by `Saves.loadWorld/saveWorld`, and in the save and its code):
+  0 - 100 per region. A job's end moves its region's: an alarm +20, each body +3 (to 24), each civilian hurt +10, a
+  failure +10; a quiet success -15 (quiet in part -5); every other region cools 3. The reds of a region notice you
+  `1 + heat x 0.006` times as fast (x1.6 at the top: the runtime's `heatDiff`, on the difficulty's `notice`). COLD
+  under 15, WATCHED, HUNTED from 40, MANHUNT from 70. The briefing says so from WATCHED; the debrief has a row
+  ("Heat in Varnholm: HUNTED 45 (+20)").
+- **Tests:** `test/world.test.mjs` (the rules of known and heat; every journey builds, its road open on foot from
+  the van to the end and the stop, and the carriageway clear for the van).
+- **Still to come (stage 2):** each region as a place you walk and drive around between jobs (Varnholm first),
+  the jobs' sites as doors into them; heat showing on the streets (more patrols, checkpoints).
+
 ## M6.125.3 — does everything fit? Signs, patrols, things in mid-air; the Rooks; the gazetteer (Rhys, 6 Nov: "keep doing these passes, making sure everything fits right")
 
 - **Signs** (kit `snapSigns`, after `extra`): about thirty were put up half a square out from their walls (a wall runs

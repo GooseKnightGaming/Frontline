@@ -74,10 +74,13 @@ import { hqSecurity, takeIntrusion } from './levels/hq_security.js';
 import { effects as skillEffects, SKILLS, pointsLeft, train as trainSkill, XP } from '../sim/play/skills.js';
 import { CASE, CASE_NEEDS, FINAL, caseOpen, caseClosed, TRAILS, trailMark, trailDone, trailBegun } from '../sim/play/caseboard.js';
 import { boardOf, describe as contractText, TERMS } from '../sim/play/contracts.js';
+import * as World from '../sim/play/world.js';                                      // (M7.0) the world: regions known, heat
+import { REGIONS, PLACES, regionOf } from './world/gazetteer.js';
+import { makeJourney } from './world/journeys.js';
 import { Input, ACTIONS, DEFAULT_BINDINGS, FORBIDDEN, loadSettings, saveSettings, keyLabel, isChromebook } from './core/input.js';
 import { isTouchDevice, touchControls, retext } from './core/touch.js';
 
-const VERSION = 'M6.125.3';
+const VERSION = 'M7.0.0';
 const $ = (id) => document.getElementById(id);
 const TEST = /[?&]test\b/.test(location.search);
 // Level 0, the training mission, is its own page load: index.html?level=0
@@ -92,8 +95,11 @@ const CASINO = /[?&]level=3\b/.test(location.search);
 const TRAIN = /[?&]level=4\b/.test(location.search);
 // the first-draft levels, by name: index.html?level=sewers
 const DRAFT_ID = (location.search.match(/[?&]level=([a-z][a-z0-9_]*)/i) || [])[1] || null;
-const DRAFT = DRAFT_ID ? DRAFTS.find((d) => d.id === DRAFT_ID) || null : null;
+// (M7.0) the road into a region not yet known: index.html?level=journey&region=north&to=pass
+const JOURNEY = DRAFT_ID === 'journey' ? { region: (location.search.match(/[?&]region=([a-z]+)/) || [])[1], to: (location.search.match(/[?&]to=([a-z][a-z0-9_]*)/i) || [])[1] } : null;
+const DRAFT = JOURNEY ? makeJourney(JOURNEY.region, JOURNEY.to) : DRAFT_ID ? DRAFTS.find((d) => d.id === DRAFT_ID) || null : null;
 const goDraft = (id) => { location.href = 'index.html?level=' + id + (TEST ? '&test' : ''); };
+const goJourney = (region, to) => { location.href = 'index.html?level=journey&region=' + region + '&to=' + to + (TEST ? '&test' : ''); };
 const ON_MISSION = MISSION || HOTEL || FACTORY || CASINO || TRAIN || !!DRAFT;
 const goTrain = () => { location.href = 'index.html?level=4' + (TEST ? '&test' : ''); };
 const goCasino = () => { location.href = 'index.html?level=3' + (TEST ? '&test' : ''); };
@@ -606,7 +612,7 @@ function boot() {
   // ── title screen and saved games ─────────────────────────────────────────
   let slotNo = Saves.currentSlot(), playtime = 0;
   // story: how each mission ended, kept per slot (Saves.loadStory)
-  const gameState = () => ({ name: 'Operative', playtime, score, story: Saves.loadStory(slotNo), trophies: Trophies.raw(slotNo), armoury: Saves.loadArmoury(slotNo),
+  const gameState = () => ({ name: 'Operative', playtime, score, story: Saves.loadStory(slotNo), trophies: Trophies.raw(slotNo), armoury: Saves.loadArmoury(slotNo), world: Saves.loadWorld(slotNo),
     loadout, found: Object.keys(arsenal.owned), place: player.pos.slice(), yaw: input.yaw,
     course: course && !course.done ? { part: course.part || 'full', at: course.at } : null });
   function applySave(s) {
@@ -616,6 +622,7 @@ function boot() {
     if (s.story && !Saves.loadStory(slotNo)) Saves.saveStory(slotNo, s.story);
     if (s.trophies && !Trophies.earned(slotNo).length) Trophies.restore(slotNo, s.trophies);
     if (s.armoury && !Saves.loadArmoury(slotNo).length) Saves.saveArmoury(slotNo, s.armoury);
+    if (s.world && !Saves.loadWorld(slotNo).known.length) Saves.saveWorld(slotNo, s.world);     // (M7.0) and its world
     for (const k of Object.keys(s.loadout.slots || {})) loadout.put(k, s.loadout.slots[k], (s.loadout.mods || {})[k]);
     arsenal.reset(loadout);
     score = s.score || 0; playtime = s.playtime || 0;
@@ -632,9 +639,10 @@ function boot() {
     if (ON_MISSION) return;          // a mission is not saved part-way: it runs start to finish
     if (n !== undefined && n !== slotNo) {
       // saving this run into another slot: its story and trophies go with it
-      const story = Saves.loadStory(slotNo), have = Trophies.raw(slotNo), arms = Saves.loadArmoury(slotNo);
+      const story = Saves.loadStory(slotNo), have = Trophies.raw(slotNo), arms = Saves.loadArmoury(slotNo), world = Saves.loadWorld(slotNo);
       slotNo = n;
       Saves.clearSlot(n);
+      Saves.saveWorld(n, world);
       if (story) Saves.saveStory(n, story);
       Trophies.restore(n, have);
       Saves.saveArmoury(n, arms);
@@ -722,6 +730,7 @@ function boot() {
     Saves.saveStory(slotNo, r.data.story || null);
     Trophies.restore(slotNo, r.data.trophies || {});
     Saves.saveArmoury(slotNo, r.data.armoury || []);
+    if (r.data.world) Saves.saveWorld(slotNo, r.data.world);
     Saves.saveSlot(slotNo, r.data);
     applySave(r.data);
     drawSlots();
@@ -751,7 +760,7 @@ function boot() {
       const head = (no) => { const g = GROUPS.find((q) => q[0] === no); return g ? '<div id="grp-' + no + '" style="grid-column:1/-1;margin:12px 0 2px;letter-spacing:3px;color:var(--amber);font-size:12px;text-align:left">' + g[1] + stampOf(g[1]) + '</div>' : ''; };
       list.innerHTML = DRAFTS.map((d) => head(d.no) + (d.id === FINAL && !open ? '<button class="btn" disabled>Level ' + d.no + ': ? ? ?  (the case is not made yet - ' + clues + ' of ' + CASE_NEEDS + ' clues)</button>'
         : '<button class="btn" data-id="' + d.id + '">Level ' + d.no + ': ' + d.title + mark(d.id) + '</button>')).join('');
-      list.querySelectorAll('button[data-id]').forEach((b) => { b.onclick = () => { saveNow(); goDraft(b.dataset.id); }; });
+      list.querySelectorAll('button[data-id]').forEach((b) => { b.onclick = () => { saveNow(); goJob(b.dataset.id); }; });
       // (M6.124) the stories' index: a link to each heading (a tick once its trail is done)
       const jump = $('drafts-jump');
       if (jump) {
@@ -778,6 +787,89 @@ function boot() {
     show('assign', true);
   }
   $('assign-back').onclick = () => { show('assign', false); deploy(); };
+  // ── (M7.0) the map table: the world, every job in it, and how you get there ──────────────────────
+  // A region not yet known: the first job there starts with the drive (the journey). Known: straight there.
+  function goJob(id) {
+    const region = regionOf(id);
+    if (!TEST && region && World.needsDrive(Saves.loadWorld(slotNo), region)) { goJourney(region, id); return; }
+    goDraft(id);
+  }
+  // where each region lies on the table (an SVG 1000 x 640): an ellipse, and its name
+  const MAP = {
+    north: [500, 105, 250, 72], skarn: [835, 150, 120, 78], kessin: [175, 285, 118, 105], varnholm: [480, 300, 160, 92],
+    morra: [290, 452, 100, 60], hollen: [565, 478, 135, 82], lessar: [815, 410, 128, 92], saren: [190, 590, 150, 44],
+    abroad: [855, 585, 125, 44], elsewhere: [105, 64, 92, 42],
+  };
+  let worldPick = null;                                 // { region } or { id }
+  const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  function drawWorld() {
+    const w = Saves.loadWorld(slotNo), done = Saves.loadDone(slotNo), grades = Saves.loadGrades(slotNo);
+    const open = caseOpen(Saves.loadCase(slotNo)) || TEST;
+    const heatCol = (h) => 'rgb(' + Math.round(70 + h * 1.6) + ',' + Math.round(62 - h * 0.3) + ',' + Math.round(48 - h * 0.3) + ')';
+    let svg = '<svg viewBox="0 0 1000 640" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The map of the world">';
+    // the sea to the west and south, and the roads between the regions
+    svg += '<path d="M0,180 C80,260 60,420 120,520 C160,600 260,640 340,640 L0,640 Z" fill="#14202a" opacity="0.9"/>';
+    for (const [a, b] of [['varnholm', 'north'], ['varnholm', 'kessin'], ['varnholm', 'hollen'], ['varnholm', 'morra'], ['north', 'skarn'], ['hollen', 'lessar'], ['morra', 'saren'], ['hollen', 'saren'], ['kessin', 'abroad']]) {
+      const [x1, y1] = MAP[a], [x2, y2] = MAP[b];
+      svg += '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="#5a4d36" stroke-width="3" stroke-dasharray="' + (a === 'kessin' && b === 'abroad' ? '2 10' : '10 6') + '"/>';
+    }
+    for (const r of Object.keys(REGIONS)) {
+      const [cx, cy, rx, ry] = MAP[r], known = World.isKnown(w, r), h = World.heatOf(w, r), pick = worldPick && worldPick.region === r;
+      svg += '<g class="reg" data-region="' + r + '"><ellipse cx="' + cx + '" cy="' + cy + '" rx="' + rx + '" ry="' + ry + '" fill="' + (known ? heatCol(h) : '#2a261e') + '" fill-opacity="' + (known ? 0.55 : 0.35) + '" stroke="' + (pick ? '#fff' : known ? '#d8b25a' : '#6b5f48') + '" stroke-width="' + (pick ? 3 : 2) + '"' + (known ? '' : ' stroke-dasharray="7 6"') + '/>'
+        + '<text x="' + cx + '" y="' + (cy - ry + 18) + '" text-anchor="middle" fill="' + (known ? '#f0dca0' : '#9a8c70') + '" font-size="15" font-family="Georgia,serif" letter-spacing="1.5">' + esc(REGIONS[r].name.toUpperCase()) + '</text>'
+        + (known && h >= 15 ? '<text x="' + cx + '" y="' + (cy + ry - 8) + '" text-anchor="middle" fill="#ff8a70" font-size="11" font-weight="700" letter-spacing="2">' + World.heatLabel(h) + '</text>' : '')
+        + (!known ? '<text x="' + cx + '" y="' + (cy + ry - 8) + '" text-anchor="middle" fill="#9a8c70" font-size="11" letter-spacing="2">NOT YET KNOWN</text>' : '') + '</g>';
+      // its jobs, as pins in rows inside the ellipse
+      const ids = DRAFTS.filter((d) => PLACES[d.id] && PLACES[d.id].region === r).sort((a, b) => a.no - b.no);
+      const per = Math.max(4, Math.floor((rx * 1.5) / 19)), rows = Math.ceil(ids.length / per);
+      ids.forEach((d, i) => {
+        const row = Math.floor(i / per), col = i % per, inRow = Math.min(per, ids.length - row * per);
+        const x = cx + (col - (inRow - 1) / 2) * 19, y = cy + 4 + (row - (rows - 1) / 2) * 19;
+        const st = done[d.id], locked = d.id === FINAL && !open;
+        const fill = locked ? '#333' : st === 'success' ? '#5fbf6a' : st === 'partial' ? '#e0b030' : '#d9d2c0';
+        svg += '<g class="pin" data-id="' + d.id + '"><title>Level ' + d.no + ': ' + esc(d.title) + '</title><circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="' + (worldPick && worldPick.id === d.id ? 8 : 6.5) + '" fill="' + fill + '" stroke="' + (worldPick && worldPick.id === d.id ? '#fff' : '#1a1712') + '" stroke-width="1.5"/>'
+          + (grades[d.id] === 'S' ? '<text x="' + x.toFixed(1) + '" y="' + (y + 3.5).toFixed(1) + '" text-anchor="middle" font-size="8" font-weight="700" fill="#1a1712">S</text>' : '') + '</g>';
+      });
+    }
+    svg += '<text x="985" y="630" text-anchor="end" fill="#6b5f48" font-size="11">Yard 7 is in Varnholm. Pins: white to do, amber in part, green done.</text></svg>';
+    $('world-map').innerHTML = svg;
+    $('world-map').querySelectorAll('.pin').forEach((g) => { g.onclick = (e) => { e.stopPropagation(); worldPick = { id: g.dataset.id }; drawWorld(); }; });
+    $('world-map').querySelectorAll('.reg').forEach((g) => { g.onclick = () => { worldPick = { region: g.dataset.region }; drawWorld(); }; });
+    drawWorldSide(w, done, grades, open);
+  }
+  function drawWorldSide(w, done, grades, open) {
+    const side = $('world-side');
+    const regionText = (r) => {
+      const h = World.heatOf(w, r), known = World.isKnown(w, r), ids = DRAFTS.filter((d) => PLACES[d.id] && PLACES[d.id].region === r);
+      return '<h3>' + esc(REGIONS[r].name.toUpperCase()) + '</h3><p style="margin:0 0 6px;opacity:0.85">' + esc(REGIONS[r].about) + '</p>'
+        + '<p style="margin:0 0 6px">' + (known ? '<b>Known.</b> Go straight there.' : r === 'elsewhere' ? 'No road goes there.' : '<b>Not yet known.</b> The first job here starts with the drive in.') + '</p>'
+        + (known && r !== 'elsewhere' ? '<p style="margin:0 0 6px">Heat: <span class="heat" style="background:' + (h >= 40 ? '#7a2a20' : h >= 15 ? '#6a5320' : '#2a4a2a') + '">' + World.heatLabel(h) + ' ' + Math.round(h) + '</span><br><span style="opacity:0.8">' + World.heatNote(h) + '</span></p>' : '')
+        + '<p style="margin:0;opacity:0.75">' + ids.filter((d) => done[d.id] === 'success').length + ' of ' + ids.length + ' jobs done here.</p>';
+    };
+    if (worldPick && worldPick.id) {
+      const d = DRAFTS.find((q) => q.id === worldPick.id), r = regionOf(d.id), locked = d.id === FINAL && !open;
+      const drive = r && World.needsDrive(w, r), how = ride() === 'heli' ? 'helicopter' : 'van';
+      side.innerHTML = '<h3>LEVEL ' + d.no + '</h3><p style="margin:0 0 4px"><b>' + esc(d.title) + '</b><br><span style="opacity:0.8">' + esc(d.where || d.place || '') + '</span></p>'
+        + '<p style="margin:0 0 6px;opacity:0.8">' + (done[d.id] === 'success' ? 'Done' + (grades[d.id] ? ', grade ' + grades[d.id] : '') + '.' : done[d.id] === 'partial' ? 'Done in part' + (grades[d.id] ? ', grade ' + grades[d.id] : '') + '.' : 'Not done yet.') + '</p>'
+        + (locked ? '<button class="btn" disabled>The case is not made yet</button>'
+          : drive ? '<button class="btn primary" id="world-go">Drive there</button><p style="margin:6px 0 0;opacity:0.75;font-size:13px">Ghost has not worked in ' + esc(REGIONS[r].name.replace(/^The /, 'the ')) + ' before: you drive in first, then the job.</p>'
+          : '<button class="btn primary" id="world-go">Go by ' + how + '</button>')
+        + '<hr style="border:0;border-top:1px solid #4a3f2c;margin:10px 0">' + (r ? regionText(r) : '');
+      const go = $('world-go'); if (go) go.onclick = () => { saveNow(); goJob(d.id); };
+    } else if (worldPick && worldPick.region) side.innerHTML = regionText(worldPick.region);
+    else side.innerHTML = '<h3>THE WORLD</h3><p style="margin:0 0 6px">Choose a region to read about it, or a pin to go.</p><p style="margin:0;opacity:0.8">Known: ' + (w.known.length ? w.known.map((r) => esc(REGIONS[r] ? REGIONS[r].name : r)).join(', ') : 'nowhere yet. Every first job in a region starts with the drive there.') + '</p>';
+  }
+  const drawRide2 = () => { $('ride-van2').classList.toggle('on', ride() === 'van'); $('ride-heli2').classList.toggle('on', ride() === 'heli'); };
+  for (const r of ['van', 'heli']) $('ride-' + r + '2').onclick = () => { try { localStorage.setItem(RIDE_KEY, r); } catch (e) { /* private window */ } drawRide2(); drawRide(); if (worldPick) drawWorld(); };
+  function openWorld() {
+    S.menu = true;
+    if (document.pointerLockElement) document.exitPointerLock();
+    drawRide2(); drawWorld();
+    show('world', true);
+  }
+  $('world-back').onclick = () => { show('world', false); deploy(); };
+  $('world-list').onclick = () => { show('world', false); drawRide(); show('assign', true); };
+  $('t-world').onclick = () => { show('assign', false); openWorld(); };
   // (M6.29) Q Branch: his gadgets, one signed out to this run at a time
   const Q_GADGETS = ['HACKKIT', 'QRELAY', 'QSPOOF', 'QSCRAMBLE', 'QSKELETON', 'QSNAKE', 'QGRAPPLE', 'QID', 'CAMO'];
   function drawQ() {
@@ -906,9 +998,12 @@ function boot() {
       <button class="btn" id="b-yard">Back to Ghost HQ</button>`;
   }
   if (DRAFT) {
-    document.querySelector('#briefing .brief-card').innerHTML = '<h2>LEVEL ' + DRAFT.no + ' &middot; ' + DRAFT.title.toUpperCase() + '</h2>' +
-      '<p class="brief-where">' + DRAFT.where + '</p>' + DRAFT.brief.map(([k, v]) => '<p><b>' + k + '</b> &mdash; ' + v + '</p>').join('') +
-      '<p class="brief-note">A first draft, to play and mark up: the place, who is in it and what to do may all change with Rhys\'s notes.</p>' +
+    // (M7.0) the region's heat, if the reds there are looking
+    const reg = !JOURNEY && regionOf(DRAFT.id), heat = reg ? World.heatOf(Saves.loadWorld(Saves.currentSlot()), reg) : 0;
+    const heatP = heat >= 15 ? '<p><b>Heat</b> &mdash; <span style="color:#ff8a70;font-weight:700">' + World.heatLabel(heat) + '</span> in ' + REGIONS[reg].name.replace(/^The /, 'the ') + '. ' + World.heatNote(heat) + '</p>' : '';
+    document.querySelector('#briefing .brief-card').innerHTML = (JOURNEY ? '<h2>' + DRAFT.title.toUpperCase() + '</h2>' : '<h2>LEVEL ' + DRAFT.no + ' &middot; ' + DRAFT.title.toUpperCase() + '</h2>') +
+      '<p class="brief-where">' + DRAFT.where + '</p>' + DRAFT.brief.map(([k, v]) => '<p><b>' + k + '</b> &mdash; ' + v + '</p>').join('') + heatP +
+      (JOURNEY ? '' : '<p class="brief-note">A first draft, to play and mark up: the place, who is in it and what to do may all change with Rhys\'s notes.</p>') +
       '<button class="btn primary" id="b-begin">Begin</button><button class="btn" id="b-yard">Back to Ghost HQ</button>';
   }
   // ── loadout and classes before a mission; the class pick in battle ──────────
@@ -1623,14 +1718,14 @@ function boot() {
   }
   function hqTip() {
     const at = hqStation();
-    return at === 'ops' ? 'E  Assignments' : at === 'trophies' ? 'E  The trophy cabinet' : at === 'case' ? 'E  The case board  (' + Saves.loadCase(slotNo).filter((id) => CASE.some((c) => c.id === id)).length + ' clues; contracts)' : at === 'skills' ? 'E  Training: your skills' + (pointsLeft(Saves.loadSkills(slotNo)) > 0 ? '  (points to spend)' : '') : at === 'q' ? 'E  Q Branch' + (Saves.loadGadget(slotNo) && ITEMS[Saves.loadGadget(slotNo)] ? '  (signed out: ' + ITEMS[Saves.loadGadget(slotNo)].name + ')' : '') : null;
+    return at === 'ops' ? 'E  The map table' : at === 'trophies' ? 'E  The trophy cabinet' : at === 'case' ? 'E  The case board  (' + Saves.loadCase(slotNo).filter((id) => CASE.some((c) => c.id === id)).length + ' clues; contracts)' : at === 'skills' ? 'E  Training: your skills' + (pointsLeft(Saves.loadSkills(slotNo)) > 0 ? '  (points to spend)' : '') : at === 'q' ? 'E  Q Branch' + (Saves.loadGadget(slotNo) && ITEMS[Saves.loadGadget(slotNo)] ? '  (signed out: ' + ITEMS[Saves.loadGadget(slotNo)].name + ')' : '') : null;
   }
   function hqUse() {
     const at = hqStation();
     if (!at) return false;
     if (at === 'ops' && hqSec && hqSec.active) { audio.deny(); S.noteText = 'Not with Yard 7 in their hands: lock the intruder out first (the server room, the security console)'; S.noteT = 4; return true; }
     audio.confirm();
-    if (at === 'ops') openAssignments();
+    if (at === 'ops') openWorld();                 // (M7.0) the map table first; the list is a button on it
     else if (at === 'q') openQ();
     else if (at === 'skills') { openMenu(); tab('skills'); }
     else if (at === 'case') openCase();
@@ -2760,10 +2855,23 @@ function boot() {
     const keepKit = () => { battleKit.slots = Object.assign({}, loadout.slots); battleKit.mods = JSON.parse(JSON.stringify(loadout.mods || {})); battleKit.specials = loadout.specials.slice(); };
     const beginWas = $('b-begin').onclick;
     $('b-begin').onclick = () => { keepKit(); beginWas(); };
-    if (DRAFT) { document.body.classList.add('draft'); document.body.style.setProperty('--zpre', '"LEVEL ' + DRAFT.no + '  //  "'); }
+    if (DRAFT) { document.body.classList.add('draft'); document.body.style.setProperty('--zpre', JOURNEY ? '"THE ROAD  //  "' : '"LEVEL ' + DRAFT.no + '  //  "'); }
     // the reds are in: their brains, bodies and guns from Level 0's
     // runtime; the hotel's doors, keys, safe and cameras stay with main.js
     missionRt = setupMission({ pc, app, level, player, input, audio, S, $, tracker, canvas, wview, settings, arsenal,
+      // (M7.0) how hot the job's region is (the reds there notice sooner), and the road's end: the region known
+      heat: DRAFT && !JOURNEY && regionOf(DRAFT.id) ? World.heatOf(Saves.loadWorld(Saves.currentSlot()), regionOf(DRAFT.id)) : 0,
+      journeyArrived(j) {
+        const n = Saves.currentSlot(), reg = REGIONS[j.region] || { name: j.region }, to = DRAFTS.find((d) => d.id === j.to);
+        Saves.saveWorld(n, World.markKnown(Saves.loadWorld(n), j.region));
+        S.playing = false; S.menu = true;
+        if (document.pointerLockElement) document.exitPointerLock();
+        $('arrive-title').textContent = 'ARRIVED: ' + reg.name.toUpperCase();
+        $('arrive-where').textContent = 'The region is known now.';
+        $('arrive-text').innerHTML = 'From here on, the map table in Ghost HQ sends you straight to any job in ' + esc(reg.name.replace(/^The /, 'the ')) + ' by van or helicopter.' + (to ? '<br><br>Next: <b>Level ' + to.no + ', ' + esc(to.title) + '</b>.' : '');
+        $('arrive-go').onclick = () => { if (to) goDraft(to.id); else goYard(); };
+        show('arrive', true);
+      },
       // (Rhys: objectives independent of completion) how it ended, into
       // the story of the slot you deployed from - for the missions after it
       // a battle: back in at your side's end, with your kit as you deployed with it

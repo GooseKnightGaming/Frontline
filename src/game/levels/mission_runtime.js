@@ -20,6 +20,8 @@ import { spokenVoice, SPOKEN, SPOKEN_SETS } from '../core/spoken.js';
 import { inTrain, inCoach, nearestSeat, FLOOR as FLOOR_Y, HIJACK, HIJACK_TALK, STAFF_TALK, NEWSPAPER, RUN as TRAIN_RUN } from './train.js';
 import * as Trophies from '../core/trophies.js';
 import * as Saves from '../core/saves.js';
+import * as World from '../../sim/play/world.js';                     // (M7.0) heat
+import { REGIONS, regionOf } from '../world/gazetteer.js';
 import { DRAFTS } from './drafts/index.js';
 import { rewardFor } from '../../sim/play/rewards.js';
 import { deviceView } from '../draw/devices_view.js';
@@ -90,6 +92,8 @@ export function setupMission(ctx) {
   let barkT = 0;
   const voices = new Voices(settings || {}, audio);
   const diff = () => diffOf(settings && settings.difficulty);          // (M6.39) how hard they are on you
+  // (M7.0) and how hot the region is: a hunted region's reds notice sooner
+  const heatDiff = () => { const d = diff(); return ctx.heat ? Object.assign({}, d, { notice: (d.notice || 1) * World.noticeFactor(ctx.heat) }) : d; };
   let rt_checkpoint = 0;                 // (M6.46) things done kept from a checkpoint
   // Guards take turns (Rhys: the chatter came thick and fast, and repeated).
   // Urgent calls (an alert, a hit, a man down) always go through; anything
@@ -1616,7 +1620,7 @@ export function setupMission(ctx) {
         alerted: m.spotted > 0 || m.shotsFired > 0 || m.breaches > 0 || m.kills > 0,
         lastLine,
         smokes: smokes.filter((c) => c.until > m.time),
-        diff: diff(),
+        diff: heatDiff(),
         you: { player: true, pos: player.pos, eye: player.eyePos, chest: [player.pos[0], player.pos[1] + h * 0.55, player.pos[2]],
           stance: player.stance, speed: Math.hypot(player.vel[0], player.vel[2]),
           // (M6.29) Shadow: guards slower to make you out, with or without the camouflage
@@ -1838,6 +1842,8 @@ export function setupMission(ctx) {
         const allSafe = hostagesSafe && capStopped();
         if (hostagesSafe && !rt.toldSafe) { rt.toldSafe = true; if (!capStopped()) showHint('All the hostages are safe. Now stop the captain - then back to the Ghost jeep.'); }
         if (settled && !rt.toldApc && !level.trainRun) { rt.toldApc = true; showHint(level.settledHint || (allSafe ? 'All the hostages are safe and the captain is stopped. Get back to the Ghost jeep to finish.' : 'Nothing more can be done here. Get back to the Ghost jeep.')); }
+        // (M7.0) a journey ends the moment you are there: the region is known, and the job's own level loads
+        if (level.spec && level.spec.journey && settled && !m.done) { rt.endHotel(now); return; }
         const az = level.apcZone;
         const atJeep = az && player.mode !== 'dead' && inStreetZone(az, player.pos);
         // you start at your way out: withdrawing is offered only once you have been in
@@ -2374,6 +2380,7 @@ export function setupMission(ctx) {
     // the hotel ends at the jeep, however it went: graded, and remembered
     endHotel(o) {
       if (m.done) return;
+      if (level.spec && level.spec.journey) { m.done = true; m.result = 'success'; if (ctx.journeyArrived) ctx.journeyArrived(level.spec.journey); return; }   // (M7.0) no debrief for a road
       const r = rules.grade(o);
       m.done = true; m.result = r; rt.outcome = level.draft ? outcome() : o;   // (M6.124.1) read again now it is over: 'no alarm', not 'no alarm yet'
       if (r === 'failed') m.failure = B ? (B.retreated ? 'You withdrew before it was decided' : 'The battle was lost') : 'Withdrew with nothing achieved';
@@ -2579,6 +2586,13 @@ export function setupMission(ctx) {
         }
         // (M6.48) the mission list's tick: this draft's best result
         if (level.draft) Saves.markDone(Saves.currentSlot(), level.draft, m.result);
+        // (M7.0) the region's heat: an alarm, bodies, civilians hurt and a failure raise it; quiet work cools it
+        if (level.draft && regionOf(level.draft) && !B) {
+          const n = Saves.currentSlot(), reg = regionOf(level.draft), w0 = Saves.loadWorld(n), was = World.heatOf(w0, reg);
+          const w1 = World.afterMission(w0, reg, { result: m.result, alarm: !!rt.sirenRung, kills: m.kills || 0, civilians: m.civiliansHit || 0 });
+          Saves.saveWorld(n, w1);
+          rt.heat = { region: reg, was, now: World.heatOf(w1, reg) };
+        }
         // (M6.41) the contracts board: any open one this mission pays
         if (level.draft) {
           const cst = Saves.loadContracts(Saves.currentSlot());
@@ -2614,6 +2628,7 @@ export function setupMission(ctx) {
         row('Knocked out', m.knockouts) +
         row('Takedowns', m.takedowns) +
         (m.civiliansHit ? row('Civilians knocked down', '<span class="no">' + m.civiliansHit + '</span>') : '') +
+        (rt.heat ? row('Heat in ' + (REGIONS[rt.heat.region] ? REGIONS[rt.heat.region].name.replace(/^The /, 'the ') : rt.heat.region), '<span class="' + (rt.heat.now > rt.heat.was ? 'no' : 'ok') + '">' + World.heatLabel(rt.heat.now) + ' ' + Math.round(rt.heat.now) + (rt.heat.now !== rt.heat.was ? ' (' + (rt.heat.now > rt.heat.was ? '+' : '') + Math.round(rt.heat.now - rt.heat.was) + ')' : '') + '</span>') : '') +
         row('Times spotted', m.spotted) +
         row('Accuracy', m.shotsFired ? Math.round(m.accuracy * 100) + '% (' + m.shotsHit + ' of ' + m.shotsFired + ' rounds)' : 'no shots fired') +
         (m.kills ? row('Headshots', m.headshots + ' of ' + m.kills) : '') +

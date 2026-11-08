@@ -10,8 +10,8 @@ What is done lives in FRONTLINE_HANDOVER.md.*
 | M3 | Loadout, mods, gear, character | done (character still one model) |
 | M4 | Training course | done |
 | M5 | Systems & presentation — title, saves, radar, sound, music | done (small items left, below) |
-| M6 | Enemies & dialogue | **current** — Level 0 and stage 1 in (M6.0.0) |
-| M7 | Missions & Ghost HQ | |
+| M6 | Enemies & dialogue | done (M6.0 - M6.125: the guard, 123 levels, the case, the polish) |
+| M7 | Missions & Ghost HQ | **current** (M7.0.0): the world - the map table, the drive into each region, heat |
 | M8 | Vehicles | **started** (M6.20.0): driving, boats, the Riverboat Pursuit |
 | M9 | Ragdoll | |
 
@@ -911,12 +911,12 @@ every new level take a place. Nothing in the game reads it yet.
 4. **Off duty** (already agreed: the Train): time between assignments, walking the region, nothing to do but
    look, talk, shop.
 
-**For Rhys to decide:** stage 1 first, or straight to a walkable Varnholm? Travel as a map choice, or driven
+**Rhys decided (8 Nov):** the map table yes, and the world walkable too; the first job in each region driven for real, then fast travel from the map; heat yes; the guesses stand. **Done in M7.0.0:** the map table, the drives, heat. Next: stage 2. *(Was: stage 1 first, or straight to a walkable Varnholm? Travel as a map choice, or driven
 for real (the cars exist)? A heat system, yes or no? And the 16 guessed places: the Bank, the Sewers and the
 Cemetery's old city, the Housing Estate, Ashcombe Park, Brookvale University, the Halloran Library and Varn
 Dynamics in Varnholm; the Research Station, Varrow Naval Yard and Skarvik on the Kessin coast; HMP Greyhallow,
 Camp Dravik and the Halvard ridge in the north; the Villa Merrow on Lake Morra; Lindqvist's Ford near
-Varnholm; the circus's winter quarters near Lessar.
+Varnholm; the circus's winter quarters near Lessar.)*
 
 ## Done overnight, 1-2 November 2026 (M6.43 - M6.64)
 Levels 44-52 (the Grain Terminal, the Dalmar Star, the Ministry of Supply, the Halvard Embankment, the Varnholm Museum,
