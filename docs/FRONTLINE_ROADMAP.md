@@ -11,7 +11,7 @@ What is done lives in FRONTLINE_HANDOVER.md.*
 | M4 | Training course | done |
 | M5 | Systems & presentation — title, saves, radar, sound, music | done (small items left, below) |
 | M6 | Enemies & dialogue | done (M6.0 - M6.125: the guard, 123 levels, the case, the polish) |
-| M7 | Missions & Ghost HQ | **current** (M7.0.0): the world - the map table, the drive into each region, heat |
+| M7 | Missions & Ghost HQ | **current** (M7.1.0): the world - the map table, the drive into each region, heat; the streets of Varnholm |
 | M8 | Vehicles | **started** (M6.20.0): driving, boats, the Riverboat Pursuit |
 | M9 | Ragdoll | |
 

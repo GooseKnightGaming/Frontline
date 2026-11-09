@@ -93,6 +93,13 @@ export function setupMission(ctx) {
   const voices = new Voices(settings || {}, audio);
   const diff = () => diffOf(settings && settings.difficulty);          // (M6.39) how hard they are on you
   // (M7.0) and how hot the region is: a hunted region's reds notice sooner
+  // (M7.1) a district's doors: the nearest within reach of you
+  const entranceNear = () => {
+    const D = level.district; if (!D || player.mode === 'dead' || player.driving) return null;
+    let best = null, bd = 1.8;
+    for (const e of D.entrances) { if (!e.pos) continue; const d = Math.hypot(e.pos[0] - player.pos[0], e.pos[2] - player.pos[2]); if (d < bd && Math.abs(player.pos[1] - e.pos[1]) < 1.5) { bd = d; best = e; } }
+    return best;
+  };
   const heatDiff = () => { const d = diff(); return ctx.heat ? Object.assign({}, d, { notice: (d.notice || 1) * World.noticeFactor(ctx.heat) }) : d; };
   let rt_checkpoint = 0;                 // (M6.46) things done kept from a checkpoint
   // Guards take turns (Rhys: the chatter came thick and fast, and repeated).
@@ -1838,10 +1845,10 @@ export function setupMission(ctx) {
         // to settle - every hostage out or dead, the captain stopped or gone -
         // and the jeep ends it; with something still open, leaving is your
         // choice: E held at the jeep
-        const now = outcome(), settled = rules.settled(now);
+        const now = outcome(), settled = level.spec && level.spec.district ? false : rules.settled(now);   // (M7.1) the streets are never 'settled': you leave by the gate, holding E
         const allSafe = hostagesSafe && capStopped();
         if (hostagesSafe && !rt.toldSafe) { rt.toldSafe = true; if (!capStopped()) showHint('All the hostages are safe. Now stop the captain - then back to the Ghost jeep.'); }
-        if (settled && !rt.toldApc && !level.trainRun) { rt.toldApc = true; showHint(level.settledHint || (allSafe ? 'All the hostages are safe and the captain is stopped. Get back to the Ghost jeep to finish.' : 'Nothing more can be done here. Get back to the Ghost jeep.')); }
+        if (settled && !rt.toldApc && !level.trainRun && !(level.spec && level.spec.district)) { rt.toldApc = true; showHint(level.settledHint || (allSafe ? 'All the hostages are safe and the captain is stopped. Get back to the Ghost jeep to finish.' : 'Nothing more can be done here. Get back to the Ghost jeep.')); }
         // (M7.0) a journey ends the moment you are there: the region is known, and the job's own level loads
         if (level.spec && level.spec.journey && settled && !m.done) { rt.endHotel(now); return; }
         const az = level.apcZone;
@@ -1986,7 +1993,8 @@ export function setupMission(ctx) {
           const os = now.objectives || [], next = os.find((x) => !x.optional && !x.done && !x.failed);
           const fol = hostages.filter((q) => q.free).length;
           $('step').style.display = 'block';
-          $('step').textContent = settled ? 'All done  -  back to ' + level.extractName + ' to extract'
+          $('step').textContent = level.spec && level.spec.district ? (level.spec.title + '  -  walk up to a door and press E; home by ' + level.extractName)   // (M7.1) the streets have no objectives
+            : settled || !next ? 'All done  -  back to ' + level.extractName + ' to extract'
             : next.text + (next.status && next.kind !== 'take' && next.kind !== 'hack' && next.kind !== 'reach' ? ' (' + next.status + ')' : '') + (fol ? '  -  ' + fol + ' with you' : '') + '  -  ' + os.filter((x) => !x.optional && (x.done || x.failed)).length + ' of ' + os.filter((x) => !x.optional).length + ' done';
           for (const o of os) if (o.done && !rt['told_' + o.id]) { rt['told_' + o.id] = true; if (o.kind === 'clear' || o.kind === 'kill') { audio.stepDone && audio.stepDone(); showHint(o.text + ' - done.'); } }
         } else if (hostages.length) {
@@ -2132,6 +2140,7 @@ export function setupMission(ctx) {
       { const bn = bodyNear(); if (bn && !rt.disguise && !dropNear()) return 'E  Take his uniform (a disguise)'; }
       const dn = dropNear();
       if (dn) { const tip = dropTip(dn); if (tip) return tip; }
+      { const en = entranceNear(); if (en) return 'E  Go in: Level ' + en.no + ', ' + en.title; }   // (M7.1) a district's doors
       if (ledgerNear()) return 'E  Take the ledger';
       { const pk = pickupNear(); if (pk) return 'E  Take ' + pk.what; }
       { const cn = cannonNear(); if (cn) return cn.t > 0 ? 'The gun is being loaded (' + Math.ceil(cn.t) + ')' : 'E  Fire the gun (where you are looking)'; }
@@ -2156,6 +2165,7 @@ export function setupMission(ctx) {
         // at the jeep with things still undone: you may go anyway
         const az = level.apcZone;
         if (az && rt.wentIn && inStreetZone(az, player.pos)) {
+          if (level.spec && level.spec.district) return rt.leaveT > 0 ? 'Going home... ' + Math.round(rt.leaveT / LEAVE_HOLD * 100) + '%' : 'Hold E  Home to Ghost HQ';   // (M7.1)
           const o = outcome();
           if (!rules.settled(o)) {
             const left = rules.undone(o);
@@ -2245,6 +2255,7 @@ export function setupMission(ctx) {
         const hn = hostageNear();
         if (hn && hn.free) { hn.order(); audio.click(); return true; }
         if (hn && hn.state === 'held') return true;            // freeing is a hold: E held, in tick
+        { const en = entranceNear(); if (en) { audio.confirm(); if (ctx.goEntrance) ctx.goEntrance(en, { alarm: !!rt.sirenRung, kills: m.kills || 0, civilians: m.civiliansHit || 0 }); return true; } }
         { const cn = cardNear(); if (cn) { takeCard(cn); return true; } }
         { const hn = heldNear(); if (hn) { question(hn); return true; } }
         { const bn = !rt.disguise && !dropNear() && bodyNear(); if (bn) { takeUniform(bn); return true; } }
@@ -2381,6 +2392,7 @@ export function setupMission(ctx) {
     endHotel(o) {
       if (m.done) return;
       if (level.spec && level.spec.journey) { m.done = true; m.result = 'success'; if (ctx.journeyArrived) ctx.journeyArrived(level.spec.journey); return; }   // (M7.0) no debrief for a road
+      if (level.spec && level.spec.district) { m.done = true; m.result = 'success'; if (ctx.districtLeave) ctx.districtLeave({ alarm: !!rt.sirenRung, kills: m.kills || 0, civilians: m.civiliansHit || 0, dead: player.mode === 'dead' }); return; }   // (M7.1) home from the streets
       const r = rules.grade(o);
       m.done = true; m.result = r; rt.outcome = level.draft ? outcome() : o;   // (M6.124.1) read again now it is over: 'no alarm', not 'no alarm yet'
       if (r === 'failed') m.failure = B ? (B.retreated ? 'You withdrew before it was decided' : 'The battle was lost') : 'Withdrew with nothing achieved';

@@ -7,6 +7,24 @@ GooseKnightGaming/Frontline: source in `src/`, tests in `test/`, notes in `docs/
 (`docs/CODE_MAP.md` lists every file). `npm install && node build.mjs` builds the
 game into the repository's root.
 
+## M7.1.0 — the streets of Varnholm: a region you walk, its jobs as doors (Rhys, 8 Nov: "you absolutely should be able to walk around the world freely")
+
+- **The district** (`src/game/world/districts.js`): `makeDistrict(region, { done, heat })` builds a region as a kit
+  level: a 4 x 3 grid of city blocks with five-square streets between, each block's facade its own colour, street
+  lamps along every street, Ghost's van by Yard 7's gate (west), and a few people on the corners who talk.
+  `index.html?level=district&region=varnholm`. Varnholm is the first and only one so far (`DISTRICTS`).
+- **The jobs as doors:** every (non-battle) job placed in the region by the gazetteer is a door on a block's front,
+  its name and level number on a sign over it (green when done, amber in part), a lamp above. Walk up and the
+  prompt says "E  Go in: Level N, Title"; E loads that job (`ctx.goEntrance`, through the drive first if the region is
+  not yet known).
+- **Heat on the streets:** one red patrol per 12 points of the region's heat, to six (none when COLD). Trouble on the
+  streets (an alarm, bodies, civilians hurt) adds to the region's heat when you leave; a quiet walk changes nothing.
+- **Leaving:** the streets are never "settled" (they have no objectives): you go home by holding E at Yard 7's gate,
+  once you have walked away from it ("Hold E  Home to Ghost HQ"). (The first build ended the level the moment it
+  began, since a level with no objectives counts as settled and you start at the gate.)
+- **From the map table:** a known region with a district has "Walk the streets" on the map.
+- **Tests:** `test/world.test.mjs`: every job's door is reachable on foot from the gate; no patrols at heat 0, six at 90.
+
 ## M7.0.0 — the world: the map table, the first drive into each region, heat (Rhys, 8 Nov: "Map table in Ghost HQ - Yes. But also you absolutely should be able to walk around the world freely. Driven for real for the first mission in any of the ten regions... Once the region is established as 'known', unlock fast-travel as a choice on the map. Heat? Yes, please.")
 
 M7 is the milestone "Missions & Ghost HQ": this opens it.

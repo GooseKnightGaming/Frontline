@@ -65,5 +65,20 @@ for (const r of JOURNEY_REGIONS) {
   });
 }
 
+console.log('-- the districts --');
+const { makeDistrict, districtJobs, DISTRICTS } = await import('../src/game/world/districts.js');
+for (const r of Object.keys(DISTRICTS)) {
+  T('the streets of ' + REGIONS[r].name + ': build; a door for every job there; every door reachable on foot from the gate; no reds when cold, six at a manhunt', () => {
+    const cold = makeDistrict(r, { heat: 0 }), hot = makeDistrict(r, { heat: 90 });
+    A(cold.guards.length === 0 && hot.guards.length === 6, 'reds ' + cold.guards.length + ' / ' + hot.guards.length);
+    const L = buildKitLevel(hot);
+    const D = L.district;
+    A(D && D.entrances.length === districtJobs(r).length, 'doors ' + (D && D.entrances.length) + ' for ' + districtJobs(r).length + ' jobs');
+    const nav = new NavGrid(L.world, L.navFloors, L.navLinks); nav.maxSteps = L.testNavCap || L.navCap || 40000;
+    const C = hot.cell || 1.5, from = [(hot.start.x + 0.5) * C, 0.05, (hot.start.y + 0.5) * C];
+    for (const e of D.entrances) { A(e.pos, 'door for ' + e.to + ' placed'); const p = nav.find(from, [e.pos[0], 0.05, e.pos[2]]); A(p && p.length, 'no way to the door for ' + e.to); }
+  });
+}
+
 console.log(fails.length ? '\n' + fails.length + ' FAILED:\n' + fails.join('\n') : '\nall ' + pass + ' passed');
 if (fails.length) process.exit(1);
